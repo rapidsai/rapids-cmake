@@ -1,28 +1,42 @@
 <!--
 
-Thank you for contributing to ___PROJECT___ :)
+Thank you for contributing to rapids-cmake :)
 
 Here are some guidelines to help the review process go smoothly.
 
 1. Please write a description in this text box of the changes that are being
    made.
 
-2. Please ensure that you have written units tests for the changes made/features
+2. Please ensure that you have followed the following guidelines for the changes made/features
    added.
+
+   - Each function should follow the `rapids_<component>_<file_name>` naming pattern
+   - Each function should go into a separate `.cmake` file in the approiate directory
+   - Each user facing `.cmake` file should have include guards (`include_guard(GLOBAL)`)
+   - Each user faceing `.cmake` file should be documented using the rst structure
+   - Each function first line should be `list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.<component>.<function>")`
+
+   - A file should not modify any state simply by being included. State modification should
+     only occur inside functions unless absolutely neccessary due to restrctions of the CMake
+     language.
+      - Any files that do need to break this rule can't be part of `rapids-<component>.cmake`.
 
 3. If you are closing an issue please use one of the automatic closing words as
    noted here: https://help.github.com/articles/closing-issues-using-keywords/
 
 4. If your pull request is not ready for review but you want to make use of the
-   continuous integration testing facilities please label it with `[WIP]`.
+   continuous integration testing facilities please mark your pull request as Draft.
+   https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/changing-the-stage-of-a-pull-request#converting-a-pull-request-to-a-draft
 
 5. If your pull request is ready to be reviewed without requiring additional
-   work on top of it, then remove the `[WIP]` label (if present) and replace
-   it with `[REVIEW]`. If assistance is required to complete the functionality,
-   for example when the C/C++ code of a feature is complete but Python bindings
-   are still required, then add the label `[HELP-REQ]` so that others can triage
-   and assist. The additional changes then can be implemented on top of the
-   same PR. If the assistance is done by members of the rapidsAI team, then no
+   work on top of it, then remove it from "Draft" and make it "Ready for Review".
+   https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/changing-the-stage-of-a-pull-request#marking-a-pull-request-as-ready-for-review
+
+   If assistance is required to complete the functionality, for example when the
+   CMake code of a feature is complete but downstream testing is still required,
+   then add the label `help wanted` so that others can triage and assist.
+   The additional changes then can be implemented on top of the same PR.
+   If the assistance is done by members of the rapidsAI team, then no
    additional actions are required by the creator of the original PR for this,
    otherwise the original author of the PR needs to give permission to the
    person(s) assisting to commit to their personal fork of the project. If that

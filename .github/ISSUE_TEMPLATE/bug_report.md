@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Create a bug report to help us improve ___PROJECT___
+about: Create a bug report to help us improve rapids-cmake
 title: "[BUG]"
 labels: "? - Needs Triage, bug"
 assignees: ''
@@ -18,9 +18,7 @@ A clear and concise description of what you expected to happen.
 
 **Environment details (please complete the following information):**
  - Environment location: [Bare-metal, Docker, Cloud(specify cloud provider)]
- - Method of ___PROJECT___ install: [conda, Docker, or from source]
-   - If method of install is [Docker], provide `docker pull` & `docker run` commands used
- 
+ - CMake version
 
 **Additional context**
-Add any other context about the problem here.
+For harder to track issue it can be helpful to attach the file generated from `cmake --system-information <file>` when executed from the same enviornment as the failure.

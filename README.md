@@ -1,76 +1,111 @@
-# RAPIDS Standard Repo Template
+# <div align="left"><img src="https://rapids.ai/assets/images/rapids_logo.png" width="90px"/>&nbsp;rapids-cmake</div>
 
-This is repo is the standard RAPIDS repo with the following items to make all RAPIDS repos consistent:
+**NOTE:** For the latest stable [README.md](https://github.com/rapidsai/rapids-cmake/blob/main/README.md) ensure you are on the `main` branch.
 
-- GitHub File Templates
-  - Issue templates
-  - PR template
-- GitHub Repo Templates
-  - Issue/PR labels
-  - Project tracking and release board templates
-- Files
-  - `CHANGELOG.md` skeleton
-  - `CONTRIBUTING.md` skeleton
-  - `LICENSE` file with Apache 2.0 License
-  - `README.md` skeleton
+## Overview
+
+This is a collection of CMake modules that are useful for all CUDA RAPIDS
+projects. By sharing the code in a single place it makes rolling out CMake
+fixes easier.
 
 
-## Usage for new RAPIDS repos
+## Installation
 
-1. Clone this repo
-2. Find/replace all in the clone of `___PROJECT___` and replace with the name of the new library
-3. Inspect files to make sure all replacements work and update text as needed
-4. Customize issue/PR templates to fit the repo
-5. Update `CHANGELOG.md` with next release version, see [changelog format](https://docs.rapids.ai/resources/changelog/) for more info
-6. Add developer documentation to the end of the `CONTRIBUTING.md` that is project specific and useful for developers contributing to the project
-    - The goal here is to keep the `README.md` light, so the development/debugging information should go in `CONTRIBUTING.md`
-7. Complete `README.md` with project description, quick start, install, and contribution information
-8. Remove everything above the RAPIDS logo below from the `README.md`
-9. Check `LICENSE` file is correct
-10. Change git origin to point to new repo and push
-11. Alert OPS team to copy labels and project boards to new repo
+The `rapids-cmake` module is designed to be acquired via CMake's [Fetch
+Content](https://cmake.org/cmake/help/latest/module/FetchContent.html) into your project.
 
-## Usage for existing RAPIDS repos
+```cmake
 
-1. Follow the steps 1-9 above, but add the files to your existing repo and merge
-2. Alert OPS team to copy labels and project boards to new repo
+cmake_minimum_required(...)
 
-## Useful docs to review
+include(FetchContent)
+FetchContent_Declare(
+  rapids-cmake
+  GIT_REPOSITORY https://github.com/rapidsai/rapids-cmake.git
+  GIT_TAG        branch-<VERSION_MAJOR>.<VERSION_MINOR>
+)
+FetchContent_MakeAvailable(rapids-cmake)
+include(rapids-cmake)
+include(rapids-cpm)
+include(rapids-cuda)
+include(rapids-export)
+include(rapids-find)
 
-- Issue triage & release planning
-  - [Issue triage process with GitHub projects](https://rapidsai.github.io/devdocs/docs/releases/triage/)
-  - [Release planning with GitHub projects](https://rapidsai.github.io/devdocs/docs/releases/planning/)
-- Code release process
-  - [Hotfix process](https://rapidsai.github.io/devdocs/docs/releases/hotfix/)
-  - [Release process](https://rapidsai.github.io/devdocs/docs/releases/process/)
-- Code contributions
-  - [Code contribution guide](https://rapidsai.github.io/devdocs/docs/contributing/code/)
-  - [Filing issues](https://rapidsai.github.io/devdocs/docs/contributing/issues/)
-  - [Filing PRs](https://rapidsai.github.io/devdocs/docs/contributing/prs/)
-  - [Code of conduct](https://rapidsai.github.io/devdocs/docs/resources/conduct/)
-- Development process
-  - [Git branching and merging methodology](https://rapidsai.github.io/devdocs/docs/resources/git/)
-  - [Versions and tags](https://rapidsai.github.io/devdocs/docs/resources/versions/)
-  - [Changelog format](https://rapidsai.github.io/devdocs/docs/resources/changelog/)
-  - [Style guide](https://rapidsai.github.io/devdocs/docs/resources/style/)
-  - [Labels](https://rapidsai.github.io/devdocs/docs/maintainers/labels/)
+project(....)
+```
 
----
+Note that we recommend you install `rapids-cmake` into the root `CMakeLists.txt` of
+your project before the first `project` call. This allows us to offer features such as
+`rapids_cuda_architectures()`
 
-# <div align="left"><img src="https://rapids.ai/assets/images/rapids_logo.png" width="90px"/>&nbsp;___PROJECT___</div>
+## Usage
 
-The [RAPIDS](https://rapids.ai) ___PROJECT___ ..._insert project description_...
+`rapids-cmake` provides a collection of useful CMake settings that any RAPIDS project may use.
+While they maybe common, we know that they aren't universal and might need to be composed in
+different ways.
 
-**NOTE:** For the latest stable [README.md](https://github.com/rapidsai/___PROJECT___/blob/main/README.md) ensure you are on the `main` branch.
+To use function provided by `rapids-cmake` projects have two options:
+- Call `include(rapids-<component>)` as that imports all commonly used functions for that component
+- Load each function independently via `include(${rapids-cmake-dir}/<component>/<function_name>.cmake)`
 
-## Quick Start
 
-## Install ___PROJECT___
+## Components
 
-### Conda
+Complete online documentation for all components is currently under development. Currently
+you can read the existing documentation by looking at the inline restructure text of
+each cmake file.
 
-### Docker
+### cmake
+The `rapids-cmake` module contains helpful general CMake functionality
 
-## Contributing Guide
+- `rapids_cmake_build_type( )` handles initialization of `CMAKE_BUILD_TYPE`
+- `rapids_cmake_support_conda_env( target [MODIFY_PREFIX_PATH])` Establish a target that holds the CONDA enviornment
+  include and link directories.
 
-Review the [CONTRIBUTING.md](https://github.com/rapidsai/___PROJECT___/blob/main/CONTRIBUTING.md) file for information on how to contribute code and issues to the project.
+### cpm
+
+The `rapids-cpm` module contains CPM functionality to allow projects to acquire dependencies consistently.
+For consistentcy All targets brought in via `rapids-cpm` are GLOBAL targets.
+
+- `raipds_cpm_init()` handles initialization of the CPM module.
+- `raipds_cpm_find(<project> name BUILD_EXPORT_SET <name> INSTALL_EXPORT_SET <name>)` Will search for a module and fall back to installing via CPM. Offers support to track dependencies for easy package exporting
+
+### cuda
+
+The `rapids-cuda` module contains core functionality to allow projects to build CUDA code robustly.
+The most commonly used function are:
+
+- `rapids_cuda_init_architectures(<project_name>)` handles initialization of `CMAKE_CUDA_ARCHITECTURE`. MUST BE CALLED BEFORE `PROJECT()`
+- `rapids_cuda_init_runtime(<mode>)` handles initialization of `CMAKE_CUDA_RUNTIME_LIBRARY`.
+
+### export
+
+The `rapids-export` module contains core functionality to allow projects to easily record and write out
+build and install dependencies, that come from `find_package` or `cpm`
+
+- `rapids_export_package(<type> <package_name> <export_set>)` Explicitly record a `find_package` call for `install`
+  or `build` exporting. Used by `rapids_export` to generate a correct config module.
+- `rapids_export_cpm(<type> <package_name> <export_set>)` Explicitly record a `cpm` call for `install` or `build`
+  exporting. Used by `rapids_export` to generate a correct config module.
+- `rapids_export_find_package_file(<type> <file_path> <export_set>)` Explicitly record a custom `Find<Pkg>.cmake`
+  file that is required for the `install` or `build` export set. Used by `rapids_export` to correctly install
+  custom FindModules.
+- `rapids_export(<type> <project> EXPORT_SET <name>)` write out all the require components of a projects config
+  module so that the `install` or `build` directory can be imported via `find_package`. See `rapids_export`
+  documentation for full documentation
+
+
+### find
+
+The `rapids-find` module contains core functionality to allow projects to easily generate FindModule or export
+`find_package` calls:
+
+The most commonly used function are:
+
+- `rapids_find_package(<project_name> BUILD_EXPORT_SET <name> INSTALL_EXPORT_SET <name> )` Combines `find_package` and support to track dependencies for easy package exporting
+- `rapids_generate_module(<PackageName> HEADER_NAMES <paths...> LIBRARY_NAMES <names...> )` Generate a FindModule for the given package. Allows association to export sets so the generated FindModule can be shipped with the project
+
+
+## Contributing
+
+Review the [CONTRIBUTING.md](https://github.com/rapidsai/rapids-cmake/blob/main/CONTRIBUTING.md) file for information on how to contribute code and issues to the project.

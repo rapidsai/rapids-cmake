@@ -1,6 +1,6 @@
 ---
 name: Submit question
-about: Ask a general question about ___PROJECT___
+about: Ask a general question about rapids-cmake
 title: "[QST]"
 labels: "? - Needs Triage, question"
 assignees: ''
