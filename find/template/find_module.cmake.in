@@ -1,0 +1,115 @@
+#=============================================================================
+# Copyright (c) 2018-2021, NVIDIA CORPORATION.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#==========================================================================
+
+#[=======================================================================[.rst:
+Find@RAPIDS_PKG_NAME@
+--------
+
+Find @RAPIDS_PKG_NAME@
+
+Imported targets
+^^^^^^^^^^^^^^^^
+
+This module defines the following :prop_tgt:`IMPORTED` target(s):
+
+``@RAPIDS_PKG_NAME@::@RAPIDS_PKG_NAME@``
+  The @RAPIDS_PKG_NAME@ library, if found.
+
+Result variables
+^^^^^^^^^^^^^^^^
+
+This module will set the following variables in your project:
+
+``@RAPIDS_PKG_NAME@_FOUND``
+  True if @RAPIDS_PKG_NAME@ is found.
+``@RAPIDS_PKG_NAME@_INCLUDE_DIRS``
+  The include directories needed to use @RAPIDS_PKG_NAME@.
+``@RAPIDS_PKG_NAME@_LIBRARIES``
+  The libraries needed to use@RAPIDS_PKG_NAME@.
+``@RAPIDS_PKG_NAME@_VERSION_STRING``
+  The version of the @RAPIDS_PKG_NAME@ library found. [OPTIONAL]
+
+#]=======================================================================]
+
+# Prefer using a Config module if it exists for this project
+set(@RAPIDS_PKG_NAME@_NO_CONFIG @RAPIDS_NO_CONFIG@)
+if(NOT @RAPIDS_PKG_NAME@_NO_CONFIG)
+  find_package(@RAPIDS_PKG_NAME@ CONFIG QUIET)
+  if(@RAPIDS_PKG_NAME@_FOUND)
+    find_package_handle_standard_args(@RAPIDS_PKG_NAME@ DEFAULT_MSG @RAPIDS_PKG_NAME@_CONFIG)
+    return()
+  endif()
+endif()
+
+find_path(@RAPIDS_PKG_NAME@_INCLUDE_DIR NAMES @RAPIDS_HEADER_NAMES@ @RAPIDS_PATH_SEARCH_ARGS@)
+
+set(@RAPIDS_PKG_NAME@_IS_HEADER_ONLY @RAPIDS_HEADER_ONLY@)
+if(NOT @RAPIDS_PKG_NAME@_LIBRARY AND NOT @RAPIDS_PKG_NAME@_IS_HEADER_ONLY)
+  find_library(@RAPIDS_PKG_NAME@_LIBRARY_RELEASE NAMES @RAPIDS_PKG_LIB_NAMES@ NAMES_PER_DIR @RAPIDS_LIB_SEARCH_ARGS@)
+  find_library(@RAPIDS_PKG_NAME@_LIBRARY_DEBUG   NAMES @RAPIDS_PKG_LIB_DEBUG_NAMES@   NAMES_PER_DIR @RAPIDS_LIB_SEARCH_ARGS@)
+
+  include(${CMAKE_ROOT}/Modules/SelectLibraryConfigurations.cmake)
+  select_library_configurations(@RAPIDS_PKG_NAME@)
+  unset(@RAPIDS_PKG_NAME@_FOUND) #incorrectly set by select_library_configurations
+endif()
+
+include(${CMAKE_ROOT}/Modules/FindPackageHandleStandardArgs.cmake)
+
+if(@RAPIDS_PKG_NAME@_IS_HEADER_ONLY)
+  find_package_handle_standard_args(@RAPIDS_PKG_NAME@
+                                    REQUIRED_VARS @RAPIDS_PKG_NAME@_INCLUDE_DIR
+                                    VERSION_VAR @RAPIDS_VERSION@)
+else()
+  find_package_handle_standard_args(@RAPIDS_PKG_NAME@
+                                    REQUIRED_VARS @RAPIDS_PKG_NAME@_LIBRARY @RAPIDS_PKG_NAME@_INCLUDE_DIR
+                                    VERSION_VAR @RAPIDS_VERSION@)
+endif()
+
+if(@RAPIDS_PKG_NAME@_FOUND)
+  set(@RAPIDS_PKG_NAME@_INCLUDE_DIRS ${@RAPIDS_PKG_NAME@_INCLUDE_DIR})
+
+  if(NOT @RAPIDS_PKG_NAME@_LIBRARIES)
+    set(@RAPIDS_PKG_NAME@_LIBRARIES ${@RAPIDS_PKG_NAME@_LIBRARY})
+  endif()
+
+  if(NOT TARGET @RAPIDS_PKG_NAME@::@RAPIDS_PKG_NAME@)
+    add_library(@RAPIDS_PKG_NAME@::@RAPIDS_PKG_NAME@ UNKNOWN IMPORTED)
+    set_target_properties(@RAPIDS_PKG_NAME@::@RAPIDS_PKG_NAME@ PROPERTIES
+      INTERFACE_INCLUDE_DIRECTORIES "${@RAPIDS_PKG_NAME@_INCLUDE_DIRS}")
+
+    if(@RAPIDS_PKG_NAME@_LIBRARY_RELEASE)
+      set_property(TARGET @RAPIDS_PKG_NAME@::@RAPIDS_PKG_NAME@ APPEND PROPERTY
+        IMPORTED_CONFIGURATIONS RELEASE)
+      set_target_properties(@RAPIDS_PKG_NAME@::@RAPIDS_PKG_NAME@ PROPERTIES
+        IMPORTED_LOCATION_RELEASE "${@RAPIDS_PKG_NAME@_LIBRARY_RELEASE}")
+    endif()
+
+    if(@RAPIDS_PKG_NAME@_LIBRARY_DEBUG)
+      set_property(TARGET @RAPIDS_PKG_NAME@::@RAPIDS_PKG_NAME@ APPEND PROPERTY
+        IMPORTED_CONFIGURATIONS DEBUG)
+      set_target_properties(@RAPIDS_PKG_NAME@::@RAPIDS_PKG_NAME@ PROPERTIES
+        IMPORTED_LOCATION_DEBUG "${@RAPIDS_PKG_NAME@_LIBRARY_DEBUG}")
+    endif()
+
+    if(NOT @RAPIDS_PKG_NAME@_LIBRARY_RELEASE AND NOT @RAPIDS_PKG_NAME@_LIBRARY_DEBUG)
+      set_property(TARGET @RAPIDS_PKG_NAME@::@RAPIDS_PKG_NAME@ APPEND PROPERTY
+        IMPORTED_LOCATION "${@RAPIDS_PKG_NAME@_LIBRARY}")
+    endif()
+  endif()
+endif()
+
+unset(@RAPIDS_PKG_NAME@_NO_CONFIG)
+unset(@RAPIDS_PKG_NAME@_IS_HEADER_ONLY)
