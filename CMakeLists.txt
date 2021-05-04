@@ -22,7 +22,7 @@
 cmake_minimum_required(VERSION 3.20.1 FATAL_ERROR)
 
 # Hoist up this directory as a search path for CMake module
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/rapids-cmake")
 set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" PARENT_SCOPE)
 
-set(rapids-cmake-dir "${CMAKE_CURRENT_LIST_DIR}" PARENT_SCOPE)
+set(rapids-cmake-dir "${CMAKE_CURRENT_LIST_DIR}/rapids-cmake" PARENT_SCOPE)
