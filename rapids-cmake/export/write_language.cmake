@@ -16,25 +16,32 @@
 
 #[=======================================================================[.rst:
 rapids_export_write_language
----------------------
+----------------------------
 
-.. versionadded:: 0.20
+.. versionadded:: v21.06.00
 
-.. command:: rapids_export_write_language
+Creates a self-containted file that makes sure the requested language is enabled
+globally.
 
-  .. code-block:: cmake
+.. code-block:: cmake
 
-    rapids_export_write_language( (build|install) (CXX|CUDA|...) <file_path> )
+  rapids_export_write_language( (build|install) (CXX|CUDA|...) <file_path> )
 
-  Creates the logic required to make sure that a language is enabled
-  by consuming projects.
 
-  Since CMake requires `enable_language` to be executed in the root directory,
-  but when projects are imported via `CPM` or in a subdirectory this won't occur
+The contents of `<file_path>` will be a self-contained file that when called
+via :cmake:command:`include` will make sure the requested language is enabled
+globally.
 
+This is required as CMake's :cmake:command:`enable_language` only supports
+enabling languages for the current directory scope, and doesn't support
+being called from within functions. These limitations make it impossible
+for packages included via `CPM` to enable extra languages.
+
+.. note::
   This uses some serious CMake black magic to make sure that `enable_language` occurs
   both at the call site, and up the entire `add_subdirectory` stack so the language
   is enabled globally.
+
 
 #]=======================================================================]
 function(rapids_export_write_language type lang file_path)

@@ -20,34 +20,56 @@ include_guard(GLOBAL)
 rapids_cuda_init_architectures
 -------------------------------
 
-.. versionadded:: 0.20
+.. versionadded:: v21.06.00
 
-Sets up RAPIDS special handling of :variable:`CMAKE_CUDA_ARCHITECTURES` and
-establishes CUDA architecture compilation for all CUDA targets
-
-Note: Required to be called before `project()`
-Note: Will automatically call `rapids_cuda_set_architectures()`
-
-.. command:: rapids_cuda_init_architectures
+Extends :cmake:variable:`CMAKE_CUDA_ARCHITECTURES` to include support
+for `ALL` and `NATIVE` to make CUDA architecture compilation easier.
 
   .. code-block:: cmake
 
     rapids_cuda_init_architectures(<project_name>)
 
-  Establishes what CUDA architectures that will be compiled for. Parses the :variable:`CMAKE_CUDA_ARCHITECTURES`
-  for special values "ALL", "NATIVE", and "".
+Establishes what CUDA architectures that will be compiled for.
+Parses the :cmake:variable:`CMAKE_CUDA_ARCHITECTURES` for special
+values `ALL`, `NATIVE` and `""`.
 
-  ``NATIVE`` or ``""``:
-    When passed will compile for all GPU architectures present on the current machine
+.. note::
+  Required to be called before :cmake:command:`project()`
 
-  ``ALL``:
-    When passed will compile for all supported RAPIDS GPU architectures
+  Will automatically call :cmake:command:`rapids_cuda_set_architectures` immediately
+  after :cmake:command:`project()` establishing the correct values for
+  :cmake:variable:`CMAKE_CUDA_ARCHITECTURES`.
 
-  Note: Required to be called before `project()`
-  Note: Will automatically call `rapids_cuda_set_architectures()`
+``project_name``
+  Name of the project
 
-  ``project_name``
-    Name of the project
+``NATIVE`` or ``""``:
+  When passed will compile for all GPU architectures present on the current machine
+
+``ALL``:
+  When passed will compile for all supported RAPIDS GPU architectures
+
+
+Example on how to properly use :cmake:command:`rapids_cuda_init_architectures`:
+
+.. code-block:: cmake
+
+  cmake_minimum_required(...)
+
+  include(FetchContent)
+  FetchContent_Declare(
+    rapids-cmake
+    GIT_REPOSITORY https://github.com/rapidsai/rapids-cmake.git
+    GIT_TAG        branch-<VERSION_MAJOR>.<VERSION_MINOR>
+  )
+  FetchContent_MakeAvailable(rapids-cmake)
+  include(rapids-cuda)
+
+  rapids_cuda_init_architectures(ExampleProject)
+  project(ExampleProject ...)
+
+
+
 
 #]=======================================================================]
 function(rapids_cuda_init_architectures project_name)

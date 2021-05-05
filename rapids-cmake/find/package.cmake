@@ -19,46 +19,51 @@ include_guard(GLOBAL)
 rapids_find_package
 --------------
 
-.. versionadded:: 0.20
+.. versionadded:: v21.06.00
 
-.. command:: rapids_find_package
+Allow projects to find dependencies via `find_package` with built-in
+tracking of these dependencies for correct export support.
 
-  .. code-block:: cmake
+.. code-block:: cmake
 
-    rapids_find_package( <PackageName>
-                    [REQUIRED]
-                    [GLOBAL_TARGETS <targets...>]
-                    [BUILD_EXPORT_SET <name>]
-                    [INSTALL_EXPORT_SET <name>]
-                    [ <FIND_ARGS>
-                      all normal find_package options ]
-                  )
+  rapids_find_package(<PackageName>
+                      [REQUIRED]
+                      [GLOBAL_TARGETS <targets...>]
+                      [BUILD_EXPORT_SET <name>]
+                      [INSTALL_EXPORT_SET <name>]
+                      [ <FIND_ARGS>
+                        all normal find_package options ]
+                      )
 
-  Generate a `find_package` call and associate relevant information
-  to the provided build and install exports.
+Generate a :cmake:command:`find_package` call and associate this with the listed
+build and install export set for correct export generation.
 
-  Note:
-    If the project/package you are looking for doesn't have an existing
-    CMake Find module, please look at using `rapids_find_generate_module`.
+Since the visibility of CMake's targets differ between targets built locally and those
+imported, :cmake:command:`rapids_find_package` promotes imported targets to be global
+so users have consistency. List all targets used by your project in `GLOBAL_TARGET`.
 
-  ``PackageName``
-    Name of the package to find.
+.. note::
+  If the project/package you are looking for doesn't have an existing
+  CMake Find module, please look at using :cmake:command:`rapids_find_generate_module`.
 
-  ``GLOBAL_TARGETS``
-    Which targets from this package should be made global. This information
-    will be propagated to any associated export set.
+``PackageName``
+  Name of the package to find.
 
-  ``BUILD_EXPORT_SET``
-    Record that a `find_dependency(<PackageName>) call needs to occur as part of
-    our build directory export set.
+``GLOBAL_TARGETS``
+  Which targets from this package should be made global. This information
+  will be propagated to any associated export set.
 
-  ``INSTALL_EXPORT_SET``
-    Record that a `find_dependency(<PackageName>) call needs to occur as part of
-    our build directory export set.
+``BUILD_EXPORT_SET``
+  Record that a :cmake:command:`find_dependency(<PackageName>)` call needs to occur
+  as part of our build directory export set.
 
-  ``FIND_ARGS``
-    Required placeholder to be provied before any extra arguments that need to
-    be passed down to `find_pacakge`
+``INSTALL_EXPORT_SET``
+  Record that a :cmake:command:`find_dependency(<PackageName>)` call needs to occur
+  as part of our build directory export set.
+
+``FIND_ARGS``
+  Required placeholder to be provied before any extra arguments that need to
+  be passed down to cmake:command:`find_pacakge`
 
 
 #]=======================================================================]
