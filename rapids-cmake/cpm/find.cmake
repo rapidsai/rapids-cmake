@@ -19,54 +19,62 @@ include_guard(GLOBAL)
 rapids_cpm_find
 ---------------
 
-.. versionadded:: 0.20
+.. versionadded:: v21.06.00
 
-.. command:: rapids_cpm_find
+Allow projects to find or build a dependency via `CPM` with built-in
+tracking of these dependencies for correct export support.
 
-  .. code-block:: cmake
+.. code-block:: cmake
 
-    rapids_cpm_find( <PackageName> <version>
-                    [GLOBAL_TARGETS <targets...>]
-                    [BUILD_EXPORT_SET <export-name>]
-                    [INSTALL_EXPORT_SET <export-name>]
-                    <CPM_ARGS>
-                      all normal CPM options
-                  )
+  rapids_cpm_find(<PackageName> <version>
+                  [GLOBAL_TARGETS <targets...>]
+                  [BUILD_EXPORT_SET <export-name>]
+                  [INSTALL_EXPORT_SET <export-name>]
+                  <CPM_ARGS>
+                    all normal CPM options
+                )
 
-  Generate a CPMFindPackage call and associate relevant information
-  to the provided build and install exports.
+Generate a CPM FindPackage call and associate this with the listed
+build and install export set for correct export generation.
 
-  Note:
-    Adding an export set to `rapids_cpm_find` has different behavior
-    for build and install. Build exports a respective CPM call, since
-    we presume other CPM packages don't generate a correct build directory
-    config module. While install exports a `find_dependency` call as
-    we expect projects to have a valid install setup.
+Since the visibility of CMake's targets differ between targets built locally and those
+imported, :cmake:command:`rapids_cpm_find` promotes imported targets to be global so users have
+consistency. List all targets used by your project in `GLOBAL_TARGET`.
 
-    If you need different behavior you will need to use `rapids_export_package()`
-    or `rapids_export_cpm()`.
+.. note::
+  Requires :cmake:command:`rapids_cpm_init` to be called before usage
 
-  ``PackageName``
-    Name of the package to find.
+.. note::
+  Adding an export set to :cmake:command:`rapids_cpm_find` has different behavior
+  for build and install. Build exports a respective CPM call, since
+  we presume other CPM packages don't generate a correct build directory
+  config module. While install exports a `find_dependency` call as
+  we expect projects to have a valid install setup.
 
-  ``version``
-    Version of the package you would like CPM to find.
+  If you need different behavior you will need to use :cmake:command:`rapids_export_package()`
+  or :cmake:command:`rapids_export_cpm()`.
 
-  ``GLOBAL_TARGETS``
-    Which targets from this package should be made global. This information
-    will be propagated to any associated export set.
+``PackageName``
+  Name of the package to find.
 
-  ``BUILD_EXPORT_SET``
-    Record that a `CPMFindPackage(<PackageName> ...) call needs to occur as part of
-    our build directory export set.
+``version``
+  Version of the package you would like CPM to find.
 
-  ``INSTALL_EXPORT_SET``
-    Record a `find_dependency(<PackageName> ...) call needs to occur as part of
-    our build directory export set.
+``GLOBAL_TARGETS``
+  Which targets from this package should be made global. This information
+  will be propagated to any associated export set.
 
-  ``CPM_ARGS``
-    Required placeholder to be provied before any extra arguments that need to
-    be passed down to `CPMFindPackage`.
+``BUILD_EXPORT_SET``
+  Record that a :cmake:command:`CPMFindPackage(<PackageName> ...)` call needs to occur as part of
+  our build directory export set.
+
+``INSTALL_EXPORT_SET``
+  Record a :cmake:command:`find_dependency(<PackageName> ...)` call needs to occur as part of
+  our build directory export set.
+
+``CPM_ARGS``
+  Required placeholder to be provied before any extra arguments that need to
+  be passed down to :cmake:command:`CPMFindPackage`.
 
 
 #]=======================================================================]

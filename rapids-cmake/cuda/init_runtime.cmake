@@ -20,7 +20,7 @@ include_guard(GLOBAL)
 rapids_cuda_init_runtime
 -------------------------------
 
-.. versionadded:: 0.20
+.. versionadded:: v21.06.00
 
 Establish what CUDA runtime library should be propagated
 

@@ -18,19 +18,17 @@
 rapids_export_cpm
 -----------------
 
-Record a given <PackageName> found by `CPMFindPackage` is required for a
+.. versionadded:: v21.06.00
+
+Record a given <PackageName> found by :cmake:command:`CPMFindPackage` is required for a
 given export set
 
-.. versionadded:: 0.20
+.. code-block:: cmake
 
-.. command:: rapids_export_find_package_file
-
-  .. code-block:: cmake
-
-    rapids_export_find_package_file( (build|install)
-                                     <file_path>
-                                     <ExportSet>
-                                    )
+  rapids_export_find_package_file( (build|install)
+                                   <file_path>
+                                   <ExportSet>
+                                  )
 
 #]=======================================================================]
 function(rapids_export_find_package_file type file_path export_set)

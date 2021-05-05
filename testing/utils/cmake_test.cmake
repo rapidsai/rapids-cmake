@@ -21,7 +21,7 @@ add_cmake_build_test
 
 generate a CMake tests given either a single CMake file or a directory.
 
-.. versionadded:: 0.20
+.. versionadded:: v21.06.00
 
 .. command:: add_cmake_build_test
 

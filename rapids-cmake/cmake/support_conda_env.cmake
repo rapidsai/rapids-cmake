@@ -20,37 +20,36 @@ include_guard(GLOBAL)
 rapids_cmake_support_conda_env
 ------------------------------
 
-.. versionadded:: 0.20
+.. versionadded:: v21.06.00
 
-Establish a target that holds the CONDA enviornment include and link directories.
-
-.. command:: rapids_cmake_support_conda_env
+Establish a target that holds the CONDA include and link directories.
 
   .. code-block:: cmake
 
     rapids_cmake_support_conda_env( <target_name> [MODIFY_PREFIX_PATH] )
 
-    Creates a global interface target called `target_name` that holds
-    the CONDA include and link directories, when executed
+Creates a global interface target called `target_name` that holds
+the CONDA include and link directories, when executed
 
-    Also offers the ability to modify :variable:`CMAKE_PREFIX_PATH` to
-    include the paths in enviornment variables `BUILD_PREFIX`, `PREFIX`,
-    and `CONDA_PREFIX` based on the current CONDA enviornment.
+Also offers the ability to modify :cmake:variable:`CMAKE_PREFIX_PATH` to
+include the paths in enviornment variables `BUILD_PREFIX`, `PREFIX`,
+and `CONDA_PREFIX` based on the current CONDA enviornment.
 
-  ``MODIFY_PREFIX_PATH``
-      When in a conda build enviornment the contents of `$ENV{BUILD_PREFIX}` and `$ENV{PREFIX}`
-      will be inserted to the front of :variable:`CMAKE_PREFIX_PATH`.
+``MODIFY_PREFIX_PATH``
+    When in a conda build enviornment the contents of `$ENV{BUILD_PREFIX}` and `$ENV{PREFIX}`
+    will be inserted to the front of :cmake:variable:`CMAKE_PREFIX_PATH`.
 
-      When in a conda enviornment the contents of `$ENV{CONDA_PREFIX}` will be inserted to
-      th front of :variable:`CMAKE_PREFIX_PATH`.
+    When in a conda enviornment the contents of `$ENV{CONDA_PREFIX}` will be inserted to
+    th front of :cmake:variable:`CMAKE_PREFIX_PATH`.
 
 Result Variables
 ^^^^^^^^^^^^^^^^
-  CMAKE_PREFIX_PATH will be modifed when `MODIFY_PREFIX_PATH` is provided
+  :cmake:variable:`CMAKE_PREFIX_PATH` will be modifed when `MODIFY_PREFIX_PATH` is provided
+  and called from a conda enviornment
 
 Result Targets
 ^^^^^^^^^^^^^^^^
-  <target> Will be created only if called from a conda enviornment
+  `target_name` target will be created only if called from a conda enviornment
 
 #]=======================================================================]
 function(rapids_cmake_support_conda_env target)

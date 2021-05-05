@@ -20,37 +20,39 @@ include_guard(GLOBAL)
 rapids_cuda_set_architectures
 -------------------------------
 
-.. versionadded:: 0.20
+.. versionadded:: v21.06.00
 
-Finishes setting up :variable:`CMAKE_CUDA_ARCHITECTURES` based on the output
-state of `rapids_cuda_init_architectures`.
+Sets up :cmake:variable:`CMAKE_CUDA_ARCHITECTURES` based on the requested mode
 
-Note: Is automatically called by `rapids_cuda_init_architectures`
+.. code-block:: cmake
 
-.. command:: rapids_cuda_set_architectures
+  rapids_cuda_set_architectures( (NATIVE|ALL) )
 
-  .. code-block:: cmake
+Establishes what CUDA architectures that will be compiled for, overriding
+any existing :cmake:variable:`CMAKE_CUDA_ARCHITECTURES` value.
 
-    rapids_cuda_set_architectures( (NATIVE|ALL) )
+This function should rarely be used, as :cmake:command:`rapids_cuda_init_architectures`
+allows for the expected workflow of using :cmake:variable:`CMAKE_CUDA_ARCHITECTURES`
+when configuring a project. If for some reason your project can't use
+:cmake:command:`rapids_cuda_init_architectures` than you can use :cmake:command:`rapids_cuda_set_architectures`
+directly.
 
-  Establishes what CUDA architectures that will be compiled for.
+.. note::
+  This is automatically called by :cmake:command:`rapids_cuda_init_architectures`
 
-  Note: Is automatically called by `rapids_cuda_init_architectures`
+``NATIVE``:
+  When passed NATIVE as the first parameter will compile for all
+  GPU architectures present on the current machine. Requires that
+  the CUDA language be enabled for the current CMake project.
 
-  ``NATIVE``:
-    When passed NATIVE as the first parameter will compile for all
-    GPU architectures present on the current machine. Requires that
-    the CUDA language be enabled for the current CMake project.
-
-  ``ALL``:
-    When passed ALL will compile for all supported RAPIDS GPU architectures
-
+``ALL``:
+  When passed ALL will compile for all supported RAPIDS GPU architectures
 
 Result Variables
 ^^^^^^^^^^^^^^^^
 
   ``CMAKE_CUDA_ARCHITECTURES`` will exist and set to the list of architectures
-  that should be compiled for
+  that should be compiled for. Will overwrite any existing values.
 
 #]=======================================================================]
 function(rapids_cuda_set_architectures mode)
