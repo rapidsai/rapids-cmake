@@ -14,6 +14,8 @@ Here are some guidelines to help the review process go smoothly.
    - Each function should go into a separate `.cmake` file in the appropriate directory
    - Each user facing `.cmake` file should have include guards (`include_guard(GLOBAL)`)
    - Each user facing `.cmake` file should be documented using the rst structure
+   - Each user facing function should be added to the `cmake-format.json` document
+    - Run `cmake-genparsers -f json` on the `.cmake` file as a starting point
    - Each function first line should be `list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.<component>.<function>")`
 
    - A file should not modify any state simply by being included. State modification should
