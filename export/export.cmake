@@ -140,7 +140,7 @@ function(rapids_export type project_name)
     install(DIRECTORY "${scratch_dir}/" DESTINATION "${install_location}")
 
   else()
-    set(install_location "${PROJECT_BINARY_DIR}/${project_name}")
+    set(install_location "${PROJECT_BINARY_DIR}")
     configure_package_config_file("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/config.cmake.in"
                                   "${install_location}/${project_name}-config.cmake"
                                   INSTALL_DESTINATION "${install_location}")
