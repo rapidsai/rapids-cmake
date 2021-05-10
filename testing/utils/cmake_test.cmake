@@ -71,14 +71,14 @@ function(add_cmake_test mode source_or_dir)
              -S ${src_dir} -B ${build_dir}
              -G ${CMAKE_GENERATOR}
              -Drapids-cmake-testing-dir=${PROJECT_SOURCE_DIR}
-             -Drapids-cmake-dir=${PROJECT_SOURCE_DIR}/../)
+             -Drapids-cmake-dir=${PROJECT_SOURCE_DIR}/../rapids-cmake)
   elseif(mode STREQUAL "build")
     add_test(NAME ${test_name}_configure
              COMMAND ${CMAKE_COMMAND}
              -S ${src_dir} -B ${build_dir}
              -G ${CMAKE_GENERATOR}
              -Drapids-cmake-testing-dir=${PROJECT_SOURCE_DIR}
-             -Drapids-cmake-dir=${PROJECT_SOURCE_DIR}/../)
+             -Drapids-cmake-dir=${PROJECT_SOURCE_DIR}/../rapids-cmake)
 
     add_test(NAME ${test_name}
              COMMAND ${CMAKE_COMMAND}
