@@ -48,11 +48,6 @@ function(rapids_export_write_language type lang file_path)
 # since linking to a target with language standards
 # means `using`
 
-if(DEFINED CMAKE_@lang@_COMPILER)
-  #language already enabled
-  return()
-endif()
-
 if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
   if(NOT DEFINED CMAKE_CURRENT_FUNCTION)
     #Can't be called inside a function
