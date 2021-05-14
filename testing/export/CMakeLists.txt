@@ -17,6 +17,8 @@
 add_cmake_config_test( export_cpm-build.cmake )
 add_cmake_config_test( export_cpm-install.cmake )
 
+add_cmake_config_test( export-verify-file-names.cmake )
+
 add_cmake_config_test( export_package-build.cmake )
 add_cmake_config_test( export_package-install.cmake )
 add_cmake_config_test( export_package-multiple-export_sets.cmake )
