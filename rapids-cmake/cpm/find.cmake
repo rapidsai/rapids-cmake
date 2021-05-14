@@ -101,7 +101,9 @@ function(rapids_cpm_find name version )
   if(DEFINED FETCHCONTENT_BASE_DIR)
     if (EXISTS "${FETCHCONTENT_BASE_DIR}/${name}-build/${lowercase_name}-config.cmake" OR
         EXISTS "${FETCHCONTENT_BASE_DIR}/${name}-build/${name}Config.cmake")
-      set(${name}_DIR "${FETCHCONTENT_BASE_DIR}/${name}-build/")
+      if (NOT DEFINED ${name}_DIR)
+        set(${name}_DIR "${FETCHCONTENT_BASE_DIR}/${name}-build/")
+      endif()
     endif()
   endif()
 
