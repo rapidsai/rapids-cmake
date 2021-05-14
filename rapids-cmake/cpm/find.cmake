@@ -76,6 +76,13 @@ consistency. List all targets used by your project in `GLOBAL_TARGET`.
   Required placeholder to be provied before any extra arguments that need to
   be passed down to :cmake:command:`CPMFindPackage`.
 
+Search Behavior
+^^^^^^^^^^^^^^^
+
+  In addition to the default `CPM` search behavior, :cmake:command:`rapids_cpm_find`
+  looks for existing build directories of the given project and will prefer
+  those when they exist and have a `<PackageName>-config.cmake` or a
+  `<PackageName>Config.cmake` file.
 
 #]=======================================================================]
 function(rapids_cpm_find name version )
@@ -87,6 +94,15 @@ function(rapids_cpm_find name version )
 
   if(NOT DEFINED RAPIDS_CPM_ARGS)
     message(FATAL_ERROR "rapids_cpm_find requires you to specify CPM_ARGS before any CPM arguments")
+  endif()
+
+  # Prefer an existing build of the package if it exists
+  string(TOLOWER ${name} lowercase_name)
+  if(DEFINED FETCHCONTENT_BASE_DIR)
+    if (EXISTS "${FETCHCONTENT_BASE_DIR}/${name}-build/${lowercase_name}-config.cmake" OR
+        EXISTS "${FETCHCONTENT_BASE_DIR}/${name}-build/${name}Config.cmake")
+      set(${name}_DIR "${FETCHCONTENT_BASE_DIR}/${name}-build/")
+    endif()
   endif()
 
   CPMFindPackage(NAME ${name} VERSION ${version} ${RAPIDS_UNPARSED_ARGUMENTS})

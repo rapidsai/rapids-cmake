@@ -13,17 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
+# set(RapidsTestFind2_VERSION 0.2.0)
 
-cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
-project(rapids-cmake-testing LANGUAGES NONE)
+@PACKAGE_INIT@
 
-enable_testing()
-include(utils/cmake_config_test.cmake)
-include(utils/cmake_build_test.cmake)
+include("${CMAKE_CURRENT_LIST_DIR}/rapidstestfind2-version.cmake")
 
+add_library(RapidsTest2::RapidsTest IMPORTED INTERFACE GLOBAL)
 
-add_subdirectory(cmake)
-add_subdirectory(cpm)
-add_subdirectory(cuda)
-add_subdirectory(export)
-add_subdirectory(find)
+check_required_components(RapidsTest2)
