@@ -106,6 +106,7 @@ function(rapids_export type project_name)
 
   #Write configuration and version files
   string(TOLOWER ${project_name} project_name)
+  string(TOUPPER ${project_name} project_name_uppercase)
   if(type STREQUAL "install")
     set(install_location "${CMAKE_INSTALL_LIBDIR}/cmake/${project_name}")
     set(scratch_dir "${PROJECT_BINARY_DIR}/rapids-cmake/${project_name}/export")
