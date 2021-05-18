@@ -27,6 +27,5 @@ add_cmake_config_test( export_package-multiple-export_sets.cmake )
 add_cmake_config_test( write_dependencies-duplicate-cpm.cmake )
 add_cmake_config_test( write_dependencies-duplicate-packages.cmake )
 
-add_cmake_build_test( write_language-already-enabled-language )
 add_cmake_build_test( write_language-multiple-nested-enables )
 add_cmake_build_test( write_language-nested-dirs )
