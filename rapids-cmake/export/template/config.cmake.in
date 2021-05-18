@@ -50,9 +50,10 @@ endif()
 include("${CMAKE_CURRENT_LIST_DIR}/@project_name@-config-version.cmake")
 
 # Set our version variables
-set(@project_name_uppercase@_VERSION_MAJOR ${CVF_VERSION_MAJOR})
-set(@project_name_uppercase@_VERSION_MINOR ${CVF_VERSION_MINOR})
-set(@project_name_uppercase@_VERSION "${CVF_VERSION_MAJOR}.${CVF_VERSION_MINOR}")
+set(@project_name_uppercase@_VERSION_MAJOR @PROJECT_VERSION_MAJOR@)
+set(@project_name_uppercase@_VERSION_MINOR @PROJECT_VERSION_MINOR@)
+set(@project_name_uppercase@_VERSION_PATCH @PROJECT_VERSION_PATCH@)
+set(@project_name_uppercase@_VERSION @PROJECT_VERSION@)
 
 
 set(rapids_global_targets @RAPIDS_GLOBAL_TARGETS@)

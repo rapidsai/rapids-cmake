@@ -16,7 +16,7 @@
 include(${rapids-cmake-dir}/export/cpm.cmake)
 include(${rapids-cmake-dir}/export/export.cmake)
 
-project(test LANGUAGES CXX VERSION 3.1.4)
+project(test LANGUAGES CXX VERSION 21.09.03)
 
 add_library(fakeLib INTERFACE)
 install(TARGETS fakeLib EXPORT fake_set)
@@ -31,19 +31,16 @@ if(NOT EXISTS "${CMAKE_BINARY_DIR}/test-config.cmake")
   message(FATAL_ERROR "rapids_export failed to generate correct config file name")
 endif()
 
-unset(TEST_VERSION)
-unset(TEST_VERSION_MAJOR)
-unset(TEST_VERSION_MINOR)
+set(CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
+find_package(test 21.09.01 REQUIRED)
 
-set(CMAKE_FIND_PACKAGE_NAME test) # Emulate `find_package`
-include("${CMAKE_BINARY_DIR}/test-config.cmake")
+message(STATUS "TEST_VERSION ${TEST_VERSION}")
+message(STATUS "TEST_VERSION_VALUES ${TEST_VERSION_MAJOR}.${TEST_VERSION_MINOR}")
 
-if(NOT TEST_VERSION VERSION_EQUAL 3.1.4)
+if(NOT TEST_VERSION VERSION_EQUAL 21.09.03)
   message(FATAL_ERROR "rapids_export failed to export version information")
 endif()
 
-if(NOT "${TEST_VERSION_MAJOR}.${TEST_VERSION_MINOR}" VERSION_EQUAL 3.1)
+if(NOT "${TEST_VERSION_MAJOR}.${TEST_VERSION_MINOR}" VERSION_EQUAL 21.09)
   message(FATAL_ERROR "rapids_export failed to export version major/minor information")
 endif()
-
-

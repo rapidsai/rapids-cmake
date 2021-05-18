@@ -115,7 +115,18 @@ function(rapids_export type project_name)
                                   "${scratch_dir}/${project_name}-config.cmake"
                                   INSTALL_DESTINATION "${install_location}")
 
+    # Use explicit VERSION string without patch version to work around issue:
+    # https://gitlab.kitware.com/cmake/cmake/-/issues/22207
+    # To do this we trim any leading zeroes from our major && minor version values
+    # as patch isn't used for compatibility.
+    string(REGEX REPLACE "^0+" "" version_minor "${PROJECT_VERSION_MINOR}")
+    string(REGEX REPLACE "^0+" "" version_major "${PROJECT_VERSION_MAJOR}")
+    set(rapdis_project_version "${version_major}.${version_minor}")
+    if(PROJECT_VERSION_PATCH)
+      string(APPEND rapdis_project_version ".${PROJECT_VERSION_PATCH}")
+    endif()
     write_basic_package_version_file("${scratch_dir}/${project_name}-config-version.cmake"
+                                     VERSION ${rapdis_project_version}
                                      COMPATIBILITY SameMinorVersion)
 
     install(EXPORT  ${RAPIDS_EXPORT_SET}
@@ -147,7 +158,18 @@ function(rapids_export type project_name)
                                   "${install_location}/${project_name}-config.cmake"
                                   INSTALL_DESTINATION "${install_location}")
 
+    # Use explicit VERSION string without patch version to work around issue:
+    # https://gitlab.kitware.com/cmake/cmake/-/issues/22207
+    # To do this we trim any leading zeroes from our major && minor version values
+    # as patch isn't used for compatibility.
+    string(REGEX REPLACE "^0+" "" version_minor "${PROJECT_VERSION_MINOR}")
+    string(REGEX REPLACE "^0+" "" version_major "${PROJECT_VERSION_MAJOR}")
+    set(rapdis_project_version "${version_major}.${version_minor}")
+    if(PROJECT_VERSION_PATCH)
+      string(APPEND rapdis_project_version ".${PROJECT_VERSION_PATCH}")
+    endif()
     write_basic_package_version_file("${install_location}/${project_name}-config-version.cmake"
+                                     VERSION ${rapdis_project_version}
                                      COMPATIBILITY SameMinorVersion)
 
     export(EXPORT ${RAPIDS_EXPORT_SET}

@@ -18,6 +18,7 @@ add_cmake_config_test( export_cpm-build.cmake )
 add_cmake_config_test( export_cpm-install.cmake )
 
 add_cmake_config_test( export-verify-file-names.cmake )
+add_cmake_config_test( export-verify-calendar-version-matching.cmake )
 add_cmake_config_test( export-verify-version.cmake )
 
 add_cmake_config_test( export_package-build.cmake )
