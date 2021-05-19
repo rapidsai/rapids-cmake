@@ -20,23 +20,21 @@ include_guard(GLOBAL)
 rapids_cpm_init
 -------------------
 
-.. versionadded:: 0.20
+.. versionadded:: v21.06.00
 
 Establish the `CPM` infrastructure for the project.
 
-.. command:: rapids_cpm_init
+.. code-block:: cmake
 
-  .. code-block:: cmake
+  rapids_cpm_init()
 
-    rapids_cpm_init(default_type)
+The CPM module will be downloaded based on the state of :cmake:variable:`CPM_SOURCE_CACHE` and
+:cmake:variable:`ENV{CPM_SOURCE_CACHE}`. This allows multiple nested projects to share the
+same download of CPM. If those variables aren't set the file will be cached
+in the build tree of the calling project
 
-  Establish the `CPM` module for the project. Must be called before
-  any invocation of `rapids_cpm_<module>`.
-
-  The CPM module will be downloaded based on the state of `CPM_SOURCE_CACHE` and
-  `ENV{CPM_SOURCE_CACHE}`. This allows multiple nested projects to share the
-  same download of CPM. If those variables aren't set the file will be cached
-  in the build tree of the calling project
+.. note::
+  Must be called before any invocation of :cmake:command:`rapids_cpm_find`.
 
 #]=======================================================================]
 function(rapids_cpm_init )

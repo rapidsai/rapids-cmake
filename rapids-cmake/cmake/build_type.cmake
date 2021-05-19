@@ -20,26 +20,24 @@ include_guard(GLOBAL)
 rapids_cmake_build_type
 -----------------------
 
-.. versionadded:: 0.20
+.. versionadded:: v21.06.00
 
-Establish the :variable:`CMAKE_BUILD_TYPE` default value for the project if the user
-hasn't specified one and the generator is either Ninja or Makefile.
-
-.. command:: rapids_cmake_build_type
+Establish the :cmake:variable:`CMAKE_BUILD_TYPE` default value.
 
   .. code-block:: cmake
 
     rapids_cmake_build_type(default_type)
 
-  If the generator is `Ninja` or `Makefile` the :variable:`CMAKE_BUILD_TYPE`
-  variable will be established if it doesn't already exist.
+If the generator is `Ninja` or `Makefile` the :cmake:variable:`CMAKE_BUILD_TYPE`
+variable will be established if not explicitly set by the user. This removes
+situations where the `No-Config` / `Empty` build type is used.
 
-  ``default_type``
-      The default build type to use if one doesn't already exist
+``default_type``
+  The default build type to use if one doesn't already exist
 
 Result Variables
 ^^^^^^^^^^^^^^^^
-  CMAKE_BUILD_TYPE will be set to ``default_type`` if not already set
+  :cmake:variable:`CMAKE_BUILD_TYPE` will be set to ``default_type`` if not already set
 
 #]=======================================================================]
 function(rapids_cmake_build_type default_type)

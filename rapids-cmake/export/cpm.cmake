@@ -18,21 +18,33 @@
 rapids_export_cpm
 -----------------
 
+.. versionadded:: v21.06.00
+
 Record a given <PackageName> found by `CPMFindPackage` is required for a
 given export set
 
-.. versionadded:: 0.20
+.. code-block:: cmake
 
-.. command:: rapids_export_cpm
+  rapids_export_cpm( (build|install)
+                      <PackageName>
+                      <ExportSet>
+                      CPM_ARGS <standard cpm args>
+                      [GLOBAL_TARGETS <targets...>]
+                      )
 
-  .. code-block:: cmake
 
-    rapids_export_cpm( (build|install)
-                        <PackageName>
-                        <ExportSet>
-                        CPM_ARGS <standard cpm args>
-                        [GLOBAL_TARGETS <targets...>]
-                        )
+Records a given <PackageName> found by `CPMFindPackage` is required for a
+given export set.
+
+This means that when :cmake:command:`rapids_export` or
+`:cmake:command:`rapids_export_write_dependencies` is called the `CPMFindPackage`
+call will be replicated for consumers.
+
+.. note::
+  It is an anti-pattern to use this command with `INSTALL` as most CMake
+  based projects should be installed, and :cmake:command:`rapids_export_package(INSTALL` used
+  to find it. Only use :cmake:command:`rapids_export_cpm(INSTALL` when the above pattern
+  doesn't work for some reason.
 
 #]=======================================================================]
 function(rapids_export_cpm type name export_set)

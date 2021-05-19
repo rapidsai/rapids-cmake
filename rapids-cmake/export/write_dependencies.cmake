@@ -16,15 +16,29 @@
 
 #[=======================================================================[.rst:
 rapids_export_write_dependencies
----------------------
+--------------------------------
 
-.. versionadded:: 0.20
+.. versionadded:: v21.06.00
 
-.. command:: rapids_export_write_dependencies
+.. code-block:: cmake
 
-  .. code-block:: cmake
+Creates a self-containted file that searches for all dependencies for a given
+export set.
 
-    rapids_export_write_dependencies( (BUILD|INSTALL) <export_set> <file_path> )
+  rapids_export_write_dependencies( (BUILD|INSTALL) <export_set> <file_path> )
+
+Generates a self-contained file that will search for all dependencies of
+a given export_set for the requested mode.
+
+``BUILD``
+  Will generate calls for all build directory export set
+
+``INSTALL``
+  Will generate calls for all install directory export set
+
+.. note::
+  It is better to use :cmake:command:`rapids_export` as it generates a complete
+  CMake config module.
 
 #]=======================================================================]
 function(rapids_export_write_dependencies type export_set file_path)

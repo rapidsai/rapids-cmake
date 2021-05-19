@@ -18,20 +18,25 @@
 rapids_export_package
 ---------------------
 
-Record a given <PackageName> found by `find_package` is required for a
+.. versionadded:: v21.06.00
+
+Record a given <PackageName> found by :cmake:command:`find_package` is required for a
 given export set
 
-.. versionadded:: 0.20
+.. code-block:: cmake
 
-.. command:: rapids_export_package
+  rapids_export_package( (build|install)
+                         <PackageName>
+                         <ExportSet>
+                         [GLOBAL_TARGETS <targets...>]
+                        )
 
-  .. code-block:: cmake
+Records a given <PackageName> found by :cmake:command:`find_package` is required for a
+given export set.
 
-    rapids_export_package( (build|install)
-                           <PackageName>
-                           <ExportSet>
-                           [GLOBAL_TARGETS <targets...>]
-                          )
+This means that when :cmake:command:`rapids_export` or
+`:cmake:command:`rapids_export_write_dependencies` is called a
+:cmake:command:`find_dependency` call will be replicated for consumers.
 
 #]=======================================================================]
 function(rapids_export_package type name export_set)

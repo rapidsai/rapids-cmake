@@ -22,88 +22,85 @@ cmake_policy(VERSION 3.20)
 rapids_find_generate_module
 --------------
 
+.. versionadded:: v21.06.00
+
 Generate a Find*.cmake module for the requested package
 
-.. versionadded:: 0.20
+.. code-block:: cmake
 
-.. command:: rapids_find_generate_module
+  rapids_find_generate_module( <PackageName>
+                  HEADER_NAMES <paths...>
+                  [LIBRARY_NAMES <names...>]
+                  [INCLUDE_SUFFIXES <suffixes...>]
+                  [VERSION <version>]
+                  [NO_CONFIG]
+                  [BUILD_EXPORT_SET <name>]
+                  [INSTALL_EXPORT_SET <name>]
+                  )
 
-  .. code-block:: cmake
+Generates a custom Find module for the requested package. Makes
+it easier for projects to look for packages that don't have
+an exisiting FindModule or don't provide a CONFIG module
+when installed.
 
-    rapids_find_generate_module( <PackageName>
-                    HEADER_NAMES <paths...>
-                    [LIBRARY_NAMES <names...>]
-                    [INCLUDE_SUFFIXES <suffixes...>]
-                    [VERSION <version>]
-                    [NO_CONFIG]
-                    [BUILD_EXPORT_SET <name>]
-                    [INSTALL_EXPORT_SET <name>]
-                    )
-
-  Generates a custom Find module for the requested package. Makes
-  it easier for projects to look for packages that don't have
-  an exisiting FindModule or don't provide a CONFIG module
-  when installed.
-
-  Note:
-    If you are using this for a module that is part of
-    your BUILD or INSTALL export set, it is highly likely
-    that this needs to be part of the same export sets.
+.. note::
+  If you are using this for a module that is part of
+  your BUILD or INSTALL export set, it is highly likely
+  that this needs to be part of the same export sets.
 
 
+``HEADER_NAMES``
+  Header names that should be provided to :cmake:command:`find_path` to
+  determine the include directory of the package. If provided
+  a list of names only one needs to be found for a directory
+  to be considered a match
 
-  ``HEADER_NAMES``
-    Header names that should be provided to `find_path` to
-    determine the include directory of the package. If provided
-    a list of names only one needs to be found for a directory
-    to be considered a match
+``LIBRARY_NAMES``
+  library names that should be provided to :cmake:command:`find_library` to
+  determine the include directory of the package. If provided
+  a list of names only one needs to be found for a directory
+  to be considered a match
 
-  ``LIBRARY_NAMES``
-    library names that should be provided to `find_library` to
-    determine the include directory of the package. If provided
-    a list of names only one needs to be found for a directory
-    to be considered a match
+  .. note::
+    Every entry that doesn't start with `lib` will also be
+    searched for as `lib<name>`
 
-    Note:
-      Every entry that doesn't start with `lib` will also be
-      searched for as `lib<name>`
+``INCLUDE_SUFFIXES``
+  Extra relative sub-directories to use while searching for `HEADER_NAMES`.
 
-  ``INCLUDE_SUFFIXES``
-    Extra relative sub-directories to use while searching for `HEADER_NAMES`.
+``VERSION``
+  Will append extra entries of the library to search for based on the
+  content of `LIBRARY_NAMES`:
+    - <name><version>
+    - <name>.<version>
+    - lib<name><version>
+    - lib<name>.<version>
 
-  ``VERSION``
-    Will append extra entries of the library to search for based on the
-    content of `LIBRARY_NAMES`:
-      - <name><version>
-      - <name>.<version>
-      - lib<name><version>
-      - lib<name>.<version>
+  This ordering is done explicitly to follow CMake recommendations
+  for searching for versioned libraries:
 
-    :Note
-      This ordering is done explicitly to follow CMake recommendations
-      for searching for versioned libraries:
+    "We recommend specifying the unversioned name first so that locally-built packages
+    can be found before those provided by distributions."
 
-      "We recommend specifying the unversioned name first so that locally-built packages
-      can be found before those provided by distributions."
+``NO_CONFIG``
+  When provied will stop the generated Find Module from
+  first searching for the projects shipped Find Config.
 
-  ``NO_CONFIG``
-    When provied will stop the generated Find Module from
-    first searching for the projects shipped Find Config.
+``BUILD_EXPORT_SET``
+  Record that this custom FindPackage module needs to be part
+  of our build directory export set. This means that it will be
+  usable by the calling package if it needs to search for
+  <PackageName> again.
 
-  ``BUILD_EXPORT_SET``
-    Record that this custom FindPackage module needs to be part
-    of our build directory export set. This means that it will be
-    usable by the calling package if it needs to search for
-    <PackageName> again.
-
-  ``INSTALL_EXPORT_SET``
-    Record that this custom FindPackage module needs to be part
-    of our install export set. This means that it will be installed as
-    part of our packages CMake infrastructure
+``INSTALL_EXPORT_SET``
+  Record that this custom FindPackage module needs to be part
+  of our install export set. This means that it will be installed as
+  part of our packages CMake export set infrastructure
 
 Result Variables
 ^^^^^^^^^^^^^^^^
-  CMAKE_BUILD_TYPE will be set to ``default_type`` if not already set
+  :cmake:variable:`CMAKE_MODULE_PATH` will be modifed to include the
+  folder where `Find<PackageName>.cmake` is located.
 
 #]=======================================================================]
 function(rapids_find_generate_module name)
