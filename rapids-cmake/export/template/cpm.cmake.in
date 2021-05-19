@@ -8,7 +8,7 @@ if(possible_build_dir AND NOT DEFINED @name@_DIR)
 endif()
 
 CPMFindPackage(@name@
-  @RAPIDS_CPM_ARGS@
+  "@RAPIDS_CPM_ARGS@"
   )
 
 if(possible_build_dir)
