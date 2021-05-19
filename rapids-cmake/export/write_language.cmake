@@ -25,7 +25,7 @@ globally.
 
 .. code-block:: cmake
 
-  rapids_export_write_language( (build|install) (CXX|CUDA|...) <file_path> )
+  rapids_export_write_language( (BUILD|INSTALL) (CXX|CUDA|...) <file_path> )
 
 
 The contents of `<file_path>` will be a self-contained file that when called

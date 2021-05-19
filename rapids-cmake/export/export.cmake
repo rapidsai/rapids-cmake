@@ -25,7 +25,7 @@ Generate a projects -Config.cmake module and all related information
 
 .. code-block:: cmake
 
-  rapids_export( (build|install) <project_name>
+  rapids_export( (BUILD|INSTALL) <project_name>
       EXPORT_SET <export_set>
       [ GLOBAL_TARGETS <targets...> ]
       [ LANGUAGES <langs...> ]

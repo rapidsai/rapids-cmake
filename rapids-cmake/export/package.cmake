@@ -25,18 +25,22 @@ given export set
 
 .. code-block:: cmake
 
-  rapids_export_package( (build|install)
+  rapids_export_package( (BUILD|INSTALL)
                          <PackageName>
                          <ExportSet>
                          [GLOBAL_TARGETS <targets...>]
                         )
 
 Records a given <PackageName> found by :cmake:command:`find_package` is required for a
-given export set.
+given export set. When the associated :cmake:command:`rapids_export(BUILD|INSTALL)` or
+:cmake:command:`rapids_export_write_dependencies(BUILD|INSTALL)` command is invoked the
+generated information will include a :cmake:command:`find_dependency` call for <PackageName>.
 
-This means that when :cmake:command:`rapids_export` or
-`:cmake:command:`rapids_export_write_dependencies` is called a
-:cmake:command:`find_dependency` call will be replicated for consumers.
+``BUILD``
+  Will record <PackageName> is part of the build directory export set
+
+``INSTALL``
+  Will record <PackageName> is part of the build directory export set
 
 #]=======================================================================]
 function(rapids_export_package type name export_set)

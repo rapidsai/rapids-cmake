@@ -15,20 +15,39 @@
 #=============================================================================
 
 #[=======================================================================[.rst:
-rapids_export_cpm
------------------
+rapids_export_find_package_file
+-------------------------------
 
 .. versionadded:: v21.06.00
 
-Record a given <PackageName> found by :cmake:command:`CPMFindPackage` is required for a
-given export set
+Record that the file found at <file_path> needs to be usable as part of
+the associated export set.
 
 .. code-block:: cmake
 
-  rapids_export_find_package_file( (build|install)
+  rapids_export_find_package_file( (BUILD|INSTALL)
                                    <file_path>
                                    <ExportSet>
                                   )
+
+When constructing export sets, espically installed ones it is
+necessary to install any custom FindModules that your project
+has written. The :cmake:command:`rapids_export_find_package_file(BUILD|INSTALL)`
+allows projects to easily specify that a FindModule is either
+used by our export set or used by a consumer, allowing
+rapids-cmake to ensure it is installed correct and added to
+:cmake:variable:`CMAKE_MODULE_PATH` when needed.
+
+``BUILD``
+  Record that the FindPackage at <file_path> needs to be part
+  of our build directory export set. This means that it will be
+  usable by the calling package if it needs to search for
+  <PackageName> again.
+
+``INSTALL``
+  Record that the FindPackage at <file_path> needs to be part
+  of our install export set. This means that it will be installed as
+  part of our packages CMake export set infrastructure
 
 #]=======================================================================]
 function(rapids_export_find_package_file type file_path export_set)
