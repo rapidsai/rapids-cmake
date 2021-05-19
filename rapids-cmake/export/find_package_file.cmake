@@ -25,7 +25,7 @@ given export set
 
 .. code-block:: cmake
 
-  rapids_export_find_package_file( (build|install)
+  rapids_export_find_package_file( (BUILD|INSTALL)
                                    <file_path>
                                    <ExportSet>
                                   )

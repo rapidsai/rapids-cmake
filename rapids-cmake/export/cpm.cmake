@@ -25,7 +25,7 @@ given export set
 
 .. code-block:: cmake
 
-  rapids_export_cpm( (build|install)
+  rapids_export_cpm( (BUILD|INSTALL)
                       <PackageName>
                       <ExportSet>
                       CPM_ARGS <standard cpm args>

@@ -25,7 +25,7 @@ given export set
 
 .. code-block:: cmake
 
-  rapids_export_package( (build|install)
+  rapids_export_package( (BUILD|INSTALL)
                          <PackageName>
                          <ExportSet>
                          [GLOBAL_TARGETS <targets...>]
