@@ -34,17 +34,23 @@ given export set
 
 
 Records a given <PackageName> found by `CPMFindPackage` is required for a
-given export set.
+given export set. When the associated :cmake:command:`rapids_export(BUILD|INSTALL)` or
+:cmake:command:`rapids_export_write_dependencies(BUILD|INSTALL)` command is invoked the
+generated information will include a :cmake:command:`CPMFindPackage` call for <PackageName>.
 
-This means that when :cmake:command:`rapids_export` or
-`:cmake:command:`rapids_export_write_dependencies` is called the `CPMFindPackage`
-call will be replicated for consumers.
 
-.. note::
-  It is an anti-pattern to use this command with `INSTALL` as most CMake
-  based projects should be installed, and :cmake:command:`rapids_export_package(INSTALL` used
-  to find it. Only use :cmake:command:`rapids_export_cpm(INSTALL` when the above pattern
-  doesn't work for some reason.
+``BUILD``
+  Will record <PackageName> is part of the build directory export set
+
+``INSTALL``
+  Will record <PackageName> is part of the build directory export set
+
+  .. note::
+    It is an anti-pattern to use this command with `INSTALL` as most CMake
+    based projects should be installed, and :cmake:command:`rapids_export_package(INSTALL` used
+    to find it. Only use :cmake:command:`rapids_export_cpm(INSTALL` when the above pattern
+    doesn't work for some reason.
+
 
 #]=======================================================================]
 function(rapids_export_cpm type name export_set)
