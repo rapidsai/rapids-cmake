@@ -7,7 +7,7 @@ if(possible_build_dir AND NOT DEFINED @name@_DIR)
   set(@name@_DIR "${possible_build_dir}")
 endif()
 
-CPMFindPackage(@name@
+CPMFindPackage(
   "@RAPIDS_CPM_ARGS@"
   )
 
