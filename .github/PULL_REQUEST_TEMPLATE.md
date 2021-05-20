@@ -11,13 +11,13 @@ Here are some guidelines to help the review process go smoothly.
    added.
 
    - Each function should follow the `rapids_<component>_<file_name>` naming pattern
-   - Each function should go into a separate `.cmake` file in the approiate directory
+   - Each function should go into a separate `.cmake` file in the appropriate directory
    - Each user facing `.cmake` file should have include guards (`include_guard(GLOBAL)`)
-   - Each user faceing `.cmake` file should be documented using the rst structure
+   - Each user facing `.cmake` file should be documented using the rst structure
    - Each function first line should be `list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.<component>.<function>")`
 
    - A file should not modify any state simply by being included. State modification should
-     only occur inside functions unless absolutely neccessary due to restrctions of the CMake
+     only occur inside functions unless absolutely necessary due to restrictions of the CMake
      language.
       - Any files that do need to break this rule can't be part of `rapids-<component>.cmake`.
 
