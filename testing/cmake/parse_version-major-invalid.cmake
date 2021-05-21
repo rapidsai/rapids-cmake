@@ -13,8 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-include_guard(GLOBAL)
+include(${rapids-cmake-dir}/cmake/parse_version.cmake)
 
-include(${CMAKE_CURRENT_LIST_DIR}/cmake/build_type.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/cmake/parse_version.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/cmake/support_conda_env.cmake)
+
+rapids_cmake_parse_version(MAJOR "" major_value)
+
+if(DEFINED major_value)
+  message(FATAL_ERROR "rapids_cmake_parse_version(MAJOR) value parsing should have failed")
+endif()
+
+rapids_cmake_parse_version(MAJOR "." major_value)
+if(DEFINED major_value)
+  message(FATAL_ERROR "rapids_cmake_parse_version(MAJOR) value parsing failed unexpectedly")
+endif()

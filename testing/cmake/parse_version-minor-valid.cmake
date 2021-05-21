@@ -13,8 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-include_guard(GLOBAL)
+include(${rapids-cmake-dir}/cmake/parse_version.cmake)
 
-include(${CMAKE_CURRENT_LIST_DIR}/cmake/build_type.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/cmake/parse_version.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/cmake/support_conda_env.cmake)
+rapids_cmake_parse_version(MINOR "1.a.0" minor_value)
+if(NOT minor_value STREQUAL "a")
+  message(FATAL_ERROR "rapids_cmake_parse_version(MINOR) value parsing failed unexpectedly")
+endif()
+
+rapids_cmake_parse_version(MINOR "0.200.git-sha1" minor_value)
+if(NOT minor_value EQUAL 200)
+  message(FATAL_ERROR "rapids_cmake_parse_version(MINOR) value parsing failed unexpectedly")
+endif()
+
+rapids_cmake_parse_version(MINOR "21.03.00...22.04.00" minor_value)
+if(NOT minor_value STREQUAL "03")
+  message(FATAL_ERROR "rapids_cmake_parse_version(MINOR) value parsing failed unexpectedly")
+endif()

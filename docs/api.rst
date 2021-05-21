@@ -13,6 +13,7 @@ require.
 
    /command/rapids_cmake_build_type
    /command/rapids_cmake_make_global
+   /command/rapids_cmake_parse_version
    /command/rapids_cmake_support_conda_env
 
 CPM
