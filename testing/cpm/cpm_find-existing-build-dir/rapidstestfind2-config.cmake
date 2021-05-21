@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
+@PACKAGE_INIT@
 
-add_cmake_config_test( cpm_find-existing-build-dir )
-add_cmake_config_test( cpm_find-options-escaped )
+include("${CMAKE_CURRENT_LIST_DIR}/rapidstestfind2-config-version.cmake")
+
+add_library(RapidsTest2::RapidsTest IMPORTED INTERFACE GLOBAL)
+
+check_required_components(RapidsTest2)
