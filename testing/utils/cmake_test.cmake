@@ -62,7 +62,7 @@ function(add_cmake_test mode source_or_dir)
   if(IS_DIRECTORY "${CMAKE_CURRENT_LIST_DIR}/${source_or_dir}")
     set(src_dir "${CMAKE_CURRENT_LIST_DIR}/${source_or_dir}/")
   elseif(EXISTS "${CMAKE_CURRENT_LIST_DIR}/${source_or_dir}")
-    set(src_dir "${CMAKE_CURRENT_BINARY_DIR}/${test_name}")
+    set(src_dir "${CMAKE_CURRENT_BINARY_DIR}/${test_name_stem}")
     set(test_cmake_file "${CMAKE_CURRENT_LIST_DIR}/${source_or_dir}")
     configure_file("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/project_template.cmake.in"
                    "${src_dir}/CMakeLists.txt" @ONLY)
