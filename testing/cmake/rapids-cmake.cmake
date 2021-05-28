@@ -13,14 +13,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-include(${rapids-cmake-dir}/cmake/build_type.cmake)
-
-rapids_cmake_build_type(DEBUG)
-
-if(CMAKE_CONFIGURATION_TYPES)
-  if(DEFINED CMAKE_BUILD_TYPE)
-    message(FATAL_ERROR "rapids_cmake_build_type failed when executed by a multi-config generator")
-  endif()
-elseif(NOT CMAKE_BUILD_TYPE STREQUAL "DEBUG")
-  message(FATAL_ERROR "rapids_cmake_build_type failed")
-endif()
+include(${rapids-cmake-dir}/rapids-cmake.cmake)

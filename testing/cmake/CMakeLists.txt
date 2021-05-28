@@ -14,6 +14,8 @@
 # limitations under the License.
 #=============================================================================
 
+add_cmake_config_test( rapids-cmake.cmake )
+
 add_cmake_config_test( build_type-debug.cmake )
 add_cmake_config_test( build_type-multiple.cmake )
 add_cmake_config_test( build_type-user-specified.cmake)
