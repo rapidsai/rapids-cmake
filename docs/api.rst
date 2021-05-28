@@ -15,6 +15,7 @@ require.
    /command/rapids_cmake_make_global
    /command/rapids_cmake_parse_version
    /command/rapids_cmake_support_conda_env
+   /command/rapids_cmake_write_version_file
 
 CPM
 ***
