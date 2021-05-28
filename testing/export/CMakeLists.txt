@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
+add_cmake_config_test( rapids-export.cmake )
 
 add_cmake_config_test( export_cpm-build.cmake )
 add_cmake_config_test( export_cpm-install.cmake )
