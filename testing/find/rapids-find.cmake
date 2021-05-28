@@ -13,7 +13,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-add_cmake_config_test( rapids-cpm.cmake )
-
-add_cmake_config_test( cpm_find-existing-build-dir )
-add_cmake_config_test( cpm_find-options-escaped )
+include(${rapids-cmake-dir}/rapids-find.cmake)
