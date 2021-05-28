@@ -1,10 +1,25 @@
+# rapids-cmake 21.08.00 (Date TBD)
+
+Please see https://github.com/rapidsai/rapids-cmake/releases/tag/v21.08.0a for the latest changes to this development branch.
+
+## 🚀 New Features
+
+- Introduce `rapids_cmake_write_version_file` to generate a C++ version header ([#23](https://github.com/rapidsai/rapids-cmake/pull/23)) [@robertmaynard](https://github.com/robertmaynard)
+
+## 🛠️ Improvements
+
+
+## 🐛 Bug Fixes
+- Add tests that verify all paths in each rapids-<component>.cmake file ([#24](https://github.com/rapidsai/rapids-cmake/pull/24))  [@robertmaynard](https://github.com/robertmaynard)
+
+
 # rapids-cmake 21.06.00 (Date TBD)
 
 Please see https://github.com/rapidsai/rapids-cmake/releases/tag/v21.06.0a for the latest changes to this development branch.
 
 ## 🚀 New Features
 
-- Introduce `rapids_cmake_parse_version` for better version extraction ([#7776](https://github.com/rapidsai/rapids-cmake/pull/20)) [@robertmaynard](https://github.com/robertmaynard)
+- Introduce `rapids_cmake_parse_version` for better version extraction ([#20](https://github.com/rapidsai/rapids-cmake/pull/20)) [@robertmaynard](https://github.com/robertmaynard)
 
 ## 🛠️ Improvements
 
