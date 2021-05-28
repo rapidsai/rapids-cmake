@@ -218,6 +218,7 @@ function(rapids_export type project_name)
                                      COMPATIBILITY SameMinorVersion)
 
     export(EXPORT ${RAPIDS_EXPORT_SET}
+           NAMESPACE ${RAPIDS_NAMESPACE}
            FILE "${install_location}/${project_name}-targets.cmake"
            )
 
