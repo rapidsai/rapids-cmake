@@ -36,3 +36,6 @@ add_cmake_config_test( parse_version-patch-valid.cmake )
 add_cmake_config_test( parse_version-patch-invalid.cmake )
 add_cmake_config_test( parse_version-major_minor-invalid.cmake )
 add_cmake_config_test( parse_version-major_minor-valid.cmake )
+
+add_cmake_config_test( write_version-absolute )
+add_cmake_config_test( write_version-relative )

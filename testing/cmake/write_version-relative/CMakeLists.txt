@@ -13,9 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-include_guard(GLOBAL)
+include(${rapids-cmake-dir}/cmake/write_version_file.cmake)
 
-include(${CMAKE_CURRENT_LIST_DIR}/cmake/build_type.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/cmake/parse_version.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/cmake/support_conda_env.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/cmake/wrie_version_file.cmake)
+cmake_minimum_required(VERSION 3.20)
+
+project(DEMO VERSION 3.2.1 LANGUAGES NONE)
+rapids_cmake_write_version_file(demo_version.hpp)
+
+project(NESTED VERSION 3.14.159 LANGUAGES NONE)
+rapids_cmake_write_version_file(nested_version.hpp)
+
+enable_language(CXX)
+add_executable(write_version main.cpp)
+target_include_directories(write_version PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
