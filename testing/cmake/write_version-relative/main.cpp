@@ -20,11 +20,11 @@
 
 constexpr int dmajor = DEMO_VERSION_MAJOR;
 constexpr int dminor = DEMO_VERSION_MINOR;
-constexpr int dpatch = DEMO_VERSION_MPATCH;
+constexpr int dpatch = DEMO_VERSION_PATCH;
 
 constexpr int nmajor = NESTED_VERSION_MAJOR;
 constexpr int nminor = NESTED_VERSION_MINOR;
-constexpr int npatch = NESTED_VERSION_MPATCH;
+constexpr int npatch = NESTED_VERSION_PATCH;
 
 int main()
 {

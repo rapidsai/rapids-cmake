@@ -47,7 +47,7 @@ function(rapids_cmake_write_version_file file_path)
 
   cmake_path(IS_RELATIVE file_path is_relative)
   if(is_relative)
-    cmake_path(APPEND CMAKE_CURRENT_BINARY_DIR file_path OUTPUT_VARIABLE output_path)
+    cmake_path(APPEND CMAKE_CURRENT_BINARY_DIR ${file_path} OUTPUT_VARIABLE output_path)
   else()
     set(output_path "${file_path}")
   endif()
