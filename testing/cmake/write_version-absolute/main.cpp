@@ -20,6 +20,7 @@
 
 constexpr int dmajor = DEMO_VERSION_MAJOR;
 constexpr int dminor = DEMO_VERSION_MINOR;
+constexpr int dpatch = DEMO_VERSION_PATCH;
 
 constexpr int nmajor = NESTED_VERSION_MAJOR;
 constexpr int nminor = NESTED_VERSION_MINOR;
@@ -29,7 +30,7 @@ int main()
 {
   static_assert(dmajor == 2);
   static_assert(dminor == 4);
-
+  static_assert(dpatch == 0);
 
   static_assert(nmajor == 3);
   static_assert(nminor == 14);
