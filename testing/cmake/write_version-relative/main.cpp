@@ -30,7 +30,7 @@ int main()
 {
   static_assert(dmajor == 3);
   static_assert(dminor == 2);
-  static_assert(dpatch == 1);
+  static_assert(dpatch == 0);
 
   static_assert(nmajor == 3);
   static_assert(nminor == 14);

@@ -41,3 +41,4 @@ add_cmake_config_test( parse_version-major_minor-valid.cmake )
 
 add_cmake_build_test( write_version-absolute )
 add_cmake_build_test( write_version-relative )
+add_cmake_build_test( write_version-leading-zeroes )
