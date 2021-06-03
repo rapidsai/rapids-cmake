@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, NVIDIA CORPORATION.
+ * Copyright (c) 2019-2021, NVIDIA CORPORATION.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,8 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#pragma once
 
-#define @PROJECT_NAME@_VERSION_MAJOR @RAPIDS_WRITE_MAJOR@
-#define @PROJECT_NAME@_VERSION_MINOR @RAPIDS_WRITE_MINOR@
-#define @PROJECT_NAME@_VERSION_PATCH @RAPIDS_WRITE_PATCH@
+#include <type_traits>
+#include <version.h>
+
+constexpr int dmajor = DEMO_VERSION_MAJOR;
+constexpr int dminor = DEMO_VERSION_MINOR;
+constexpr int dpatch = DEMO_VERSION_PATCH;
+
+int main()
+{
+  static_assert(dmajor == 9);
+  static_assert(dminor == 8);
+  static_assert(dpatch == 2);
+
+  return 0;
+}

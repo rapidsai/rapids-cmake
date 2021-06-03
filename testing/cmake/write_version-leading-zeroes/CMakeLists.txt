@@ -17,11 +17,8 @@ include(${rapids-cmake-dir}/cmake/write_version_file.cmake)
 
 cmake_minimum_required(VERSION 3.20)
 
-project(DEMO VERSION 3.2.0 LANGUAGES NONE)
-rapids_cmake_write_version_file(demo_version.hpp)
-
-project(NESTED VERSION 3.14.159 LANGUAGES NONE)
-rapids_cmake_write_version_file(nested_version.hpp)
+project(DEMO VERSION 09.00008.02 LANGUAGES NONE)
+rapids_cmake_write_version_file(version.h)
 
 enable_language(CXX)
 add_executable(write_version main.cpp)
