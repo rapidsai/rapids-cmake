@@ -5,6 +5,7 @@ Please see https://github.com/rapidsai/rapids-cmake/releases/tag/v21.08.0a for t
 ## 🚀 New Features
 
 - Introduce `rapids_cmake_write_version_file` to generate a C++ version header ([#23](https://github.com/rapidsai/rapids-cmake/pull/23)) [@robertmaynard](https://github.com/robertmaynard)
+- Introduce `cmake-format-rapids-cmake` to allow `cmake-format` to understand rapdids-cmake custom functions ([#29](https://github.com/rapidsai/rapids-cmake/pull/29)) [@robertmaynard](https://github.com/robertmaynard)
 
 ## 🛠️ Improvements
 
