@@ -141,7 +141,7 @@ function(rapids_export type project_name)
   endif()
 
   set(RAPIDS_PROJECT_DOCUMENTATION "Generated ${project_name}-config module")
-  if(NOT DEFINED RAPIDS_DOCUMENTATION)
+  if(DEFINED RAPIDS_DOCUMENTATION)
     set(RAPIDS_PROJECT_DOCUMENTATION "${${RAPIDS_DOCUMENTATION}}")
   endif()
 
