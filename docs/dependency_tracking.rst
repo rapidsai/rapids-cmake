@@ -47,8 +47,15 @@ Lets go over an example of how these come together to make dependency tracking f
 Tracking find_package
 *********************
 
+.. code-block:: cmake
+
+  rapids_find_package(Threads REQUIRED
+    BUILD_EXPORT_SET example-targets
+    INSTALL_EXPORT_SET example-targets
+    )
+
 The :cmake:command:`rapids_find_package(<PackageName>)` combines the :cmake:command:`find_package` command and dependency tracking.
-In this example we are recording that the `Threads` package is required by both the export set `example-targets` for both the install and build configuration.
+This example records that the `Threads` package is required by both the export set `example-targets` for both the install and build configuration.
 
 This means that when :cmake:command:`rapids_export(` is called the generated `example-config.cmake` file will include the call 
 `find_dependency(Threads)`, removing the need for developers to maintain that dual source of truth.
@@ -69,6 +76,12 @@ making sure it is part of `CMAKE_MODULE_PATH` for consumers.
 Tracking CPM
 ************
 
+.. code-block:: cmake
+
+  rapids_cpm_find(nlohmann_json 3.9.1
+    BUILD_EXPORT_SET example-targets
+    )
+
 The :cmake:command:`rapids_cpm_find` combines the :cmake:command:`CPMFindPackage` command and dependency tracking, in a very simillar way
 to :cmake:command:`rapids_find_package`. In this example what we are saying is that nlohmann_json is only needed by the build directory `example-config`
 and not needed by the installed `example-config`. While this pattern is rare, it occurs when projects have some dependencies that aren't needed by consumers but are
@@ -85,6 +98,20 @@ and forgo using `[BUILD|INSTALL]_EXPORT_SET`.
 
 Generating example-config.cmake
 *******************************
+
+.. code-block:: cmake
+
+  set(doc_string [=[Provide targets for the example library.]=])
+  rapids_export(INSTALL example
+    EXPORT_SET example-targets
+    NAMESPACE example::
+    DOCUMENTATION doc_string
+    )
+  rapids_export(BUILD example
+    EXPORT_SET example-targets
+    NAMESPACE example::
+    DOCUMENTATION doc_string
+    )
 
 Before `rapids-cmake`, if a project wanted to generate a config module they would follow the example in 
 the `cmake-packages docs <https://cmake.org/cmake/help/latest/manual/cmake-packages.7.html#creating-packages>`_ and use :cmake:command:`install(EXPORT`,
