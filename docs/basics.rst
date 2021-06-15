@@ -31,7 +31,7 @@ Usage
 *****
 
 ``rapids-cmake`` is designed for projects to use only the subset of features that they need. To enable
-this the project is decomposed in the following primary components:
+this `rapids-cmake` comprises the following primary components:
 
 - `cmake <api.html#common>`__
 - `cpm <api.html#cpm>`__
@@ -39,7 +39,7 @@ this the project is decomposed in the following primary components:
 - `export <api.html#export>`__
 - `find <api.html#find>`__
 
-To use function provided by ``rapids-cmake`` projects have two options:
+There are two ways projects can use ``rapids-cmake`` functions.
 
-- Call ``include(rapids-<component>)`` which imports commonly used functions for the component
-- Load each function independently via ``include(${rapids-cmake-dir}/<component>/<function_name>.cmake)``
+1. Call ``include(rapids-<component>)``, which imports commonly used functions for the component.
+2. Load each function independently via ``include(${rapids-cmake-dir}/<component>/<function_name>.cmake)``.
