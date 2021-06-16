@@ -1,9 +1,5 @@
-rapids-cmake
-############
-
-This is a collection of CMake modules that are useful for all CUDA RAPIDS
-projects. By sharing the code in a single place it makes rolling out CMake
-fixes easier.
+RAPIDS-CMake Basics
+###################
 
 
 Installation
@@ -31,3 +27,19 @@ Content <https://cmake.org/cmake/help/latest/module/FetchContent.html>`_ into yo
 
   project(...)
 
+Usage
+*****
+
+``rapids-cmake`` is designed for projects to use only the subset of features that they need. To enable
+this `rapids-cmake` comprises the following primary components:
+
+- `cmake <api.html#common>`__
+- `cpm <api.html#cpm>`__
+- `cuda <api.html#cuda>`__
+- `export <api.html#export>`__
+- `find <api.html#find>`__
+
+There are two ways projects can use ``rapids-cmake`` functions.
+
+1. Call ``include(rapids-<component>)``, which imports commonly used functions for the component.
+2. Load each function independently via ``include(${rapids-cmake-dir}/<component>/<function_name>.cmake)``.
