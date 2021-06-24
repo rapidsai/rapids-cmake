@@ -14,17 +14,31 @@
 # limitations under the License.
 #=============================================================================
 
-cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
-project(rapids-cmake-testing LANGUAGES NONE)
+# verify no rapids-cmake variables have been specified
+if(DEFINED rapids-cmake_SOURCE_DIR)
+  message(FATAL_ERROR "")
+endif()
 
-enable_testing()
-include(utils/cmake_config_test.cmake)
-include(utils/cmake_build_test.cmake)
+include(FetchContent)
+FetchContent_Declare(
+  rapids-cmake
+  SOURCE_DIR "${rapids-root-dir}"
+  )
+FetchContent_MakeAvailable(rapids-cmake)
 
+if(NOT DEFINED rapids-cmake_SOURCE_DIR)
+  message(FATAL_ERROR "")
+endif()
 
-add_subdirectory(cmake)
-add_subdirectory(cpm)
-add_subdirectory(cuda)
-add_subdirectory(export)
-add_subdirectory(find)
-add_subdirectory(other)
+if(NOT DEFINED rapids-cmake-dir)
+  message(FATAL_ERROR "")
+endif()
+
+if(NOT "${rapids-cmake-dir}" IN_LIST CMAKE_MODULE_PATH)
+  message(FATAL_ERROR "")
+endif()
+
+if(NOT EXISTS "${rapids-cmake_SOURCE_DIR}/init.cmake")
+  message(FATAL_ERROR "")
+endif()
+

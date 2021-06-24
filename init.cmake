@@ -13,18 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
+#
+# This is an entry point for other projects using rapids-cmake that
+# don't want any cache variables constructed
+#
+# Nothing should happen except setup to allow usage of the core components
+#
 
-cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
-project(rapids-cmake-testing LANGUAGES NONE)
+# Hoist up this directory as a search path for CMake module
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/rapids-cmake")
+set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}")
 
-enable_testing()
-include(utils/cmake_config_test.cmake)
-include(utils/cmake_build_test.cmake)
-
-
-add_subdirectory(cmake)
-add_subdirectory(cpm)
-add_subdirectory(cuda)
-add_subdirectory(export)
-add_subdirectory(find)
-add_subdirectory(other)
+set(rapids-cmake-dir "${CMAKE_CURRENT_LIST_DIR}/rapids-cmake")

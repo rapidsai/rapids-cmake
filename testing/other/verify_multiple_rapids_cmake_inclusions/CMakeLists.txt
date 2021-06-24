@@ -13,18 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
+cmake_minimum_required(VERSION 3.20)
+project(rapids-test-project LANGUAGES CXX)
 
-cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
-project(rapids-cmake-testing LANGUAGES NONE)
+cmake_path(GET rapids-cmake-dir PARENT_PATH rapids-root-dir)
 
-enable_testing()
-include(utils/cmake_config_test.cmake)
-include(utils/cmake_build_test.cmake)
+# Remove this cache variable so we can properly test
+# fetching rapids-cmake work as intended
+unset(rapids-cmake-dir CACHE)
 
-
-add_subdirectory(cmake)
-add_subdirectory(cpm)
-add_subdirectory(cuda)
-add_subdirectory(export)
-add_subdirectory(find)
-add_subdirectory(other)
+add_subdirectory(A)
+add_subdirectory(B)
