@@ -13,6 +13,7 @@ Please see https://github.com/rapidsai/rapids-cmake/releases/tag/v21.08.0a for t
 ## 🐛 Bug Fixes
 - Add tests that verify all paths in each rapids-<component>.cmake file ([#24](https://github.com/rapidsai/rapids-cmake/pull/24))  [@robertmaynard](https://github.com/robertmaynard)
 - Correct issue where `rapids_export(DOCUMENTATION` content was being ignored([#30](https://github.com/rapidsai/rapids-cmake/pull/30))  [@robertmaynard](https://github.com/robertmaynard)
+- rapids-cmake can now be correctly used by multiple adjacent directories ([#33](https://github.com/rapidsai/rapids-cmake/pull/33))  [@robertmaynard](https://github.com/robertmaynard)
 
 
 # rapids-cmake 21.06.00 (Date TBD)
