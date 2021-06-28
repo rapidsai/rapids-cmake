@@ -13,23 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
+
+#Needs to before inclusion of `cpm.cmake`
+cmake_minimum_required(VERSION 3.20)
+
 include(${rapids-cmake-dir}/export/cpm.cmake)
+include(${rapids-cmake-dir}/export/write_dependencies.cmake)
+
+project(FakEProJecT LANGUAGES CXX VERSION 3.1.4)
 
 
-rapids_export_cpm( build
-                   FAKE_CPM_PACKAGE
-                   test_export_set
-                   CPM_ARGS
-                    FAKE_PACKAGE_ARGS TRUE
-                   )
-
-rapids_export_cpm( BUILD
-                   SECOND_FAKE_CPM_PACKAGE
-                   test_export_set
-                   CPM_ARGS
-                    VERSION 2.0
-                   GLOBAL_TARGETS ABC::ABC ABC::CBA
-                   )
+add_subdirectory(A)
+add_subdirectory(B)
 
 if(NOT TARGET rapids_export_build_test_export_set)
   message(FATAL_ERROR "rapids_export_cpm failed to generate target for build")
@@ -52,6 +47,14 @@ endif()
 if( NOT "ABC::CBA" IN_LIST global_targets)
   message(FATAL_ERROR "rapids_export_cpm failed to record ABC::CBA needs to be global")
 endif()
+
+# Verify that we removed CMake internal encoding for which directory a target was
+# added in
+message(STATUS "global_targets: ${global_targets}")
+if( "::@" IN_LIST global_targets)
+  message(FATAL_ERROR "rapids_export_cpm failed to remove special cmake encoding")
+endif()
+
 
 # Verify that CPM property is set
 get_target_property( requires_cpm rapids_export_build_test_export_set REQUIRES_CPM)

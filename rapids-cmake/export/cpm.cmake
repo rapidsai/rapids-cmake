@@ -83,7 +83,8 @@ function(rapids_export_cpm type name export_set)
 
   if(RAPIDS_GLOBAL_TARGETS)
     # record our targets that need to be marked as global when imported
-    target_link_libraries(rapids_export_${type}_${export_set} INTERFACE ${RAPIDS_GLOBAL_TARGETS})
+    set_property(TARGET rapids_export_${type}_${export_set} APPEND
+                 PROPERTY "GLOBAL_TARGETS" "${RAPIDS_GLOBAL_TARGETS}")
   endif()
 
 endfunction()

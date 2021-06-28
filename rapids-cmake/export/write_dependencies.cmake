@@ -104,8 +104,7 @@ endif()\n")
   string(APPEND RAPIDS_EXPORT_CONTENTS "\n")
 
   # Handle promotion to global targets
-  get_property(global_targets TARGET rapids_export_${type}_${export_set}
-               PROPERTY "INTERFACE_LINK_LIBRARIES")
+  get_property(global_targets TARGET rapids_export_${type}_${export_set} PROPERTY "GLOBAL_TARGETS")
   list(REMOVE_DUPLICATES global_targets)
 
   string(APPEND RAPIDS_EXPORT_CONTENTS "set(rapids_global_targets ${global_targets})\n")
