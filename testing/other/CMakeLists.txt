@@ -14,17 +14,4 @@
 # limitations under the License.
 #=============================================================================
 
-cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
-project(rapids-cmake-testing LANGUAGES NONE)
-
-enable_testing()
-include(utils/cmake_config_test.cmake)
-include(utils/cmake_build_test.cmake)
-
-
-add_subdirectory(cmake)
-add_subdirectory(cpm)
-add_subdirectory(cuda)
-add_subdirectory(export)
-add_subdirectory(find)
-add_subdirectory(other)
+add_cmake_config_test( verify_multiple_rapids_cmake_inclusions )
