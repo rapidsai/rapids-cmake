@@ -31,9 +31,13 @@ if(NOT "${CMAKE_CURRENT_LIST_DIR}/rapids-cmake" IN_LIST CMAKE_MODULE_PATH)
   list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/rapids-cmake")
   set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" CACHE PATH "" FORCE)
   mark_as_advanced(CMAKE_MODULE_PATH)
+
+  set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" PARENT_SCOPE)
 endif()
 
 if(NOT DEFINED CACHE{rapids-cmake-dir})
   set(rapids-cmake-dir "${CMAKE_CURRENT_LIST_DIR}/rapids-cmake" CACHE PATH "" FORCE)
   mark_as_advanced(rapids-cmake-dir)
+
+  set(rapids-cmake-dir "${rapids-cmake-dir}" PARENT_SCOPE)
 endif()
