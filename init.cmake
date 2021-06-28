@@ -20,8 +20,7 @@
 # Nothing should happen except setup to allow usage of the core components
 #
 
-# Hoist up this directory as a search path for CMake module
+# Add this directory as a search path for CMake module
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/rapids-cmake")
-set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}")
 
 set(rapids-cmake-dir "${CMAKE_CURRENT_LIST_DIR}/rapids-cmake")
