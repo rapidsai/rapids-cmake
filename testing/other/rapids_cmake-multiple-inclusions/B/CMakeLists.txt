@@ -39,5 +39,5 @@ if(NOT "${rapids-cmake-dir}" IN_LIST CMAKE_MODULE_PATH)
 endif()
 
 if(NOT EXISTS "${rapids-cmake_SOURCE_DIR}/init.cmake")
-  message(FATAL_ERROR "")
+  message(FATAL_ERROR "expected init.cmake to exist")
 endif()

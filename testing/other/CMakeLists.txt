@@ -14,4 +14,4 @@
 # limitations under the License.
 #=============================================================================
 
-add_cmake_config_test( verify_multiple_rapids_cmake_inclusions )
+add_cmake_config_test( rapids_cmake-multiple-inclusions )

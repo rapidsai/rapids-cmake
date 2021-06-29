@@ -27,18 +27,17 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(rapids-cmake)
 
 if(NOT DEFINED rapids-cmake_SOURCE_DIR)
-  message(FATAL_ERROR "")
+  message(FATAL_ERROR "expected variable rapids-cmake_SOURCE_DIR to exist")
 endif()
 
 if(NOT DEFINED rapids-cmake-dir)
-  message(FATAL_ERROR "")
+  message(FATAL_ERROR "expected variable rapids-cmake-dir to exist")
 endif()
 
 if(NOT "${rapids-cmake-dir}" IN_LIST CMAKE_MODULE_PATH)
-  message(FATAL_ERROR "")
+  message(FATAL_ERROR "expected variable rapids-cmake-dir to be inside CMAKE_MODULE_PATH")
 endif()
 
 if(NOT EXISTS "${rapids-cmake_SOURCE_DIR}/init.cmake")
-  message(FATAL_ERROR "")
+  message(FATAL_ERROR "expected init.cmake to exist")
 endif()
-
