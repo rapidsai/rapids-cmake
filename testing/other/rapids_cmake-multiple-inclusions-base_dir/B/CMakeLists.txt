@@ -13,27 +13,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-#
-# This is an entry point for all projects using rapids-cmake.
-#
-# This will setup the following variables in the parent directory
-# - CMAKE_MODULE_PATH
-# - rapids-cmake-dir
-#
-# It will also
-# This is done to make sure that rapids-cmake can be properly included
-# multiple times by sibling projects without issue
-#
 
-# Enfore the minimum required CMake version for all users
-cmake_minimum_required(VERSION 3.20.1 FATAL_ERROR)
-
-set(rapids-cmake-dir "${CMAKE_CURRENT_LIST_DIR}/rapids-cmake")
-if(NOT "${rapids-cmake-dir}" IN_LIST CMAKE_MODULE_PATH)
-  list(APPEND CMAKE_MODULE_PATH "${rapids-cmake-dir}")
+# verify no rapids-cmake variables have been specified
+if(DEFINED rapids-cmake_SOURCE_DIR)
+  message(FATAL_ERROR "")
 endif()
 
-#install a hook that sets up `rapids-cmake-dir` and `CMAKE_MODULE_PATH`
-#all the way up the call-stack
-cmake_language(DEFER DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
-               CALL include "${rapids-cmake-dir}/../init.cmake")
+include(FetchContent)
+FetchContent_Declare(
+  rapids-cmake
+  GIT_REPOSITORY ${rapids-git-dir}
+  GIT_TAG HEAD
+  )
+FetchContent_MakeAvailable(rapids-cmake)
+
+if(NOT DEFINED rapids-cmake_SOURCE_DIR)
+  message(FATAL_ERROR "expected variable rapids-cmake_SOURCE_DIR to exist")
+endif()
+
+if(NOT DEFINED rapids-cmake-dir)
+  message(FATAL_ERROR "expected variable rapids-cmake-dir to exist")
+endif()
+
+if(NOT "${rapids-cmake-dir}" IN_LIST CMAKE_MODULE_PATH)
+  message(FATAL_ERROR "expected variable rapids-cmake-dir to be inside CMAKE_MODULE_PATH")
+endif()
+
+if(NOT EXISTS "${rapids-cmake_SOURCE_DIR}/init.cmake")
+  message(FATAL_ERROR "expected init.cmake to exist")
+endif()

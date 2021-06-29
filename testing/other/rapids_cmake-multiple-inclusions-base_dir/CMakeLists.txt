@@ -13,6 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
+cmake_minimum_required(VERSION 3.20)
+project(rapids-test-project LANGUAGES CXX)
 
-add_cmake_config_test( rapids_cmake-multiple-inclusions )
-add_cmake_config_test( rapids_cmake-multiple-inclusions-base_dir )
+cmake_path(GET rapids-cmake-dir PARENT_PATH rapids-git-dir)
+cmake_path(APPEND rapids-git-dir ".git")
+
+# Remove this cache variable so we can properly test
+# fetching rapids-cmake work as intended
+unset(rapids-cmake-dir CACHE)
+
+set(CMAKE_MODULE_PATH "/not/a/directory")
+add_subdirectory(A)
+add_subdirectory(B)
