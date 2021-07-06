@@ -14,13 +14,25 @@
 # limitations under the License.
 #=============================================================================
 #
-# This is an entry point for other projects using rapids-cmake that
-# don't want any cache variables constructed
+# This is NOT an entry point for other projects using rapids-cmake
 #
-# Nothing should happen except setup to allow usage of the core components
+# Nothing but rapids-cmake/CMakeLists.txt should include this file
 #
+if(NOT CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
 
-# Add this directory as a search path for CMake module
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/rapids-cmake")
+  # Be defensive of other projects over-writting CMAKE_MODULE_PATH on us!
+  set(rapids-cmake-dir "${rapids-cmake-dir}" PARENT_SCOPE)
+  if(NOT "${rapids-cmake-dir}" IN_LIST CMAKE_MODULE_PATH)
+    list(APPEND CMAKE_MODULE_PATH "${rapids-cmake-dir}")
+  endif()
+  set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" PARENT_SCOPE)
 
-set(rapids-cmake-dir "${CMAKE_CURRENT_LIST_DIR}/rapids-cmake")
+  # Don't install this hook if another rapids project has already done so
+  get_directory_property(parent_dir PARENT_DIRECTORY)
+  cmake_language(DEFER DIRECTORY "${parent_dir}" GET_CALL_IDS rapids_existing_calls)
+  if(NOT rapids_init_hook IN_LIST rapids_existing_calls)
+    cmake_language(DEFER DIRECTORY "${parent_dir}"
+      ID rapids_init_hook
+      CALL include "${rapids-cmake-dir}/../init.cmake")
+  endif()
+endif()

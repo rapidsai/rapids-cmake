@@ -13,32 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
+cmake_minimum_required(VERSION 3.20)
+project(rapids-test-project LANGUAGES CXX)
 
-# verify no rapids-cmake variables have been specified
-if(DEFINED rapids-cmake_SOURCE_DIR)
-  message(FATAL_ERROR "")
-endif()
+cmake_path(GET rapids-cmake-dir PARENT_PATH rapids-git-dir)
+cmake_path(APPEND rapids-git-dir ".git")
 
-include(FetchContent)
-FetchContent_Declare(
-  rapids-cmake
-  SOURCE_DIR "${rapids-root-dir}"
-  )
-FetchContent_MakeAvailable(rapids-cmake)
+# Remove this cache variable so we can properly test
+# fetching rapids-cmake work as intended
+unset(rapids-cmake-dir CACHE)
 
-if(NOT DEFINED rapids-cmake_SOURCE_DIR)
-  message(FATAL_ERROR "")
-endif()
-
-if(NOT DEFINED rapids-cmake-dir)
-  message(FATAL_ERROR "")
-endif()
-
-if(NOT "${rapids-cmake-dir}" IN_LIST CMAKE_MODULE_PATH)
-  message(FATAL_ERROR "")
-endif()
-
-if(NOT EXISTS "${rapids-cmake_SOURCE_DIR}/init.cmake")
-  message(FATAL_ERROR "")
-endif()
-
+set(CMAKE_MODULE_PATH "/not/a/directory")
+add_subdirectory(A)
+add_subdirectory(B)
