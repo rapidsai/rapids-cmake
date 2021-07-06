@@ -30,7 +30,7 @@ cmake_minimum_required(VERSION 3.20.1 FATAL_ERROR)
 
 set(rapids-cmake-dir "${CMAKE_CURRENT_LIST_DIR}/rapids-cmake")
 if(NOT DEFINED CACHE{rapids-cmake-dir})
-  set(rapids-cmake-dir "${rapids-cmake-dir}" CACHE PATH "" FORCE)
+  set(rapids-cmake-dir "${rapids-cmake-dir}" CACHE INTERNAL "" FORCE)
 endif()
 
 if(NOT "${rapids-cmake-dir}" IN_LIST CMAKE_MODULE_PATH)
