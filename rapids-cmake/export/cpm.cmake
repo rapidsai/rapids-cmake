@@ -63,31 +63,26 @@ function(rapids_export_cpm type name export_set)
   set(multi_value GLOBAL_TARGETS CPM_ARGS)
   cmake_parse_arguments(RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
-  #Export out the build-dir incase it has build directory find-package support
+  # Export out the build-dir incase it has build directory find-package support
   if(type STREQUAL build)
     set(build_dir "${${name}_BINARY_DIR}")
   endif()
 
-  configure_file(
-    "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/cpm.cmake.in"
-    "${CMAKE_BINARY_DIR}/rapids-cmake/${export_set}/${type}/${name}.cmake"
-    @ONLY)
+  configure_file("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/cpm.cmake.in"
+                 "${CMAKE_BINARY_DIR}/rapids-cmake/${export_set}/${type}/${name}.cmake" @ONLY)
 
-  if(NOT TARGET rapids_export_${type}_${export_set} )
+  if(NOT TARGET rapids_export_${type}_${export_set})
     add_library(rapids_export_${type}_${export_set} INTERFACE)
   endif()
 
-  #Record that we need CPM injected into the export set
-  set_property(TARGET rapids_export_${type}_${export_set}
-               PROPERTY "REQUIRES_CPM" TRUE)
+  # Record that we need CPM injected into the export set
+  set_property(TARGET rapids_export_${type}_${export_set} PROPERTY "REQUIRES_CPM" TRUE)
 
-  #Need to record the <PackageName> to `rapids_export_${type}_${export_set}`
-  set_property(TARGET rapids_export_${type}_${export_set}
-               APPEND
-               PROPERTY "PACKAGE_NAMES" "${name}")
+  # Need to record the <PackageName> to `rapids_export_${type}_${export_set}`
+  set_property(TARGET rapids_export_${type}_${export_set} APPEND PROPERTY "PACKAGE_NAMES" "${name}")
 
   if(RAPIDS_GLOBAL_TARGETS)
-    #record our targets that need to be marked as global when imported
+    # record our targets that need to be marked as global when imported
     target_link_libraries(rapids_export_${type}_${export_set} INTERFACE ${RAPIDS_GLOBAL_TARGETS})
   endif()
 

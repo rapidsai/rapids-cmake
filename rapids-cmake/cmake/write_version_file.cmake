@@ -15,7 +15,6 @@
 #=============================================================================
 include_guard(GLOBAL)
 
-
 #[=======================================================================[.rst:
 rapids_cmake_write_version_file
 -------------------------------
@@ -77,5 +76,6 @@ function(rapids_cmake_write_version_file file_path)
     set(RAPIDS_WRITE_PATCH 0)
   endif()
 
-  configure_file("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/version.hpp.in" "${output_path}" @ONLY)
+  configure_file("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/version.hpp.in" "${output_path}"
+                 @ONLY)
 endfunction()

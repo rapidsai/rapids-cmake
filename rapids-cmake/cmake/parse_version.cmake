@@ -15,7 +15,6 @@
 #=============================================================================
 include_guard(GLOBAL)
 
-
 #[=======================================================================[.rst:
 rapids_cmake_parse_version
 --------------------------
@@ -74,9 +73,8 @@ function(rapids_cmake_parse_version mode version_value out_variable_name)
 
   list(LENGTH version_as_list len)
 
-  # Extract each component and make sure they aren't
-  # empty before setting. Enforces the rule that
-  # a value/character must exist between each `.`
+  # Extract each component and make sure they aren't empty before setting. Enforces the rule that a
+  # value/character must exist between each `.`
   if(mode STREQUAL "MAJOR" AND len GREATER_EQUAL 1)
     list(GET version_as_list 0 extracted_component)
     if(NOT extracted_component STREQUAL "")
@@ -98,8 +96,7 @@ function(rapids_cmake_parse_version mode version_value out_variable_name)
   elseif(mode STREQUAL "MAJOR_MINOR" AND len GREATER_EQUAL 2)
     list(GET version_as_list 0 extracted_major)
     list(GET version_as_list 1 extracted_minor)
-    if(NOT extracted_major STREQUAL "" AND
-       NOT extracted_minor STREQUAL "")
+    if(NOT extracted_major STREQUAL "" AND NOT extracted_minor STREQUAL "")
       set(${out_variable_name} "${extracted_major}.${extracted_minor}" PARENT_SCOPE)
     endif()
 

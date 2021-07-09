@@ -15,7 +15,6 @@
 #=============================================================================
 include_guard(GLOBAL)
 
-
 #[=======================================================================[.rst:
 rapids_cmake_support_conda_env
 ------------------------------
@@ -63,37 +62,39 @@ function(rapids_cmake_support_conda_env target)
   if("$ENV{CONDA_BUILD}" STREQUAL "1")
     set(in_conda_build True)
   elseif(DEFINED ENV{CONDA_PREFIX})
-      set(in_conda_prefix True)
+    set(in_conda_prefix True)
   endif()
 
   if(in_conda_build OR in_conda_prefix)
 
-    if (ARGV1 STREQUAL "MODIFY_PREFIX_PATH")
-      set(modify_prefix_path TRUE )
+    if(ARGV1 STREQUAL "MODIFY_PREFIX_PATH")
+      set(modify_prefix_path TRUE)
     endif()
 
-    add_library(${target} INTERFACE )
-    set(prefix_paths )
+    add_library(${target} INTERFACE)
+    set(prefix_paths)
 
     if(in_conda_build)
-        target_include_directories(${target} INTERFACE "$ENV{BUILD_PREFIX}/include" "$ENV{PREFIX}/include")
-        target_link_directories(${target} INTERFACE "$ENV{BUILD_PREFIX}/lib" "$ENV{PREFIX}/lib")
+      target_include_directories(${target} INTERFACE "$ENV{BUILD_PREFIX}/include"
+                                                     "$ENV{PREFIX}/include")
+      target_link_directories(${target} INTERFACE "$ENV{BUILD_PREFIX}/lib" "$ENV{PREFIX}/lib")
 
-        if( modify_prefix_path )
-          list(PREPEND CMAKE_PREFIX_PATH "$ENV{BUILD_PREFIX}" "$ENV{PREFIX}")
-          set(CMAKE_PREFIX_PATH "${CMAKE_PREFIX_PATH}" PARENT_SCOPE)
-          message(VERBOSE "Conda build detected, CMAKE_PREFIX_PATH set to: ${CMAKE_PREFIX_PATH}")
-        endif()
+      if(modify_prefix_path)
+        list(PREPEND CMAKE_PREFIX_PATH "$ENV{BUILD_PREFIX}" "$ENV{PREFIX}")
+        set(CMAKE_PREFIX_PATH "${CMAKE_PREFIX_PATH}" PARENT_SCOPE)
+        message(VERBOSE "Conda build detected, CMAKE_PREFIX_PATH set to: ${CMAKE_PREFIX_PATH}")
+      endif()
 
     elseif(in_conda_prefix)
-        target_include_directories(${target} INTERFACE "$ENV{CONDA_PREFIX}/include")
-        target_link_directories(${target} INTERFACE "$ENV{CONDA_PREFIX}/lib")
+      target_include_directories(${target} INTERFACE "$ENV{CONDA_PREFIX}/include")
+      target_link_directories(${target} INTERFACE "$ENV{CONDA_PREFIX}/lib")
 
-        if( modify_prefix_path )
-          list(PREPEND CMAKE_PREFIX_PATH "$ENV{CONDA_PREFIX}")
-          set(CMAKE_PREFIX_PATH "${CMAKE_PREFIX_PATH}" PARENT_SCOPE)
-          message(VERBOSE "Conda environment detected, CMAKE_PREFIX_PATH set to: ${CMAKE_PREFIX_PATH}")
-        endif()
+      if(modify_prefix_path)
+        list(PREPEND CMAKE_PREFIX_PATH "$ENV{CONDA_PREFIX}")
+        set(CMAKE_PREFIX_PATH "${CMAKE_PREFIX_PATH}" PARENT_SCOPE)
+        message(VERBOSE
+                "Conda environment detected, CMAKE_PREFIX_PATH set to: ${CMAKE_PREFIX_PATH}")
+      endif()
     endif()
   endif()
 endfunction()
