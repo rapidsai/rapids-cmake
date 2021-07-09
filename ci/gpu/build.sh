@@ -23,11 +23,9 @@ export HOME="$WORKSPACE"
 
 # Parse git describei
 cd "$WORKSPACE"
-# export GIT_DESCRIBE_TAG=`git describe --abbrev=0 --tags`
-# export GIT_DESCRIBE_NUMBER=`git rev-list ${GIT_DESCRIBE_TAG}..HEAD --count`
-# export MINOR_VERSION=`echo $GIT_DESCRIBE_TAG | grep -o -E '([0-9]+\.[0-9]+)'`
-
-export MINOR_VERSION=21.08 # hard-coded as rapids-cmake doesn't have tags yet
+export GIT_DESCRIBE_TAG=`git describe --abbrev=0 --tags`
+export GIT_DESCRIBE_NUMBER=`git rev-list ${GIT_DESCRIBE_TAG}..HEAD --count`
+export MINOR_VERSION=`echo $GIT_DESCRIBE_TAG | grep -o -E '([0-9]+\.[0-9]+)'`
 
 ################################################################################
 # SETUP - Check environment
