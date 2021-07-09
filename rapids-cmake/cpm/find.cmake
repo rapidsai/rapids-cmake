@@ -95,11 +95,6 @@ function(rapids_cpm_find name version)
     rapids_cmake_make_global(RAPIDS_GLOBAL_TARGETS)
   endif()
 
-  # Propagate up variables that CPMFindPackage provide
-  set("${name}_SOURCE_DIR" "${${name}_SOURCE_DIR}" PARENT_SCOPE)
-  set("${name}_BINARY_DIR" "${${name}_BINARY_DIR}" PARENT_SCOPE)
-  set("${name}_ADDED" "${${name}_ADDED}" PARENT_SCOPE)
-
   set(extra_info)
   if(RAPIDS_GLOBAL_TARGETS)
     set(extra_info "GLOBAL_TARGETS")
@@ -117,5 +112,10 @@ function(rapids_cpm_find name version)
     include("${rapids-cmake-dir}/export/package.cmake")
     rapids_export_package(INSTALL ${name} ${RAPIDS_INSTALL_EXPORT_SET} ${extra_info})
   endif()
+
+  # Propagate up variables that CPMFindPackage provide
+  set(${name}_SOURCE_DIR "${${name}_SOURCE_DIR}" PARENT_SCOPE)
+  set(${name}_BINARY_DIR "${${name}_BINARY_DIR}" PARENT_SCOPE)
+  set(${name}_ADDED "${${name}_ADDED}" PARENT_SCOPE)
 
 endfunction()

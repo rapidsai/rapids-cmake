@@ -71,6 +71,7 @@ Example on how to properly use :cmake:command:`rapids_cuda_init_architectures`:
 
 
 #]=======================================================================]
+# cmake-lint: disable=W0105
 function(rapids_cuda_init_architectures project_name)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cuda.init_architectures")
   # If `CMAKE_CUDA_ARCHITECTURES` is not defined, build for all supported architectures. If

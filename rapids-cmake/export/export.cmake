@@ -124,6 +124,7 @@ Example on how to properly use :cmake:command:`rapids_export`:
 
 
 #]=======================================================================]
+# cmake-lint: disable=R0915,W0105
 function(rapids_export type project_name)
   include(GNUInstallDirs)
   include(CMakePackageConfigHelpers)
