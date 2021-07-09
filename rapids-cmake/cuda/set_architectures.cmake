@@ -15,7 +15,6 @@
 #=============================================================================
 include_guard(GLOBAL)
 
-
 #[=======================================================================[.rst:
 rapids_cuda_set_architectures
 -------------------------------
@@ -69,9 +68,7 @@ function(rapids_cuda_set_architectures mode)
     list(REMOVE_ITEM supported_archs "62" "72")
   endif()
 
-
-  if(CMAKE_CUDA_COMPILER_ID STREQUAL "NVIDIA" AND
-     CMAKE_CUDA_COMPILER_VERSION VERSION_LESS 11.1.0)
+  if(CMAKE_CUDA_COMPILER_ID STREQUAL "NVIDIA" AND CMAKE_CUDA_COMPILER_VERSION VERSION_LESS 11.1.0)
     list(REMOVE_ITEM supported_archs "86")
   endif()
 

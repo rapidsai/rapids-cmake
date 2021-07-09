@@ -48,7 +48,7 @@ function(rapids_export_write_language type lang file_path)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.export.write_language")
 
   set(code_to_inject
-[=[
+      [=[
 # Enable the requested language, which is only supported
 # in the highest directory that 'uses' a language.
 # We have to presume all directories use a language

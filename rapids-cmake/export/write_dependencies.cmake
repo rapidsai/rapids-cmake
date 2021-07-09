@@ -50,25 +50,18 @@ function(rapids_export_write_dependencies type export_set file_path)
     return()
   endif()
 
-  #Determine if we need have any `FindModules` that we
-  #need to package.
-  get_property( find_modules
-                TARGET rapids_export_${type}_${export_set}
-                PROPERTY "FIND_PACKAGES_TO_INSTALL")
+  # Determine if we need have any `FindModules` that we need to package.
+  get_property(find_modules TARGET rapids_export_${type}_${export_set}
+               PROPERTY "FIND_PACKAGES_TO_INSTALL")
   list(REMOVE_DUPLICATES find_modules)
 
-  #Determine if we need to inject CPM hooks
-  get_property( uses_cpm
-                TARGET rapids_export_${type}_${export_set}
-                PROPERTY "REQUIRES_CPM")
+  # Determine if we need to inject CPM hooks
+  get_property(uses_cpm TARGET rapids_export_${type}_${export_set} PROPERTY "REQUIRES_CPM")
   list(REMOVE_DUPLICATES uses_cpm)
 
-  #Collect all `find_dependency` calls. Order is important here
-  #As this is the order they are recorded which is the implied
-  #valid search order
-  get_property( deps
-                TARGET rapids_export_${type}_${export_set}
-                PROPERTY "PACKAGE_NAMES")
+  # Collect all `find_dependency` calls. Order is important here As this is the order they are
+  # recorded which is the implied valid search order
+  get_property(deps TARGET rapids_export_${type}_${export_set} PROPERTY "PACKAGE_NAMES")
   list(REMOVE_DUPLICATES deps)
 
   # Do we need a Template header?
@@ -79,7 +72,9 @@ function(rapids_export_write_dependencies type export_set file_path)
     string(APPEND RAPIDS_EXPORT_CONTENTS "rapids_cpm_init()\n\n")
 
     if(type STREQUAL build)
-      string(APPEND RAPIDS_EXPORT_CONTENTS "# re-use our CPM source cache if not set
+      string(APPEND
+             RAPIDS_EXPORT_CONTENTS
+             "# re-use our CPM source cache if not set
 if(NOT DEFINED CPM_SOURCE_CACHE)
   set(CPM_SOURCE_CACHE \"@CPM_SOURCE_CACHE@\")
   set(rapids_clear_cpm_cache true)
@@ -91,14 +86,14 @@ endif()\n")
     cmake_path(GET file_path PARENT_PATH find_module_dest)
     file(COPY ${find_modules} DESTINATION "${find_module_dest}")
 
-    string(APPEND RAPIDS_EXPORT_CONTENTS [=[list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}")]=] "\n")
+    string(APPEND RAPIDS_EXPORT_CONTENTS
+           [=[list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}")]=] "\n")
   endif()
 
   foreach(dep IN LISTS deps)
     if(EXISTS "${CMAKE_BINARY_DIR}/rapids-cmake/${export_set}/${type}/${dep}.cmake")
-      #We need inject the contents of this generated file into the file
-      #we are writing out. That way users can re-locate/install the file and it will
-      #still work
+      # We need inject the contents of this generated file into the file we are writing out. That
+      # way users can re-locate/install the file and it will still work
       file(READ "${CMAKE_BINARY_DIR}/rapids-cmake/${export_set}/${type}/${dep}.cmake" dep_content)
     else()
       set(dep_content "find_dependency(${dep})")
@@ -109,15 +104,12 @@ endif()\n")
   string(APPEND RAPIDS_EXPORT_CONTENTS "\n")
 
   # Handle promotion to global targets
-  get_property( global_targets
-                TARGET rapids_export_${type}_${export_set}
-                PROPERTY "INTERFACE_LINK_LIBRARIES")
+  get_property(global_targets TARGET rapids_export_${type}_${export_set}
+               PROPERTY "INTERFACE_LINK_LIBRARIES")
   list(REMOVE_DUPLICATES global_targets)
 
   string(APPEND RAPIDS_EXPORT_CONTENTS "set(rapids_global_targets ${global_targets})\n")
 
-  configure_file(
-      "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/dependencies.cmake.in"
-      "${file_path}"
-      @ONLY)
+  configure_file("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/dependencies.cmake.in" "${file_path}"
+                 @ONLY)
 endfunction()

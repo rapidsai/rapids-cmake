@@ -15,7 +15,6 @@
 #=============================================================================
 include_guard(GLOBAL)
 
-
 #[=======================================================================[.rst:
 rapids_cuda_init_architectures
 -------------------------------
@@ -78,13 +77,12 @@ function(rapids_cuda_init_architectures project_name)
   # `CMAKE_CUDA_ARCHITECTURES` is set to an empty string (""), build for only the current
   # architecture. If `CMAKE_CUDA_ARCHITECTURES` is specified by the user, use user setting.
 
-  # This needs to be run before enabling the CUDA language since RAPIDS supports the magic
-  # string of "ALL"
+  # This needs to be run before enabling the CUDA language since RAPIDS supports the magic string of
+  # "ALL"
   if(NOT DEFINED CMAKE_CUDA_ARCHITECTURES OR CMAKE_CUDA_ARCHITECTURES STREQUAL "ALL")
     set(CMAKE_CUDA_ARCHITECTURES OFF PARENT_SCOPE)
     set(load_file "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/invoke_set_all_architectures.cmake")
-  elseif(CMAKE_CUDA_ARCHITECTURES STREQUAL "" OR
-        CMAKE_CUDA_ARCHITECTURES STREQUAL "NATIVE")
+  elseif(CMAKE_CUDA_ARCHITECTURES STREQUAL "" OR CMAKE_CUDA_ARCHITECTURES STREQUAL "NATIVE")
     set(CMAKE_CUDA_ARCHITECTURES OFF PARENT_SCOPE)
     set(load_file "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/invoke_set_native_architectures.cmake")
   endif()
@@ -92,14 +90,13 @@ function(rapids_cuda_init_architectures project_name)
   if(load_file)
     include("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/set_architectures.cmake")
 
-    # Setup to call to set CMAKE_CUDA_ARCHITECTURES values to occur right after
-    # the project call
+    # Setup to call to set CMAKE_CUDA_ARCHITECTURES values to occur right after the project call
     # https://cmake.org/cmake/help/latest/command/project.html#code-injection
     #
-    # If an existing file was specified for loading post `project` we will
-    # chain include them
+    # If an existing file was specified for loading post `project` we will chain include them
     if(DEFINED CMAKE_PROJECT_${project_name}_INCLUDE)
-      set(RAPIDS_PREVIOUS_CMAKE_PROJECT_INCLUDE "${CMAKE_PROJECT_${project_name}_INCLUDE}" PARENT_SCOPE)
+      set(RAPIDS_PREVIOUS_CMAKE_PROJECT_INCLUDE "${CMAKE_PROJECT_${project_name}_INCLUDE}"
+          PARENT_SCOPE)
     endif()
     set(CMAKE_PROJECT_${project_name}_INCLUDE "${load_file}" PARENT_SCOPE)
   endif()

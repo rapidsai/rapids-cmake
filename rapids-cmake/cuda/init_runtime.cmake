@@ -15,7 +15,6 @@
 #=============================================================================
 include_guard(GLOBAL)
 
-
 #[=======================================================================[.rst:
 rapids_cuda_init_runtime
 -------------------------------
@@ -52,4 +51,3 @@ function(rapids_cuda_init_runtime use_static value)
     endif()
   endif()
 endfunction()
-

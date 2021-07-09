@@ -15,7 +15,6 @@
 #=============================================================================
 include_guard(GLOBAL)
 
-
 #[=======================================================================[.rst:
 rapids_cpm_init
 -------------------
@@ -37,7 +36,7 @@ in the build tree of the calling project
   Must be called before any invocation of :cmake:command:`rapids_cpm_find`.
 
 #]=======================================================================]
-function(rapids_cpm_init )
+function(rapids_cpm_init)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.init")
   set(CPM_DOWNLOAD_VERSION 7644c3a40fc7889f8dee53ce21e85dc390b883dc) # 0.32.1
 
@@ -53,10 +52,9 @@ function(rapids_cpm_init )
 
   if(NOT (EXISTS ${CPM_DOWNLOAD_LOCATION}))
     message(VERBOSE "Downloading CPM.cmake to ${CPM_DOWNLOAD_LOCATION}")
-    file(
-      DOWNLOAD
-      https://raw.githubusercontent.com/cpm-cmake/CPM.cmake/${CPM_DOWNLOAD_VERSION}/cmake/CPM.cmake
-      ${CPM_DOWNLOAD_LOCATION})
+    file(DOWNLOAD
+         https://raw.githubusercontent.com/cpm-cmake/CPM.cmake/${CPM_DOWNLOAD_VERSION}/cmake/CPM.cmake
+         ${CPM_DOWNLOAD_LOCATION})
   endif()
 
   include(${CPM_DOWNLOAD_LOCATION})

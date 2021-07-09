@@ -118,7 +118,7 @@ function(rapids_find_generate_module name)
   set(RAPIDS_PKG_NAME ${name})
 
   # Construct any extra suffix search paths
-  set(RAPIDS_PATH_SEARCH_ARGS )
+  set(RAPIDS_PATH_SEARCH_ARGS)
   if(RAPIDS_INCLUDE_SUFFIXES)
     string(APPEND RAPIDS_PATH_SEARCH_ARGS "PATH_SUFFIXES ${RAPIDS_INCLUDE_SUFFIXES}")
   endif()
@@ -127,8 +127,7 @@ function(rapids_find_generate_module name)
   if(DEFINED RAPIDS_LIBRARY_NAMES)
     set(RAPIDS_HEADER_ONLY FALSE)
 
-    # Construct the release and debug library names
-    # handling version number suffixes
+    # Construct the release and debug library names handling version number suffixes
     set(RAPIDS_PKG_LIB_NAMES ${RAPIDS_LIBRARY_NAMES})
     set(RAPIDS_PKG_LIB_DEBUG_NAMES ${RAPIDS_LIBRARY_NAMES})
     list(TRANSFORM RAPIDS_PKG_LIB_DEBUG_NAMES APPEND "d")
@@ -138,17 +137,17 @@ function(rapids_find_generate_module name)
       list(TRANSFORM RAPIDS_PKG_LIB_NAMES APPEND ".${RAPIDS_VERSION}" OUTPUT_VARIABLE lib_version2)
       list(PREPEND RAPIDS_PKG_LIB_NAMES ${lib_version1} ${lib_version2})
 
-      list(TRANSFORM RAPIDS_PKG_LIB_DEBUG_NAMES APPEND "${RAPIDS_VERSION}" OUTPUT_VARIABLE lib_version1)
-      list(TRANSFORM RAPIDS_PKG_LIB_DEBUG_NAMES APPEND ".${RAPIDS_VERSION}" OUTPUT_VARIABLE lib_version2)
+      list(TRANSFORM RAPIDS_PKG_LIB_DEBUG_NAMES APPEND "${RAPIDS_VERSION}" OUTPUT_VARIABLE
+                                                                           lib_version1)
+      list(TRANSFORM RAPIDS_PKG_LIB_DEBUG_NAMES APPEND ".${RAPIDS_VERSION}" OUTPUT_VARIABLE
+                                                                            lib_version2)
       list(PREPEND RAPIDS_PKG_LIB_DEBUG_NAMES ${lib_version1} ${lib_version2})
     endif()
   endif()
 
   # Need to generate the module
-  configure_file(
-    "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/find_module.cmake.in"
-    "${CMAKE_BINARY_DIR}/cmake/find_modules/Find${name}.cmake"
-    @ONLY)
+  configure_file("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/find_module.cmake.in"
+                 "${CMAKE_BINARY_DIR}/cmake/find_modules/Find${name}.cmake" @ONLY)
 
   # Need to add our generated modules to CMAKE_MODULE_PATH!
   if(NOT "${CMAKE_BINARY_DIR}/rapids-cmake/find_modules/" IN_LIST CMAKE_MODULE_PATH)
@@ -159,16 +158,16 @@ function(rapids_find_generate_module name)
   # Record what export sets this module is part of
   if(RAPIDS_BUILD_EXPORT_SET)
     include("${rapids-cmake-dir}/export/find_package_file.cmake")
-    rapids_export_find_package_file(BUILD  "${CMAKE_BINARY_DIR}/cmake/find_modules/Find${name}.cmake"
-                                    ${RAPIDS_BUILD_EXPORT_SET}
-                                    )
+    rapids_export_find_package_file(BUILD
+                                    "${CMAKE_BINARY_DIR}/cmake/find_modules/Find${name}.cmake"
+                                    ${RAPIDS_BUILD_EXPORT_SET})
   endif()
 
   if(RAPIDS_INSTALL_EXPORT_SET)
     include("${rapids-cmake-dir}/export/find_package_file.cmake")
-    rapids_export_find_package_file(INSTALL "${CMAKE_BINARY_DIR}/cmake/find_modules/Find${name}.cmake"
-                                    ${RAPIDS_INSTALL_EXPORT_SET}
-                                    )
+    rapids_export_find_package_file(INSTALL
+                                    "${CMAKE_BINARY_DIR}/cmake/find_modules/Find${name}.cmake"
+                                    ${RAPIDS_INSTALL_EXPORT_SET})
   endif()
 endfunction()
 

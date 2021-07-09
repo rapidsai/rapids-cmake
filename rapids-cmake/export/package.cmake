@@ -53,21 +53,18 @@ function(rapids_export_package type name export_set)
   set(multi_value GLOBAL_TARGETS)
   cmake_parse_arguments(RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
-
-  if(NOT TARGET rapids_export_${type}_${export_set} )
+  if(NOT TARGET rapids_export_${type}_${export_set})
     add_library(rapids_export_${type}_${export_set} INTERFACE)
   endif()
 
-  # Don't remove duplicates here as that cost should only be paid
-  # Once per export set. So that should occur in `write_dependencies`
+  # Don't remove duplicates here as that cost should only be paid Once per export set. So that
+  # should occur in `write_dependencies`
 
-  #Need to record the <PackageName> to `rapids_export_${type}_${export_set}`
-  set_property(TARGET rapids_export_${type}_${export_set}
-               APPEND
-               PROPERTY "PACKAGE_NAMES" "${name}")
+  # Need to record the <PackageName> to `rapids_export_${type}_${export_set}`
+  set_property(TARGET rapids_export_${type}_${export_set} APPEND PROPERTY "PACKAGE_NAMES" "${name}")
 
   if(RAPIDS_GLOBAL_TARGETS)
-    #record our targets that need to be marked as global when imported
+    # record our targets that need to be marked as global when imported
     target_link_libraries(rapids_export_${type}_${export_set} INTERFACE ${RAPIDS_GLOBAL_TARGETS})
   endif()
 

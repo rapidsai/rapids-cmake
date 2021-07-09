@@ -78,7 +78,7 @@ consistency. List all targets used by your project in `GLOBAL_TARGET`.
 
 
 #]=======================================================================]
-function(rapids_cpm_find name version )
+function(rapids_cpm_find name version)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.find")
   set(options CPM_ARGS)
   set(one_value BUILD_EXPORT_SET INSTALL_EXPORT_SET)
@@ -95,13 +95,12 @@ function(rapids_cpm_find name version )
     rapids_cmake_make_global(RAPIDS_GLOBAL_TARGETS)
   endif()
 
-  #Propagate up variables that CPMFindPackage provide
+  # Propagate up variables that CPMFindPackage provide
   set("${name}_SOURCE_DIR" "${${name}_SOURCE_DIR}" PARENT_SCOPE)
   set("${name}_BINARY_DIR" "${${name}_BINARY_DIR}" PARENT_SCOPE)
   set("${name}_ADDED" "${${name}_ADDED}" PARENT_SCOPE)
 
-
-  set(extra_info )
+  set(extra_info)
   if(RAPIDS_GLOBAL_TARGETS)
     set(extra_info "GLOBAL_TARGETS")
     list(APPEND extra_info ${RAPIDS_GLOBAL_TARGETS})
@@ -110,9 +109,8 @@ function(rapids_cpm_find name version )
   if(RAPIDS_BUILD_EXPORT_SET)
     include("${rapids-cmake-dir}/export/cpm.cmake")
     rapids_export_cpm(BUILD ${name} ${RAPIDS_BUILD_EXPORT_SET}
-        CPM_ARGS NAME ${name} VERSION ${version} ${RAPIDS_UNPARSED_ARGUMENTS}
-        ${extra_info}
-        )
+                      CPM_ARGS NAME ${name} VERSION ${version} ${RAPIDS_UNPARSED_ARGUMENTS}
+                               ${extra_info})
   endif()
 
   if(RAPIDS_INSTALL_EXPORT_SET)

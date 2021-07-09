@@ -55,15 +55,14 @@ function(rapids_export_find_package_file type file_path export_set)
 
   string(TOLOWER ${type} type)
 
-  if(NOT TARGET rapids_export_${type}_${export_set} )
+  if(NOT TARGET rapids_export_${type}_${export_set})
     add_library(rapids_export_${type}_${export_set} INTERFACE)
   endif()
 
-  # Don't remove duplicates here as that cost should only be paid
-  # Once per export set. So that should occur in `write_dependencies`
+  # Don't remove duplicates here as that cost should only be paid Once per export set. So that
+  # should occur in `write_dependencies`
 
-  set_property(TARGET rapids_export_${type}_${export_set}
-               APPEND
-               PROPERTY "FIND_PACKAGES_TO_INSTALL" "${file_path}")
+  set_property(TARGET rapids_export_${type}_${export_set} APPEND PROPERTY "FIND_PACKAGES_TO_INSTALL"
+                                                                          "${file_path}")
 
 endfunction()

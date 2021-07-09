@@ -20,7 +20,7 @@ if(DEFINED RAPIDS_PREVIOUS_CMAKE_PROJECT_INCLUDE)
   include("${RAPIDS_PREVIOUS_CMAKE_PROJECT_INCLUDE}")
 endif()
 #
-# Used by rapids_cuda_init_architectures to allow the `project()` call to
-# invoke the rapids_cuda_set_architectures function after compiler detection
+# Used by rapids_cuda_init_architectures to allow the `project()` call to invoke the
+# rapids_cuda_set_architectures function after compiler detection
 #
 rapids_cuda_set_architectures(ALL)

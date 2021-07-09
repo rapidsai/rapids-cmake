@@ -86,11 +86,11 @@ function(rapids_find_package name)
     rapids_cmake_make_global(RAPIDS_GLOBAL_TARGETS)
   endif()
 
-  #Only record the export requirements if the package was found
-  #This allows us to handle implicit OPTIONAL find packages
+  # Only record the export requirements if the package was found This allows us to handle implicit
+  # OPTIONAL find packages
   if(${${name}_FOUND})
 
-    set(extra_info )
+    set(extra_info)
     if(RAPIDS_GLOBAL_TARGETS)
       set(extra_info "GLOBAL_TARGETS")
       list(APPEND extra_info ${RAPIDS_GLOBAL_TARGETS})

@@ -37,7 +37,7 @@ if(NOT "${rapids-cmake-dir}" IN_LIST CMAKE_MODULE_PATH)
   list(APPEND CMAKE_MODULE_PATH "${rapids-cmake-dir}")
 endif()
 
-#install a hook that sets up `rapids-cmake-dir` and `CMAKE_MODULE_PATH`
-#all the way up the call-stack
-cmake_language(DEFER DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
-               CALL include "${rapids-cmake-dir}/../init.cmake")
+# install a hook that sets up `rapids-cmake-dir` and `CMAKE_MODULE_PATH` all the way up the
+# call-stack
+cmake_language(DEFER DIRECTORY ${CMAKE_CURRENT_LIST_DIR} CALL include
+               "${rapids-cmake-dir}/../init.cmake")
