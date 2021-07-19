@@ -42,7 +42,7 @@ gpuci_logger "Activate conda env"
 conda activate rapids
 
 gpuci_logger "Installing packages needed for rapids-cmake"
-gpuci_conda_retry  install -y \
+gpuci_mamba_retry  install -y \
                   "cudatoolkit=$CUDA_REL" \
                   "rapids-build-env=$MINOR_VERSION.*"
 
