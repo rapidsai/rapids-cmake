@@ -46,7 +46,7 @@ if(NOT RMM IN_LIST packages)
 endif()
 
 # Verify that we encoded what `targets` are marked as global export
-get_target_property( global_targets rapids_export_install_fake_set INTERFACE_LINK_LIBRARIES)
+get_target_property( global_targets rapids_export_install_fake_set GLOBAL_TARGETS)
 if( NOT "RMM::RMM_POOL" IN_LIST global_targets)
   message(FATAL_ERROR "rapids_export_cpm failed to record RMM::RMM_POOL needs to be global")
 endif()
