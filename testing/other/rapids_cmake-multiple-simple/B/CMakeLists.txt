@@ -13,8 +13,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-add_cmake_config_test( rapids_cmake-multiple-cpm )
-add_cmake_config_test( rapids_cmake-multiple-simple )
 
-add_cmake_config_test( FetchContent-legacy )
-add_cmake_config_test( FetchContent-hostile-legacy )
+# verify no rapids-cmake variables have been specified
+if(DEFINED rapids-cmake_SOURCE_DIR)
+  message(FATAL_ERROR "")
+endif()
+
+include("${rapids.cmake-location}")
+
+if(NOT DEFINED rapids-cmake_SOURCE_DIR)
+  message(FATAL_ERROR "expected variable rapids-cmake_SOURCE_DIR to exist")
+endif()
+
+if(NOT DEFINED rapids-cmake-dir)
+  message(FATAL_ERROR "expected variable rapids-cmake-dir to exist")
+endif()
+
+if(NOT "${rapids-cmake-dir}" IN_LIST CMAKE_MODULE_PATH)
+  message(FATAL_ERROR "expected variable rapids-cmake-dir to be inside CMAKE_MODULE_PATH")
+endif()
+
+if(NOT DEFINED rapids-cmake-version)
+  message(FATAL_ERROR "expected variable rapids-cmake-version to exist")
+endif()
