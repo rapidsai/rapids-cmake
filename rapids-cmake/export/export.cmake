@@ -184,7 +184,7 @@ function(rapids_export type project_name)
 
   set(RAPIDS_PROJECT_VERSION "${project_name}::")
   if(DEFINED RAPIDS_NAMESPACE)
-    set(RAPIDS_PROJECT_VERSION ${RAPIDS_NAMESPACE} )
+    set(RAPIDS_PROJECT_VERSION ${RAPIDS_NAMESPACE})
   endif()
 
   set(RAPIDS_PROJECT_DOCUMENTATION "Generated ${project_name}-config module")
