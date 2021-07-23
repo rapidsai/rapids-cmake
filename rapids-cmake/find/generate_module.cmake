@@ -71,6 +71,7 @@ when installed.
 ``VERSION``
   Will append extra entries of the library to search for based on the
   content of `LIBRARY_NAMES`:
+
     - <name><version>
     - <name>.<version>
     - lib<name><version>
