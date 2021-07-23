@@ -85,6 +85,7 @@
           "NAMESPACE": 1,
           "DOCUMENTATION": 1,
           "FINAL_CODE_BLOCK": 1,
+          "VERSION": 1,
           "GLOBAL_TARGETS": "+",
           "LANGUAGES": "+"
         }

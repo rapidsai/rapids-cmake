@@ -47,13 +47,15 @@ if(EXISTS "${CMAKE_CURRENT_LIST_DIR}/@project_name@-targets.cmake")
   include("${CMAKE_CURRENT_LIST_DIR}/@project_name@-targets.cmake")
 endif()
 
-include("${CMAKE_CURRENT_LIST_DIR}/@project_name@-config-version.cmake")
+if(EXISTS "${CMAKE_CURRENT_LIST_DIR}/@project_name@-config-version.cmake")
+  include("${CMAKE_CURRENT_LIST_DIR}/@project_name@-config-version.cmake")
+endif()
 
 # Set our version variables
-set(@project_name_uppercase@_VERSION_MAJOR @PROJECT_VERSION_MAJOR@)
-set(@project_name_uppercase@_VERSION_MINOR @PROJECT_VERSION_MINOR@)
-set(@project_name_uppercase@_VERSION_PATCH @PROJECT_VERSION_PATCH@)
-set(@project_name_uppercase@_VERSION @PROJECT_VERSION@)
+set(@project_name_uppercase@_VERSION_MAJOR @rapids_orig_major_version@)
+set(@project_name_uppercase@_VERSION_MINOR @rapids_orig_minor_version@)
+set(@project_name_uppercase@_VERSION_PATCH @rapids_orig_patch_version@)
+set(@project_name_uppercase@_VERSION @rapids_orig_version@)
 
 
 set(rapids_global_targets @RAPIDS_GLOBAL_TARGETS@)
