@@ -13,8 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-add_cmake_config_test( rapids_cmake-multiple-cpm )
-add_cmake_config_test( rapids_cmake-multiple-simple )
+include_guard(GLOBAL)
 
-add_cmake_config_test( FetchContent-legacy )
-add_cmake_config_test( FetchContent-hostile-legacy )
+set(rapids-cmake-version 21.10)

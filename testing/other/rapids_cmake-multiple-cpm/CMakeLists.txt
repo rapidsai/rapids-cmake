@@ -13,8 +13,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-add_cmake_config_test( rapids_cmake-multiple-cpm )
-add_cmake_config_test( rapids_cmake-multiple-simple )
+cmake_minimum_required(VERSION 3.20)
+project(rapids-test-project LANGUAGES CXX)
 
-add_cmake_config_test( FetchContent-legacy )
-add_cmake_config_test( FetchContent-hostile-legacy )
+cmake_path(GET rapids-cmake-dir PARENT_PATH rapids.cmake-location)
+cmake_path(APPEND rapids.cmake-location "RAPIDS.cmake")
+
+# Remove this cache variable so we can properly test
+# fetching rapids-cmake work as intended
+unset(rapids-cmake-dir CACHE)
+
+set(CMAKE_MODULE_PATH "/not/a/directory")
+
+function(add_A )
+  add_subdirectory(A)
+endfunction()
+
+function(add_B )
+  add_subdirectory(B)
+endfunction()
+
+add_A()
+add_B()

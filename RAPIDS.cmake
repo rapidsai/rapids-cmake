@@ -13,8 +13,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-add_cmake_config_test( rapids_cmake-multiple-cpm )
-add_cmake_config_test( rapids_cmake-multiple-simple )
+#
+# This is the preferred entry point for projects using rapids-cmake
+#
 
-add_cmake_config_test( FetchContent-legacy )
-add_cmake_config_test( FetchContent-hostile-legacy )
+set(rapids-cmake-version 21.10)
+include(FetchContent)
+FetchContent_Declare(
+  rapids-cmake
+  GIT_REPOSITORY https://github.com/rapidsai/rapids-cmake.git
+  GIT_TAG        branch-${rapids-cmake-version}
+)
+FetchContent_GetProperties(rapids-cmake)
+if(rapids-cmake_POPULATED)
+  # Something else has already populated rapids-cmake, only thing
+  # we need to do is setup the CMAKE_MODULE_PATH
+  if(NOT "${rapids-cmake-dir}" IN_LIST CMAKE_MODULE_PATH)
+    list(APPEND CMAKE_MODULE_PATH "${rapids-cmake-dir}")
+  endif()
+else()
+  FetchContent_MakeAvailable(rapids-cmake)
+endif()
+

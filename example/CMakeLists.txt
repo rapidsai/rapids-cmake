@@ -16,13 +16,10 @@
 
 cmake_minimum_required(VERSION 3.18 FATAL_ERROR)
 
-include(FetchContent)
-FetchContent_Declare(
-  rapids-cmake
-  GIT_REPOSITORY https://github.com/rapidsai/rapids-cmake.git
-  GIT_TAG        origin/branch-21.06
-  )
-FetchContent_MakeAvailable(rapids-cmake)
+file(DOWNLOAD https://raw.githubusercontent.com/rapidsai/rapids-cmake/branch-21.10/RAPIDS.cmake
+    ${CMAKE_BINARY_DIR}/RAPIDS.cmake)
+include(${CMAKE_BINARY_DIR}/RAPIDS.cmake)
+include(${CMAKE_BINARY_DIR}/RAPIDS.cmake)
 include(rapids-cmake)
 include(rapids-cpm)
 include(rapids-cuda)
