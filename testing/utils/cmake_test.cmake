@@ -33,7 +33,8 @@ adds a test for each generator:
 .. code-block:: cmake
 
   add_cmake_build_test( (config|build|run|install)
-                        <SourceOrDir>
+                         <SourceOrDir>
+                         [SERIAL]
                       )
 
 ``config``
@@ -51,6 +52,10 @@ adds a test for each generator:
 
 #]=======================================================================]
 function(add_cmake_test mode source_or_dir)
+  set(options SERIAL)
+  set(one_value)
+  set(multi_value)
+  cmake_parse_arguments(RAPIDS_TEST "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
   cmake_detect_generators(supported_generators nice_gen_names)
 
@@ -100,6 +105,10 @@ function(add_cmake_test mode source_or_dir)
       message(FATAL_ERROR "install mode not yet implemented by add_cmake_build_test")
     else()
       message(FATAL_ERROR "${mode} mode not one of the valid modes (config|build|install) by add_cmake_build_test")
+    endif()
+
+    if(RAPIDS_TEST_SERIAL)
+      set_tests_properties(${test_name} PROPERTIES RUN_SERIAL ON)
     endif()
 
     # Apply a label to the test based on the folder it is in and the generator used
