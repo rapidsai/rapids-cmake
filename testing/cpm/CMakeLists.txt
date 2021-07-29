@@ -19,3 +19,18 @@ add_cmake_config_test( cpm_find-existing-build-dir )
 add_cmake_config_test( cpm_find-existing-target )
 add_cmake_config_test( cpm_find-existing-target-to-export-sets )
 add_cmake_config_test( cpm_find-options-escaped )
+
+add_cmake_config_test( cpm_gtest-export.cmake SERIAL )
+add_cmake_config_test( cpm_gtest-simple.cmake SERIAL )
+
+add_cmake_config_test( cpm_nvbench-export.cmake SERIAL )
+add_cmake_config_test( cpm_nvbench-simple.cmake SERIAL )
+
+add_cmake_config_test( cpm_rmm-export.cmake SERIAL )
+add_cmake_config_test( cpm_rmm-simple.cmake SERIAL )
+
+add_cmake_config_test( cpm_spdlog-export.cmake SERIAL )
+add_cmake_config_test( cpm_spdlog-simple.cmake SERIAL )
+
+add_cmake_config_test( cpm_thrust-export.cmake SERIAL )
+add_cmake_config_test( cpm_thrust-simple.cmake SERIAL )

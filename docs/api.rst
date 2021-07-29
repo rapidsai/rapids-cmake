@@ -28,6 +28,11 @@ tracking of these dependencies for correct export support.
 
    /command/rapids_cpm_init
    /command/rapids_cpm_find
+   /command/rapids_cpm_gtest
+   /command/rapids_cpm_nvbench
+   /command/rapids_cpm_rmm
+   /command/rapids_cpm_spdlog
+   /command/rapids_cpm_thrust
 
 Find
 ****
