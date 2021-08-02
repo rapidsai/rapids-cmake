@@ -13,9 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-add_cmake_config_test( rapids-cpm.cmake )
+@PACKAGE_INIT@
 
-add_cmake_config_test( cpm_find-existing-build-dir )
-add_cmake_config_test( cpm_find-existing-target )
-add_cmake_config_test( cpm_find-existing-target-to-export-sets )
-add_cmake_config_test( cpm_find-options-escaped )
+include("${CMAKE_CURRENT_LIST_DIR}/RapidsTestFindConfigVersion.cmake")
+
+add_library(RapidsTest::RapidsTest IMPORTED INTERFACE GLOBAL)
+
+check_required_components(RapidsTest2)

@@ -29,7 +29,6 @@ rapids_export_write_dependencies(build test_set "${CMAKE_CURRENT_BINARY_DIR}/exp
 
 file(STRINGS "${CMAKE_CURRENT_BINARY_DIR}/export_set.cmake" text)
 
-set(duplicate_package )
 foreach(line IN LISTS text)
   # message(STATUS "1. line: ${line}")
   if( line MATCHES "find_dependency\\(ExactlyDuplicate\\)" )
