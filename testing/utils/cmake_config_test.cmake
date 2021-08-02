@@ -18,5 +18,5 @@ include_guard(GLOBAL)
 include(utils/cmake_test.cmake)
 
 function(add_cmake_config_test source_or_dir)
-  add_cmake_test(CONFIG "${source_or_dir}")
+  add_cmake_test(CONFIG "${source_or_dir}" ${ARGN})
 endfunction()
