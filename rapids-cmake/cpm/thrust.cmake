@@ -62,12 +62,15 @@ function(rapids_cpm_thrust NAMESPACE namespaces_name)
     set(to_install ON)
   endif()
 
+  include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
+  rapids_cpm_package_details(Thrust version repository tag)
+
   include("${rapids-cmake-dir}/cpm/find.cmake")
-  rapids_cpm_find(Thrust 1.12.0 ${ARGN}
+  rapids_cpm_find(Thrust ${version} ${ARGN}
                   GLOBAL_TARGETS ${namespaces_name}::Thrust
                   CPM_ARGS
-                  GIT_REPOSITORY https://github.com/NVIDIA/thrust.git
-                  GIT_TAG 1.12.0
+                  GIT_REPOSITORY ${repository}
+                  GIT_TAG ${tag}
                   GIT_SHALLOW TRUE
                   OPTIONS "THRUST_INSTALL ${to_install}")
 

@@ -21,7 +21,7 @@ rapids_cpm_init
 
 .. versionadded:: v21.06.00
 
-Establish the `CPM` infrastructure for the project.
+Establish the `CPM` and preset package infrastructure for the project.
 
 .. code-block:: cmake
 
@@ -38,6 +38,10 @@ in the build tree of the calling project
 #]=======================================================================]
 function(rapids_cpm_init)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.init")
+
+  include("${rapids-cmake-dir}/cpm/detail/load_preset_versions.cmake")
+  rapids_cpm_load_preset_versions()
+
   set(CPM_DOWNLOAD_VERSION 7644c3a40fc7889f8dee53ce21e85dc390b883dc) # 0.32.1
 
   if(CPM_SOURCE_CACHE)

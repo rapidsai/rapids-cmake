@@ -57,11 +57,14 @@ function(rapids_cpm_spdlog)
     set(to_install ON)
   endif()
 
+  include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
+  rapids_cpm_package_details(spdlog version repository tag)
+
   include("${rapids-cmake-dir}/cpm/find.cmake")
-  rapids_cpm_find(spdlog 1.8.5 ${ARGN}
+  rapids_cpm_find(spdlog ${version} ${ARGN}
                   CPM_ARGS
-                  GIT_REPOSITORY https://github.com/gabime/spdlog.git
-                  GIT_TAG v1.8.5
+                  GIT_REPOSITORY ${repository}
+                  GIT_TAG ${tag}
                   GIT_SHALLOW TRUE
                   OPTIONS "spdlog_INSTALL ${to_install}")
 

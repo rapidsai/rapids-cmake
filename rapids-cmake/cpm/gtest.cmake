@@ -54,12 +54,15 @@ function(rapids_cpm_gtest)
     set(to_install ON)
   endif()
 
+  include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
+  rapids_cpm_package_details(GTest version repository tag)
+
   include("${rapids-cmake-dir}/cpm/find.cmake")
-  rapids_cpm_find(GTest 1.10 ${ARGN}
+  rapids_cpm_find(GTest ${version} ${ARGN}
                   GLOBAL_TARGETS GTest::gtest GTest::gmock GTest::gtest_main GTest::gmock_main
                   CPM_ARGS
-                  GIT_REPOSITORY https://github.com/google/googletest.git
-                  GIT_TAG release-1.10.0
+                  GIT_REPOSITORY ${repository}
+                  GIT_TAG ${tag}
                   GIT_SHALLOW TRUE
                   OPTIONS "INSTALL_GTEST ${to_install}")
 
