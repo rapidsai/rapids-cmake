@@ -48,8 +48,9 @@ function(rapids_cpm_load_preset_versions)
   string(JSON package_count LENGTH "${json_data}" packages)
   math(EXPR package_count "${package_count} - 1")
 
-  # For each project cache the subset of the json for that project
-  # in a global property
+  # For each project cache the subset of the json for that project in a global property
+
+  # cmake-lint: disable=E1120
   foreach(index RANGE ${package_count})
     string(JSON package_name MEMBER "${json_data}" packages ${index})
     string(JSON data GET "${json_data}" packages "${package_name}")

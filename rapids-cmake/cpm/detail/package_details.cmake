@@ -24,7 +24,6 @@ rapids_cpm_package_details
   rapids_cpm_package_details(<package_name> <version_variable> <git_url_variable> <git_tag_variable>)
 
 #]=======================================================================]
-
 function(rapids_cpm_package_details package_name version_var url_var tag_var)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.rapids_cpm_package_details")
 
@@ -37,8 +36,10 @@ function(rapids_cpm_package_details package_name version_var url_var tag_var)
   string(JSON git_url GET "${json_data}" git_url)
   string(JSON git_tag GET "${json_data}" git_tag)
 
-  # Evaluate any magic placeholders in the version or tag components
-  include("${rapids-cmake-dir}/rapids-version.cmake") # json can use the `rapids-cmake-version` placeholder value
+  # Evaluate any magic placeholders in the version or tag components including the
+  # `rapids-cmake-version` value
+  include("${rapids-cmake-dir}/rapids-version.cmake")
+
   cmake_language(EVAL CODE "set(version ${version})")
   cmake_language(EVAL CODE "set(git_tag ${git_tag})")
 
