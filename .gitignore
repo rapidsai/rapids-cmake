@@ -4,6 +4,7 @@
 ## C++ test build directory
 build/
 example/build/
+docs/_build
 
 ## Eclipse IDE
 .project

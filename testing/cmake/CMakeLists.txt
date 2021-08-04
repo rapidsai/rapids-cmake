@@ -14,9 +14,15 @@
 # limitations under the License.
 #=============================================================================
 
+add_cmake_config_test( rapids-cmake.cmake )
+
 add_cmake_config_test( build_type-debug.cmake )
 add_cmake_config_test( build_type-multiple.cmake )
 add_cmake_config_test( build_type-user-specified.cmake)
+
+add_cmake_config_test( conda_env-build.cmake )
+add_cmake_config_test( conda_env-invalid.cmake )
+add_cmake_config_test( conda_env-prefix.cmake )
 
 add_cmake_config_test( make_global-already-imported-global.cmake )
 add_cmake_config_test( make_global-is-alias.cmake )
@@ -24,6 +30,15 @@ add_cmake_config_test( make_global-no-targets.cmake )
 add_cmake_config_test( make_global-not-imported.cmake )
 add_cmake_config_test( make_global-valid.cmake )
 
-add_cmake_config_test( conda_env-build.cmake )
-add_cmake_config_test( conda_env-invalid.cmake )
-add_cmake_config_test( conda_env-prefix.cmake )
+add_cmake_config_test( parse_version-major-valid.cmake )
+add_cmake_config_test( parse_version-major-invalid.cmake )
+add_cmake_config_test( parse_version-minor-invalid.cmake )
+add_cmake_config_test( parse_version-minor-valid.cmake )
+add_cmake_config_test( parse_version-patch-valid.cmake )
+add_cmake_config_test( parse_version-patch-invalid.cmake )
+add_cmake_config_test( parse_version-major_minor-invalid.cmake )
+add_cmake_config_test( parse_version-major_minor-valid.cmake )
+
+add_cmake_build_test( write_version-absolute )
+add_cmake_build_test( write_version-relative )
+add_cmake_build_test( write_version-leading-zeroes )

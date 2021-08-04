@@ -14,15 +14,30 @@
 # limitations under the License.
 #=============================================================================
 #
-# This is an entry point for other projects using rapids-cmake
-# Nothing should happen except setup to allow usage of the core components
+# This is an entry point for all projects using rapids-cmake.
+#
+# This will setup the following variables in the parent directory
+# - CMAKE_MODULE_PATH
+# - rapids-cmake-dir
+#
+# It will also
+# This is done to make sure that rapids-cmake can be properly included
+# multiple times by sibling projects without issue
 #
 
 # Enfore the minimum required CMake version for all users
 cmake_minimum_required(VERSION 3.20.1 FATAL_ERROR)
 
-# Hoist up this directory as a search path for CMake module
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}")
-set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" PARENT_SCOPE)
+set(rapids-cmake-dir "${CMAKE_CURRENT_LIST_DIR}/rapids-cmake")
+if(NOT DEFINED CACHE{rapids-cmake-dir})
+  set(rapids-cmake-dir "${rapids-cmake-dir}" CACHE INTERNAL "" FORCE)
+endif()
 
-set(rapids-cmake-dir "${CMAKE_CURRENT_LIST_DIR}" PARENT_SCOPE)
+if(NOT "${rapids-cmake-dir}" IN_LIST CMAKE_MODULE_PATH)
+  list(APPEND CMAKE_MODULE_PATH "${rapids-cmake-dir}")
+endif()
+
+# install a hook that sets up `rapids-cmake-dir` and `CMAKE_MODULE_PATH` all the way up the
+# call-stack
+cmake_language(DEFER DIRECTORY ${CMAKE_CURRENT_LIST_DIR} CALL include
+               "${rapids-cmake-dir}/../init.cmake")

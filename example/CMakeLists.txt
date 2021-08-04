@@ -20,7 +20,7 @@ include(FetchContent)
 FetchContent_Declare(
   rapids-cmake
   GIT_REPOSITORY https://github.com/rapidsai/rapids-cmake.git
-  GIT_TAG        origin/main
+  GIT_TAG        origin/branch-21.06
   )
 FetchContent_MakeAvailable(rapids-cmake)
 include(rapids-cmake)
@@ -31,7 +31,7 @@ include(rapids-find)
 
 rapids_cuda_init_architectures(integration)
 
-project(integration VERSION 0.20.0 LANGUAGES C CXX CUDA)
+project(integration VERSION 21.06 LANGUAGES C CXX CUDA)
 message(STATUS "Example: CMAKE_CUDA_ARCHITECTURES: ${CMAKE_CUDA_ARCHITECTURES}")
 
 option(CUDA_STATIC_RUNTIME "Use CUDA static runtime" OFF)

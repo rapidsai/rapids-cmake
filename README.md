@@ -61,6 +61,7 @@ The `rapids-cmake` module contains helpful general CMake functionality
 - `rapids_cmake_build_type( )` handles initialization of `CMAKE_BUILD_TYPE`
 - `rapids_cmake_support_conda_env( target [MODIFY_PREFIX_PATH])` Establish a target that holds the CONDA enviornment
   include and link directories.
+- `rapids_cmake_write_version_file( <file> )` Write a C++ header with a projects MAJOR, MINOR, and PATCH defines
 
 ### cpm
 
@@ -83,22 +84,14 @@ The most commonly used function are:
 The `rapids-export` module contains core functionality to allow projects to easily record and write out
 build and install dependencies, that come from `find_package` or `cpm`
 
-- `rapids_export_package(<type> <package_name> <export_set>)` Explicitly record a `find_package` call for `install`
-  or `build` exporting. Used by `rapids_export` to generate a correct config module.
-- `rapids_export_cpm(<type> <package_name> <export_set>)` Explicitly record a `cpm` call for `install` or `build`
-  exporting. Used by `rapids_export` to generate a correct config module.
-- `rapids_export_find_package_file(<type> <file_path> <export_set>)` Explicitly record a custom `Find<Pkg>.cmake`
-  file that is required for the `install` or `build` export set. Used by `rapids_export` to correctly install
-  custom FindModules.
-- `rapids_export(<type> <project> EXPORT_SET <name>)` write out all the require components of a projects config
-  module so that the `install` or `build` directory can be imported via `find_package`. See `rapids_export`
-  documentation for full documentation
+- `rapids_export(<type> <project> EXPORT_SET <name>)` write out all the require components of a
+  projects config module so that the `install` or `build` directory can be imported via `find_package`. See `rapids_export` documentation for full documentation
 
 
 ### find
 
-The `rapids-find` module contains core functionality to allow projects to easily generate FindModule or export
-`find_package` calls:
+The `rapids-find` module contains core functionality to allow projects to easily generate FindModule
+or export `find_package` calls:
 
 The most commonly used function are:
 

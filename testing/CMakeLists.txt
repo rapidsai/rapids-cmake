@@ -23,7 +23,8 @@ include(utils/cmake_build_test.cmake)
 
 
 add_subdirectory(cmake)
-# add_subdirectory(cpm)
+add_subdirectory(cpm)
 add_subdirectory(cuda)
 add_subdirectory(export)
 add_subdirectory(find)
+add_subdirectory(other)
