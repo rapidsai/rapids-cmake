@@ -24,7 +24,8 @@ rapids_cpm_spdlog
 Allow projects to find or build `spdlog` via `CPM` with built-in
 tracking of these dependencies for correct export support.
 
-Uses version 1.8.5 of spdlog for consistency across all RAPIDS projects
+Uses the version of spdlog :ref:`specified in the version file <cpm_versions>` for consistency
+across all RAPIDS projects.
 
 .. code-block:: cmake
 

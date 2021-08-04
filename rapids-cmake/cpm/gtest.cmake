@@ -24,7 +24,8 @@ rapids_cpm_gtest
 Allow projects to find or build `Google Test` via `CPM` with built-in
 tracking of these dependencies for correct export support.
 
-Uses version 1.10.0 of Google Test for consistency across all RAPIDS projects
+Uses the version of GTest :ref:`specified in the version file <cpm_versions>` for consistency
+across all RAPIDS projects.
 
 .. code-block:: cmake
 

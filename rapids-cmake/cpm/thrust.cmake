@@ -24,7 +24,8 @@ rapids_cpm_thrust
 Allow projects to find or build `Thrust` via `CPM` with built-in
 tracking of these dependencies for correct export support.
 
-Uses version 1.12.0 of Thrust for consistency across all RAPIDS projects
+Uses the version of Thrust :ref:`specified in the version file <cpm_versions>` for consistency
+across all RAPIDS projects.
 
 .. code-block:: cmake
 

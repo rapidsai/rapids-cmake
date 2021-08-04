@@ -28,11 +28,26 @@ tracking of these dependencies for correct export support.
 
    /command/rapids_cpm_init
    /command/rapids_cpm_find
-   /command/rapids_cpm_gtest
-   /command/rapids_cpm_nvbench
-   /command/rapids_cpm_rmm
-   /command/rapids_cpm_spdlog
-   /command/rapids_cpm_thrust
+
+CPM Pre-Configured Pacakges
+***************************
+
+These `rapids_cpm` functions allow projects to easily find or build common
+RAPIDS dependencies.
+
+These allow projects to make sure they use the same version and flags for
+dependencies as the rest of RAPIDS. The exact versions that each pre-configured
+package uses :ref:`can be found here. <cpm_versions>`
+
+.. toctree::
+   :titlesonly:
+
+   /packages/rapids_cpm_gtest
+   /packages/rapids_cpm_nvbench
+   /packages/rapids_cpm_rmm
+   /packages/rapids_cpm_spdlog
+   /packages/rapids_cpm_thrust
+
 
 Find
 ****

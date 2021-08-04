@@ -24,7 +24,8 @@ rapids_cpm_nvbench
 Allow projects to find or build `nvbench` via `CPM` with built-in
 tracking of these dependencies for correct export support.
 
-Uses latest version of nvbench for consistency across all RAPIDS projects
+Uses the version of nvbench :ref:`specified in the version file <cpm_versions>` for consistency
+across all RAPIDS projects.
 
 .. code-block:: cmake
 

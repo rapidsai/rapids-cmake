@@ -24,7 +24,8 @@ rapids_cpm_rmm
 Allow projects to find or build `rmm` via `CPM` with built-in
 tracking of these dependencies for correct export support.
 
-Uses the associated cal-version of rmm for consistency across all RAPIDS projects
+Uses the current rapids-cmake version of rmm `as specified in the version file <cpm_versions>`
+for  consistency across all RAPIDS projects.
 
 .. code-block:: cmake
 
