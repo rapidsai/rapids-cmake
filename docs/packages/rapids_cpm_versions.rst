@@ -33,8 +33,6 @@ as needed.
     Supports the following placeholders:
         - ``${rapids-cmake-version}`` will be evulated to 'major.minor' of the current rapids-cmake cal-ver value.
 
-
-
 ``git_url``
 
     A required string representing the git url to be used when cloning the
@@ -51,6 +49,10 @@ as needed.
         - ``${rapids-cmake-version}`` will be evulated to 'major.minor' of the current rapids-cmake cal-ver value.
         - ``${version}`` will be evulated to the contents of the ``version`` field.
 
+``git_shallow``
+
+    An optional boolean value that represents if we should do a shallow git clone
+    or not. If no such field exists the default is `git_shallow : true`
 
 rapids-cmake package versions
 #############################

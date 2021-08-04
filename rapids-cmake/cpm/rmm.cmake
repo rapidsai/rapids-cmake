@@ -59,7 +59,7 @@ function(rapids_cpm_rmm)
   endif()
 
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
-  rapids_cpm_package_details(rmm version repository tag)
+  rapids_cpm_package_details(rmm version repository tag shallow)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
   # Once we can require CMake 3.22 this can use `only_major_minor` for version searches
@@ -68,7 +68,7 @@ function(rapids_cpm_rmm)
                   CPM_ARGS
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
-                  GIT_SHALLOW TRUE
+                  GIT_SHALLOW ${shallow}
                   OPTIONS "BUILD_TESTS OFF" "BUILD_BENCHMARKS OFF")
 
   # rmm creates the correct namespace aliases

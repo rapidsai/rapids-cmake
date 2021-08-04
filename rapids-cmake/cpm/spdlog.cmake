@@ -59,14 +59,14 @@ function(rapids_cpm_spdlog)
   endif()
 
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
-  rapids_cpm_package_details(spdlog version repository tag)
+  rapids_cpm_package_details(spdlog version repository tag shallow)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
   rapids_cpm_find(spdlog ${version} ${ARGN}
                   CPM_ARGS
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
-                  GIT_SHALLOW TRUE
+                  GIT_SHALLOW ${shallow}
                   OPTIONS "spdlog_INSTALL ${to_install}")
 
 endfunction()

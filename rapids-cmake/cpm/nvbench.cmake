@@ -62,13 +62,16 @@ function(rapids_cpm_nvbench)
             It can't be part of an INSTALL_EXPORT_SET")
   endif()
 
+  include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
+  rapids_cpm_package_details(nvbench version repository tag shallow)
+
   include("${rapids-cmake-dir}/cpm/find.cmake")
-  rapids_cpm_find(nvbench 0.0 ${ARGN}
+  rapids_cpm_find(nvbench ${version} ${ARGN}
                   GLOBAL_TARGETS nvbench::nvbench nvbench::main
                   CPM_ARGS
-                  GIT_REPOSITORY https://github.com/NVIDIA/nvbench.git
-                  GIT_TAG main
-                  GIT_SHALLOW TRUE
+                  GIT_REPOSITORY ${repository}
+                  GIT_TAG ${tag}
+                  GIT_SHALLOW ${shallow}
                   OPTIONS "NVBench_ENABLE_EXAMPLES OFF" "NVBench_ENABLE_TESTING OFF")
 
   # Propagate up variables that CPMFindPackage provide

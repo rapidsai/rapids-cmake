@@ -64,7 +64,7 @@ function(rapids_cpm_thrust NAMESPACE namespaces_name)
   endif()
 
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
-  rapids_cpm_package_details(Thrust version repository tag)
+  rapids_cpm_package_details(Thrust version repository tag shallow)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
   rapids_cpm_find(Thrust ${version} ${ARGN}
@@ -72,7 +72,7 @@ function(rapids_cpm_thrust NAMESPACE namespaces_name)
                   CPM_ARGS
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
-                  GIT_SHALLOW TRUE
+                  GIT_SHALLOW ${shallow}
                   OPTIONS "THRUST_INSTALL ${to_install}")
 
   if(NOT TARGET ${namespaces_name}::Thrust)

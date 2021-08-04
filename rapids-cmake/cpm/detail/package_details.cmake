@@ -24,7 +24,7 @@ rapids_cpm_package_details
   rapids_cpm_package_details(<package_name> <version_variable> <git_url_variable> <git_tag_variable>)
 
 #]=======================================================================]
-function(rapids_cpm_package_details package_name version_var url_var tag_var)
+function(rapids_cpm_package_details package_name version_var url_var tag_var shallow_var)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.rapids_cpm_package_details")
 
   include("${rapids-cmake-dir}/cpm/detail/load_preset_versions.cmake")
@@ -32,9 +32,16 @@ function(rapids_cpm_package_details package_name version_var url_var tag_var)
 
   get_property(json_data GLOBAL PROPERTY rapids_cpm_${package_name}_json)
 
+  # Parse required fields
   string(JSON version GET "${json_data}" version)
   string(JSON git_url GET "${json_data}" git_url)
   string(JSON git_tag GET "${json_data}" git_tag)
+
+  # Parse optional fields
+  string(JSON git_shallow ERROR_VARIABLE git_shallow_error GET "${json_data}" git_shallow)
+  if(git_shallow_error)
+    set(git_shallow ON)
+  endif()
 
   # Evaluate any magic placeholders in the version or tag components including the
   # `rapids-cmake-version` value
@@ -46,5 +53,6 @@ function(rapids_cpm_package_details package_name version_var url_var tag_var)
   set(${version_var} ${version} PARENT_SCOPE)
   set(${url_var} ${git_url} PARENT_SCOPE)
   set(${tag_var} ${git_tag} PARENT_SCOPE)
+  set(${shallow_var} ${git_shallow_error} PARENT_SCOPE)
 
 endfunction()
