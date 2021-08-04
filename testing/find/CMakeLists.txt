@@ -15,6 +15,8 @@
 #=============================================================================
 add_cmake_config_test( rapids-find.cmake )
 
+add_cmake_config_test( find_package-no-variable-leak.cmake )
+
 add_cmake_config_test( find_package-build.cmake )
 add_cmake_config_test( find_package-install.cmake )
 

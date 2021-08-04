@@ -35,8 +35,9 @@ tracking of these dependencies for correct export support.
                         all normal find_package options ]
                       )
 
-Generate a :cmake:command:`find_package` call and associate this with the listed
-build and install export set for correct export generation.
+Invokes :cmake:command:`find_package` call and associate this with the listed
+build and install export set for correct export generation. Will propagate
+all variables set by :cmake:command:`find_package` to the callers scope.
 
 Since the visibility of CMake's targets differ between targets built locally and those
 imported, :cmake:command:`rapids_find_package` promotes imported targets to be global
@@ -67,19 +68,26 @@ so users have consistency. List all targets used by your project in `GLOBAL_TARG
 
 
 #]=======================================================================]
-function(rapids_find_package name)
+macro(rapids_find_package name)
+  #
+  # rapids_find_package breaks convention and is a macro on purpose. Since `find_package` allows
+  # abitrary variable creation ( `<PROJECT_???>` ) we need to have `rapids_find_package` do the
+  # same. If it doesn't it would make drop in replacements impossible
+  #
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.find.package")
-  set(options FIND_ARGS REQUIRED)
-  set(one_value BUILD_EXPORT_SET INSTALL_EXPORT_SET)
-  set(multi_value GLOBAL_TARGETS)
-  cmake_parse_arguments(RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
+  set(_rapids_options FIND_ARGS REQUIRED)
+  set(_rapids_one_value BUILD_EXPORT_SET INSTALL_EXPORT_SET)
+  set(_rapids_multi_value GLOBAL_TARGETS)
+  cmake_parse_arguments(RAPIDS "${_rapids_options}" "${_rapids_one_value}" "${_rapids_multi_value}"
+                        ${ARGN})
 
-  unset(_required_flag)
+  set(_rapids_required_flag)
   if(RAPIDS_REQUIRED)
-    set(_required_flag REQUIRED)
+    set(_rapids_required_flag REQUIRED)
   endif()
 
-  find_package(${name} ${_required_flag} ${RAPIDS_UNPARSED_ARGUMENTS})
+  find_package(${name} ${_rapids_required_flag} ${RAPIDS_UNPARSED_ARGUMENTS})
+  unset(_rapids_required_flag)
 
   if(RAPIDS_GLOBAL_TARGETS)
     include("${rapids-cmake-dir}/cmake/make_global.cmake")
@@ -90,21 +98,34 @@ function(rapids_find_package name)
   # OPTIONAL find packages
   if(${${name}_FOUND})
 
-    set(extra_info)
+    set(_rapids_extra_info)
     if(RAPIDS_GLOBAL_TARGETS)
-      set(extra_info "GLOBAL_TARGETS")
-      list(APPEND extra_info ${RAPIDS_GLOBAL_TARGETS})
+      set(_rapids_extra_info "GLOBAL_TARGETS")
+      list(APPEND _rapids_extra_info ${RAPIDS_GLOBAL_TARGETS})
     endif()
 
     if(RAPIDS_BUILD_EXPORT_SET)
       include("${rapids-cmake-dir}/export/package.cmake")
-      rapids_export_package(BUILD ${name} ${RAPIDS_BUILD_EXPORT_SET} ${extra_info})
+      rapids_export_package(BUILD ${name} ${RAPIDS_BUILD_EXPORT_SET} ${_rapids_extra_info})
     endif()
 
     if(RAPIDS_INSTALL_EXPORT_SET)
       include("${rapids-cmake-dir}/export/package.cmake")
-      rapids_export_package(INSTALL ${name} ${RAPIDS_INSTALL_EXPORT_SET} ${extra_info})
+      rapids_export_package(INSTALL ${name} ${RAPIDS_INSTALL_EXPORT_SET} ${_rapids_extra_info})
     endif()
+
+    unset(_rapids_extra_info)
   endif()
 
-endfunction()
+  # Cleanup all our local variables
+  foreach(_rapids_local_var IN LISTS _rapids_options _rapids_one_value _rapids_multi_value)
+    if(DEFINED RAPIDS_${_rapids_local_var})
+      unset(RAPIDS_${_rapids_local_var})
+    endif()
+  endforeach()
+  unset(_rapids_local_var)
+  unset(_rapids_options)
+  unset(_rapids_one_value)
+  unset(_rapids_multi_value)
+  list(POP_BACK CMAKE_MESSAGE_CONTEXT)
+endmacro()
