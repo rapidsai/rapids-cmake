@@ -54,6 +54,12 @@ Result Targets
 ^^^^^^^^^^^^^^
   <namespace>::Thrust target will be created
 
+Result Variables
+^^^^^^^^^^^^^^^^
+  :cmake:variable:`Thrust_SOURCE_DIR` is set to the path to the source directory of Thrust.
+  :cmake:variable:`Thrust_BINAR_DIR`  is set to the path to the build directory of  Thrust.
+  :cmake:variable:`Thrust_ADDED`      is set to a true value if Thrust has not been added before.
+
 #]=======================================================================]
 function(rapids_cpm_thrust NAMESPACE namespaces_name)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.thrust")
@@ -78,5 +84,10 @@ function(rapids_cpm_thrust NAMESPACE namespaces_name)
   if(NOT TARGET ${namespaces_name}::Thrust)
     thrust_create_target(${namespaces_name}::Thrust FROM_OPTIONS)
   endif()
+
+  # Propagate up variables that CPMFindPackage provide
+  set(Thrust_SOURCE_DIR "${Thrust_SOURCE_DIR}" PARENT_SCOPE)
+  set(Thrust_BINARY_DIR "${Thrust_BINARY_DIR}" PARENT_SCOPE)
+  set(Thrust_ADDED "${Thrust_ADDED}" PARENT_SCOPE)
 
 endfunction()

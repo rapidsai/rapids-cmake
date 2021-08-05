@@ -21,10 +21,10 @@ rapids_cpm_rmm
 
 .. versionadded:: v21.10.00
 
-Allow projects to find or build `rmm` via `CPM` with built-in
+Allow projects to find or build `RMM` via `CPM` with built-in
 tracking of these dependencies for correct export support.
 
-Uses the current rapids-cmake version of rmm `as specified in the version file <cpm_versions>`
+Uses the current rapids-cmake version of RMM `as specified in the version file <cpm_versions>`
 for  consistency across all RAPIDS projects.
 
 .. code-block:: cmake
@@ -42,12 +42,18 @@ for  consistency across all RAPIDS projects.
   our install directory export set.
 
 .. note::
-  Installation of rmm will always occur when it is built as a subcomponent of the
+  Installation of RMM will always occur when it is built as a subcomponent of the
   calling project.
 
 Result Targets
 ^^^^^^^^^^^^^^
   rmm::rmm target will be created
+
+Result Variables
+^^^^^^^^^^^^^^^^
+  :cmake:variable:`rmm_SOURCE_DIR` is set to the path to the source directory of RMM.
+  :cmake:variable:`rmm_BINAR_DIR`  is set to the path to the build directory of  RMM.
+  :cmake:variable:`rmm_ADDED`      is set to a true value if RMM has not been added before.
 
 #]=======================================================================]
 function(rapids_cpm_rmm)
@@ -70,6 +76,11 @@ function(rapids_cpm_rmm)
                   GIT_TAG ${tag}
                   GIT_SHALLOW ${shallow}
                   OPTIONS "BUILD_TESTS OFF" "BUILD_BENCHMARKS OFF")
+
+  # Propagate up variables that CPMFindPackage provide
+  set(rmm_SOURCE_DIR "${rmm_SOURCE_DIR}" PARENT_SCOPE)
+  set(rmm_BINARY_DIR "${rmm_BINARY_DIR}" PARENT_SCOPE)
+  set(rmm_ADDED "${rmm_ADDED}" PARENT_SCOPE)
 
   # rmm creates the correct namespace aliases
 endfunction()

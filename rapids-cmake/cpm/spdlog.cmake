@@ -49,6 +49,12 @@ Result Targets
 ^^^^^^^^^^^^^^
   spdlog::spdlog, spdlog::spdlog_header_only targets will be created
 
+Result Variables
+^^^^^^^^^^^^^^^^
+  :cmake:variable:`spdlog_SOURCE_DIR` is set to the path to the source directory of spdlog.
+  :cmake:variable:`spdlog_BINAR_DIR`  is set to the path to the build directory of  spdlog.
+  :cmake:variable:`spdlog_ADDED`      is set to a true value if spdlog has not been added before.
+
 #]=======================================================================]
 function(rapids_cpm_spdlog)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.spdlog")
@@ -69,4 +75,10 @@ function(rapids_cpm_spdlog)
                   GIT_SHALLOW ${shallow}
                   OPTIONS "spdlog_INSTALL ${to_install}")
 
+  # Propagate up variables that CPMFindPackage provide
+  set(spdlog_SOURCE_DIR "${spdlog_SOURCE_DIR}" PARENT_SCOPE)
+  set(spdlog_BINARY_DIR "${spdlog_BINARY_DIR}" PARENT_SCOPE)
+  set(spdlog_ADDED "${spdlog_ADDED}" PARENT_SCOPE)
+
+  # spdlog creates the correct namespace aliases
 endfunction()
