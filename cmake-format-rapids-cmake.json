@@ -7,6 +7,12 @@
           "nargs": 1
         }
       },
+      "rapids_cmake_install_lib_dir": {
+        "pargs": {
+          "nargs": 1,
+          "flags": ["MODIFY_INSTALL_LIBDIR"]
+        }
+      },
       "rapids_cmake_make_global": {
         "pargs": {
           "nargs": 1
