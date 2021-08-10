@@ -63,9 +63,14 @@ function(rapids_export_cpm type name export_set)
   set(multi_value GLOBAL_TARGETS CPM_ARGS)
   cmake_parse_arguments(RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
-  # Export out the build-dir incase it has build directory find-package support
   if(type STREQUAL build)
-    set(build_dir "${${name}_BINARY_DIR}")
+    if(DEFINED ${name}_DIR AND ${name}_DIR)
+      # Export out where we found the existing local config module
+      set(possible_dir "${${name}_DIR}")
+    else()
+      # Export out the build-dir incase it has build directory find-package support
+      set(possible_dir "${${name}_BINARY_DIR}")
+    endif()
   endif()
 
   configure_file("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/cpm.cmake.in"
