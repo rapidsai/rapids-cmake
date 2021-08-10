@@ -59,7 +59,9 @@ function(rapids_export_find_package_root type name dir_path export_set)
 
   # Don't remove duplicates here as that cost should only be paid Once per export set. So that
   # should occur in `write_dependencies`
-  set_property(TARGET rapids_export_${type}_${export_set} APPEND PROPERTY "FIND_ROOT_PACKAGES" ${name})
-  set_property(TARGET rapids_export_${type}_${export_set} APPEND PROPERTY "FIND_ROOT_FOR_${name}" ${dir_path})
+  set_property(TARGET rapids_export_${type}_${export_set} APPEND PROPERTY "FIND_ROOT_PACKAGES"
+                                                                          ${name})
+  set_property(TARGET rapids_export_${type}_${export_set} APPEND PROPERTY "FIND_ROOT_FOR_${name}"
+                                                                          ${dir_path})
 
 endfunction()

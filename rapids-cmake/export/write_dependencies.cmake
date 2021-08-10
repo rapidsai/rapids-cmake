@@ -90,7 +90,7 @@ endif()\n")
   if(find_root_dirs)
     foreach(package IN LISTS find_root_dirs)
       get_property(root_dir_path TARGET rapids_export_${type}_${export_set}
-                 PROPERTY "FIND_ROOT_FOR_${package}")
+                   PROPERTY "FIND_ROOT_FOR_${package}")
       set(dep_content "set(${package}_ROOT \"${root_dir_path}\")")
       string(APPEND RAPIDS_EXPORT_CONTENTS "${dep_content}\n")
     endforeach()
