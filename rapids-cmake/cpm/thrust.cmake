@@ -59,6 +59,7 @@ Result Variables
   :cmake:variable:`Thrust_SOURCE_DIR` is set to the path to the source directory of Thrust.
   :cmake:variable:`Thrust_BINAR_DIR`  is set to the path to the build directory of  Thrust.
   :cmake:variable:`Thrust_ADDED`      is set to a true value if Thrust has not been added before.
+  :cmake:variable:`Thrust_VERSION`    is set to the version of Thrust specified by the versions.json.
 
 #]=======================================================================]
 function(rapids_cpm_thrust NAMESPACE namespaces_name)
@@ -89,5 +90,6 @@ function(rapids_cpm_thrust NAMESPACE namespaces_name)
   set(Thrust_SOURCE_DIR "${Thrust_SOURCE_DIR}" PARENT_SCOPE)
   set(Thrust_BINARY_DIR "${Thrust_BINARY_DIR}" PARENT_SCOPE)
   set(Thrust_ADDED "${Thrust_ADDED}" PARENT_SCOPE)
+  set(Thrust_VERSION ${version} PARENT_SCOPE)
 
 endfunction()

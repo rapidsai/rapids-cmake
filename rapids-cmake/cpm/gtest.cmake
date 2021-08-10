@@ -45,6 +45,7 @@ Result Variables
   :cmake:variable:`GTest_SOURCE_DIR` is set to the path to the source directory of GTest.
   :cmake:variable:`GTest_BINAR_DIR`  is set to the path to the build directory of  GTest.
   :cmake:variable:`GTest_ADDED`      is set to a true value if GTest has not been added before.
+  :cmake:variable:`GTest_VERSION`    is set to the version of GTest specified by the versions.json.
 
 #]=======================================================================]
 function(rapids_cpm_gtest)
@@ -71,6 +72,7 @@ function(rapids_cpm_gtest)
   set(GTest_SOURCE_DIR "${GTest_SOURCE_DIR}" PARENT_SCOPE)
   set(GTest_BINARY_DIR "${GTest_BINARY_DIR}" PARENT_SCOPE)
   set(GTest_ADDED "${GTest_ADDED}" PARENT_SCOPE)
+  set(GTest_VERSION ${version} PARENT_SCOPE)
 
   if(NOT TARGET GTest::gtest)
     add_library(GTest::gtest ALIAS gtest)

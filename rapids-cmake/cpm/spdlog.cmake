@@ -54,6 +54,7 @@ Result Variables
   :cmake:variable:`spdlog_SOURCE_DIR` is set to the path to the source directory of spdlog.
   :cmake:variable:`spdlog_BINAR_DIR`  is set to the path to the build directory of  spdlog.
   :cmake:variable:`spdlog_ADDED`      is set to a true value if spdlog has not been added before.
+  :cmake:variable:`spdlog_VERSION`    is set to the version of spdlog specified by the versions.json.
 
 #]=======================================================================]
 function(rapids_cpm_spdlog)
@@ -79,6 +80,7 @@ function(rapids_cpm_spdlog)
   set(spdlog_SOURCE_DIR "${spdlog_SOURCE_DIR}" PARENT_SCOPE)
   set(spdlog_BINARY_DIR "${spdlog_BINARY_DIR}" PARENT_SCOPE)
   set(spdlog_ADDED "${spdlog_ADDED}" PARENT_SCOPE)
+  set(spdlog_VERSION ${version} PARENT_SCOPE)
 
   # spdlog creates the correct namespace aliases
 endfunction()

@@ -54,6 +54,7 @@ Result Variables
   :cmake:variable:`rmm_SOURCE_DIR` is set to the path to the source directory of RMM.
   :cmake:variable:`rmm_BINAR_DIR`  is set to the path to the build directory of  RMM.
   :cmake:variable:`rmm_ADDED`      is set to a true value if RMM has not been added before.
+  :cmake:variable:`rmm_VERSION`    is set to the version of RMM specified by the versions.json.
 
 #]=======================================================================]
 function(rapids_cpm_rmm)
@@ -81,6 +82,7 @@ function(rapids_cpm_rmm)
   set(rmm_SOURCE_DIR "${rmm_SOURCE_DIR}" PARENT_SCOPE)
   set(rmm_BINARY_DIR "${rmm_BINARY_DIR}" PARENT_SCOPE)
   set(rmm_ADDED "${rmm_ADDED}" PARENT_SCOPE)
+  set(rmm_VERSION ${version} PARENT_SCOPE)
 
   # rmm creates the correct namespace aliases
 endfunction()

@@ -51,6 +51,7 @@ Result Variables
   :cmake:variable:`nvbench_SOURCE_DIR` is set to the path to the source directory of nvbench.
   :cmake:variable:`nvbench_BINAR_DIR`  is set to the path to the build directory of  nvbench.
   :cmake:variable:`nvbench_ADDED`      is set to a true value if nvbench has not been added before.
+  :cmake:variable:`nvbench_VERSION`    is set to the version of nvbench specified by the versions.json.
 
 #]=======================================================================]
 function(rapids_cpm_nvbench)
@@ -78,6 +79,7 @@ function(rapids_cpm_nvbench)
   set(nvbench_SOURCE_DIR "${nvbench_SOURCE_DIR}" PARENT_SCOPE)
   set(nvbench_BINARY_DIR "${nvbench_BINARY_DIR}" PARENT_SCOPE)
   set(nvbench_ADDED "${nvbench_ADDED}" PARENT_SCOPE)
+  set(nvbench_VERSION ${version} PARENT_SCOPE)
 
   # nvbench creates the correct namespace aliases
 endfunction()
