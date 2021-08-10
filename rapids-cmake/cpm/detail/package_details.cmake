@@ -53,6 +53,6 @@ function(rapids_cpm_package_details package_name version_var url_var tag_var sha
   set(${version_var} ${version} PARENT_SCOPE)
   set(${url_var} ${git_url} PARENT_SCOPE)
   set(${tag_var} ${git_tag} PARENT_SCOPE)
-  set(${shallow_var} ${git_shallow_error} PARENT_SCOPE)
+  set(${shallow_var} ${git_shallow} PARENT_SCOPE)
 
 endfunction()
