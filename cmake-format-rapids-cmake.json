@@ -19,7 +19,8 @@
       },
       "rapids_cmake_support_conda_env": {
         "pargs": {
-          "nargs": 1
+          "nargs": 1,
+          "flags": ["MODIFY_PREFIX_PATH"]
         }
       },
       "rapids_cmake_write_version_file": {
