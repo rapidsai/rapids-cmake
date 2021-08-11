@@ -73,9 +73,9 @@ function(rapids_export_write_dependencies type export_set file_path)
   # Do we need a Template header?
   set(RAPIDS_EXPORT_CONTENTS)
   if(uses_cpm)
-    file(READ "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/../cpm/init.cmake" cpm_logic)
+    file(READ "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/../cpm/detail/download.cmake" cpm_logic)
     string(APPEND RAPIDS_EXPORT_CONTENTS ${cpm_logic})
-    string(APPEND RAPIDS_EXPORT_CONTENTS "rapids_cpm_init()\n\n")
+    string(APPEND RAPIDS_EXPORT_CONTENTS "rapids_cpm_download()\n\n")
 
     if(type STREQUAL build)
       string(APPEND
