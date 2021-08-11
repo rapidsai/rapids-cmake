@@ -15,6 +15,7 @@
 #=============================================================================
 add_cmake_config_test( rapids-export.cmake )
 
+add_cmake_config_test( export_cpm-build-possible-dir.cmake )
 add_cmake_config_test( export_cpm-build.cmake )
 add_cmake_config_test( export_cpm-install.cmake )
 add_cmake_config_test( export_cpm-options-escaped.cmake )
