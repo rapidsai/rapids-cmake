@@ -97,6 +97,12 @@
           "flags": ["INSTALL", "BUILD"]
         }
       },
+      "rapids_export_find_package_root": {
+        "pargs": {
+          "nargs": 4,
+          "flags": ["INSTALL", "BUILD"]
+        }
+      },
       "rapids_export_package": {
         "pargs": {
           "nargs": "1+"

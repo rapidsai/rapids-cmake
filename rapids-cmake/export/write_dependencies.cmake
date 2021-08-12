@@ -51,6 +51,11 @@ function(rapids_export_write_dependencies type export_set file_path)
     return()
   endif()
 
+  # Determine if we need have any `ROOT_DIR` variables we need to set.
+  get_property(find_root_dirs TARGET rapids_export_${type}_${export_set}
+               PROPERTY "FIND_ROOT_PACKAGES")
+  list(REMOVE_DUPLICATES find_root_dirs)
+
   # Determine if we need have any `FindModules` that we need to package.
   get_property(find_modules TARGET rapids_export_${type}_${export_set}
                PROPERTY "FIND_PACKAGES_TO_INSTALL")
@@ -81,6 +86,15 @@ if(NOT DEFINED CPM_SOURCE_CACHE)
   set(rapids_clear_cpm_cache true)
 endif()\n")
     endif()
+  endif()
+
+  if(find_root_dirs)
+    foreach(package IN LISTS find_root_dirs)
+      get_property(root_dir_path TARGET rapids_export_${type}_${export_set}
+                   PROPERTY "FIND_ROOT_FOR_${package}")
+      set(dep_content "set(${package}_ROOT \"${root_dir_path}\")")
+      string(APPEND RAPIDS_EXPORT_CONTENTS "${dep_content}\n")
+    endforeach()
   endif()
 
   if(find_modules)

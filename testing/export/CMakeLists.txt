@@ -40,6 +40,7 @@ add_cmake_config_test( write_dependencies-cpm-preserve-options.cmake )
 add_cmake_config_test( write_dependencies-duplicate-cpm.cmake )
 add_cmake_config_test( write_dependencies-duplicate-packages.cmake )
 add_cmake_config_test( write_dependencies-multiple-directories )
+add_cmake_config_test( write_dependencies-root-dirs.cmake )
 
 add_cmake_build_test( write_language-multiple-nested-enables )
 add_cmake_build_test( write_language-nested-dirs )
