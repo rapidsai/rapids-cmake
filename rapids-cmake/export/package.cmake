@@ -54,6 +54,17 @@ function(rapids_export_package type name export_set)
   set(multi_value GLOBAL_TARGETS)
   cmake_parse_arguments(RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
+  if(type STREQUAL build)
+    if(DEFINED ${name}_DIR AND ${name}_DIR)
+      # Export out where we found the existing local config module
+      set(possible_dir "${${name}_DIR}")
+    endif()
+  endif()
+
+  configure_file("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/${type}_package.cmake.in"
+                 "${CMAKE_BINARY_DIR}/rapids-cmake/${export_set}/${type}/package_${name}.cmake"
+                 @ONLY)
+
   if(NOT TARGET rapids_export_${type}_${export_set})
     add_library(rapids_export_${type}_${export_set} INTERFACE)
   endif()

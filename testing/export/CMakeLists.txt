@@ -33,13 +33,16 @@ add_cmake_config_test( export-verify-implicit-disabled-version.cmake )
 add_cmake_config_test( export-verify-implicit-major-version-only-matching.cmake )
 add_cmake_config_test( export-verify-version.cmake )
 
+add_cmake_config_test( export_package-build-possible-dir.cmake )
 add_cmake_config_test( export_package-build.cmake )
+add_cmake_config_test( export_package-install-possible-dir.cmake )
 add_cmake_config_test( export_package-install.cmake )
 add_cmake_config_test( export_package-multiple-export_sets.cmake )
 
 add_cmake_config_test( write_dependencies-cpm-preserve-options.cmake )
 add_cmake_config_test( write_dependencies-duplicate-cpm.cmake )
 add_cmake_config_test( write_dependencies-duplicate-packages.cmake )
+add_cmake_config_test( write_dependencies-duplicate-cpm-and-package.cmake )
 add_cmake_config_test( write_dependencies-multiple-directories )
 add_cmake_config_test( write_dependencies-root-dirs.cmake )
 

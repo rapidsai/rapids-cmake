@@ -26,8 +26,8 @@ rapids_export_cpm( build
 
 
 # Verify that cpm configuration files exist
-set(path "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/build/FAKE_CPM_PACKAGE.cmake")
-if(NOT EXISTS "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/build/FAKE_CPM_PACKAGE.cmake")
+set(path "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/build/cpm_FAKE_CPM_PACKAGE.cmake")
+if(NOT EXISTS "${path}")
   message(FATAL_ERROR "rapids_export_cpm failed to generate a CPM configuration")
 endif()
 
@@ -49,7 +49,7 @@ rapids_export_cpm( BUILD
                     VERSION 2.0
                    GLOBAL_TARGETS ABC::ABC ABC::CBA
                    )
-set(path "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/build/also_fake_cpm_package.cmake")
+set(path "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/build/cpm_also_fake_cpm_package.cmake")
 if(NOT EXISTS "${path}")
   message(FATAL_ERROR "rapids_export_cpm failed to generate a CPM configuration")
 endif()

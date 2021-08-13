@@ -75,7 +75,7 @@ function(rapids_export_cpm type name export_set)
   endif()
 
   configure_file("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/cpm.cmake.in"
-                 "${CMAKE_BINARY_DIR}/rapids-cmake/${export_set}/${type}/${name}.cmake" @ONLY)
+                 "${CMAKE_BINARY_DIR}/rapids-cmake/${export_set}/${type}/cpm_${name}.cmake" @ONLY)
 
   if(NOT TARGET rapids_export_${type}_${export_set})
     add_library(rapids_export_${type}_${export_set} INTERFACE)

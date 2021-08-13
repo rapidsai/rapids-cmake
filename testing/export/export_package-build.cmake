@@ -38,3 +38,9 @@ get_target_property( global_targets rapids_export_build_test_export_set GLOBAL_T
 if( NOT "ZLIB::ZLIB" IN_LIST global_targets)
   message(FATAL_ERROR "rapids_export_package failed to record ZLIB::ZLIB needs to be global")
 endif()
+
+# Verify that temp package configuration files exist
+if(NOT EXISTS "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/build/package_ZLIB.cmake" OR
+   NOT EXISTS "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/build/package_PNG.cmake")
+  message(FATAL_ERROR "rapids_export_package failed to generate a find_package configuration")
+endif()

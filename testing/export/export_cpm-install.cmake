@@ -59,7 +59,7 @@ if( NOT requires_cpm)
 endif()
 
 # Verify that cpm configuration files exist
-if(NOT EXISTS "${CMAKE_BINARY_DIR}/rapids-cmake/fake_set/install/RaFT.cmake" OR
-   NOT EXISTS "${CMAKE_BINARY_DIR}/rapids-cmake/fake_set/install/RMM.cmake")
+if(NOT EXISTS "${CMAKE_BINARY_DIR}/rapids-cmake/fake_set/install/cpm_RaFT.cmake" OR
+   NOT EXISTS "${CMAKE_BINARY_DIR}/rapids-cmake/fake_set/install/cpm_RMM.cmake")
   message(FATAL_ERROR "rapids_export_cpm failed to generate a CPM configuration")
 endif()
