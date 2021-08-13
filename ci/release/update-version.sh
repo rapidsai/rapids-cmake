@@ -1,7 +1,8 @@
 #!/bin/bash
-########################
+# Copyright (c) 2021, NVIDIA CORPORATION.
+################################
 # rapids-cmake Version Updater #
-########################
+################################
 
 ## Usage
 # bash update-version.sh <type>
