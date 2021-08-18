@@ -67,12 +67,17 @@ consistency. List all targets used by your project in `GLOBAL_TARGET`.
 
 ``INSTALL_EXPORT_SET``
   Record a :cmake:command:`find_dependency(<PackageName> ...)` call needs to occur as part of
-  our build directory export set.
+  our install directory export set.
 
 ``CPM_ARGS``
   Required placeholder to be provied before any extra arguments that need to
   be passed down to :cmake:command:`CPMFindPackage`.
 
+Result Variables
+^^^^^^^^^^^^^^^^
+  :cmake:variable:`<PackageName>_SOURCE_DIR` is set to the path to the source directory of <PackageName>.
+  :cmake:variable:`<PackageName>_BINAR_DIR`  is set to the path to the build directory of  <PackageName>.
+  :cmake:variable:`<PackageName>_ADDED`      is set to a true value if <PackageName> has not been added before.
 
 .. note::
   Adding an export set to :cmake:command:`rapids_cpm_find` has different behavior

@@ -55,6 +55,54 @@
           "nargs": 0
         }
       },
+      "rapids_cpm_gtest": {
+        "pargs": {
+          "nargs": 0
+        },
+        "kwargs": {
+          "BUILD_EXPORT_SET": 1,
+          "INSTALL_EXPORT_SET": 1
+        }
+      },
+
+      "rapids_cpm_nvbench": {
+        "pargs": {
+          "nargs": 0
+        },
+        "kwargs": {
+          "BUILD_EXPORT_SET": 1
+        }
+      },
+
+      "rapids_cpm_rmm": {
+        "pargs": {
+          "nargs": 0
+        },
+        "kwargs": {
+          "BUILD_EXPORT_SET": 1,
+          "INSTALL_EXPORT_SET": 1
+        }
+      },
+
+      "rapids_cpm_spdlog": {
+        "pargs": {
+          "nargs": 0
+        },
+        "kwargs": {
+          "BUILD_EXPORT_SET": 1,
+          "INSTALL_EXPORT_SET": 1
+        }
+      },
+
+      "rapids_cpm_thrust": {
+        "pargs": {
+          "nargs": 2
+        },
+        "kwargs": {
+          "BUILD_EXPORT_SET": 1,
+          "INSTALL_EXPORT_SET": 1
+        }
+      },
 
       "rapids_cuda_init_architectures": {
         "pargs": {
