@@ -123,8 +123,9 @@ Example on how to properly use :cmake:command:`rapids_export`:
   add_library(example STATIC source.cu)
   target_compile_features(example PUBLIC $<BUILD_INTERFACE:cuda_std_17>)
 
+  rapids_cmake_install_lib_dir(lib_dir)
   install(TARGETS example
-          DESTINATION lib
+          DESTINATION ${lib_dir}
           EXPORT example-targets
           )
 
@@ -201,7 +202,10 @@ function(rapids_export type project_name)
   string(TOLOWER ${project_name} project_name)
   string(TOUPPER ${project_name} project_name_uppercase)
   if(type STREQUAL "install")
-    set(install_location "lib/cmake/${project_name}")
+    include("${rapids-cmake-dir}/cmake/install_lib_dir.cmake")
+    rapids_cmake_install_lib_dir(install_location)
+    set(install_location "${install_location}/cmake/${project_name}")
+
     set(scratch_dir "${PROJECT_BINARY_DIR}/rapids-cmake/${project_name}/export")
 
     configure_package_config_file("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/config.cmake.in"

@@ -107,9 +107,9 @@ if(TARGET conda_env)
 endif()
 
 # - install targets -------------------------------------------------------------------------------
-
+rapids_cmake_install_lib_dir( lib_dir )
 install(TARGETS example
-        DESTINATION lib
+        DESTINATION ${lib_dir}
         EXPORT example-targets
         )
 
