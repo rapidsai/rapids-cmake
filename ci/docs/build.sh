@@ -28,6 +28,10 @@ gpuci_logger "Activate conda env"
 . /opt/conda/etc/profile.d/conda.sh
 conda activate rapids
 
+# Using absolute path of python executable to avoid obtaining wrong version of package
+gpuci_logger "Install pip only package"
+/opt/conda/envs/rapids/bin/python -m pip install sphinxcontrib-moderncmakedomain
+
 gpuci_logger "Check versions"
 python --version
 $CC --version
