@@ -105,15 +105,16 @@ endif()\n")
            [=[list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}")]=] "\n")
   endif()
 
+  set(dep_dir "${CMAKE_BINARY_DIR}/rapids-cmake/${export_set}/${type}")
   foreach(dep IN LISTS deps)
-    if(EXISTS "${CMAKE_BINARY_DIR}/rapids-cmake/${export_set}/${type}/${dep}.cmake")
-      # We need inject the contents of this generated file into the file we are writing out. That
-      # way users can re-locate/install the file and it will still work
-      file(READ "${CMAKE_BINARY_DIR}/rapids-cmake/${export_set}/${type}/${dep}.cmake" dep_content)
-    else()
-      set(dep_content "find_dependency(${dep})")
+    # We need inject the contents of this generated file into the file we are writing out. That way
+    # users can re-locate/install the file and it will still work
+    if(EXISTS "${dep_dir}/cpm_${dep}.cmake")
+      # CPM recording takes priority over a find_package() recording
+      file(READ "${dep_dir}/cpm_${dep}.cmake" dep_content)
+    elseif(EXISTS "${dep_dir}/package_${dep}.cmake")
+      file(READ "${dep_dir}/package_${dep}.cmake" dep_content)
     endif()
-
     string(APPEND RAPIDS_EXPORT_CONTENTS "${dep_content}\n")
   endforeach()
   string(APPEND RAPIDS_EXPORT_CONTENTS "\n")

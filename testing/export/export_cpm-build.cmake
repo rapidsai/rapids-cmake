@@ -60,7 +60,7 @@ if( NOT requires_cpm)
 endif()
 
 # Verify that cpm configuration files exist
-if(NOT EXISTS "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/build/FAKE_CPM_PACKAGE.cmake" OR
-   NOT EXISTS "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/build/SECOND_FAKE_CPM_PACKAGE.cmake")
+if(NOT EXISTS "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/build/cpm_FAKE_CPM_PACKAGE.cmake" OR
+   NOT EXISTS "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/build/cpm_SECOND_FAKE_CPM_PACKAGE.cmake")
   message(FATAL_ERROR "rapids_export_cpm failed to generate a CPM configuration")
 endif()
