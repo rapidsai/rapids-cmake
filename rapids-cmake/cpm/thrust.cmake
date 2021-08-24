@@ -80,7 +80,7 @@ function(rapids_cpm_thrust NAMESPACE namespaces_name)
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
                   GIT_SHALLOW ${shallow}
-                  OPTIONS "THRUST_INSTALL ${to_install}")
+                  OPTIONS "THRUST_ENABLE_INSTALL_RULES ${to_install}")
 
   if(NOT TARGET ${namespaces_name}::Thrust)
     thrust_create_target(${namespaces_name}::Thrust FROM_OPTIONS)
