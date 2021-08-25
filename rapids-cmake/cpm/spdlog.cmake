@@ -70,6 +70,7 @@ function(rapids_cpm_spdlog)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
   rapids_cpm_find(spdlog ${version} ${ARGN}
+                  GLOBAL_TARGETS spdlog::spdlog spdlog::spdlog_header_only
                   CPM_ARGS
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
