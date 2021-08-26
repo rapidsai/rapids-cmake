@@ -48,9 +48,10 @@ To use function provided by `rapids-cmake` projects have two options:
 
 ## Components
 
-Complete online documentation for all components is currently under development. Currently
-you can read the existing documentation by looking at the inline restructure text of
-each cmake file.
+Complete online documentation for all components can be found at:
+
+  https://docs.rapids.ai/api/rapids-cmake/nightly/api.html
+
 
 ### cmake
 The `rapids-cmake` module contains helpful general CMake functionality
