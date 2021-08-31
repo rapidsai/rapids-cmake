@@ -48,6 +48,8 @@ package uses :ref:`can be found here. <cpm_versions>`
    /packages/rapids_cpm_rmm
    /packages/rapids_cpm_spdlog
    /packages/rapids_cpm_thrust
+   /command/rapids_cpm_package_override
+
 
 
 Find

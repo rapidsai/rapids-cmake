@@ -30,18 +30,28 @@ function(rapids_cpm_package_details package_name version_var url_var tag_var sha
   include("${rapids-cmake-dir}/cpm/detail/load_preset_versions.cmake")
   rapids_cpm_load_preset_versions()
 
+  get_property(override_json_data GLOBAL PROPERTY rapids_cpm_${package_name}_override_json)
   get_property(json_data GLOBAL PROPERTY rapids_cpm_${package_name}_json)
 
   # Parse required fields
-  string(JSON version GET "${json_data}" version)
-  string(JSON git_url GET "${json_data}" git_url)
-  string(JSON git_tag GET "${json_data}" git_tag)
+  function(rapids_cpm_json_get_value name)
+    string(JSON value ERROR_VARIABLE have_error GET "${override_json_data}" ${name})
+    if(have_error)
+      string(JSON value ERROR_VARIABLE have_error GET "${json_data}" ${name})
+    endif()
 
-  # Parse optional fields
-  string(JSON git_shallow ERROR_VARIABLE git_shallow_error GET "${json_data}" git_shallow)
-  if(git_shallow_error)
-    set(git_shallow ON)
-  endif()
+    if(NOT have_error)
+      set(${name} ${value} PARENT_SCOPE)
+    endif()
+  endfunction()
+
+  rapids_cpm_json_get_value(version)
+  rapids_cpm_json_get_value(git_url)
+  rapids_cpm_json_get_value(git_tag)
+
+  # Parse optional fields, set the variable to the 'default' value first
+  set(git_shallow ON)
+  rapids_cpm_json_get_value(git_shallow)
 
   # Evaluate any magic placeholders in the version or tag components including the
   # `rapids-cmake-version` value

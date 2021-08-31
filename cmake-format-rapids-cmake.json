@@ -53,8 +53,17 @@
       "rapids_cpm_init": {
         "pargs": {
           "nargs": 0
+        },
+        "kwargs": {
+          "OVERRIDE": 1,
         }
       },
+      "rapids_cpm_package_override": {
+        "pargs": {
+          "nargs": 1
+        }
+      },
+
       "rapids_cpm_gtest": {
         "pargs": {
           "nargs": 0
@@ -64,7 +73,6 @@
           "INSTALL_EXPORT_SET": 1
         }
       },
-
       "rapids_cpm_nvbench": {
         "pargs": {
           "nargs": 0
@@ -73,7 +81,6 @@
           "BUILD_EXPORT_SET": 1
         }
       },
-
       "rapids_cpm_rmm": {
         "pargs": {
           "nargs": 0
@@ -83,7 +90,6 @@
           "INSTALL_EXPORT_SET": 1
         }
       },
-
       "rapids_cpm_spdlog": {
         "pargs": {
           "nargs": 0
@@ -93,7 +99,6 @@
           "INSTALL_EXPORT_SET": 1
         }
       },
-
       "rapids_cpm_thrust": {
         "pargs": {
           "nargs": 2

@@ -25,7 +25,7 @@ Establish the `CPM` and preset package infrastructure for the project.
 
 .. code-block:: cmake
 
-  rapids_cpm_init()
+  rapids_cpm_init( [OVERRIDE <json_override_file_path> ] )
 
 The CPM module will be downloaded based on the state of :cmake:variable:`CPM_SOURCE_CACHE` and
 :cmake:variable:`ENV{CPM_SOURCE_CACHE}`. This allows multiple nested projects to share the
@@ -39,8 +39,18 @@ in the build tree of the calling project
 function(rapids_cpm_init)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.init")
 
+  set(options)
+  set(one_value OVERRIDE)
+  set(multi_value)
+  cmake_parse_arguments(RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
+
   include("${rapids-cmake-dir}/cpm/detail/load_preset_versions.cmake")
   rapids_cpm_load_preset_versions()
+
+  if(RAPIDS_OVERRIDE)
+    include("${rapids-cmake-dir}/cpm/package_override.cmake")
+    rapids_cpm_package_override("${RAPIDS_OVERRIDE}")
+  endif()
 
   include("${rapids-cmake-dir}/cpm/detail/download.cmake")
   rapids_cpm_download()
