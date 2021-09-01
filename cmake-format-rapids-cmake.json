@@ -55,7 +55,7 @@
           "nargs": 0
         },
         "kwargs": {
-          "OVERRIDE": 1,
+          "OVERRIDE": 1
         }
       },
       "rapids_cpm_package_override": {
