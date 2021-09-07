@@ -29,6 +29,11 @@
           "flags": ["MODIFY_PREFIX_PATH"]
         }
       },
+      "rapids_cmake_write_git_revision_file": {
+        "pargs": {
+          "nargs": 2
+        }
+      },
       "rapids_cmake_write_version_file": {
         "pargs": {
           "nargs": 1

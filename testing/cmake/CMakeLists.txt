@@ -45,6 +45,11 @@ add_cmake_config_test( parse_version-patch-invalid.cmake )
 add_cmake_config_test( parse_version-major_minor-invalid.cmake )
 add_cmake_config_test( parse_version-major_minor-valid.cmake )
 
+add_cmake_build_test( write_git_revision-dirty )
+add_cmake_build_test( write_git_revision-embed )
+add_cmake_build_test( write_git_revision-simple )
+add_cmake_build_test( write_git_revision-no-git )
+
 add_cmake_build_test( write_version-absolute )
 add_cmake_build_test( write_version-relative )
 add_cmake_build_test( write_version-leading-zeroes )

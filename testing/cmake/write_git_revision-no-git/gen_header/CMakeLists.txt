@@ -13,11 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-include_guard(GLOBAL)
+include(${rapids-cmake-dir}/cmake/write_git_revision_file.cmake)
 
-include(${CMAKE_CURRENT_LIST_DIR}/cmake/build_type.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/cmake/install_lib_dir.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/cmake/parse_version.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/cmake/support_conda_env.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/cmake/write_git_revision_file.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/cmake/write_version_file.cmake)
+# Fake out GIT_EXECUTABLE with a stub so that all git commands
+# fail, acting like what happens when git doesn't exist
+find_package(Git)
+set(GIT_EXECUTABLE "/fake/path")
+rapids_cmake_write_git_revision_file(git_generated_header "${CMAKE_CURRENT_BINARY_DIR}/demo/git_version.hpp")

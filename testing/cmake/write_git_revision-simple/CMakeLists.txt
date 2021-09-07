@@ -13,11 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-include_guard(GLOBAL)
+include(${rapids-cmake-dir}/cmake/write_git_revision_file.cmake)
 
-include(${CMAKE_CURRENT_LIST_DIR}/cmake/build_type.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/cmake/install_lib_dir.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/cmake/parse_version.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/cmake/support_conda_env.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/cmake/write_git_revision_file.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/cmake/write_version_file.cmake)
+cmake_minimum_required(VERSION 3.20)
+
+project(DEMO VERSION 2.4 LANGUAGES CXX)
+rapids_cmake_write_git_revision_file(demo_version "${CMAKE_CURRENT_BINARY_DIR}/demo/demo_git_version.hpp")
+
+project(NESTED VERSION 3.14.159 LANGUAGES NONE)
+rapids_cmake_write_git_revision_file(nested_version "${CMAKE_CURRENT_BINARY_DIR}/nested/nested_git_version.h")
+
+add_executable(write_git_version main.cpp)
+target_link_libraries(write_git_version PRIVATE demo_version nested_version)
+target_compile_features(write_git_version PRIVATE cxx_std_14)
