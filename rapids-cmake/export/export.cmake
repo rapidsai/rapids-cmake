@@ -191,10 +191,16 @@ function(rapids_export type project_name)
 
   set(RAPIDS_PROJECT_DOCUMENTATION "Generated ${project_name}-config module")
   if(DEFINED RAPIDS_DOCUMENTATION)
+    if(NOT DEFINED ${RAPIDS_DOCUMENTATION})
+      message(FATAL_ERROR "DOCUMENTATION variable `${RAPIDS_DOCUMENTATION}` provided but doesn't exist")
+    endif()
     set(RAPIDS_PROJECT_DOCUMENTATION "${${RAPIDS_DOCUMENTATION}}")
   endif()
 
   if(DEFINED RAPIDS_FINAL_CODE_BLOCK)
+    if(NOT DEFINED ${RAPIDS_FINAL_CODE_BLOCK})
+      message(FATAL_ERROR "FINAL_CODE_BLOCK variable `${RAPIDS_FINAL_CODE_BLOCK}` provided but doesn't exist")
+    endif()
     set(RAPIDS_PROJECT_FINAL_CODE_BLOCK "${${RAPIDS_FINAL_CODE_BLOCK}}")
   endif()
 
