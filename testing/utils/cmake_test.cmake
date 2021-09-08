@@ -35,6 +35,7 @@ adds a test for each generator:
   add_cmake_build_test( (config|build|run|install)
                          <SourceOrDir>
                          [SERIAL]
+                         [SHOULD_FAIL]
                       )
 
 ``config``
