@@ -37,7 +37,7 @@ example:
 .. literalinclude:: /packages/example.json
   :language: json
 
-If the override doesn't specify a value or package entry the default
+If the override file doesn't specify a value or package entry the default
 version will be used.
 
 #]=======================================================================]
