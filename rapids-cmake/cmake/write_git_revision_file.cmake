@@ -83,6 +83,7 @@ function(rapids_cmake_write_git_revision_file target file_path)
 
   add_custom_target(${target}_compute_git_info ALL
                     BYPRODUCTS "${file_path}"
+                    COMMENT "Generate git revision file for {target}"
                     COMMAND ${CMAKE_COMMAND} -DWORKING_DIRECTORY=${CMAKE_CURRENT_SOURCE_DIR}
                             -DGIT_EXECUTABLE=${GIT_EXECUTABLE} -DPROJECT_NAME=${PROJECT_NAME}
                             -DTEMPLATE_FILE=${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/git_revision.hpp.in
