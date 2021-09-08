@@ -44,6 +44,9 @@ version will be used.
 function(rapids_cpm_package_override filepath)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.rapids_cpm_package_override")
 
+  if(NOT EXISTS "${filepath}")
+    message(FATAL_ERROR "rapids_cpm_package_override asked to load "${filepath}" but it doesn't exist")
+  endif()
   file(READ "${filepath}" json_data)
 
   # Determine all the projects that exist in the json file
