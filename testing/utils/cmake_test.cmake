@@ -35,7 +35,7 @@ adds a test for each generator:
   add_cmake_build_test( (config|build|run|install)
                          <SourceOrDir>
                          [SERIAL]
-                         [SHOULD_FAIL]
+                         [SHOULD_FAIL <expected error message string>]
                       )
 
 ``config``
@@ -53,8 +53,8 @@ adds a test for each generator:
 
 #]=======================================================================]
 function(add_cmake_test mode source_or_dir)
-  set(options SERIAL SHOULD_FAIL)
-  set(one_value)
+  set(options SERIAL )
+  set(one_value SHOULD_FAIL)
   set(multi_value)
   cmake_parse_arguments(RAPIDS_TEST "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
@@ -113,7 +113,10 @@ function(add_cmake_test mode source_or_dir)
     endif()
 
     if(RAPIDS_TEST_SHOULD_FAIL)
+      # Make sure we have a match
       set_tests_properties(${test_name} PROPERTIES WILL_FAIL ON)
+      set_tests_properties(${test_name} PROPERTIES
+        FAIL_REGULAR_EXPRESSION "${RAPIDS_TEST_SHOULD_FAIL}")
     endif()
 
     # Apply a label to the test based on the folder it is in and the generator used
