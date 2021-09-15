@@ -21,7 +21,12 @@ rapids_cpm_package_details
 
 . code-block:: cmake
 
-  rapids_cpm_package_details(<package_name> <version_variable> <git_url_variable> <git_tag_variable>)
+  rapids_cpm_package_details(<package_name>
+                             <version_variable>
+                             <git_url_variable>
+                             <git_tag_variable>
+                             <shallow_variable>
+                             )
 
 #]=======================================================================]
 function(rapids_cpm_package_details package_name version_var url_var tag_var shallow_var)
@@ -53,6 +58,14 @@ function(rapids_cpm_package_details package_name version_var url_var tag_var sha
   set(git_shallow ON)
   rapids_cpm_json_get_value(git_shallow)
 
+  if(override_json_data)
+    # The default value for always download is defined by having an override
+    # for this package. When we have an override we presume the user doesn't want
+    # to use an existing local installed version
+    set(always_download ON)
+  endif()
+  rapids_cpm_json_get_value(always_download)
+
   # Evaluate any magic placeholders in the version or tag components including the
   # `rapids-cmake-version` value
   if(NOT DEFINED rapids-cmake-version)
@@ -66,5 +79,8 @@ function(rapids_cpm_package_details package_name version_var url_var tag_var sha
   set(${url_var} ${git_url} PARENT_SCOPE)
   set(${tag_var} ${git_tag} PARENT_SCOPE)
   set(${shallow_var} ${git_shallow} PARENT_SCOPE)
+  if(DEFINED always_download)
+    set(CPM_DOWNLOAD_ALL ${always_download} PARENT_SCOPE)
+  endif()
 
 endfunction()

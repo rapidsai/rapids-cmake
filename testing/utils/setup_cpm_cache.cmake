@@ -21,8 +21,6 @@ function(setup_cpm_cache )
   set(src_dir "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/fill_cache/")
   set(build_dir "${CPM_SOURCE_CACHE}")
 
-  message(STATUS "setup_cpm_cache ${src_dir}")
-
   #download all pre-configured rapids-cmake packages
   execute_process(COMMAND ${CMAKE_COMMAND}
       -Drapids-cmake-dir=${PROJECT_SOURCE_DIR}/../rapids-cmake
