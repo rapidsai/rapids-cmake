@@ -45,7 +45,7 @@ function(rapids_cpm_package_override filepath)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.rapids_cpm_package_override")
 
   if(NOT EXISTS "${filepath}")
-    message(FATAL_ERROR "rapids_cpm_package_override can't load "${filepath}", verify it exists")
+    message(FATAL_ERROR "rapids_cpm_package_override can't load '${filepath}', verify it exists")
   endif()
   file(READ "${filepath}" json_data)
 
