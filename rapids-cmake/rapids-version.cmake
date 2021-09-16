@@ -16,4 +16,4 @@
 # can't have an include guard on this file
 # that breaks its usage by cpm/detail/package_details
 
-set(rapids-cmake-version 21.10)
+set(rapids-cmake-version 21.12)
