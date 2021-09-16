@@ -15,8 +15,6 @@
 #=============================================================================
 include(${rapids-cmake-dir}/cpm/init.cmake)
 
-include("${rapids-cmake-testing-dir}/cpm/setup_cpm_cache.cmake")
-
 # Need to write out an override file
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
   [=[
