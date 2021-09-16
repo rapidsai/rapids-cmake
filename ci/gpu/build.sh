@@ -61,7 +61,7 @@ conda list --show-channel-urls
 ################################################################################
 
 gpuci_logger "Setup rapids-cmake"
-cmake -S "$WORKSPACE/testing/" -B "$WORKSPACE/build"
+cmake -S "$WORKSPACE/testing/" -B "$WORKSPACE/build" -DRAPIDS_CMAKE_ENABLE_DOWNLOAD_TESTS=OFF
 
 
 ################################################################################
