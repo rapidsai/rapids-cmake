@@ -59,9 +59,9 @@ function(rapids_cpm_package_details package_name version_var url_var tag_var sha
   rapids_cpm_json_get_value(git_shallow)
 
   if(override_json_data)
-    # The default value for always download is defined by having an override
-    # for this package. When we have an override we presume the user doesn't want
-    # to use an existing local installed version
+    # The default value for always download is defined by having an override for this package. When
+    # we have an override we presume the user doesn't want to use an existing local installed
+    # version
     set(always_download ON)
   endif()
   rapids_cpm_json_get_value(always_download)
