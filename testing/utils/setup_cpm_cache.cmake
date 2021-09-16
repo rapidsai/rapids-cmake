@@ -13,18 +13,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-include(${rapids-cmake-dir}/cpm/init.cmake)
-include(${rapids-cmake-dir}/cpm/rmm.cmake)
 
-rapids_cpm_init()
+function(setup_cpm_cache )
+  set(CPM_SOURCE_CACHE "${CMAKE_BINARY_DIR}")
+  cmake_path(APPEND_STRING CPM_SOURCE_CACHE "/cache")
 
-if(TARGET rmm::rmm)
-  message(FATAL_ERROR "Expected rmm::rmm expected to not exist")
-endif()
+  set(src_dir "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/fill_cache/")
+  set(build_dir "${CPM_SOURCE_CACHE}")
 
-rapids_cpm_rmm()
-if(NOT TARGET rmm::rmm)
-  message(FATAL_ERROR "Expected rmm::rmm target to exist")
-endif()
+  message(STATUS "setup_cpm_cache ${src_dir}")
 
-rapids_cpm_rmm()
+  #download all pre-configured rapids-cmake packages
+  execute_process(COMMAND ${CMAKE_COMMAND}
+      -Drapids-cmake-dir=${PROJECT_SOURCE_DIR}/../rapids-cmake
+      -S ${src_dir} -B ${build_dir}
+      WORKING_DIRECTORY ${src_dir}
+      )
+
+  set(CPM_SOURCE_CACHE "${CPM_SOURCE_CACHE}" PARENT_SCOPE)
+endfunction()
+

@@ -29,17 +29,17 @@ add_cmake_config_test( cpm_package_override-before-init.cmake )
 add_cmake_config_test( cpm_package_override-multiple.cmake )
 add_cmake_config_test( cpm_package_override-simple.cmake )
 
-add_cmake_config_test( cpm_gtest-export.cmake SERIAL )
-add_cmake_config_test( cpm_gtest-simple.cmake SERIAL )
+add_cmake_config_test( cpm_gtest-export.cmake )
+add_cmake_config_test( cpm_gtest-simple.cmake )
 
-add_cmake_config_test( cpm_nvbench-export.cmake SERIAL )
-add_cmake_config_test( cpm_nvbench-simple.cmake SERIAL )
+add_cmake_config_test( cpm_nvbench-export.cmake )
+add_cmake_config_test( cpm_nvbench-simple.cmake )
 
-add_cmake_config_test( cpm_rmm-export.cmake SERIAL )
-add_cmake_config_test( cpm_rmm-simple.cmake SERIAL )
+add_cmake_config_test( cpm_rmm-export.cmake )
+add_cmake_config_test( cpm_rmm-simple.cmake )
 
-add_cmake_config_test( cpm_spdlog-export.cmake SERIAL )
-add_cmake_config_test( cpm_spdlog-simple.cmake SERIAL )
+add_cmake_config_test( cpm_spdlog-export.cmake )
+add_cmake_config_test( cpm_spdlog-simple.cmake )
 
-add_cmake_config_test( cpm_thrust-export.cmake SERIAL )
-add_cmake_config_test( cpm_thrust-simple.cmake SERIAL )
+add_cmake_config_test( cpm_thrust-export.cmake )
+add_cmake_config_test( cpm_thrust-simple.cmake )
