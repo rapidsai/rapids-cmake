@@ -55,7 +55,9 @@ function(rapids_cpm_package_details package_name version_var url_var tag_var sha
 
   # Evaluate any magic placeholders in the version or tag components including the
   # `rapids-cmake-version` value
-  include("${rapids-cmake-dir}/rapids-version.cmake")
+  if(NOT DEFINED rapids-cmake-version)
+    include("${rapids-cmake-dir}/rapids-version.cmake")
+  endif()
 
   cmake_language(EVAL CODE "set(version ${version})")
   cmake_language(EVAL CODE "set(git_tag ${git_tag})")
