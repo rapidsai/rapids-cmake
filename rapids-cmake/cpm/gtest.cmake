@@ -74,7 +74,7 @@ function(rapids_cpm_gtest)
   set(GTest_ADDED "${GTest_ADDED}" PARENT_SCOPE)
   set(GTest_VERSION ${version} PARENT_SCOPE)
 
-  if(NOT TARGET GTest::gtest)
+  if(NOT TARGET GTest::gtest AND TARGET gtest)
     add_library(GTest::gtest ALIAS gtest)
     add_library(GTest::gmock ALIAS gmock)
     add_library(GTest::gtest_main ALIAS gtest_main)
