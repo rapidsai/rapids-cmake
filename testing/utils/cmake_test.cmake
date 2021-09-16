@@ -34,7 +34,6 @@ adds a test for each generator:
 
   add_cmake_build_test( (config|build|run|install)
                          <SourceOrDir>
-                         [SERIAL]
                          [SHOULD_FAIL <expected error message string>]
                       )
 
@@ -53,7 +52,7 @@ adds a test for each generator:
 
 #]=======================================================================]
 function(add_cmake_test mode source_or_dir)
-  set(options SERIAL )
+  set(options)
   set(one_value SHOULD_FAIL)
   set(multi_value)
   cmake_parse_arguments(RAPIDS_TEST "${options}" "${one_value}" "${multi_value}" ${ARGN})
@@ -76,6 +75,11 @@ function(add_cmake_test mode source_or_dir)
     message(FATAL_ERROR "Unable to find a file or directory named: ${source_or_dir}")
   endif()
 
+  set(extra_configure_flags)
+  if(DEFINED CPM_SOURCE_CACHE)
+    list(APPEND extra_configure_flags "-DCPM_SOURCE_CACHE=${CPM_SOURCE_CACHE}")
+  endif()
+
   foreach(generator gen_name IN ZIP_LISTS supported_generators nice_gen_names)
 
     set(test_name "${test_name_stem}-${gen_name}")
@@ -86,6 +90,7 @@ function(add_cmake_test mode source_or_dir)
                COMMAND ${CMAKE_COMMAND}
                -S ${src_dir} -B ${build_dir}
                -G "${generator}"
+               ${extra_configure_flags}
                -Drapids-cmake-testing-dir=${PROJECT_SOURCE_DIR}
                -Drapids-cmake-dir=${PROJECT_SOURCE_DIR}/../rapids-cmake)
     elseif(mode STREQUAL "build")
@@ -93,6 +98,7 @@ function(add_cmake_test mode source_or_dir)
                COMMAND ${CMAKE_COMMAND}
                -S ${src_dir} -B ${build_dir}
                -G "${generator}"
+               ${extra_configure_flags}
                -Drapids-cmake-testing-dir=${PROJECT_SOURCE_DIR}
                -Drapids-cmake-dir=${PROJECT_SOURCE_DIR}/../rapids-cmake)
 
@@ -106,10 +112,6 @@ function(add_cmake_test mode source_or_dir)
       message(FATAL_ERROR "install mode not yet implemented by add_cmake_build_test")
     else()
       message(FATAL_ERROR "${mode} mode not one of the valid modes (config|build|install) by add_cmake_build_test")
-    endif()
-
-    if(RAPIDS_TEST_SERIAL)
-      set_tests_properties(${test_name} PROPERTIES RUN_SERIAL ON)
     endif()
 
     if(RAPIDS_TEST_SHOULD_FAIL)

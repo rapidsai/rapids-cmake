@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-include_guard(GLOBAL)
+# can't have an include guard on this file
+# that breaks its usage by cpm/detail/package_details
 
 set(rapids-cmake-version 21.10)

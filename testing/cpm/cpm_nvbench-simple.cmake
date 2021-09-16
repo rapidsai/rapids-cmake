@@ -16,8 +16,6 @@
 include(${rapids-cmake-dir}/cpm/init.cmake)
 include(${rapids-cmake-dir}/cpm/nvbench.cmake)
 
-include("${rapids-cmake-testing-dir}/cpm/setup_cpm_cache.cmake")
-setup_cpm_cache()
 rapids_cpm_init()
 
 if(TARGET nvbench::nvbench)

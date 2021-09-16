@@ -21,10 +21,20 @@ enable_testing()
 include(utils/cmake_config_test.cmake)
 include(utils/cmake_build_test.cmake)
 
-
 add_subdirectory(cmake)
-add_subdirectory(cpm)
 add_subdirectory(cuda)
 add_subdirectory(export)
 add_subdirectory(find)
-add_subdirectory(other)
+
+option(RAPIDS_CMAKE_ENABLE_DOWNLOAD_TESTS ON)
+if(RAPIDS_CMAKE_ENABLE_DOWNLOAD_TESTS)
+  # Setup and fill the cpm cache, and specify CPM_SOURCE_CACHE
+  # so that all subsequent tests in this directory use the
+  # shared CPM_SOURCE_CACHE
+  include("${CMAKE_CURRENT_SOURCE_DIR}/utils/setup_cpm_cache.cmake")
+  setup_cpm_cache()
+
+  add_subdirectory(cpm)
+  add_subdirectory(other)
+endif()
+
