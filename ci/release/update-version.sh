@@ -31,8 +31,8 @@ function sed_runner() {
     sed -i.bak ''"$1"'' $2 && rm -f ${2}.bak
 }
 
-sed_runner 's/'"rapids-cmake-version .*)"'/'"rapids-cmake-version ${NEXT_FULL_TAG})"'/g' RAPIDS.cmake
-sed_runner 's/'"rapids-cmake-version .*)"'/'"rapids-cmake-version ${NEXT_FULL_TAG})"'/g' rapids-cmake/rapids-version.cmake
+sed_runner 's/'"rapids-cmake-version .*)"'/'"rapids-cmake-version ${NEXT_SHORT_TAG})"'/g' RAPIDS.cmake
+sed_runner 's/'"rapids-cmake-version .*)"'/'"rapids-cmake-version ${NEXT_SHORT_TAG})"'/g' rapids-cmake/rapids-version.cmake
 
 sed_runner 's/'"version =.*"'/'"version = \"${NEXT_SHORT_TAG}\""'/g' docs/conf.py
 sed_runner 's/'"release =.*"'/'"release = \"${NEXT_FULL_TAG}\""'/g' docs/conf.py
