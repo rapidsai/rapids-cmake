@@ -15,9 +15,6 @@
 #=============================================================================
 include(${rapids-cmake-dir}/cpm/init.cmake)
 
-include("${rapids-cmake-testing-dir}/cpm/setup_cpm_cache.cmake")
-
-
 rapids_cpm_init()
 
 # Load the default values for nvbench and GTest projects

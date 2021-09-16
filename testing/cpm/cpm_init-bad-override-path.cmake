@@ -15,5 +15,4 @@
 #=============================================================================
 include(${rapids-cmake-dir}/cpm/init.cmake)
 
-include("${rapids-cmake-testing-dir}/cpm/setup_cpm_cache.cmake")
 rapids_cpm_init(OVERRIDE ${CMAKE_CURRENT_LIST_DIR}/bad_path.cmake)
