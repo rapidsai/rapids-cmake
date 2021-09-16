@@ -117,6 +117,9 @@ function(add_cmake_test mode source_or_dir)
       set_tests_properties(${test_name} PROPERTIES WILL_FAIL ON)
       set_tests_properties(${test_name} PROPERTIES
         FAIL_REGULAR_EXPRESSION "${RAPIDS_TEST_SHOULD_FAIL}")
+    else()
+      # Error out if we detect any CMake syntax warnings
+      set_tests_properties(${test_name} PROPERTIES FAIL_REGULAR_EXPRESSION "Syntax Warning")
     endif()
 
     # Apply a label to the test based on the folder it is in and the generator used
