@@ -54,8 +54,7 @@ function(rapids_cmake_install_lib_dir out_variable_name)
 
   set(use_conda_lib_dir FALSE)
   if(CMAKE_VERSION VERSION_LESS 3.22)
-    # Starting with 3.22, CMake is fully aware of the
-    # conda 'lib' requirements so we don't need to
+    # Starting with 3.22, CMake is fully aware of the conda 'lib' requirements so we don't need to
     # do this check at all
     if(DEFINED ENV{CONDA_BUILD} AND DEFINED ENV{PREFIX})
       set(conda_prefix "$ENV{PREFIX}")
