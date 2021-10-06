@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2018-2021, NVIDIA CORPORATION.
+# Copyright (c) 2021, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -55,13 +55,9 @@ Example on how to properly use :cmake:command:`rapids_cuda_init_architectures`:
 
   cmake_minimum_required(...)
 
-  include(FetchContent)
-  FetchContent_Declare(
-    rapids-cmake
-    GIT_REPOSITORY https://github.com/rapidsai/rapids-cmake.git
-    GIT_TAG        branch-<VERSION_MAJOR>.<VERSION_MINOR>
-  )
-  FetchContent_MakeAvailable(rapids-cmake)
+  file(DOWNLOAD https://raw.githubusercontent.com/rapidsai/rapids-cmake/branch-<VERSION_MAJOR>.<VERSION_MINOR>/RAPIDS.cmake
+    ${CMAKE_BINARY_DIR}/RAPIDS.cmake)
+  include(${CMAKE_BINARY_DIR}/RAPIDS.cmake)
   include(rapids-cuda)
 
   rapids_cuda_init_architectures(ExampleProject)

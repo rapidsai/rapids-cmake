@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2018-2021, NVIDIA CORPORATION.
+# Copyright (c) 2021, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,16 +14,15 @@
 # limitations under the License.
 #=============================================================================
 #
-# This is an entry point for all projects using rapids-cmake.
+# This is the legacy entry point for projects using rapids-cmake.
 #
 # This will setup the following variables in the parent directory
 # - CMAKE_MODULE_PATH
 # - rapids-cmake-dir
 #
-# It will also
-# This is done to make sure that rapids-cmake can be properly included
-# multiple times by sibling projects without issue
-#
+# This is considered legacy as it has issues when multiple projects
+# use rapids-cmake via CPM inside the same global project. In those
+# cases it can fail due to CMAKE_MODULE_PREFIX not being exported properly
 
 # Enfore the minimum required CMake version for all users
 cmake_minimum_required(VERSION 3.20.1 FATAL_ERROR)
@@ -36,6 +35,10 @@ endif()
 if(NOT "${rapids-cmake-dir}" IN_LIST CMAKE_MODULE_PATH)
   list(APPEND CMAKE_MODULE_PATH "${rapids-cmake-dir}")
 endif()
+
+# Propagate up the rapids-cmake version
+include("${rapids-cmake-dir}/rapids-version.cmake")
+set(rapids-cmake-version ${rapids-cmake-version} PARENT_SCOPE)
 
 # install a hook that sets up `rapids-cmake-dir` and `CMAKE_MODULE_PATH` all the way up the
 # call-stack

@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2018-2021, NVIDIA CORPORATION.
+# Copyright (c) 2021, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -33,7 +33,8 @@ adds a test for each generator:
 .. code-block:: cmake
 
   add_cmake_build_test( (config|build|run|install)
-                        <SourceOrDir>
+                         <SourceOrDir>
+                         [SHOULD_FAIL <expected error message string>]
                       )
 
 ``config``
@@ -51,6 +52,10 @@ adds a test for each generator:
 
 #]=======================================================================]
 function(add_cmake_test mode source_or_dir)
+  set(options)
+  set(one_value SHOULD_FAIL)
+  set(multi_value)
+  cmake_parse_arguments(RAPIDS_TEST "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
   cmake_detect_generators(supported_generators nice_gen_names)
 
@@ -70,6 +75,11 @@ function(add_cmake_test mode source_or_dir)
     message(FATAL_ERROR "Unable to find a file or directory named: ${source_or_dir}")
   endif()
 
+  set(extra_configure_flags)
+  if(DEFINED CPM_SOURCE_CACHE)
+    list(APPEND extra_configure_flags "-DCPM_SOURCE_CACHE=${CPM_SOURCE_CACHE}")
+  endif()
+
   foreach(generator gen_name IN ZIP_LISTS supported_generators nice_gen_names)
 
     set(test_name "${test_name_stem}-${gen_name}")
@@ -80,6 +90,7 @@ function(add_cmake_test mode source_or_dir)
                COMMAND ${CMAKE_COMMAND}
                -S ${src_dir} -B ${build_dir}
                -G "${generator}"
+               ${extra_configure_flags}
                -Drapids-cmake-testing-dir=${PROJECT_SOURCE_DIR}
                -Drapids-cmake-dir=${PROJECT_SOURCE_DIR}/../rapids-cmake)
     elseif(mode STREQUAL "build")
@@ -87,6 +98,7 @@ function(add_cmake_test mode source_or_dir)
                COMMAND ${CMAKE_COMMAND}
                -S ${src_dir} -B ${build_dir}
                -G "${generator}"
+               ${extra_configure_flags}
                -Drapids-cmake-testing-dir=${PROJECT_SOURCE_DIR}
                -Drapids-cmake-dir=${PROJECT_SOURCE_DIR}/../rapids-cmake)
 
@@ -100,6 +112,16 @@ function(add_cmake_test mode source_or_dir)
       message(FATAL_ERROR "install mode not yet implemented by add_cmake_build_test")
     else()
       message(FATAL_ERROR "${mode} mode not one of the valid modes (config|build|install) by add_cmake_build_test")
+    endif()
+
+    if(RAPIDS_TEST_SHOULD_FAIL)
+      # Make sure we have a match
+      set_tests_properties(${test_name} PROPERTIES WILL_FAIL ON)
+      set_tests_properties(${test_name} PROPERTIES
+        FAIL_REGULAR_EXPRESSION "${RAPIDS_TEST_SHOULD_FAIL}")
+    else()
+      # Error out if we detect any CMake syntax warnings
+      set_tests_properties(${test_name} PROPERTIES FAIL_REGULAR_EXPRESSION "Syntax Warning")
     endif()
 
     # Apply a label to the test based on the folder it is in and the generator used

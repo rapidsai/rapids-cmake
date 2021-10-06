@@ -18,13 +18,10 @@ Content](https://cmake.org/cmake/help/latest/module/FetchContent.html) into your
 
 cmake_minimum_required(...)
 
-include(FetchContent)
-FetchContent_Declare(
-  rapids-cmake
-  GIT_REPOSITORY https://github.com/rapidsai/rapids-cmake.git
-  GIT_TAG        branch-<VERSION_MAJOR>.<VERSION_MINOR>
-)
-FetchContent_MakeAvailable(rapids-cmake)
+file(DOWNLOAD https://raw.githubusercontent.com/rapidsai/rapids-cmake/branch-<VERSION_MAJOR>.<VERSION_MINOR>/RAPIDS.cmake
+    ${CMAKE_BINARY_DIR}/RAPIDS.cmake)
+include(${CMAKE_BINARY_DIR}/RAPIDS.cmake)
+
 include(rapids-cmake)
 include(rapids-cpm)
 include(rapids-cuda)
@@ -51,9 +48,10 @@ To use function provided by `rapids-cmake` projects have two options:
 
 ## Components
 
-Complete online documentation for all components is currently under development. Currently
-you can read the existing documentation by looking at the inline restructure text of
-each cmake file.
+Complete online documentation for all components can be found at:
+
+  https://docs.rapids.ai/api/rapids-cmake/nightly/api.html
+
 
 ### cmake
 The `rapids-cmake` module contains helpful general CMake functionality

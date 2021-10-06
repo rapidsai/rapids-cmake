@@ -12,9 +12,11 @@ require.
    :titlesonly:
 
    /command/rapids_cmake_build_type
+   /command/rapids_cmake_install_lib_dir
    /command/rapids_cmake_make_global
    /command/rapids_cmake_parse_version
    /command/rapids_cmake_support_conda_env
+   /command/rapids_cmake_write_git_revision_file
    /command/rapids_cmake_write_version_file
 
 CPM
@@ -28,6 +30,28 @@ tracking of these dependencies for correct export support.
 
    /command/rapids_cpm_init
    /command/rapids_cpm_find
+
+CPM Pre-Configured Pacakges
+***************************
+
+These `rapids_cpm` functions allow projects to easily find or build common
+RAPIDS dependencies.
+
+These allow projects to make sure they use the same version and flags for
+dependencies as the rest of RAPIDS. The exact versions that each pre-configured
+package uses :ref:`can be found here. <cpm_versions>`
+
+.. toctree::
+   :titlesonly:
+
+   /packages/rapids_cpm_gtest
+   /packages/rapids_cpm_nvbench
+   /packages/rapids_cpm_rmm
+   /packages/rapids_cpm_spdlog
+   /packages/rapids_cpm_thrust
+   /command/rapids_cpm_package_override
+
+
 
 Find
 ****
@@ -85,5 +109,6 @@ correct export generation. These should only be used when :cmake:command:`rapids
 
    rapids_export_cpm [Advanced] </command/rapids_export_cpm>
    rapids_export_find_package_file [Advanced] </command/rapids_export_find_package_file>
+   rapids_export_find_package_root [Advanced] </command/rapids_export_find_package_root>
    rapids_export_package [Advanced] </command/rapids_export_package>
 

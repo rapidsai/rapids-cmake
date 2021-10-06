@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2018-2021, NVIDIA CORPORATION.
+# Copyright (c) 2021, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
+include_guard(GLOBAL)
 
 #[=======================================================================[.rst:
 rapids_export_package
@@ -53,6 +54,17 @@ function(rapids_export_package type name export_set)
   set(multi_value GLOBAL_TARGETS)
   cmake_parse_arguments(RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
+  if(type STREQUAL build)
+    if(DEFINED ${name}_DIR AND ${name}_DIR)
+      # Export out where we found the existing local config module
+      set(possible_dir "${${name}_DIR}")
+    endif()
+  endif()
+
+  configure_file("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/${type}_package.cmake.in"
+                 "${CMAKE_BINARY_DIR}/rapids-cmake/${export_set}/${type}/package_${name}.cmake"
+                 @ONLY)
+
   if(NOT TARGET rapids_export_${type}_${export_set})
     add_library(rapids_export_${type}_${export_set} INTERFACE)
   endif()
@@ -65,7 +77,8 @@ function(rapids_export_package type name export_set)
 
   if(RAPIDS_GLOBAL_TARGETS)
     # record our targets that need to be marked as global when imported
-    target_link_libraries(rapids_export_${type}_${export_set} INTERFACE ${RAPIDS_GLOBAL_TARGETS})
+    set_property(TARGET rapids_export_${type}_${export_set} APPEND
+                 PROPERTY "GLOBAL_TARGETS" "${RAPIDS_GLOBAL_TARGETS}")
   endif()
 
 endfunction()

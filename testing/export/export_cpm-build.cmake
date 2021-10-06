@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2018-2021, NVIDIA CORPORATION.
+# Copyright (c) 2021, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ if(NOT SECOND_FAKE_CPM_PACKAGE IN_LIST packages)
 endif()
 
 # Verify that we encoded what `targets` are marked as global export
-get_target_property( global_targets rapids_export_build_test_export_set INTERFACE_LINK_LIBRARIES)
+get_target_property( global_targets rapids_export_build_test_export_set GLOBAL_TARGETS)
 if( NOT "ABC::ABC" IN_LIST global_targets)
   message(FATAL_ERROR "rapids_export_cpm failed to record ABC::ABC needs to be global")
 endif()
@@ -60,7 +60,7 @@ if( NOT requires_cpm)
 endif()
 
 # Verify that cpm configuration files exist
-if(NOT EXISTS "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/build/FAKE_CPM_PACKAGE.cmake" OR
-   NOT EXISTS "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/build/SECOND_FAKE_CPM_PACKAGE.cmake")
+if(NOT EXISTS "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/build/cpm_FAKE_CPM_PACKAGE.cmake" OR
+   NOT EXISTS "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/build/cpm_SECOND_FAKE_CPM_PACKAGE.cmake")
   message(FATAL_ERROR "rapids_export_cpm failed to generate a CPM configuration")
 endif()

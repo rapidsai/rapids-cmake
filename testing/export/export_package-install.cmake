@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2018-2021, NVIDIA CORPORATION.
+# Copyright (c) 2021, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -38,11 +38,23 @@ if(NOT PNG IN_LIST packages)
 endif()
 
 # Verify that we encoded what `targets` are marked as global export
-get_target_property( global_targets rapids_export_install_test_export_set INTERFACE_LINK_LIBRARIES)
+get_target_property( global_targets rapids_export_install_test_export_set GLOBAL_TARGETS)
 if( NOT "ZLIB::ZLIB" IN_LIST global_targets)
   message(FATAL_ERROR "rapids_export_package failed to record ZLIB::ZLIB needs to be global")
 endif()
 if( NOT "PNG::PNG_V2" IN_LIST global_targets)
   message(FATAL_ERROR "rapids_export_package failed to record PNG::PNG_V2 needs to be global")
+endif()
+
+# Verify that temp install package configuration files exist
+if(NOT EXISTS "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/install/package_ZLIB.cmake" OR
+   NOT EXISTS "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/install/package_PNG.cmake")
+  message(FATAL_ERROR "rapids_export_package failed to generate a find_package configuration")
+endif()
+
+# Verify that temp build package configuration files don't exist
+if(EXISTS "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/build/package_ZLIB.cmake" OR
+   EXISTS "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/build/package_PNG.cmake")
+  message(FATAL_ERROR "rapids_export_package(INSTALL) generated temp files in the wrong directory")
 endif()
 

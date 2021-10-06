@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2018-2021, NVIDIA CORPORATION.
+# Copyright (c) 2021, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -26,3 +26,4 @@ rapids_cmake_write_version_file(nested_version.hpp)
 enable_language(CXX)
 add_executable(write_version main.cpp)
 target_include_directories(write_version PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
+target_compile_features(write_version PRIVATE cxx_std_14)

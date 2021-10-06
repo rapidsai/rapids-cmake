@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2018-2021, NVIDIA CORPORATION.
+# Copyright (c) 2021, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,20 +17,28 @@ include_guard(GLOBAL)
 
 #[=======================================================================[.rst:
 rapids_cpm_init
--------------------
+---------------
 
 .. versionadded:: v21.06.00
 
-Establish the `CPM` infrastructure for the project.
+Establish the `CPM` and preset package infrastructure for the project.
 
 .. code-block:: cmake
 
-  rapids_cpm_init()
+  rapids_cpm_init( [OVERRIDE <json_override_file_path> ] )
 
 The CPM module will be downloaded based on the state of :cmake:variable:`CPM_SOURCE_CACHE` and
 :cmake:variable:`ENV{CPM_SOURCE_CACHE}`. This allows multiple nested projects to share the
 same download of CPM. If those variables aren't set the file will be cached
 in the build tree of the calling project
+
+``OVERRIDE``
+.. versionadded:: v21.10.00
+  Override the `CPM` preset package information for the project. The user provided
+  json file must follow the `versions.json` format, which is :ref:`documented here<cpm_version_format>`.
+
+  If the override file doesn't specify a value or package entry the default
+  version will be used.
 
 .. note::
   Must be called before any invocation of :cmake:command:`rapids_cpm_find`.
@@ -38,25 +46,21 @@ in the build tree of the calling project
 #]=======================================================================]
 function(rapids_cpm_init)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.init")
-  set(CPM_DOWNLOAD_VERSION 7644c3a40fc7889f8dee53ce21e85dc390b883dc) # 0.32.1
 
-  if(CPM_SOURCE_CACHE)
-    # Expand relative path. This is important if the provided path contains a tilde (~)
-    cmake_path(ABSOLUTE_PATH CPM_SOURCE_CACHE)
-    set(CPM_DOWNLOAD_LOCATION "${CPM_SOURCE_CACHE}/cpm/CPM_${CPM_DOWNLOAD_VERSION}.cmake")
-  elseif(DEFINED ENV{CPM_SOURCE_CACHE})
-    set(CPM_DOWNLOAD_LOCATION "$ENV{CPM_SOURCE_CACHE}/cpm/CPM_${CPM_DOWNLOAD_VERSION}.cmake")
-  else()
-    set(CPM_DOWNLOAD_LOCATION "${CMAKE_BINARY_DIR}/cmake/CPM_${CPM_DOWNLOAD_VERSION}.cmake")
+  set(options)
+  set(one_value OVERRIDE)
+  set(multi_value)
+  cmake_parse_arguments(RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
+
+  include("${rapids-cmake-dir}/cpm/detail/load_preset_versions.cmake")
+  rapids_cpm_load_preset_versions()
+
+  if(RAPIDS_OVERRIDE)
+    include("${rapids-cmake-dir}/cpm/package_override.cmake")
+    rapids_cpm_package_override("${RAPIDS_OVERRIDE}")
   endif()
 
-  if(NOT (EXISTS ${CPM_DOWNLOAD_LOCATION}))
-    message(VERBOSE "Downloading CPM.cmake to ${CPM_DOWNLOAD_LOCATION}")
-    file(DOWNLOAD
-         https://raw.githubusercontent.com/cpm-cmake/CPM.cmake/${CPM_DOWNLOAD_VERSION}/cmake/CPM.cmake
-         ${CPM_DOWNLOAD_LOCATION})
-  endif()
-
-  include(${CPM_DOWNLOAD_LOCATION})
+  include("${rapids-cmake-dir}/cpm/detail/download.cmake")
+  rapids_cpm_download()
 
 endfunction()

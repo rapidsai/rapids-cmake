@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2018-2021, NVIDIA CORPORATION.
+# Copyright (c) 2021, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,6 +24,12 @@ add_cmake_config_test( conda_env-build.cmake )
 add_cmake_config_test( conda_env-invalid.cmake )
 add_cmake_config_test( conda_env-prefix.cmake )
 
+add_cmake_config_test( install_lib_dir-build.cmake )
+add_cmake_config_test( install_lib_dir-no-conda.cmake )
+add_cmake_config_test( install_lib_dir-lib64-with-conda_build.cmake )
+add_cmake_config_test( install_lib_dir-lib64-with-conda_prefix.cmake )
+add_cmake_config_test( install_lib_dir-prefix.cmake )
+
 add_cmake_config_test( make_global-already-imported-global.cmake )
 add_cmake_config_test( make_global-is-alias.cmake )
 add_cmake_config_test( make_global-no-targets.cmake )
@@ -38,6 +44,11 @@ add_cmake_config_test( parse_version-patch-valid.cmake )
 add_cmake_config_test( parse_version-patch-invalid.cmake )
 add_cmake_config_test( parse_version-major_minor-invalid.cmake )
 add_cmake_config_test( parse_version-major_minor-valid.cmake )
+
+add_cmake_build_test( write_git_revision-dirty )
+add_cmake_build_test( write_git_revision-embed )
+add_cmake_build_test( write_git_revision-simple )
+add_cmake_build_test( write_git_revision-no-git )
 
 add_cmake_build_test( write_version-absolute )
 add_cmake_build_test( write_version-relative )

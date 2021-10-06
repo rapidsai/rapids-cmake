@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2018-2021, NVIDIA CORPORATION.
+# Copyright (c) 2021, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,5 +18,5 @@ include_guard(GLOBAL)
 include(utils/cmake_test.cmake)
 
 function(add_cmake_build_test source_or_dir)
-  add_cmake_test(BUILD "${source_or_dir}")
+  add_cmake_test(BUILD "${source_or_dir}" ${ARGN})
 endfunction()

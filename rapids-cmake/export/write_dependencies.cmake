@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2018-2021, NVIDIA CORPORATION.
+# Copyright (c) 2021, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
+include_guard(GLOBAL)
 
 #[=======================================================================[.rst:
 rapids_export_write_dependencies
@@ -50,6 +51,11 @@ function(rapids_export_write_dependencies type export_set file_path)
     return()
   endif()
 
+  # Determine if we need have any `ROOT_DIR` variables we need to set.
+  get_property(find_root_dirs TARGET rapids_export_${type}_${export_set}
+               PROPERTY "FIND_ROOT_PACKAGES")
+  list(REMOVE_DUPLICATES find_root_dirs)
+
   # Determine if we need have any `FindModules` that we need to package.
   get_property(find_modules TARGET rapids_export_${type}_${export_set}
                PROPERTY "FIND_PACKAGES_TO_INSTALL")
@@ -67,9 +73,9 @@ function(rapids_export_write_dependencies type export_set file_path)
   # Do we need a Template header?
   set(RAPIDS_EXPORT_CONTENTS)
   if(uses_cpm)
-    file(READ "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/../cpm/init.cmake" cpm_logic)
+    file(READ "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/../cpm/detail/download.cmake" cpm_logic)
     string(APPEND RAPIDS_EXPORT_CONTENTS ${cpm_logic})
-    string(APPEND RAPIDS_EXPORT_CONTENTS "rapids_cpm_init()\n\n")
+    string(APPEND RAPIDS_EXPORT_CONTENTS "rapids_cpm_download()\n\n")
 
     if(type STREQUAL build)
       string(APPEND
@@ -82,6 +88,15 @@ endif()\n")
     endif()
   endif()
 
+  if(find_root_dirs)
+    foreach(package IN LISTS find_root_dirs)
+      get_property(root_dir_path TARGET rapids_export_${type}_${export_set}
+                   PROPERTY "FIND_ROOT_FOR_${package}")
+      set(dep_content "set(${package}_ROOT \"${root_dir_path}\")")
+      string(APPEND RAPIDS_EXPORT_CONTENTS "${dep_content}\n")
+    endforeach()
+  endif()
+
   if(find_modules)
     cmake_path(GET file_path PARENT_PATH find_module_dest)
     file(COPY ${find_modules} DESTINATION "${find_module_dest}")
@@ -90,22 +105,22 @@ endif()\n")
            [=[list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}")]=] "\n")
   endif()
 
+  set(dep_dir "${CMAKE_BINARY_DIR}/rapids-cmake/${export_set}/${type}")
   foreach(dep IN LISTS deps)
-    if(EXISTS "${CMAKE_BINARY_DIR}/rapids-cmake/${export_set}/${type}/${dep}.cmake")
-      # We need inject the contents of this generated file into the file we are writing out. That
-      # way users can re-locate/install the file and it will still work
-      file(READ "${CMAKE_BINARY_DIR}/rapids-cmake/${export_set}/${type}/${dep}.cmake" dep_content)
-    else()
-      set(dep_content "find_dependency(${dep})")
+    # We need inject the contents of this generated file into the file we are writing out. That way
+    # users can re-locate/install the file and it will still work
+    if(EXISTS "${dep_dir}/cpm_${dep}.cmake")
+      # CPM recording takes priority over a find_package() recording
+      file(READ "${dep_dir}/cpm_${dep}.cmake" dep_content)
+    elseif(EXISTS "${dep_dir}/package_${dep}.cmake")
+      file(READ "${dep_dir}/package_${dep}.cmake" dep_content)
     endif()
-
     string(APPEND RAPIDS_EXPORT_CONTENTS "${dep_content}\n")
   endforeach()
   string(APPEND RAPIDS_EXPORT_CONTENTS "\n")
 
   # Handle promotion to global targets
-  get_property(global_targets TARGET rapids_export_${type}_${export_set}
-               PROPERTY "INTERFACE_LINK_LIBRARIES")
+  get_property(global_targets TARGET rapids_export_${type}_${export_set} PROPERTY "GLOBAL_TARGETS")
   list(REMOVE_DUPLICATES global_targets)
 
   string(APPEND RAPIDS_EXPORT_CONTENTS "set(rapids_global_targets ${global_targets})\n")

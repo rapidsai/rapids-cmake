@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2018-2021, NVIDIA CORPORATION.
+# Copyright (c) 2021, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ if(NOT PNG IN_LIST packages)
 endif()
 
 # Verify that we encoded what `targets` are marked as global export
-get_target_property( global_targets rapids_export_install_test_export_set INTERFACE_LINK_LIBRARIES)
+get_target_property( global_targets rapids_export_install_test_export_set GLOBAL_TARGETS)
 if(NOT "ZLIB::ZLIB" IN_LIST global_targets)
   message(FATAL_ERROR "rapids_find_package failed to record ZLIB::ZLIB needs to be global")
 endif()

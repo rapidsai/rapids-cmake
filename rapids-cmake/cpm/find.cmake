@@ -44,16 +44,6 @@ consistency. List all targets used by your project in `GLOBAL_TARGET`.
 .. note::
   Requires :cmake:command:`rapids_cpm_init` to be called before usage
 
-.. note::
-  Adding an export set to :cmake:command:`rapids_cpm_find` has different behavior
-  for build and install. Build exports a respective CPM call, since
-  we presume other CPM packages don't generate a correct build directory
-  config module. While install exports a `find_dependency` call as
-  we expect projects to have a valid install setup.
-
-  If you need different behavior you will need to use :cmake:command:`rapids_export_package()`
-  or :cmake:command:`rapids_export_cpm()`.
-
 ``PackageName``
   Name of the package to find.
 
@@ -64,18 +54,40 @@ consistency. List all targets used by your project in `GLOBAL_TARGET`.
   Which targets from this package should be made global. This information
   will be propagated to any associated export set.
 
+  .. versionchanged:: v21.10.00
+    If any targets listed in `GLOBAL_TARGET` exist when :cmake:command:`rapids_cpm_find` is called
+    no calls to `CPM` will be executed. This is done for the following reasons:
+
+      - Removes the need for the calling code to do the conditional checks
+      - Allows `BUILD_EXPORT_SET` and `INSTALL_EXPORT_SET` tracking to happen correctly when targets had already been brought it by non-CPM means.
+
 ``BUILD_EXPORT_SET``
   Record that a :cmake:command:`CPMFindPackage(<PackageName> ...)` call needs to occur as part of
   our build directory export set.
 
 ``INSTALL_EXPORT_SET``
   Record a :cmake:command:`find_dependency(<PackageName> ...)` call needs to occur as part of
-  our build directory export set.
+  our install directory export set.
 
 ``CPM_ARGS``
   Required placeholder to be provied before any extra arguments that need to
   be passed down to :cmake:command:`CPMFindPackage`.
 
+Result Variables
+^^^^^^^^^^^^^^^^
+  :cmake:variable:`<PackageName>_SOURCE_DIR` is set to the path to the source directory of <PackageName>.
+  :cmake:variable:`<PackageName>_BINAR_DIR`  is set to the path to the build directory of  <PackageName>.
+  :cmake:variable:`<PackageName>_ADDED`      is set to a true value if <PackageName> has not been added before.
+
+.. note::
+  Adding an export set to :cmake:command:`rapids_cpm_find` has different behavior
+  for build and install. Build exports a respective CPM call, since
+  we presume other CPM packages don't generate a correct build directory
+  config module. While install exports a `find_dependency` call as
+  we expect projects to have a valid install setup.
+
+  If you need different behavior you will need to use :cmake:command:`rapids_export_package()`
+  or :cmake:command:`rapids_export_cpm()`.
 
 #]=======================================================================]
 function(rapids_cpm_find name version)
@@ -89,14 +101,25 @@ function(rapids_cpm_find name version)
     message(FATAL_ERROR "rapids_cpm_find requires you to specify CPM_ARGS before any CPM arguments")
   endif()
 
-  CPMFindPackage(NAME ${name} VERSION ${version} ${RAPIDS_UNPARSED_ARGUMENTS})
+  set(package_needs_to_be_added TRUE)
   if(RAPIDS_GLOBAL_TARGETS)
-    include("${rapids-cmake-dir}/cmake/make_global.cmake")
-    rapids_cmake_make_global(RAPIDS_GLOBAL_TARGETS)
+    foreach(target IN LISTS RAPIDS_GLOBAL_TARGETS)
+      if(TARGET ${target})
+        set(package_needs_to_be_added FALSE)
+        break()
+      endif()
+    endforeach()
+  endif()
+
+  if(package_needs_to_be_added)
+    CPMFindPackage(NAME ${name} VERSION ${version} ${RAPIDS_UNPARSED_ARGUMENTS})
   endif()
 
   set(extra_info)
   if(RAPIDS_GLOBAL_TARGETS)
+    include("${rapids-cmake-dir}/cmake/make_global.cmake")
+    rapids_cmake_make_global(RAPIDS_GLOBAL_TARGETS)
+
     set(extra_info "GLOBAL_TARGETS")
     list(APPEND extra_info ${RAPIDS_GLOBAL_TARGETS})
   endif()

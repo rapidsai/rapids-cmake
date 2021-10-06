@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2018-2021, NVIDIA CORPORATION.
+# Copyright (c) 2021, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -49,16 +49,11 @@ rapids_export_write_dependencies(install test_set "${CMAKE_CURRENT_BINARY_DIR}/e
 
 file(STRINGS "${CMAKE_CURRENT_BINARY_DIR}/export_set.cmake" text)
 
-set(duplicate_package )
+set(find_package_count 0)
 foreach(line IN LISTS text)
   # message(STATUS "1. line: ${line}")
-  if( line MATCHES "CPMFindPackage\\(RMM" )
-    if(NOT DEFINED duplicate_package_parsed )
-      set(duplicate_package_parsed TRUE)
-    else()
-      #We parsed a duplicate package
-      message(FATAL_ERROR "Detected duplicate `CPMFindPackage` calls for the same package")
-    endif()
+  if( line MATCHES "CPMFindPackage" )
+    math(EXPR find_package_count "${find_package_count} + 1")
   endif()
 
   if( line MATCHES "set\\(rapids_global_targets" AND NOT line MATCHES "unset")
@@ -82,3 +77,7 @@ foreach(line IN LISTS text)
   endif()
 
 endforeach()
+
+if(NOT find_package_count EQUAL 2)
+  message(FATAL_ERROR "Too many CPMFindPackage entries found. Expected 2, counted ${find_package_count}")
+endif()
