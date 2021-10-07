@@ -41,7 +41,8 @@ The CPM module will be downloaded based on the state of :cmake:variable:`CPM_SOU
 function(rapids_cpm_download)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.download")
 
-  set(CPM_DOWNLOAD_VERSION 7644c3a40fc7889f8dee53ce21e85dc390b883dc) # 0.32.1
+  # When changing version verify no new variables needs to be propagated
+  set(CPM_DOWNLOAD_VERSION 634800c61928d330a6e9559171509a5c3dd479d5) # 0.34.0
 
   if(CPM_SOURCE_CACHE)
     # Expand relative path. This is important if the provided path contains a tilde (~)
@@ -75,5 +76,11 @@ function(rapids_cpm_download)
   endif()
 
   include(${CPM_DOWNLOAD_LOCATION})
+
+  # Propagate up any modified local variables that CPM has changed.
+  #
+  # Push up the modified CMAKE_MODULE_PATh to allow `find_package`
+  # calls to find packages that CPM already added.
+  set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" PARENT_SCOPE)
 
 endfunction()
