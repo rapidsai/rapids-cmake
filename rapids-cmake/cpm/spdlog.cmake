@@ -75,7 +75,7 @@ function(rapids_cpm_spdlog)
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
                   GIT_SHALLOW ${shallow}
-                  OPTIONS "spdlog_INSTALL ${to_install}")
+                  OPTIONS "SPDLOG_INSTALL ${to_install}")
 
   # Propagate up variables that CPMFindPackage provide
   set(spdlog_SOURCE_DIR "${spdlog_SOURCE_DIR}" PARENT_SCOPE)
