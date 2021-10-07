@@ -37,8 +37,17 @@ example:
 .. literalinclude:: /packages/example.json
   :language: json
 
-If the override file doesn't specify a value or package entry the default
-version will be used.
+By default when an override for a project is provided no local search
+for that project will occur. This is done to make sure that the requested modified
+version is used.
+
+.. note::
+
+  If the override file doesn't specify a value or package entry the default
+  version will be used.
+
+  Must be called before any invocation of :cmake:command:`rapids_cpm_find`.
+
 
 #]=======================================================================]
 function(rapids_cpm_package_override filepath)
