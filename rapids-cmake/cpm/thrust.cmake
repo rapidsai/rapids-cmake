@@ -86,6 +86,31 @@ function(rapids_cpm_thrust NAMESPACE namespaces_name)
     thrust_create_target(${namespaces_name}::Thrust FROM_OPTIONS)
   endif()
 
+  # Since `GLOBAL_TARGET ${namespaces_name}::Thrust` will list the target to be promoted to global
+  # by `rapids_export` this will break consumers as the target doesn't exist when generating the
+  # dependencies.cmake file, but requires a call to `thrust_create_target`
+  #
+  # So determine what `BUILD_EXPORT_SET` and `INSTALL_EXPORT_SET` this was added to and remove
+  # ${namespaces_name}::Thrust
+  set(options CPM_ARGS)
+  set(one_value BUILD_EXPORT_SET INSTALL_EXPORT_SET)
+  set(multi_value)
+  cmake_parse_arguments(RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
+
+  if(RAPIDS_BUILD_EXPORT_SET)
+    set(target_name rapids_export_build_${RAPIDS_BUILD_EXPORT_SET})
+    get_target_property(global_targets ${target_name} GLOBAL_TARGETS)
+    list(POP_BACK global_targets)
+    set_target_properties(${target_name} PROPERTIES GLOBAL_TARGETS "${global_targets}")
+  endif()
+
+  if(RAPIDS_INSTALL_EXPORT_SET)
+    set(target_name rapids_export_install_${RAPIDS_BUILD_EXPORT_SET})
+    get_target_property(global_targets ${target_name} GLOBAL_TARGETS)
+    list(POP_BACK global_targets)
+    set_target_properties(${target_name} PROPERTIES GLOBAL_TARGETS "${global_targets}")
+  endif()
+
   # Propagate up variables that CPMFindPackage provide
   set(Thrust_SOURCE_DIR "${Thrust_SOURCE_DIR}" PARENT_SCOPE)
   set(Thrust_BINARY_DIR "${Thrust_BINARY_DIR}" PARENT_SCOPE)
