@@ -32,11 +32,11 @@ if(NOT Thrust IN_LIST packages)
 endif()
 
 get_target_property(packages rapids_export_build_test GLOBAL_TARGETS)
-if(NOT A::Thrust IN_LIST packages)
+if(A::Thrust IN_LIST packages)
   message(FATAL_ERROR "rapids_cpm_thrust incorrectly added A::Thrust to build GLOBAL_TARGETS")
 endif()
 
 get_target_property(packages rapids_export_build_test2 GLOBAL_TARGETS)
-if(NOT B::Thrust IN_LIST packages)
+if(B::Thrust IN_LIST packages)
   message(FATAL_ERROR "rapids_cpm_thrust incorrectly added B::Thrust to build GLOBAL_TARGETS")
 endif()
