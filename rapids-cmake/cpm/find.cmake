@@ -89,6 +89,12 @@ Result Variables
   If you need different behavior you will need to use :cmake:command:`rapids_export_package()`
   or :cmake:command:`rapids_export_cpm()`.
 
+  If :cmake:variable:`CPM_<PackageName>_SOURCE` is set, we use :cmake:command:`CPMAddPackage` instead of
+  :cmake:command:`CPMFindPackage`. :cmake:command:`CPMAddPackage` always adds the package at the desired
+  :cmake:variable:`CPM_<PackageName>_SOURCE` location, and won't attempt to locate it via
+  :cmake:command:`find_package()` first.
+
+
 #]=======================================================================]
 function(rapids_cpm_find name version)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.find")
@@ -112,7 +118,11 @@ function(rapids_cpm_find name version)
   endif()
 
   if(package_needs_to_be_added)
-    CPMFindPackage(NAME ${name} VERSION ${version} ${RAPIDS_UNPARSED_ARGUMENTS})
+    if(CPM_${name}_SOURCE)
+      CPMAddPackage(NAME ${name} VERSION ${version} ${RAPIDS_UNPARSED_ARGUMENTS})
+    else()
+      CPMFindPackage(NAME ${name} VERSION ${version} ${RAPIDS_UNPARSED_ARGUMENTS})
+    endif()
   endif()
 
   set(extra_info)
