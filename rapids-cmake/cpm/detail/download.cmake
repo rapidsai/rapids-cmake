@@ -79,8 +79,8 @@ function(rapids_cpm_download)
 
   # Propagate up any modified local variables that CPM has changed.
   #
-  # Push up the modified CMAKE_MODULE_PATh to allow `find_package`
-  # calls to find packages that CPM already added.
+  # Push up the modified CMAKE_MODULE_PATh to allow `find_package` calls to find packages that CPM
+  # already added.
   set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" PARENT_SCOPE)
 
 endfunction()
