@@ -49,6 +49,7 @@
           "INSTALL_EXPORT_SET": 1,
           "GLOBAL_TARGETS": "+",
           "CPM_ARGS": "+",
+          "DOWNLOAD_ONLY": "1",
           "GIT_REPOSITORY": "1",
           "GIT_TAG": "1",
           "GIT_SHALLOW": "1",
