@@ -135,8 +135,7 @@ function(rapids_cpm_thrust NAMESPACE namespaces_name)
     install(DIRECTORY "${Thrust_SOURCE_DIR}/thrust"
             DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/rapids/thrust/"
             FILES_MATCHING
-            PATTERN "*.h"
-            PATTERN "*.inl")
+            REGEX "\\.(h|inl)$")
     install(DIRECTORY "${Thrust_SOURCE_DIR}/dependencies/cub/cub"
             DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/rapids/thrust/dependencies/" FILES_MATCHING
             PATTERN "*.cuh")
