@@ -133,8 +133,7 @@ function(rapids_cpm_thrust NAMESPACE namespaces_name)
     #]==]
     include(GNUInstallDirs)
     install(DIRECTORY "${Thrust_SOURCE_DIR}/thrust"
-            DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/rapids/thrust/"
-            FILES_MATCHING
+            DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/rapids/thrust/" FILES_MATCHING
             REGEX "\\.(h|inl)$")
     install(DIRECTORY "${Thrust_SOURCE_DIR}/dependencies/cub/cub"
             DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/rapids/thrust/dependencies/" FILES_MATCHING
