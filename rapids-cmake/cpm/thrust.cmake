@@ -65,11 +65,6 @@ Result Variables
 function(rapids_cpm_thrust NAMESPACE namespaces_name)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.thrust")
 
-  set(to_install OFF)
-  if(INSTALL_EXPORT_SET IN_LIST ARGN)
-    set(to_install ON)
-  endif()
-
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
   rapids_cpm_package_details(Thrust version repository tag shallow)
 
@@ -80,7 +75,7 @@ function(rapids_cpm_thrust NAMESPACE namespaces_name)
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
                   GIT_SHALLOW ${shallow}
-                  OPTIONS "THRUST_ENABLE_INSTALL_RULES ${to_install}")
+                  OPTIONS "THRUST_ENABLE_INSTALL_RULES OFF")
 
   if(NOT TARGET ${namespaces_name}::Thrust)
     thrust_create_target(${namespaces_name}::Thrust FROM_OPTIONS)
@@ -109,6 +104,71 @@ function(rapids_cpm_thrust NAMESPACE namespaces_name)
     get_target_property(global_targets ${target_name} GLOBAL_TARGETS)
     list(REMOVE_ITEM global_targets "${namespaces_name}::Thrust")
     set_target_properties(${target_name} PROPERTIES GLOBAL_TARGETS "${global_targets}")
+  endif()
+
+  if(Thrust_SOURCE_DIR AND RAPIDS_INSTALL_EXPORT_SET) # only install thrust when we have an in-source version
+
+    #[==[
+    Projects such as cudf, and rmm require a newer versions of thrust than can be found in the oldest supported CUDA toolkit.
+    This requires these components to install/packaged so that consumers use the same version. To make sure that the custom
+    version of thrust is used over the CUDA toolkit version we need to ensure we always use an user include and not a system.
+
+    By default if we allow thrust to install into `CMAKE_INSTALL_INCLUDEDIR` alongside rmm (or other pacakges)
+    we will get a install tree that looks like this:
+
+      install/include/rmm
+      install/include/cub
+      install/include/thrust
+
+    This is a problem for CMake+NVCC due to the rules around import targets, and user/system includes. In this case both
+    rmm and thrust will specify an include path of `install/include`, while thrust tries to mark it as an user include,
+    since rmm uses CMake's default of system include. Compilers when provided the same include as both user and system
+    always goes with system.
+
+    Now while rmm could also mark `install/include` as system this just pushes the issue to another dependency which
+    isn't built by RAPIDS and comes by and marks `install/include` as system.
+
+    Instead the more reliable option is to make sure that we get thrust to be placed in an unique include path that
+    to other project will use. In the case of rapids-cmake we install the headers to `include/rapids/thrust`
+    #]==]
+    include(GNUInstallDirs)
+    install(DIRECTORY "${Thrust_SOURCE_DIR}/thrust"
+            DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/rapids/thrust/"
+            FILES_MATCHING
+            PATTERN "*.h"
+            PATTERN "*.inl")
+    install(DIRECTORY "${Thrust_SOURCE_DIR}/dependencies/cub/cub"
+            DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/rapids/thrust/dependencies/" FILES_MATCHING
+            PATTERN "*.cuh")
+
+    install(DIRECTORY "${Thrust_SOURCE_DIR}/thrust/cmake"
+            DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/rapids/thrust/thrust/")
+    install(DIRECTORY "${Thrust_SOURCE_DIR}/dependencies/cub/cub/cmake"
+            DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/rapids/thrust/dependencies/cub/")
+
+    include("${rapids-cmake-dir}/cmake/install_lib_dir.cmake")
+    rapids_cmake_install_lib_dir(install_location) # Use the correct conda aware path
+
+    # We need to install the forwarders in `lib/cmake/thrust` and `lib/cmake/cub`
+    file(WRITE "${CMAKE_BINARY_DIR}/cmake/thrust-config.cmake"
+         [=[include("${CMAKE_CURRENT_LIST_DIR}/../../../include/rapids/thrust/thrust/cmake/thrust-config.cmake")]=]
+    )
+    file(WRITE "${CMAKE_BINARY_DIR}/cmake/thrust-config-version.cmake"
+         [=[include("${CMAKE_CURRENT_LIST_DIR}/../../../include/rapids/thrust/thrust/cmake/thrust-config-version.cmake")]=]
+    )
+    install(FILES "${CMAKE_BINARY_DIR}/cmake/thrust-config.cmake"
+                  "${CMAKE_BINARY_DIR}/cmake/thrust-config-version.cmake"
+            DESTINATION "${install_location}/cmake/thrust")
+
+    file(WRITE "${CMAKE_BINARY_DIR}/cmake/cub-config.cmake"
+         [=[include("${CMAKE_CURRENT_LIST_DIR}/../../../include/rapids/thrust/dependencies/cub/cub-config.cmake")]=]
+    )
+    file(WRITE "${CMAKE_BINARY_DIR}/cmake/cub-config-version.cmake"
+         [=[include("${CMAKE_CURRENT_LIST_DIR}/../../../include/rapids/thrust/dependencies/cub/cub-config-version.cmake")]=]
+    )
+    install(FILES "${CMAKE_BINARY_DIR}/cmake/cub-config.cmake"
+                  "${CMAKE_BINARY_DIR}/cmake/cub-config-version.cmake"
+            DESTINATION "${install_location}/cmake/cub")
   endif()
 
   # Propagate up variables that CPMFindPackage provide
