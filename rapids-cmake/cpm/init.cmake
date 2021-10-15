@@ -32,8 +32,8 @@ The CPM module will be downloaded based on the state of :cmake:variable:`CPM_SOU
 same download of CPM. If those variables aren't set the file will be cached
 in the build tree of the calling project
 
-``OVERRIDE``
 .. versionadded:: v21.10.00
+  ``OVERRIDE``
   Override the `CPM` preset package information for the project. The user provided
   json file must follow the `versions.json` format, which is :ref:`documented here<cpm_version_format>`.
 

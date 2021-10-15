@@ -25,6 +25,11 @@
       "version" : "1.12.0",
       "git_url" : "https://github.com/NVIDIA/thrust.git",
       "git_tag" : "${version}"
+    },
+    "libcudacxx" : {
+      "version" : "1.4.0",
+      "git_url" : "https://github.com/NVIDIA/libcudacxx.git",
+      "git_tag" : "${version}"
     }
   }
 }
