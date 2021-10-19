@@ -17,13 +17,23 @@ include(${rapids-cmake-dir}/cpm/init.cmake)
 include(${rapids-cmake-dir}/cpm/find.cmake)
 
 cmake_minimum_required(VERSION 3.20)
-project(rapids-cpm-find-add-pkg-source LANGUAGES CXX)
+project(rapids-test-project LANGUAGES CXX)
 
-set(CPM_ZLIB_SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/mock_zlib_source_dir")
+
+set(CPM_cucxx_SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/mock_cucxx_source_dir")
 
 rapids_cpm_init()
-rapids_cpm_find(ZLIB 1.0)
+rapids_cpm_find(cucxx 1.0)
 
-if (NOT TARGET MOCK_ZLIB)
-  message(FATAL_ERROR "rapids_cpm_find failed to add ZLIB source dir ${CPM_ZLIB_SOURCE}")
+# Should find CPM generated `Findcucxx.cmake`
+find_package(cucxx REQUIRED)
+
+set(expected_find_path "${CPM_MODULE_PATH}/Findcucxx.cmake")
+if(NOT EXISTS "${expected_find_path}")
+  message(FATAL_ERROR "Findcucxx.cmake was not generated")
 endif()
+
+if(NOT TARGET MOCK_CUCXX)
+  message(FATAL_ERROR "cucxx targets should be generated")
+endif()
+

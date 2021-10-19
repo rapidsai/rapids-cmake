@@ -47,10 +47,11 @@ in the build tree of the calling project
 function(rapids_cpm_init)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.init")
 
-  set(options)
-  set(one_value OVERRIDE)
-  set(multi_value)
-  cmake_parse_arguments(RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
+  set(_rapids_options)
+  set(_rapids_one_value OVERRIDE)
+  set(_rapids_multi_value)
+  cmake_parse_arguments(RAPIDS "${_rapids_options}" "${_rapids_one_value}" "${_rapids_multi_value}"
+                        ${ARGN})
 
   include("${rapids-cmake-dir}/cpm/detail/load_preset_versions.cmake")
   rapids_cpm_load_preset_versions()
@@ -63,4 +64,9 @@ function(rapids_cpm_init)
   include("${rapids-cmake-dir}/cpm/detail/download.cmake")
   rapids_cpm_download()
 
+  # Propagate up any modified local variables that CPM has changed.
+  #
+  # Push up the modified CMAKE_MODULE_PATh to allow `find_package` calls to find packages that CPM
+  # already added.
+  set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" PARENT_SCOPE)
 endfunction()

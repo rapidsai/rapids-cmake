@@ -16,4 +16,4 @@
 cmake_minimum_required(VERSION 3.20)
 project(ZLIB LANGUAGES CXX)
 
-set(MOCK_ZLIB_FOUND TRUE)
+add_library(MOCK_ZLIB INTERFACE)

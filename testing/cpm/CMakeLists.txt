@@ -16,6 +16,7 @@
 add_cmake_config_test( rapids-cpm.cmake )
 
 add_cmake_config_test( cpm_find-add-pkg-source )
+add_cmake_config_test( cpm_find-and-find_package )
 add_cmake_config_test( cpm_find-existing-build-dir )
 add_cmake_config_test( cpm_find-existing-target )
 add_cmake_config_test( cpm_find-existing-target-to-export-sets )
