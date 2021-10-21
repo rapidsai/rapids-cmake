@@ -21,7 +21,7 @@ rapids_cpm_find
 
 .. versionadded:: v21.06.00
 
-Allow projects to find or build a dependency via `CPM` with built-in
+Allow projects to find or build abitrary projects via `CPM` with built-in
 tracking of these dependencies for correct export support.
 
 .. code-block:: cmake
@@ -93,6 +93,34 @@ Result Variables
   :cmake:command:`CPMFindPackage`. :cmake:command:`CPMAddPackage` always adds the package at the desired
   :cmake:variable:`CPM_<PackageName>_SOURCE` location, and won't attempt to locate it via
   :cmake:command:`find_package()` first.
+
+
+Examples
+^^^^^^^^
+
+Example on how to use :cmake:command:`rapids_cpm_find` to include common projects
+
+
+.. code-block:: cmake
+
+  # fmt
+  rapids_cpm_find(fmt 8.0.1
+    GLOBAL_TARGETS fmt::fmt
+    CPM_ARGS
+      GITHUB_REPOSITORY fmtlib/fmt
+      GIT_TAG 8.0.1
+      GIT_SHALLOW TRUE
+  )
+
+  # google benchmark, no GIT_TAG required since it uses `v<Version>` tags
+  rapids_cpm_find(benchmark 1.5.2
+    CPM_ARGS
+        GIT_REPOSITORY  https://github.com/google/benchmark.git
+        GIT_SHALLOW     TRUE
+        OPTIONS         "BENCHMARK_ENABLE_TESTING OFF"
+                        "BENCHMARK_ENABLE_INSTALL OFF"
+  )
+
 
 
 #]=======================================================================]
