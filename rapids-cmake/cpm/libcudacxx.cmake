@@ -84,15 +84,13 @@ function(rapids_cpm_libcudacxx)
     add_library(libcudacxx::libcudacxx ALIAS libcudacxx)
 
     target_include_directories(libcudacxx
-        INTERFACE   $<BUILD_INTERFACE:${libcudacxx_SOURCE_DIR}/include>
-                    $<INSTALL_INTERFACE:include/rapids/libcudacxx>)
+                               INTERFACE $<BUILD_INTERFACE:${libcudacxx_SOURCE_DIR}/include>
+                                         $<INSTALL_INTERFACE:include/rapids/libcudacxx>)
 
-    install(TARGETS libcudacxx
-            DESTINATION ${lib_dir}
-            EXPORT libcudacxx-targets)
+    install(TARGETS libcudacxx DESTINATION ${lib_dir} EXPORT libcudacxx-targets)
 
-
-    set(code_string [=[
+    set(code_string
+        [=[
 # nvcc automatically adds the CUDA Toolkit system include paths before any
 # system include paths that CMake adds. CMake implicitly treats all includes
 # on import targets as 'SYSTEM' includes.
@@ -110,26 +108,28 @@ set_target_properties(libcudacxx_includes PROPERTIES INTERFACE_INCLUDE_DIRECTORI
     if(build_export)
       include("${rapids-cmake-dir}/export/export.cmake")
       rapids_export(BUILD libcudacxx
-        EXPORT_SET libcudacxx-targets
-        GLOBAL_TARGETS libcudacxx
-        VERSION ${version}
-        NAMESPACE libcudacxx::
-        FINAL_CODE_BLOCK code_string)
+                    EXPORT_SET libcudacxx-targets
+                    GLOBAL_TARGETS libcudacxx
+                    VERSION ${version}
+                    NAMESPACE libcudacxx::
+                    FINAL_CODE_BLOCK code_string)
     endif()
 
     if(install_export)
       include("${rapids-cmake-dir}/cmake/install_lib_dir.cmake")
-      rapids_cmake_install_lib_dir( lib_dir )
-      install(DIRECTORY ${libcudacxx_SOURCE_DIR}/include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/rapids/libcudacxx)
-      install(DIRECTORY ${libcudacxx_SOURCE_DIR}/libcxx/include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/rapids/libcxx/include)
+      rapids_cmake_install_lib_dir(lib_dir)
+      install(DIRECTORY ${libcudacxx_SOURCE_DIR}/include/
+              DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/rapids/libcudacxx)
+      install(DIRECTORY ${libcudacxx_SOURCE_DIR}/libcxx/include/
+              DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/rapids/libcxx/include)
 
       include("${rapids-cmake-dir}/export/export.cmake")
       rapids_export(INSTALL libcudacxx
-        EXPORT_SET libcudacxx-targets
-        GLOBAL_TARGETS libcudacxx
-        VERSION ${version}
-        NAMESPACE libcudacxx::
-        FINAL_CODE_BLOCK code_string)
+                    EXPORT_SET libcudacxx-targets
+                    GLOBAL_TARGETS libcudacxx
+                    VERSION ${version}
+                    NAMESPACE libcudacxx::
+                    FINAL_CODE_BLOCK code_string)
 
     endif()
   endif()
