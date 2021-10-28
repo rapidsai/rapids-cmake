@@ -79,15 +79,17 @@ function(rapids_cpm_libcudacxx)
                   DOWNLOAD_ONLY TRUE)
 
   # establish the correct libcudacxx namespace aliases
-  if(libcudacxx_ADDED AND NOT TARGET libcudacxx)
-    add_library(libcudacxx INTERFACE)
-    add_library(libcudacxx::libcudacxx ALIAS libcudacxx)
+  if(libcudacxx_ADDED AND NOT TARGET rapids_libcudacxx)
+    add_library(rapids_libcudacxx INTERFACE)
+    set_target_properties(rapids_libcudacxx PROPERTIES EXPORT_NAME libcudacxx)
 
-    target_include_directories(libcudacxx
+    add_library(libcudacxx::libcudacxx ALIAS rapids_libcudacxx)
+
+    target_include_directories(rapids_libcudacxx
                                INTERFACE $<BUILD_INTERFACE:${libcudacxx_SOURCE_DIR}/include>
                                          $<INSTALL_INTERFACE:include/rapids/libcudacxx>)
 
-    install(TARGETS libcudacxx DESTINATION ${lib_dir} EXPORT libcudacxx-targets)
+    install(TARGETS rapids_libcudacxx DESTINATION ${lib_dir} EXPORT libcudacxx-targets)
 
     set(code_string
         [=[
