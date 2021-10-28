@@ -13,29 +13,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-cmake_minimum_required(VERSION 3.20)
-
-project(fill_cache LANGUAGES NONE)
-
 include(${rapids-cmake-dir}/cpm/init.cmake)
-
-include(${rapids-cmake-dir}/cpm/gtest.cmake)
 include(${rapids-cmake-dir}/cpm/libcudacxx.cmake)
-include(${rapids-cmake-dir}/cpm/nvbench.cmake)
-include(${rapids-cmake-dir}/cpm/rmm.cmake)
-include(${rapids-cmake-dir}/cpm/spdlog.cmake)
-include(${rapids-cmake-dir}/cpm/thrust.cmake)
 
 rapids_cpm_init()
 
-set(CPM_SOURCE_CACHE "${CMAKE_BINARY_DIR}")
-set(CPM_DOWNLOAD_ALL "ON")
-rapids_cpm_gtest(DOWNLOAD_ONLY ON)
-rapids_cpm_libcudacxx(DOWNLOAD_ONLY ON)
-rapids_cpm_nvbench(DOWNLOAD_ONLY ON)
-rapids_cpm_rmm(DOWNLOAD_ONLY ON)
-rapids_cpm_spdlog(DOWNLOAD_ONLY ON)
-rapids_cpm_thrust(temp DOWNLOAD_ONLY ON)
+rapids_cpm_libcudacxx(BUILD_EXPORT_SET frank INSTALL_EXPORT_SET test)
+rapids_cpm_libcudacxx(INSTALL_EXPORT_SET test2)
 
+get_target_property(packages rapids_export_install_test PACKAGE_NAMES)
+if(NOT libcudacxx IN_LIST packages)
+  message(FATAL_ERROR "rapids_cpm_libcudacxx failed to record libcudacxx needs to be exported")
+endif()
 
+get_target_property(packages rapids_export_install_test2 PACKAGE_NAMES)
+if(NOT libcudacxx IN_LIST packages)
+  message(FATAL_ERROR "rapids_cpm_libcudacxx failed to record libcudacxx needs to be exported")
+endif()
 
+get_target_property(packages rapids_export_build_frank PACKAGE_NAMES)
+if(NOT libcudacxx IN_LIST packages)
+  message(FATAL_ERROR "rapids_cpm_libcudacxx failed to record libcudacxx needs to be exported")
+endif()

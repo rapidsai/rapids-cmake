@@ -13,29 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-cmake_minimum_required(VERSION 3.20)
-
-project(fill_cache LANGUAGES NONE)
-
 include(${rapids-cmake-dir}/cpm/init.cmake)
-
-include(${rapids-cmake-dir}/cpm/gtest.cmake)
 include(${rapids-cmake-dir}/cpm/libcudacxx.cmake)
-include(${rapids-cmake-dir}/cpm/nvbench.cmake)
-include(${rapids-cmake-dir}/cpm/rmm.cmake)
-include(${rapids-cmake-dir}/cpm/spdlog.cmake)
-include(${rapids-cmake-dir}/cpm/thrust.cmake)
 
 rapids_cpm_init()
 
-set(CPM_SOURCE_CACHE "${CMAKE_BINARY_DIR}")
-set(CPM_DOWNLOAD_ALL "ON")
-rapids_cpm_gtest(DOWNLOAD_ONLY ON)
-rapids_cpm_libcudacxx(DOWNLOAD_ONLY ON)
-rapids_cpm_nvbench(DOWNLOAD_ONLY ON)
-rapids_cpm_rmm(DOWNLOAD_ONLY ON)
-rapids_cpm_spdlog(DOWNLOAD_ONLY ON)
-rapids_cpm_thrust(temp DOWNLOAD_ONLY ON)
+if(TARGET libcudacxx::libcudacxx)
+  message(FATAL_ERROR "Expected libcudacxx::libcudacxx expected to not exist")
+endif()
 
+rapids_cpm_libcudacxx()
+if(NOT TARGET libcudacxx::libcudacxx)
+  message(FATAL_ERROR "Expected libcudacxx::libcudacxx target to exist")
+endif()
 
-
+rapids_cpm_libcudacxx()
