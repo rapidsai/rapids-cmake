@@ -69,7 +69,7 @@ function(rapids_cpm_thrust NAMESPACE namespaces_name)
   rapids_cpm_package_details(Thrust version repository tag shallow)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
-  rapids_cpm_find(Thrust ${version} ${ARGN}
+  rapids_cpm_find(Thrust ${version} EXACT ${ARGN}
                   GLOBAL_TARGETS ${namespaces_name}::Thrust
                   CPM_ARGS
                   GIT_REPOSITORY ${repository}
