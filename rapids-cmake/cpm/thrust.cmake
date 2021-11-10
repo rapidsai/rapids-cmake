@@ -71,8 +71,7 @@ function(rapids_cpm_thrust NAMESPACE namespaces_name)
   include("${rapids-cmake-dir}/cpm/find.cmake")
   rapids_cpm_find(Thrust ${version} ${ARGN}
                   GLOBAL_TARGETS ${namespaces_name}::Thrust
-                  CPM_ARGS
-                  FIND_PACKAGE_ARGUMENTS EXACT
+                  CPM_ARGS FIND_PACKAGE_ARGUMENTS EXACT
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
                   GIT_SHALLOW ${shallow}
