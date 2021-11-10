@@ -25,26 +25,30 @@ Generate a C++ header file that holds git revision information of the calling pr
 
 .. code-block:: cmake
 
-  rapids_cmake_write_git_revision_file(<target_name> file_path)
+  rapids_cmake_write_git_revision_file(<target_name> file_path [PREFIX <prefix>])
 
 Creates a global interface target called `target_name` that holds the includes to
 the generated header with the macros for git branch, sha1, version, and if any uncommited
 changes exist. Users of the header file must use :cmake:command:`target_link_libraries` to
 the target so that the header is generated before it is used.
 
-This information will be recorded in the following defines
+``PREFIX``
+    Prefix for all the C++ macros. By default if not explicitly specified it will be equal
+    to the projects name ( CMake variable `PROJECT_NAME` ).
 
-  - <PROJECT_NAME>_GIT_BRANCH
+This information will be recorded in the following defines:
+
+  - <PREFIX>_GIT_BRANCH
     Will store the current git branch name, otherwise when in a detached HEAD state will
     store `HEAD`.
 
-  - <PROJECT_NAME>_GIT_SHA1
+  - <PREFIX>_GIT_SHA1
     Will store the full SHA1 for the current git commit if one exists.
 
-  - <PROJECT_NAME>_GIT_IS_DIRTY
+  - <PREFIX>_GIT_IS_DIRTY
     Will exist if any git tracked file has any modifications that aren't commited ( dirty ).
 
-  - <PROJECT_NAME>_GIT_VERSION
+  - <PREFIX>_GIT_VERSION
     Will store `<tag>[-<distance>-g<sha1>[-dirty]]` computed from running
     `git describe --tags --dirty --always`. For example "v21.10.00a-18-g7efb04f-dirty" indicates
     that the lastest commit is "7efb04f" but has uncommitted changes (`-dirty`), and
@@ -71,11 +75,20 @@ Result Targets
 function(rapids_cmake_write_git_revision_file target file_path)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cmake.write_git_revision_file")
 
+  set(options "")
+  set(one_value PREFIX)
+  set(multi_value "")
+  cmake_parse_arguments(RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
+
   cmake_path(IS_RELATIVE file_path is_relative)
   if(is_relative)
     cmake_path(APPEND CMAKE_CURRENT_BINARY_DIR ${file_path} OUTPUT_VARIABLE output_path)
   else()
     set(output_path "${file_path}")
+  endif()
+
+  if(NOT RAPIDS_PREFIX)
+    set(RAPIDS_PREFIX "${PROJECT_NAME}")
   endif()
 
   # Find Git
@@ -85,7 +98,7 @@ function(rapids_cmake_write_git_revision_file target file_path)
                     BYPRODUCTS "${file_path}"
                     COMMENT "Generate git revision file for {target}"
                     COMMAND ${CMAKE_COMMAND} -DWORKING_DIRECTORY=${CMAKE_CURRENT_SOURCE_DIR}
-                            -DGIT_EXECUTABLE=${GIT_EXECUTABLE} -DPROJECT_NAME=${PROJECT_NAME}
+                            -DGIT_EXECUTABLE=${GIT_EXECUTABLE} -DRAPIDS_GIT_PREFIX=${RAPIDS_PREFIX}
                             -DTEMPLATE_FILE=${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/git_revision.hpp.in
                             -DFILE_TO_WRITE=${file_path} -P
                             ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/compute_git_info.cmake

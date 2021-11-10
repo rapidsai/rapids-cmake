@@ -13,11 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#pragma once
 
-#define @RAPIDS_GIT_PREFIX@_GIT_BRANCH "@RAPIDS_WRITE_BRANCH@"
-#define @RAPIDS_GIT_PREFIX@_GIT_SHA1 "@RAPIDS_WRITE_SHA1@"
-#define @RAPIDS_GIT_PREFIX@_GIT_VERSION "@RAPIDS_WRITE_VERSION@"
-#if (@RAPIDS_GIT_IS_DIRTY@) //
-#  define @RAPIDS_GIT_PREFIX@_GIT_IS_DIRTY
-#endif
+#include <type_traits>
+#include <demo_version.hpp>
+#include <nested_version.hpp>
+
+constexpr int dmajor = DEMO_VERSION_MAJOR;
+constexpr int dminor = DEMO_VERSION_MINOR;
+constexpr int dpatch = DEMO_VERSION_PATCH;
+
+constexpr int nmajor = NESTED_VERSION_MAJOR;
+constexpr int nminor = NESTED_VERSION_MINOR;
+constexpr int npatch = NESTED_VERSION_PATCH;
+
+int main()
+{
+  static_assert(dmajor == 3);
+  static_assert(dminor == 2);
+  static_assert(dpatch == 0);
+
+  static_assert(nmajor == 3);
+  static_assert(nminor == 2);
+  static_assert(npatch == 0);
+  return 0;
+}
