@@ -148,7 +148,8 @@ function(rapids_cpm_thrust NAMESPACE namespaces_name)
     rapids_cmake_install_lib_dir(install_location) # Use the correct conda aware path
 
     # We need to install the forwarders in `lib/cmake/thrust` and `lib/cmake/cub`
-    set(scratch_dir "${CMAKE_BINARY_DIR}/rapids-cmake/${RAPIDS_INSTALL_EXPORT_SET}/install/scratch/")
+    set(scratch_dir
+        "${CMAKE_BINARY_DIR}/rapids-cmake/${RAPIDS_INSTALL_EXPORT_SET}/install/scratch/")
 
     file(WRITE "${scratch_dir}/thrust-config.cmake"
          [=[include("${CMAKE_CURRENT_LIST_DIR}/../../../include/rapids/thrust/thrust/cmake/thrust-config.cmake")]=]
@@ -156,8 +157,7 @@ function(rapids_cpm_thrust NAMESPACE namespaces_name)
     file(WRITE "${scratch_dir}/thrust-config-version.cmake"
          [=[include("${CMAKE_CURRENT_LIST_DIR}/../../../include/rapids/thrust/thrust/cmake/thrust-config-version.cmake")]=]
     )
-    install(FILES "${scratch_dir}/thrust-config.cmake"
-                  "${scratch_dir}/thrust-config-version.cmake"
+    install(FILES "${scratch_dir}/thrust-config.cmake" "${scratch_dir}/thrust-config-version.cmake"
             DESTINATION "${install_location}/cmake/thrust")
 
     file(WRITE "${scratch_dir}/cub-config.cmake"
@@ -166,8 +166,7 @@ function(rapids_cpm_thrust NAMESPACE namespaces_name)
     file(WRITE "${scratch_dir}/cub-config-version.cmake"
          [=[include("${CMAKE_CURRENT_LIST_DIR}/../../../include/rapids/thrust/dependencies/cub/cub-config-version.cmake")]=]
     )
-    install(FILES "${scratch_dir}/cub-config.cmake"
-                  "${scratch_dir}/cub-config-version.cmake"
+    install(FILES "${scratch_dir}/cub-config.cmake" "${scratch_dir}/cub-config-version.cmake"
             DESTINATION "${install_location}/cmake/cub")
   endif()
 
