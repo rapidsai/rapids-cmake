@@ -151,6 +151,12 @@ function(rapids_cpm_find name version)
     else()
       CPMFindPackage(NAME ${name} VERSION ${version} ${RAPIDS_UNPARSED_ARGUMENTS})
     endif()
+  else()
+    # Restore any CPM variables that might be cached
+    cpm_check_if_package_already_added(${name} ${version})
+    if(CPM_PACKAGE_ALREADY_ADDED)
+      cpm_export_variables(${name})
+    endif()
   endif()
 
   set(extra_info)
