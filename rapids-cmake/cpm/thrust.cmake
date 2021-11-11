@@ -71,7 +71,7 @@ function(rapids_cpm_thrust NAMESPACE namespaces_name)
   include("${rapids-cmake-dir}/cpm/find.cmake")
   rapids_cpm_find(Thrust ${version} ${ARGN}
                   GLOBAL_TARGETS ${namespaces_name}::Thrust
-                  CPM_ARGS
+                  CPM_ARGS FIND_PACKAGE_ARGUMENTS EXACT
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
                   GIT_SHALLOW ${shallow}
@@ -148,24 +148,25 @@ function(rapids_cpm_thrust NAMESPACE namespaces_name)
     rapids_cmake_install_lib_dir(install_location) # Use the correct conda aware path
 
     # We need to install the forwarders in `lib/cmake/thrust` and `lib/cmake/cub`
-    file(WRITE "${CMAKE_BINARY_DIR}/cmake/thrust-config.cmake"
+    set(scratch_dir
+        "${CMAKE_BINARY_DIR}/rapids-cmake/${RAPIDS_INSTALL_EXPORT_SET}/install/scratch/")
+
+    file(WRITE "${scratch_dir}/thrust-config.cmake"
          [=[include("${CMAKE_CURRENT_LIST_DIR}/../../../include/rapids/thrust/thrust/cmake/thrust-config.cmake")]=]
     )
-    file(WRITE "${CMAKE_BINARY_DIR}/cmake/thrust-config-version.cmake"
+    file(WRITE "${scratch_dir}/thrust-config-version.cmake"
          [=[include("${CMAKE_CURRENT_LIST_DIR}/../../../include/rapids/thrust/thrust/cmake/thrust-config-version.cmake")]=]
     )
-    install(FILES "${CMAKE_BINARY_DIR}/cmake/thrust-config.cmake"
-                  "${CMAKE_BINARY_DIR}/cmake/thrust-config-version.cmake"
+    install(FILES "${scratch_dir}/thrust-config.cmake" "${scratch_dir}/thrust-config-version.cmake"
             DESTINATION "${install_location}/cmake/thrust")
 
-    file(WRITE "${CMAKE_BINARY_DIR}/cmake/cub-config.cmake"
+    file(WRITE "${scratch_dir}/cub-config.cmake"
          [=[include("${CMAKE_CURRENT_LIST_DIR}/../../../include/rapids/thrust/dependencies/cub/cub-config.cmake")]=]
     )
-    file(WRITE "${CMAKE_BINARY_DIR}/cmake/cub-config-version.cmake"
+    file(WRITE "${scratch_dir}/cub-config-version.cmake"
          [=[include("${CMAKE_CURRENT_LIST_DIR}/../../../include/rapids/thrust/dependencies/cub/cub-config-version.cmake")]=]
     )
-    install(FILES "${CMAKE_BINARY_DIR}/cmake/cub-config.cmake"
-                  "${CMAKE_BINARY_DIR}/cmake/cub-config-version.cmake"
+    install(FILES "${scratch_dir}/cub-config.cmake" "${scratch_dir}/cub-config-version.cmake"
             DESTINATION "${install_location}/cmake/cub")
   endif()
 

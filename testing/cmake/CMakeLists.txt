@@ -24,10 +24,11 @@ add_cmake_config_test( conda_env-build.cmake )
 add_cmake_config_test( conda_env-invalid.cmake )
 add_cmake_config_test( conda_env-prefix.cmake )
 
+add_cmake_config_test( install_lib_dir-after-gnuinstalldir-include.cmake )
 add_cmake_config_test( install_lib_dir-build.cmake )
-add_cmake_config_test( install_lib_dir-no-conda.cmake )
 add_cmake_config_test( install_lib_dir-lib64-with-conda_build.cmake )
 add_cmake_config_test( install_lib_dir-lib64-with-conda_prefix.cmake )
+add_cmake_config_test( install_lib_dir-no-conda.cmake )
 add_cmake_config_test( install_lib_dir-prefix.cmake )
 
 add_cmake_config_test( make_global-already-imported-global.cmake )
