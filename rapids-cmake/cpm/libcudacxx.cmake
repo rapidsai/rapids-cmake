@@ -118,12 +118,11 @@ set_target_properties(libcudacxx_includes PROPERTIES INTERFACE_INCLUDE_DIRECTORI
     endif()
 
     if(install_export)
-      include("${rapids-cmake-dir}/cmake/install_lib_dir.cmake")
-      rapids_cmake_install_lib_dir(lib_dir)
-      install(DIRECTORY ${libcudacxx_SOURCE_DIR}/include/
-              DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/rapids/libcudacxx)
-      install(DIRECTORY ${libcudacxx_SOURCE_DIR}/libcxx/include/
-              DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/rapids/libcxx/include)
+      include(GNUInstallDirs) # For CMAKE_INSTALL_INCLUDEDIR
+      install(DIRECTORY "${libcudacxx_SOURCE_DIR}/include/"
+              DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/rapids/libcudacxx")
+      install(DIRECTORY "${libcudacxx_SOURCE_DIR}/libcxx/include/"
+              DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/rapids/libcxx/include")
 
       include("${rapids-cmake-dir}/export/export.cmake")
       rapids_export(INSTALL libcudacxx
