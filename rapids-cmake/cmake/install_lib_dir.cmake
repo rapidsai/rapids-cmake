@@ -85,13 +85,20 @@ function(rapids_cmake_install_lib_dir out_variable_name)
     endif()
   else()
     # We need to defer to GNUInstallDirs but not allow it to set CMAKE_INSTALL_LIBDIR
+    set(remove_install_dir TRUE)
+    if(DEFINED CMAKE_INSTALL_LIBDIR)
+      set(remove_install_dir FALSE)
+    endif()
+
     include(GNUInstallDirs)
     set(computed_path "${CMAKE_INSTALL_LIBDIR}")
     if(modify_install_libdir)
       # GNUInstallDirs will have set `CMAKE_INSTALL_LIBDIR` as a cache path So we only need to make
       # sure our path overrides any local variable
       set(CMAKE_INSTALL_LIBDIR ${computed_path} PARENT_SCOPE)
-    else()
+    endif()
+
+    if(remove_install_dir)
       unset(CMAKE_INSTALL_LIBDIR CACHE)
     endif()
   endif()
