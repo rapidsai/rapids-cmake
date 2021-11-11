@@ -100,11 +100,13 @@ function(rapids_cpm_libcudacxx)
 # To get this cudacxx to be picked up by consumers instead of the version shipped
 # with the CUDA Toolkit we need to make sure it is a non-SYSTEM include on the CMake side.
 #
-add_library(libcudacxx_includes INTERFACE)
-target_link_libraries(libcudacxx::libcudacxx INTERFACE libcudacxx_includes)
-get_target_property(all_includes libcudacxx::libcudacxx INTERFACE_INCLUDE_DIRECTORIES)
-set_target_properties(libcudacxx::libcudacxx PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "")
-set_target_properties(libcudacxx_includes PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${all_includes}")
+if(NOT TARGET libcudacxx_includes)
+  add_library(libcudacxx_includes INTERFACE)
+  get_target_property(all_includes libcudacxx::libcudacxx INTERFACE_INCLUDE_DIRECTORIES)
+  set_target_properties(libcudacxx::libcudacxx PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "")
+  set_target_properties(libcudacxx_includes PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${all_includes}")
+  target_link_libraries(libcudacxx::libcudacxx INTERFACE libcudacxx_includes)
+endif()
     ]=])
 
     if(build_export)
