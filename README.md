@@ -96,6 +96,26 @@ The most commonly used function are:
 - `rapids_find_package(<project_name> BUILD_EXPORT_SET <name> INSTALL_EXPORT_SET <name> )` Combines `find_package` and support to track dependencies for easy package exporting
 - `rapids_generate_module(<PackageName> HEADER_NAMES <paths...> LIBRARY_NAMES <names...> )` Generate a FindModule for the given package. Allows association to export sets so the generated FindModule can be shipped with the project
 
+## Overriding RAPIDS.cmake
+
+At times projects or developers will need to verify ``rapids-cmake`` branches. To do this you need to override the default git repositry and branch that ``RAPIDS.cmake`` downloads, which should be done
+like this:
+
+```cmake
+
+  include(FetchContent)
+  FetchContent_Declare(
+    rapids-cmake
+    GIT_REPOSITORY https://github.com/<my_fork>/rapids-cmake.git
+    GIT_TAG        <my_feature_branch>
+  )
+  file(DOWNLOAD https://raw.githubusercontent.com/rapidsai/rapids-cmake/branch-21.12/RAPIDS.cmake
+      ${CMAKE_BINARY_DIR}/RAPIDS.cmake)
+  include(${CMAKE_BINARY_DIR}/RAPIDS.cmake)
+```
+
+This tells ``FetchContent`` to ignore the explicit url and branch in ``RAPIDS.cmake`` and use the
+ones provided.
 
 ## Contributing
 
