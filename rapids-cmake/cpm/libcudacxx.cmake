@@ -65,7 +65,7 @@ function(rapids_cpm_libcudacxx)
   rapids_cpm_package_details(libcudacxx version repository tag shallow)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
-  rapids_cpm_find(libcudacxx ${version} ${ARGN}
+  rapids_cpm_find(libcudacxx ${version} ${RAPIDS_UNPARSED_ARGUMENTS}
                   GLOBAL_TARGETS libcudacxx::libcudacxx
                   CPM_ARGS
                   GIT_REPOSITORY ${repository}
