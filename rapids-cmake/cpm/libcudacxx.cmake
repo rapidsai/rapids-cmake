@@ -75,7 +75,7 @@ function(rapids_cpm_libcudacxx)
 
   if(RAPIDS_BUILD_EXPORT_SET)
     include("${rapids-cmake-dir}/export/package.cmake")
-    rapids_export_package(BUILD ${name} ${RAPIDS_BUILD_EXPORT_SET}
+    rapids_export_package(BUILD libcudacxx ${RAPIDS_BUILD_EXPORT_SET}
                           GLOBAL_TARGETS libcudacxx::libcudacxx)
 
     include("${rapids-cmake-dir}/export/find_package_root.cmake")
@@ -85,7 +85,7 @@ function(rapids_cpm_libcudacxx)
 
   if(RAPIDS_INSTALL_EXPORT_SET)
     include("${rapids-cmake-dir}/export/package.cmake")
-    rapids_export_package(INSTALL ${name} ${RAPIDS_INSTALL_EXPORT_SET}
+    rapids_export_package(INSTALL libcudacxx ${RAPIDS_INSTALL_EXPORT_SET}
                           GLOBAL_TARGETS libcudacxx::libcudacxx)
   endif()
 
