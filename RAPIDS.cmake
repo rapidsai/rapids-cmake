@@ -17,12 +17,25 @@
 # This is the preferred entry point for projects using rapids-cmake
 #
 
-set(rapids-cmake-version 21.12)
+if(NOT RAPIDS_CMAKE_VERSION)
+  set(RAPIDS_CMAKE_VERSION 21.12)
+endif()
+
+set(rapids-cmake-version ${RAPIDS_CMAKE_VERSION})
+
+if(NOT RAPIDS_CMAKE_GIT_TAG)
+  set(RAPIDS_CMAKE_GIT_TAG branch-${rapids-cmake-version})
+endif()
+
+if(NOT RAPIDS_CMAKE_GIT_REPOSITORY)
+  set(RAPIDS_CMAKE_GIT_REPOSITORY https://github.com/rapidsai/rapids-cmake.git)
+endif()
+
 include(FetchContent)
 FetchContent_Declare(
   rapids-cmake
-  GIT_REPOSITORY https://github.com/rapidsai/rapids-cmake.git
-  GIT_TAG        branch-${rapids-cmake-version}
+  GIT_REPOSITORY ${RAPIDS_CMAKE_GIT_REPOSITORY}
+  GIT_TAG        ${RAPIDS_CMAKE_GIT_TAG}
 )
 FetchContent_GetProperties(rapids-cmake)
 if(rapids-cmake_POPULATED)
@@ -34,4 +47,3 @@ if(rapids-cmake_POPULATED)
 else()
   FetchContent_MakeAvailable(rapids-cmake)
 endif()
-
