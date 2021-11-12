@@ -72,18 +72,21 @@ function(rapids_cpm_libcudacxx)
                   GIT_TAG ${tag}
                   GIT_SHALLOW ${shallow}
                   DOWNLOAD_ONLY TRUE)
-  
+
   if(RAPIDS_BUILD_EXPORT_SET)
     include("${rapids-cmake-dir}/export/package.cmake")
-    rapids_export_package(BUILD ${name} ${RAPIDS_BUILD_EXPORT_SET} GLOBAL_TARGETS libcudacxx::libcudacxx)
+    rapids_export_package(BUILD ${name} ${RAPIDS_BUILD_EXPORT_SET}
+                          GLOBAL_TARGETS libcudacxx::libcudacxx)
 
     include("${rapids-cmake-dir}/export/find_package_root.cmake")
-    rapids_export_find_package_root(BUILD libcudacxx [=[${CMAKE_CURRENT_LIST_DIR}]=] ${RAPIDS_BUILD_EXPORT_SET})
+    rapids_export_find_package_root(BUILD libcudacxx [=[${CMAKE_CURRENT_LIST_DIR}]=]
+                                    ${RAPIDS_BUILD_EXPORT_SET})
   endif()
 
   if(RAPIDS_INSTALL_EXPORT_SET)
     include("${rapids-cmake-dir}/export/package.cmake")
-    rapids_export_package(INSTALL ${name} ${RAPIDS_INSTALL_EXPORT_SET} GLOBAL_TARGETS libcudacxx::libcudacxx)
+    rapids_export_package(INSTALL ${name} ${RAPIDS_INSTALL_EXPORT_SET}
+                          GLOBAL_TARGETS libcudacxx::libcudacxx)
   endif()
 
   # establish the correct libcudacxx namespace aliases
