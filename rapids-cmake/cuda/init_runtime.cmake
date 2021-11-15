@@ -23,14 +23,12 @@ rapids_cuda_init_runtime
 
 Establish what CUDA runtime library should be propagated
 
-.. command:: rapids_cuda_init_runtime
-
   .. code-block:: cmake
 
     rapids_cuda_init_runtime( USE_STATIC (TRUE|FALSE) )
 
   Establishes what CUDA runtime will be used, if not already explicitly
-  specified via :variable:`CMAKE_CUDA_RUNTIME_LIBRARY` variable.
+  specified via :cmake:variable:`CMAKE_CUDA_RUNTIME_LIBRARY` variable.
 
   When `USE_STATIC TRUE` is provided all target will link to a
     statically-linked CUDA runtime library.
