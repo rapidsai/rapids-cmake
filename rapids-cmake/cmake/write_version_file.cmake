@@ -73,7 +73,6 @@ function(rapids_cmake_write_version_file file_path)
     set(RAPIDS_PREFIX "${PROJECT_NAME}")
   endif()
 
-
   if(PROJECT_VERSION_MAJOR)
     math(EXPR RAPIDS_WRITE_MAJOR "${PROJECT_VERSION_MAJOR} + 0" OUTPUT_FORMAT DECIMAL)
   else()
