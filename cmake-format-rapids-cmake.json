@@ -32,11 +32,17 @@
       "rapids_cmake_write_git_revision_file": {
         "pargs": {
           "nargs": 2
+        },
+        "kwargs": {
+          "PREFIX": 1
         }
       },
       "rapids_cmake_write_version_file": {
         "pargs": {
           "nargs": 1
+        },
+        "kwargs": {
+          "PREFIX": 1
         }
       },
 
