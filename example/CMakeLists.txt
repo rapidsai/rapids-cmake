@@ -16,10 +16,10 @@
 
 cmake_minimum_required(VERSION 3.18 FATAL_ERROR)
 
-file(DOWNLOAD https://raw.githubusercontent.com/rapidsai/rapids-cmake/branch-21.10/RAPIDS.cmake
+file(DOWNLOAD https://raw.githubusercontent.com/rapidsai/rapids-cmake/branch-21.12/RAPIDS.cmake
     ${CMAKE_BINARY_DIR}/RAPIDS.cmake)
 include(${CMAKE_BINARY_DIR}/RAPIDS.cmake)
-include(${CMAKE_BINARY_DIR}/RAPIDS.cmake)
+
 include(rapids-cmake)
 include(rapids-cpm)
 include(rapids-cuda)
@@ -28,7 +28,7 @@ include(rapids-find)
 
 rapids_cuda_init_architectures(integration)
 
-project(integration VERSION 21.06 LANGUAGES C CXX CUDA)
+project(integration VERSION 21.12 LANGUAGES C CXX CUDA)
 message(STATUS "Example: CMAKE_CUDA_ARCHITECTURES: ${CMAKE_CUDA_ARCHITECTURES}")
 
 option(CUDA_STATIC_RUNTIME "Use CUDA static runtime" OFF)
@@ -56,7 +56,7 @@ rapids_find_generate_module(ZLIBS
     INSTALL_EXPORT_SET  example-targets
     )
 
-#Now use our generated find module and declar it part of
+#Now use our generated find module and declare it part of
 #our exported interface
 find_package(ZLIBS REQUIRED)
 rapids_export_package(INSTALL ZLIBS example-targets GLOBAL_TARGETS ZLIB::ZLIB)
@@ -70,22 +70,22 @@ rapids_find_package(Threads REQUIRED
 
 rapids_cpm_init()
 
+# Use one of rapids-cmake pre-configured packages
+# And mark rmm as part of our export interface
+include(${rapids-cmake-dir}/cpm/rmm.cmake)
+rapids_cpm_rmm(BUILD_EXPORT_SET example-targets
+               INSTALL_EXPORT_SET example-targets)
 
-# This kind of API detaches us from having to encode each cpm module
-# Is that useful?
-rapids_cpm_find( rmm 0.20
-                GLOBAL_TARGETS    rmm::rmm
-                BUILD_EXPORT_SET  example-targets
-                CPM_ARGS
-                  GIT_REPOSITORY    https://github.com/rapidsai/rmm.git
-                  GIT_TAG           branch-0.20
-                  GIT_SHALLOW       TRUE
-                  OPTIONS           "BUILD_TESTS OFF"
-                                    "BUILD_BENCHMARKS OFF"
-                                    "CUDA_STATIC_RUNTIME ${CUDA_STATIC_RUNTIME}"
-                )
+# Bring in any abitrary package
+rapids_cpm_find(fmt 7.1.3
+  GLOBAL_TARGETS fmt::fmt
+  CPM_ARGS
+    GITHUB_REPOSITORY fmtlib/fmt
+    GIT_TAG 7.1.3
+    GIT_SHALLOW TRUE
+)
 
-add_library(example source.cu)
+add_library(example SHARED source.cu)
 
 set_target_properties(example
     PROPERTIES BUILD_RPATH                         "\$ORIGIN"
@@ -99,7 +99,11 @@ set_target_properties(example
                INTERFACE_POSITION_INDEPENDENT_CODE ON
                )
 
-target_link_libraries(example PUBLIC $<BUILD_INTERFACE:rmm::rmm> )
+target_link_libraries(example
+    PUBLIC
+    rmm::rmm
+    PRIVATE
+    fmt::fmt)
 
 # Add Conda env exist s, use it for link and include dirs
 if(TARGET conda_env)

@@ -1,3 +1,7 @@
+# rapids-cmake 21.12.00 (Date TBD)
+
+Please see https://github.com/rapidsai/rapids-cmake/releases/tag/v21.12.00a for the latest changes to this development branch.
+
 # rapids-cmake 21.08.00 (Date TBD)
 
 Please see https://github.com/rapidsai/rapids-cmake/releases/tag/v21.08.0a for the latest changes to this development branch.

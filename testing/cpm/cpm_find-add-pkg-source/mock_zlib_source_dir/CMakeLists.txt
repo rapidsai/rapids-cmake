@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-# can't have an include guard on this file
-# that breaks its usage by cpm/detail/package_details
+cmake_minimum_required(VERSION 3.20)
+project(ZLIB LANGUAGES CXX)
 
-set(rapids-cmake-version 21.12)
+add_library(MOCK_ZLIB INTERFACE)

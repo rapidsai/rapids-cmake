@@ -29,7 +29,8 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
 {
   "packages" : {
     "nvbench" : {
-      "git_tag" : "my_tag"
+      "git_tag" : "my_tag",
+      "always_download" : false
     },
     "GTest" : {
       "version" : "2.99"
@@ -51,6 +52,9 @@ endif()
 if(NOT tag STREQUAL "my_tag")
   message(FATAL_ERROR "custom git_tag field was ignored. ${tag} found instead of my_url")
 endif()
+if(CPM_DOWNLOAD_ALL)
+  message(FATAL_ERROR "CPM_DOWNLOAD_ALL should be false since the nvbench override explicitly sets it to 'false'")
+endif()
 
 rapids_cpm_package_details(GTest version repository tag shallow)
 if(NOT version STREQUAL "2.99")
@@ -58,4 +62,7 @@ if(NOT version STREQUAL "2.99")
 endif()
 if(NOT tag MATCHES "2.99")
   message(FATAL_ERROR "custom version field not used when computing git_tag value. ${tag} was found instead")
+endif()
+if(NOT CPM_DOWNLOAD_ALL)
+  message(FATAL_ERROR "CPM_DOWNLOAD_ALL should be enabled by default when an override exists")
 endif()

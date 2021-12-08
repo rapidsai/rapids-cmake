@@ -15,38 +15,24 @@
 #=============================================================================
 include(${rapids-cmake-dir}/cmake/install_lib_dir.cmake)
 
-set(ENV{CONDA_BUILD} "1")
-set(ENV{PREFIX} "/opt/conda/prefix")
-set(CMAKE_INSTALL_PREFIX "/usr/local/")
-set(CMAKE_INSTALL_LIBDIR "lib64")
+unset(ENV{CONDA_BUILD})
+unset(ENV{CONDA_PREFIX})
+
+include(GNUInstallDirs)
+set(old_CMAKE_INSTALL_LIBDIR ${CMAKE_INSTALL_LIBDIR})
 
 rapids_cmake_install_lib_dir( lib_dir )
-
-if(NOT lib_dir STREQUAL "lib64")
-  message(FATAL_ERROR "rapids_cmake_install_lib_dir computed '${lib_dir}', but we expected 'lib64'")
+if(NOT DEFINED CMAKE_INSTALL_LIBDIR)
+  message(FATAL_ERROR "rapids_cmake_install_lib_dir shouldn't have caused the CMAKE_INSTALL_LIBDIR variable to not exist")
 endif()
 
-# verify CMAKE_INSTALL_LIBDIR doesn't exist
-if(NOT CMAKE_INSTALL_LIBDIR STREQUAL "lib64")
-  message(FATAL_ERROR "CMAKE_INSTALL_LIBDIR now set to '${CMAKE_INSTALL_LIBDIR}', but we expected 'lib64'")
+if(NOT lib_dir STREQUAL CMAKE_INSTALL_LIBDIR)
+  message(FATAL_ERROR "rapids_cmake_install_lib_dir computed '${lib_dir}', but we expected '${CMAKE_INSTALL_LIBDIR}' as it should match GNUInstallDirs")
 endif()
 
-
-set(CMAKE_INSTALL_PREFIX "/opt/conda/prefix")
-unset(CMAKE_INSTALL_LIBDIR)
-unset(CMAKE_INSTALL_LIBDIR CACHE)
-
-rapids_cmake_install_lib_dir( lib_dir MODIFY_INSTALL_LIBDIR )
-
-if(NOT lib_dir STREQUAL "lib")
-  message(FATAL_ERROR "rapids_cmake_install_lib_dir computed '${lib_dir}', but we expected 'lib'")
+if(NOT lib_dir STREQUAL old_CMAKE_INSTALL_LIBDIR)
+  message(FATAL_ERROR "rapids_cmake_install_lib_dir computed '${lib_dir}', but we expected '${CMAKE_INSTALL_LIBDIR}' as it should match GNUInstallDirs")
 endif()
-
-# verify CMAKE_INSTALL_LIBDIR doesn't exist
-if(NOT CMAKE_INSTALL_LIBDIR STREQUAL "lib")
-  message(FATAL_ERROR "CMAKE_INSTALL_LIBDIR now set to '${CMAKE_INSTALL_LIBDIR}', but we expected 'lib'")
-endif()
-
 
 # unset CMAKE_INSTALL_LIBDIR so it doesn't leak into our CMakeCache.txt and cause subsequent
 # re-runs of the test to fail

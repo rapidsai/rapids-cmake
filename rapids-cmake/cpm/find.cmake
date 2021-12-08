@@ -21,7 +21,7 @@ rapids_cpm_find
 
 .. versionadded:: v21.06.00
 
-Allow projects to find or build a dependency via `CPM` with built-in
+Allow projects to find or build abitrary projects via `CPM` with built-in
 tracking of these dependencies for correct export support.
 
 .. code-block:: cmake
@@ -89,6 +89,40 @@ Result Variables
   If you need different behavior you will need to use :cmake:command:`rapids_export_package()`
   or :cmake:command:`rapids_export_cpm()`.
 
+  If :cmake:variable:`CPM_<PackageName>_SOURCE` is set, we use :cmake:command:`CPMAddPackage` instead of
+  :cmake:command:`CPMFindPackage`. :cmake:command:`CPMAddPackage` always adds the package at the desired
+  :cmake:variable:`CPM_<PackageName>_SOURCE` location, and won't attempt to locate it via
+  :cmake:command:`find_package()` first.
+
+
+Examples
+^^^^^^^^
+
+Example on how to use :cmake:command:`rapids_cpm_find` to include common projects
+
+
+.. code-block:: cmake
+
+  # fmt
+  rapids_cpm_find(fmt 8.0.1
+    GLOBAL_TARGETS fmt::fmt
+    CPM_ARGS
+      GITHUB_REPOSITORY fmtlib/fmt
+      GIT_TAG 8.0.1
+      GIT_SHALLOW TRUE
+  )
+
+  # google benchmark, no GIT_TAG required since it uses `v<Version>` tags
+  rapids_cpm_find(benchmark 1.5.2
+    CPM_ARGS
+        GIT_REPOSITORY  https://github.com/google/benchmark.git
+        GIT_SHALLOW     TRUE
+        OPTIONS         "BENCHMARK_ENABLE_TESTING OFF"
+                        "BENCHMARK_ENABLE_INSTALL OFF"
+  )
+
+
+
 #]=======================================================================]
 function(rapids_cpm_find name version)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.find")
@@ -112,7 +146,17 @@ function(rapids_cpm_find name version)
   endif()
 
   if(package_needs_to_be_added)
-    CPMFindPackage(NAME ${name} VERSION ${version} ${RAPIDS_UNPARSED_ARGUMENTS})
+    if(CPM_${name}_SOURCE)
+      CPMAddPackage(NAME ${name} VERSION ${version} ${RAPIDS_UNPARSED_ARGUMENTS})
+    else()
+      CPMFindPackage(NAME ${name} VERSION ${version} ${RAPIDS_UNPARSED_ARGUMENTS})
+    endif()
+  else()
+    # Restore any CPM variables that might be cached
+    cpm_check_if_package_already_added(${name} ${version})
+    if(CPM_PACKAGE_ALREADY_ADDED)
+      cpm_export_variables(${name})
+    endif()
   endif()
 
   set(extra_info)

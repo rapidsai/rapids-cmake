@@ -23,6 +23,8 @@ add_cmake_config_test( export_cpm-options-escaped.cmake )
 add_cmake_build_test( export-verify-build-namespaces )
 add_cmake_build_test( export-verify-code-block )
 add_cmake_build_test( export-verify-doc-string )
+add_cmake_build_test( export-verify-global-targets )
+
 add_cmake_config_test( export-verify-bad-code-block-var.cmake SHOULD_FAIL "FINAL_CODE_BLOCK variable `var_doesn't_exist` doesn't exist")
 add_cmake_config_test( export-verify-bad-doc-var.cmake SHOULD_FAIL "DOCUMENTATION variable `var_doesn't_exist` doesn't exist")
 add_cmake_config_test( export-verify-calendar-version-matching.cmake )

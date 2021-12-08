@@ -15,10 +15,13 @@
 #=============================================================================
 add_cmake_config_test( rapids-cpm.cmake )
 
+add_cmake_config_test( cpm_find-add-pkg-source )
+add_cmake_config_test( cpm_find-and-find_package )
 add_cmake_config_test( cpm_find-existing-build-dir )
 add_cmake_config_test( cpm_find-existing-target )
 add_cmake_config_test( cpm_find-existing-target-to-export-sets )
 add_cmake_config_test( cpm_find-options-escaped )
+add_cmake_config_test( cpm_find-restore-cpm-vars )
 
 add_cmake_config_test( cpm_init-bad-override-path.cmake SHOULD_FAIL "rapids_cpm_package_override can't load")
 add_cmake_config_test( cpm_init-override-multiple.cmake )
@@ -31,6 +34,9 @@ add_cmake_config_test( cpm_package_override-simple.cmake )
 
 add_cmake_config_test( cpm_gtest-export.cmake )
 add_cmake_config_test( cpm_gtest-simple.cmake )
+
+add_cmake_config_test( cpm_libcudacxx-export.cmake )
+add_cmake_config_test( cpm_libcudacxx-simple.cmake )
 
 add_cmake_config_test( cpm_nvbench-export.cmake )
 add_cmake_config_test( cpm_nvbench-simple.cmake )

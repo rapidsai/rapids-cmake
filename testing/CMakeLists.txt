@@ -26,7 +26,7 @@ add_subdirectory(cuda)
 add_subdirectory(export)
 add_subdirectory(find)
 
-option(RAPIDS_CMAKE_ENABLE_DOWNLOAD_TESTS ON)
+option(RAPIDS_CMAKE_ENABLE_DOWNLOAD_TESTS "Enable tests that require downloads" ON)
 if(RAPIDS_CMAKE_ENABLE_DOWNLOAD_TESTS)
   # Setup and fill the cpm cache, and specify CPM_SOURCE_CACHE
   # so that all subsequent tests in this directory use the

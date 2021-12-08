@@ -34,7 +34,8 @@ if(NOT CMAKE_INSTALL_LIBDIR STREQUAL "lib64")
 endif()
 
 set(CMAKE_INSTALL_PREFIX "/opt/conda/prefix")
-set(CMAKE_INSTALL_LIBDIR "lib64")
+unset(CMAKE_INSTALL_LIBDIR)
+unset(CMAKE_INSTALL_LIBDIR CACHE)
 
 rapids_cmake_install_lib_dir( lib_dir MODIFY_INSTALL_LIBDIR )
 

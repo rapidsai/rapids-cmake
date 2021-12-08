@@ -41,22 +41,29 @@ The CPM module will be downloaded based on the state of :cmake:variable:`CPM_SOU
 function(rapids_cpm_download)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.download")
 
-  set(CPM_DOWNLOAD_VERSION 7644c3a40fc7889f8dee53ce21e85dc390b883dc) # 0.32.1
+  # When changing version verify no new variables needs to be propagated
+  set(CPM_DOWNLOAD_VERSION 634800c61928d330a6e9559171509a5c3dd479d5) # 0.34.0
 
   if(CPM_SOURCE_CACHE)
     # Expand relative path. This is important if the provided path contains a tilde (~)
     cmake_path(ABSOLUTE_PATH CPM_SOURCE_CACHE)
-    if(EXISTS "${CPM_SOURCE_CACHE}/cpm/CPM_${CPM_DOWNLOAD_VERSION}.cmake")
-      set(CPM_DOWNLOAD_LOCATION "${CPM_SOURCE_CACHE}/cpm/CPM_${CPM_DOWNLOAD_VERSION}.cmake")
-    elseif(EXISTS "${CPM_SOURCE_CACHE}/cmake/CPM_${CPM_DOWNLOAD_VERSION}.cmake")
+
+    # default to the same location that cpm computes
+    set(CPM_DOWNLOAD_LOCATION "${CPM_SOURCE_CACHE}/cpm/CPM_${CPM_DOWNLOAD_VERSION}.cmake")
+    if(EXISTS "${CPM_SOURCE_CACHE}/cmake/CPM_${CPM_DOWNLOAD_VERSION}.cmake")
+      # Also support the rapids-cmake download location ( cmake/ vs cpm/ )
       set(CPM_DOWNLOAD_LOCATION "${CPM_SOURCE_CACHE}/cmake/CPM_${CPM_DOWNLOAD_VERSION}.cmake")
     endif()
+
   elseif(DEFINED ENV{CPM_SOURCE_CACHE})
-    if(EXISTS "$ENV{CPM_SOURCE_CACHE}/cpm/CPM_${CPM_DOWNLOAD_VERSION}.cmake")
-      set(CPM_DOWNLOAD_LOCATION "$ENV{CPM_SOURCE_CACHE}/cpm/CPM_${CPM_DOWNLOAD_VERSION}.cmake")
-    elseif(EXISTS "$ENV{CPM_SOURCE_CACHE}/cmake/CPM_${CPM_DOWNLOAD_VERSION}.cmake")
+
+    # default to the same location that cpm computes
+    set(CPM_DOWNLOAD_LOCATION "$ENV{CPM_SOURCE_CACHE}/cpm/CPM_${CPM_DOWNLOAD_VERSION}.cmake")
+    if(EXISTS "$ENV{CPM_SOURCE_CACHE}/cmake/CPM_${CPM_DOWNLOAD_VERSION}.cmake")
+      # Also support the rapids-cmake download location ( cmake/ vs cpm/ )
       set(CPM_DOWNLOAD_LOCATION "$ENV{CPM_SOURCE_CACHE}/cmake/CPM_${CPM_DOWNLOAD_VERSION}.cmake")
     endif()
+
   else()
     set(CPM_DOWNLOAD_LOCATION "${CMAKE_BINARY_DIR}/cmake/CPM_${CPM_DOWNLOAD_VERSION}.cmake")
   endif()
@@ -69,5 +76,11 @@ function(rapids_cpm_download)
   endif()
 
   include(${CPM_DOWNLOAD_LOCATION})
+
+  # Propagate up any modified local variables that CPM has changed.
+  #
+  # Push up the modified CMAKE_MODULE_PATh to allow `find_package` calls to find packages that CPM
+  # already added.
+  set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" PARENT_SCOPE)
 
 endfunction()

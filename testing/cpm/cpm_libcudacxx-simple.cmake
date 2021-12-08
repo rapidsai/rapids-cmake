@@ -13,7 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-# can't have an include guard on this file
-# that breaks its usage by cpm/detail/package_details
+include(${rapids-cmake-dir}/cpm/init.cmake)
+include(${rapids-cmake-dir}/cpm/libcudacxx.cmake)
 
-set(rapids-cmake-version 21.12)
+rapids_cpm_init()
+
+if(TARGET libcudacxx::libcudacxx)
+  message(FATAL_ERROR "Expected libcudacxx::libcudacxx expected to not exist")
+endif()
+
+rapids_cpm_libcudacxx()
+if(NOT TARGET libcudacxx::libcudacxx)
+  message(FATAL_ERROR "Expected libcudacxx::libcudacxx target to exist")
+endif()
+
+rapids_cpm_libcudacxx()
