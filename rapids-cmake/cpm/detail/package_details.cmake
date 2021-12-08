@@ -26,10 +26,12 @@ rapids_cpm_package_details
                              <git_url_variable>
                              <git_tag_variable>
                              <shallow_variable>
+                             <exclude_from_all_variable>
                              )
 
 #]=======================================================================]
-function(rapids_cpm_package_details package_name version_var url_var tag_var shallow_var)
+function(rapids_cpm_package_details package_name version_var url_var tag_var shallow_var
+         exclude_from_all_var)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.rapids_cpm_package_details")
 
   include("${rapids-cmake-dir}/cpm/detail/load_preset_versions.cmake")
@@ -58,6 +60,9 @@ function(rapids_cpm_package_details package_name version_var url_var tag_var sha
   set(git_shallow ON)
   rapids_cpm_json_get_value(git_shallow)
 
+  set(exclude_from_all OFF)
+  rapids_cpm_json_get_value(exclude_from_all)
+
   if(override_json_data)
     # The default value for always download is defined by having an override for this package. When
     # we have an override we presume the user doesn't want to use an existing local installed
@@ -79,6 +84,7 @@ function(rapids_cpm_package_details package_name version_var url_var tag_var sha
   set(${url_var} ${git_url} PARENT_SCOPE)
   set(${tag_var} ${git_tag} PARENT_SCOPE)
   set(${shallow_var} ${git_shallow} PARENT_SCOPE)
+  set(${exclude_from_all_var} ${exclude_from_all} PARENT_SCOPE)
   if(DEFINED always_download)
     set(CPM_DOWNLOAD_ALL ${always_download} PARENT_SCOPE)
   endif()

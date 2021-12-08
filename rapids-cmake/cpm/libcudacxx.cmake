@@ -62,7 +62,7 @@ function(rapids_cpm_libcudacxx)
   cmake_parse_arguments(RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
-  rapids_cpm_package_details(libcudacxx version repository tag shallow)
+  rapids_cpm_package_details(libcudacxx version repository tag shallow exclude)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
   rapids_cpm_find(libcudacxx ${version} ${RAPIDS_UNPARSED_ARGUMENTS}
@@ -71,6 +71,7 @@ function(rapids_cpm_libcudacxx)
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
                   GIT_SHALLOW ${shallow}
+                  EXCLUDE_FROM_ALL ${exclude}
                   DOWNLOAD_ONLY TRUE)
 
   if(RAPIDS_BUILD_EXPORT_SET)

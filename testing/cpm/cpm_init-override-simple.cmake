@@ -33,7 +33,7 @@ rapids_cpm_init(OVERRIDE "${CMAKE_CURRENT_BINARY_DIR}/override.json")
 
 # Verify that the override works
 include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
-rapids_cpm_package_details(nvbench version repository tag shallow)
+rapids_cpm_package_details(nvbench version repository tag shallow exclude)
 
 if(NOT version STREQUAL "custom_version")
   message(FATAL_ERROR "custom version field was ignored. ${version} found instead of custom_version")

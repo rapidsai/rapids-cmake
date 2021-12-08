@@ -66,7 +66,7 @@ function(rapids_cpm_thrust NAMESPACE namespaces_name)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.thrust")
 
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
-  rapids_cpm_package_details(Thrust version repository tag shallow)
+  rapids_cpm_package_details(Thrust version repository tag shallow exclude)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
   rapids_cpm_find(Thrust ${version} ${ARGN}
@@ -75,6 +75,7 @@ function(rapids_cpm_thrust NAMESPACE namespaces_name)
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
                   GIT_SHALLOW ${shallow}
+                  EXCLUDE_FROM_ALL ${exclude}
                   OPTIONS "THRUST_ENABLE_INSTALL_RULES OFF")
 
   if(NOT TARGET ${namespaces_name}::Thrust)
