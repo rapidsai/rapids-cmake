@@ -48,11 +48,6 @@ if(NOT DEFINED CMAKE_INSTALL_LIBDIR)
   message(FATAL_ERROR "rapids_cmake_install_lib_dir should have caused the CMAKE_INSTALL_LIBDIR to be a local variable")
 endif()
 
-if(NOT DEFINED CACHE{CMAKE_INSTALL_LIBDIR})
-  message(FATAL_ERROR "rapids_cmake_install_lib_dir should have caused the CMAKE_INSTALL_LIBDIR to be a cache variable")
-endif()
-
-
 # unset CMAKE_INSTALL_LIBDIR so it doesn't leak into our CMakeCache.txt and cause subsequent
 # re-runs of the test to fail
 unset(CMAKE_INSTALL_LIBDIR)
