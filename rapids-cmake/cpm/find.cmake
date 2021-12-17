@@ -76,7 +76,7 @@ consistency. List all targets used by your project in `GLOBAL_TARGET`.
 Result Variables
 ^^^^^^^^^^^^^^^^
   :cmake:variable:`<PackageName>_SOURCE_DIR` is set to the path to the source directory of <PackageName>.
-  :cmake:variable:`<PackageName>_BINAR_DIR`  is set to the path to the build directory of  <PackageName>.
+  :cmake:variable:`<PackageName>_BINARY_DIR`  is set to the path to the build directory of  <PackageName>.
   :cmake:variable:`<PackageName>_ADDED`      is set to a true value if <PackageName> has not been added before.
 
 .. note::
