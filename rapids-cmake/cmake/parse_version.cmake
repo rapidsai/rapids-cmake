@@ -54,7 +54,7 @@ Example on how to properly use :cmake:command:`rapids_cmake_parse_version`:
     project(Example VERSION 43.01.0)
 
     rapids_cmake_parse_version(MAJOR_MINOR ${PROJECT_VERSION} major_minor)
-    message(STATUS "The major.mindor version is: ${major_minor}")
+    message(STATUS "The major.minor version is: ${major_minor}")
 
 
 Result Variables
