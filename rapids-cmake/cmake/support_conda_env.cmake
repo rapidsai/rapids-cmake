@@ -28,27 +28,27 @@ Establish a target that holds the CONDA include and link directories.
     rapids_cmake_support_conda_env( <target_name> [MODIFY_PREFIX_PATH] )
 
 Creates a global interface target called `target_name` that holds
-the CONDA include and link directories, when executed
+the CONDA include and link directories, when executed.
 
 Also offers the ability to modify :cmake:variable:`CMAKE_PREFIX_PATH` to
-include the paths in enviornment variables `BUILD_PREFIX`, `PREFIX`,
+include the paths in environment variables `BUILD_PREFIX`, `PREFIX`,
 and `CONDA_PREFIX` based on the current CONDA enviornment.
 
 ``MODIFY_PREFIX_PATH``
-    When in a conda build enviornment the contents of `$ENV{BUILD_PREFIX}` and `$ENV{PREFIX}`
+    When in a conda build environment the contents of `$ENV{BUILD_PREFIX}` and `$ENV{PREFIX}`
     will be inserted to the front of :cmake:variable:`CMAKE_PREFIX_PATH`.
 
-    When in a conda enviornment the contents of `$ENV{CONDA_PREFIX}` will be inserted to
-    th front of :cmake:variable:`CMAKE_PREFIX_PATH`.
+    When in a conda environment the contents of `$ENV{CONDA_PREFIX}` will be inserted to
+    the front of :cmake:variable:`CMAKE_PREFIX_PATH`.
 
 Result Variables
 ^^^^^^^^^^^^^^^^
   :cmake:variable:`CMAKE_PREFIX_PATH` will be modifed when `MODIFY_PREFIX_PATH` is provided
-  and called from a conda enviornment
+  and called from a conda environment.
 
 Result Targets
 ^^^^^^^^^^^^^^^^
-  `target_name` target will be created only if called from a conda enviornment
+  `target_name` target will be created only if called from a conda enviornment.
 
 #]=======================================================================]
 function(rapids_cmake_support_conda_env target)
