@@ -57,7 +57,7 @@ Complete online documentation for all components can be found at:
 The `rapids-cmake` module contains helpful general CMake functionality
 
 - `rapids_cmake_build_type( )` handles initialization of `CMAKE_BUILD_TYPE`
-- `rapids_cmake_support_conda_env( target [MODIFY_PREFIX_PATH])` Establish a target that holds the CONDA enviornment
+- `rapids_cmake_support_conda_env( target [MODIFY_PREFIX_PATH])` Establish a target that holds the CONDA environment
   include and link directories.
 - `rapids_cmake_write_version_file( <file> )` Write a C++ header with a projects MAJOR, MINOR, and PATCH defines
 
