@@ -30,6 +30,7 @@ rapids_cpm_package_details
                              )
 
 #]=======================================================================]
+# cmake-lint: disable=R0913
 function(rapids_cpm_package_details package_name version_var url_var tag_var shallow_var
          exclude_from_all_var)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.rapids_cpm_package_details")

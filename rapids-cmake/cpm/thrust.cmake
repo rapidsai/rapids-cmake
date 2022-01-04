@@ -107,8 +107,8 @@ function(rapids_cpm_thrust NAMESPACE namespaces_name)
     set_target_properties(${target_name} PROPERTIES GLOBAL_TARGETS "${global_targets}")
   endif()
 
-  if(Thrust_SOURCE_DIR AND RAPIDS_INSTALL_EXPORT_SET) # only install thrust when we have an
-                                                      # in-source version
+  # only install thrust when we have an in-source version
+  if(Thrust_SOURCE_DIR AND RAPIDS_INSTALL_EXPORT_SET)
     #[==[
     Projects such as cudf, and rmm require a newer versions of thrust than can be found in the oldest supported CUDA toolkit.
     This requires these components to install/packaged so that consumers use the same version. To make sure that the custom
