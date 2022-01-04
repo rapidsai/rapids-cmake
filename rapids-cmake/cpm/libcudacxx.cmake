@@ -56,21 +56,16 @@ Result Variables
 function(rapids_cpm_libcudacxx)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.libcudacxx")
 
-  set(install_export FALSE)
-  if(INSTALL_EXPORT_SET IN_LIST ARGN)
-    set(install_export TRUE)
-  endif()
-
-  set(build_export FALSE)
-  if(BUILD_EXPORT_SET IN_LIST ARGN)
-    set(build_export TRUE)
-  endif()
+  set(options CPM_ARGS)
+  set(one_value BUILD_EXPORT_SET INSTALL_EXPORT_SET)
+  set(multi_value)
+  cmake_parse_arguments(RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
   rapids_cpm_package_details(libcudacxx version repository tag shallow)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
-  rapids_cpm_find(libcudacxx ${version} ${ARGN}
+  rapids_cpm_find(libcudacxx ${version} ${RAPIDS_UNPARSED_ARGUMENTS}
                   GLOBAL_TARGETS libcudacxx::libcudacxx
                   CPM_ARGS
                   GIT_REPOSITORY ${repository}
@@ -78,8 +73,24 @@ function(rapids_cpm_libcudacxx)
                   GIT_SHALLOW ${shallow}
                   DOWNLOAD_ONLY TRUE)
 
+  if(RAPIDS_BUILD_EXPORT_SET)
+    include("${rapids-cmake-dir}/export/package.cmake")
+    rapids_export_package(BUILD libcudacxx ${RAPIDS_BUILD_EXPORT_SET}
+                          GLOBAL_TARGETS libcudacxx::libcudacxx)
+
+    include("${rapids-cmake-dir}/export/find_package_root.cmake")
+    rapids_export_find_package_root(BUILD libcudacxx [=[${CMAKE_CURRENT_LIST_DIR}]=]
+                                    ${RAPIDS_BUILD_EXPORT_SET})
+  endif()
+
+  if(RAPIDS_INSTALL_EXPORT_SET)
+    include("${rapids-cmake-dir}/export/package.cmake")
+    rapids_export_package(INSTALL libcudacxx ${RAPIDS_INSTALL_EXPORT_SET}
+                          GLOBAL_TARGETS libcudacxx::libcudacxx)
+  endif()
+
   # establish the correct libcudacxx namespace aliases
-  if(libcudacxx_ADDED AND NOT TARGET rapids_libcudacxx)
+  if(NOT TARGET rapids_libcudacxx AND NOT TARGET libcudacxx::libcudacxx AND libcudacxx_SOURCE_DIR)
     add_library(rapids_libcudacxx INTERFACE)
     set_target_properties(rapids_libcudacxx PROPERTIES EXPORT_NAME libcudacxx)
 
@@ -109,7 +120,7 @@ if(NOT TARGET libcudacxx_includes)
 endif()
     ]=])
 
-    if(build_export)
+    if(RAPIDS_BUILD_EXPORT_SET)
       include("${rapids-cmake-dir}/export/export.cmake")
       rapids_export(BUILD libcudacxx
                     EXPORT_SET libcudacxx-targets
@@ -119,7 +130,7 @@ endif()
                     FINAL_CODE_BLOCK code_string)
     endif()
 
-    if(install_export)
+    if(RAPIDS_INSTALL_EXPORT_SET)
       include(GNUInstallDirs) # For CMAKE_INSTALL_INCLUDEDIR
       install(DIRECTORY "${libcudacxx_SOURCE_DIR}/include/"
               DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/rapids/libcudacxx")
