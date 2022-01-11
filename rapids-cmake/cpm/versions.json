@@ -10,7 +10,7 @@
       "version" : "0.0",
       "git_shallow" : false,
       "git_url" : "https://github.com/NVIDIA/nvbench.git",
-      "git_tag" : "ed27365a418d608f6ff2268ad93da5177caa647b"
+      "git_tag" : "fc86d6a524ba2ae0b7d3606ca0027511240b9de5"
     },
     "rmm" : {
       "version" : "${rapids-cmake-version}",
