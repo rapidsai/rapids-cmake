@@ -63,12 +63,12 @@ function(rapids_cpm_package_override filepath)
   math(EXPR package_count "${package_count} - 1")
 
   # For each project cache the subset of the json for that project in a global property
-
-  # cmake-lint: disable=E1120
-  foreach(index RANGE ${package_count})
-    string(JSON package_name MEMBER "${json_data}" packages ${index})
-    string(JSON data GET "${json_data}" packages "${package_name}")
-    set_property(GLOBAL PROPERTY rapids_cpm_${package_name}_override_json "${data}")
-  endforeach()
-
+  if(package_count GREATER_EQUAL 0)
+    # cmake-lint: disable=E1120
+    foreach(index RANGE ${package_count})
+      string(JSON package_name MEMBER "${json_data}" packages ${index})
+      string(JSON data GET "${json_data}" packages "${package_name}")
+      set_property(GLOBAL PROPERTY rapids_cpm_${package_name}_override_json "${data}")
+    endforeach()
+  endif()
 endfunction()

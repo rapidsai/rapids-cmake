@@ -29,6 +29,7 @@ add_cmake_config_test( cpm_init-override-simple.cmake )
 
 add_cmake_config_test( cpm_package_override-bad-path.cmake SHOULD_FAIL "rapids_cpm_package_override can't load")
 add_cmake_config_test( cpm_package_override-before-init.cmake )
+add_cmake_config_test( cpm_package_override-empty.cmake )
 add_cmake_config_test( cpm_package_override-multiple.cmake )
 add_cmake_config_test( cpm_package_override-simple.cmake )
 
