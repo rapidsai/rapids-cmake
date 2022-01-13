@@ -66,7 +66,7 @@ function(rapids_cpm_spdlog)
   endif()
 
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
-  rapids_cpm_package_details(spdlog version repository tag shallow)
+  rapids_cpm_package_details(spdlog version repository tag shallow exclude)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
   rapids_cpm_find(spdlog ${version} ${ARGN}
@@ -75,6 +75,7 @@ function(rapids_cpm_spdlog)
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
                   GIT_SHALLOW ${shallow}
+                  EXCLUDE_FROM_ALL ${exclude}
                   OPTIONS "SPDLOG_INSTALL ${to_install}")
 
   # Propagate up variables that CPMFindPackage provide

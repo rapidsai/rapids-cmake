@@ -57,7 +57,7 @@ function(rapids_cpm_gtest)
   endif()
 
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
-  rapids_cpm_package_details(GTest version repository tag shallow)
+  rapids_cpm_package_details(GTest version repository tag shallow exclude)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
   rapids_cpm_find(GTest ${version} ${ARGN}
@@ -66,6 +66,7 @@ function(rapids_cpm_gtest)
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
                   GIT_SHALLOW ${shallow}
+                  EXCLUDE_FROM_ALL ${exclude}
                   OPTIONS "INSTALL_GTEST ${to_install}")
 
   # Propagate up variables that CPMFindPackage provide

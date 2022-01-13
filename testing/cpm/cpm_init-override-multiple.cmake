@@ -19,8 +19,8 @@ rapids_cpm_init()
 
 # Load the default values for nvbench and GTest projects
 include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
-rapids_cpm_package_details(nvbench nvbench_version nvbench_repository nvbench_tag nvbench_shallow)
-rapids_cpm_package_details(GTest GTest_version GTest_repository GTest_tag GTest_shallow)
+rapids_cpm_package_details(nvbench nvbench_version nvbench_repository nvbench_tag nvbench_shallow nvbench_exclude)
+rapids_cpm_package_details(GTest GTest_version GTest_repository GTest_tag GTest_shallow GTest_exclude)
 
 
 # Need to write out an override file
@@ -42,7 +42,7 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
 rapids_cpm_init(OVERRIDE "${CMAKE_CURRENT_BINARY_DIR}/override.json")
 
 # Verify that the override works
-rapids_cpm_package_details(nvbench version repository tag shallow)
+rapids_cpm_package_details(nvbench version repository tag shallow exclude)
 if(NOT version STREQUAL nvbench_version)
   message(FATAL_ERROR "default version field was removed.")
 endif()
@@ -56,7 +56,7 @@ if(CPM_DOWNLOAD_ALL)
   message(FATAL_ERROR "CPM_DOWNLOAD_ALL should be false since the nvbench override explicitly sets it to 'false'")
 endif()
 
-rapids_cpm_package_details(GTest version repository tag shallow)
+rapids_cpm_package_details(GTest version repository tag shallow exclude)
 if(NOT version STREQUAL "2.99")
   message(FATAL_ERROR "custom version field was removed. ${version} was found instead")
 endif()

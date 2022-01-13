@@ -64,7 +64,7 @@ function(rapids_cpm_nvbench)
   endif()
 
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
-  rapids_cpm_package_details(nvbench version repository tag shallow)
+  rapids_cpm_package_details(nvbench version repository tag shallow exclude)
 
   # CUDA::nvml is an optional package and might not be installed ( aka conda )
   find_package(CUDAToolkit REQUIRED)
@@ -80,6 +80,7 @@ function(rapids_cpm_nvbench)
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
                   GIT_SHALLOW ${shallow}
+                  EXCLUDE_FROM_ALL ${exclude}
                   OPTIONS "NVBench_ENABLE_NVML ${nvbench_with_nvml}" "NVBench_ENABLE_EXAMPLES OFF"
                           "NVBench_ENABLE_TESTING OFF")
 
