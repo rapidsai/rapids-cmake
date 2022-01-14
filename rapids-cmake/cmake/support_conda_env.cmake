@@ -32,7 +32,7 @@ the CONDA include and link directories, when executed.
 
 Also offers the ability to modify :cmake:variable:`CMAKE_PREFIX_PATH` to
 include the paths in environment variables `BUILD_PREFIX`, `PREFIX`,
-and `CONDA_PREFIX` based on the current CONDA enviornment.
+and `CONDA_PREFIX` based on the current CONDA environment.
 
 ``MODIFY_PREFIX_PATH``
     When in a conda build environment the contents of `$ENV{BUILD_PREFIX}` and `$ENV{PREFIX}`
@@ -48,7 +48,7 @@ Result Variables
 
 Result Targets
 ^^^^^^^^^^^^^^^^
-  `target_name` target will be created only if called from a conda enviornment.
+  `target_name` target will be created only if called from a conda environment.
 
 #]=======================================================================]
 function(rapids_cmake_support_conda_env target)
