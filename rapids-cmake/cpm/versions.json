@@ -28,7 +28,7 @@
       "git_tag" : "${version}"
     },
     "libcudacxx" : {
-      "version" : "1.6.0",
+      "version" : "1.7.0",
       "git_url" : "https://github.com/NVIDIA/libcudacxx.git",
       "git_tag" : "${version}"
     }
