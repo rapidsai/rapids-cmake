@@ -31,13 +31,13 @@ Establishes a variable that holds the correct library installation directory
 ( lib or lib64 or lib/<multiarch-tuple> ). This function is CONDA aware and
 will return `lib` when it detects a project is installing in the CONDA_PREFIX
 
-Also offers the ability to modify :cmake:variable:`CMAKE_INSTALL_LIBDIR` to
+Also offers the ability to modify :cmake:command:`CMAKE_INSTALL_LIBDIR <cmake:command:install>` to
 be the computed installation directory.
 
 
 Result Variables
 ^^^^^^^^^^^^^^^^
-  :cmake:variable:`CMAKE_INSTALL_LIBDIR` will be modifed to be the computed relative directory
+  :cmake:command:`CMAKE_INSTALL_LIBDIR <cmake:command:install>` will be modifed to be the computed relative directory
   (lib or lib64 or lib/<multiarch-tuple>) when `MODIFY_INSTALL_LIBDIR` is provided
 
 #]=======================================================================]
