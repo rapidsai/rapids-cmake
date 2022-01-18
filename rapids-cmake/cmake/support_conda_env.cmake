@@ -30,20 +30,20 @@ Establish a target that holds the CONDA include and link directories.
 Creates a global interface target called `target_name` that holds
 the CONDA include and link directories, when executed.
 
-Also offers the ability to modify :cmake:variable:`CMAKE_PREFIX_PATH` to
+Also offers the ability to modify :cmake:variable:`CMAKE_PREFIX_PATH <cmake:variable:CMAKE_PREFIX_PATH>` to
 include the paths in environment variables `BUILD_PREFIX`, `PREFIX`,
 and `CONDA_PREFIX` based on the current CONDA environment.
 
 ``MODIFY_PREFIX_PATH``
     When in a conda build environment the contents of `$ENV{BUILD_PREFIX}` and `$ENV{PREFIX}`
-    will be inserted to the front of :cmake:variable:`CMAKE_PREFIX_PATH`.
+    will be inserted to the front of :cmake:variable:`CMAKE_PREFIX_PATH <cmake:variable:CMAKE_PREFIX_PATH>`.
 
     When in a conda environment the contents of `$ENV{CONDA_PREFIX}` will be inserted to
-    the front of :cmake:variable:`CMAKE_PREFIX_PATH`.
+    the front of :cmake:variable:`CMAKE_PREFIX_PATH <cmake:variable:CMAKE_PREFIX_PATH>`.
 
 Result Variables
 ^^^^^^^^^^^^^^^^
-  :cmake:variable:`CMAKE_PREFIX_PATH` will be modifed when `MODIFY_PREFIX_PATH` is provided
+  :cmake:variable:`CMAKE_PREFIX_PATH <cmake:variable:CMAKE_PREFIX_PATH>` will be modifed when `MODIFY_PREFIX_PATH` is provided
   and called from a conda environment.
 
 Result Targets
