@@ -29,8 +29,9 @@ Generate a C++ header file that holds git revision information of the calling pr
 
 Creates a global interface target called `target_name` that holds the includes to
 the generated header with the macros for git branch, sha1, version, and if any uncommited
-changes exist. Users of the header file must use :cmake:command:`target_link_libraries` to
-the target so that the header is generated before it is used.
+changes exist. Users of the header file must use
+:cmake:command:`target_link_libraries <cmake:command:target_link_libraries>` to the target
+so that the header is generated before it is used.
 
 ``PREFIX``
     Prefix for all the C++ macros. By default if not explicitly specified it will be equal
@@ -57,7 +58,7 @@ This information will be recorded in the following defines:
 ``file_path``
     Either an absolute or relative path.
     When a relative path, the absolute location will be computed from
-    :cmake:variable:`CMAKE_CURRENT_BINARY_DIR`
+    :cmake:variable:`CMAKE_CURRENT_BINARY_DIR <cmake:variable:CMAKE_CURRENT_BINARY_DIR>`
 
 .. note::
   If `git` doesn't exist or the project doesn't use `git`, the header
@@ -68,7 +69,8 @@ This information will be recorded in the following defines:
 Result Targets
 ^^^^^^^^^^^^^^^^
   `target_name` target will be created. Consuming libraries/executables
-   of the generated header must use the target via :cmake:command:`target_link_libraries`
+   of the generated header must use the target via
+   :cmake:command:`target_link_libraries <cmake:command:target_link_libraries>`
    for correct builds.
 
 #]=======================================================================]
