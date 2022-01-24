@@ -13,29 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
+include(${rapids-cmake-dir}/export/export.cmake)
+
 cmake_minimum_required(VERSION 3.20)
+project(FakEProJecT LANGUAGES CXX VERSION 3.1.4)
 
-project(fill_cache LANGUAGES CXX)
+add_library(fakeLib INTERFACE)
+install(TARGETS fakeLib EXPORT fake_set)
 
-include(${rapids-cmake-dir}/cpm/init.cmake)
+add_library(fakeLib_c1 INTERFACE)
+install(TARGETS fakeLib_c1 EXPORT fake_set_c1)
 
-include(${rapids-cmake-dir}/cpm/gtest.cmake)
-include(${rapids-cmake-dir}/cpm/libcudacxx.cmake)
-include(${rapids-cmake-dir}/cpm/nvbench.cmake)
-include(${rapids-cmake-dir}/cpm/rmm.cmake)
-include(${rapids-cmake-dir}/cpm/spdlog.cmake)
-include(${rapids-cmake-dir}/cpm/thrust.cmake)
-
-rapids_cpm_init()
-
-set(CPM_SOURCE_CACHE "${CMAKE_BINARY_DIR}")
-set(CPM_DOWNLOAD_ALL "ON")
-rapids_cpm_gtest(DOWNLOAD_ONLY ON)
-rapids_cpm_libcudacxx(DOWNLOAD_ONLY ON)
-rapids_cpm_nvbench(DOWNLOAD_ONLY ON)
-rapids_cpm_rmm(DOWNLOAD_ONLY ON)
-rapids_cpm_spdlog(DOWNLOAD_ONLY ON)
-rapids_cpm_thrust(temp DOWNLOAD_ONLY ON)
-
-
-
+rapids_export(BUILD FakEProJecT
+  EXPORT_SET fake_set
+  COMPONENTS_EXPORT_SET fake_set_c1
+  NAMESPACE test::
+  )
