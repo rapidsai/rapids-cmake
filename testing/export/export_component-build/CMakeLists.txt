@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-include(${rapids-cmake-dir}/export/component.cmake)
+include(${rapids-cmake-dir}/export/detail/component.cmake)
 include(${rapids-cmake-dir}/export/package.cmake)
 
 
