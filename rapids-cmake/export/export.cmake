@@ -220,15 +220,18 @@ function(rapids_export type project_name)
   endif()
 
   if(RAPIDS_COMPONENTS AND NOT RAPIDS_COMPONENTS_EXPORT_SET)
-    message(FATAL_ERROR "rapids_export(${type} ${project_name} is missing COMPONENTS_EXPORT_SET as COMPONENTS was provided.")
+    message(FATAL_ERROR "rapids_export(${type} ${project_name} is missing COMPONENTS_EXPORT_SET as COMPONENTS was provided."
+    )
   endif()
   if(RAPIDS_COMPONENTS_EXPORT_SET AND NOT RAPIDS_COMPONENTS)
-    message(FATAL_ERROR "rapids_export(${type} ${project_name} is missing COMPONENTS as COMPONENTS_EXPORT_SET was provided.")
+    message(FATAL_ERROR "rapids_export(${type} ${project_name} is missing COMPONENTS as COMPONENTS_EXPORT_SET was provided."
+    )
   endif()
 
   include("${rapids-cmake-dir}/export/detail/component.cmake")
   foreach(comp comp_export_set IN ZIP_LISTS RAPIDS_COMPONENTS RAPIDS_COMPONENTS_EXPORT_SET)
-    rapids_export_component(${type} ${project_name} ${comp} ${comp_export_set} ${RAPIDS_PROJECT_NAMESPACE})
+    rapids_export_component(${type} ${project_name} ${comp} ${comp_export_set}
+                            ${RAPIDS_PROJECT_NAMESPACE})
   endforeach()
 
   set(RAPIDS_PROJECT_DOCUMENTATION "Generated ${project_name}-config module")

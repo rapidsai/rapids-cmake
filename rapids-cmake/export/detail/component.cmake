@@ -39,12 +39,13 @@ components.
 
 
 #]=======================================================================]
+# cmake-lint: disable=W0105
 function(rapids_export_component type project_name component_name export_set namespace)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.export.rapids_export_component")
 
   string(TOLOWER ${type} type)
 
-  set(deps_destination )
+  set(deps_destination)
   if(type STREQUAL "install")
     include("${rapids-cmake-dir}/cmake/install_lib_dir.cmake")
     rapids_cmake_install_lib_dir(install_location)
@@ -66,7 +67,9 @@ function(rapids_export_component type project_name component_name export_set nam
 
   if(TARGET rapids_export_${type}_${export_set})
     include("${rapids-cmake-dir}/export/write_dependencies.cmake")
-    rapids_export_write_dependencies(${type} ${export_set} "${deps_destination}/${project_name}-${component_name}-dependencies.cmake")
+    rapids_export_write_dependencies(
+      ${type} ${export_set}
+      "${deps_destination}/${project_name}-${component_name}-dependencies.cmake")
   endif()
 
 endfunction()
