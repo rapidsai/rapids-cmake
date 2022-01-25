@@ -16,7 +16,7 @@
 
 cmake_minimum_required(VERSION 3.18 FATAL_ERROR)
 
-file(DOWNLOAD https://raw.githubusercontent.com/rapidsai/rapids-cmake/branch-21.12/RAPIDS.cmake
+file(DOWNLOAD https://raw.githubusercontent.com/rapidsai/rapids-cmake/branch-22.04/RAPIDS.cmake
     ${CMAKE_BINARY_DIR}/RAPIDS.cmake)
 include(${CMAKE_BINARY_DIR}/RAPIDS.cmake)
 
@@ -48,7 +48,11 @@ rapids_find_package(CUDAToolkit REQUIRED
                     INSTALL_EXPORT_SET example-targets
                     )
 
-# find zlib using a find module we generate
+# Generate a `FindZLIBS` module that will searches for the zlib.h
+# header and `libz` or `libzlib` library.
+# In practise this function should be used to search for packages
+# that don't provide a -config.cmake file or CMake doesn't
+# already package a find module for ( includes ZLIB ).
 rapids_find_generate_module(ZLIBS
     HEADER_NAMES        zlib.h
     LIBRARY_NAMES       z zlib
@@ -56,10 +60,14 @@ rapids_find_generate_module(ZLIBS
     INSTALL_EXPORT_SET  example-targets
     )
 
-#Now use our generated find module and declare it part of
-#our exported interface
+# Since `rapids_find_generate_module` doesn't interact with the export-set
+# like `rapids_find` does, we manually establish this connection.
+# The vast majority of calls should use `rapids_find_package`, and
+# rapids_export_package should only be used in edge cases. The most common
+# edge case being when a package doesn't provide a built directory -config.cmake
+# module
 find_package(ZLIBS REQUIRED)
-rapids_export_package(INSTALL ZLIBS example-targets GLOBAL_TARGETS ZLIB::ZLIB)
+rapids_export_package(INSTALL ZLIBS example-targets GLOBAL_TARGETS ZLIBS::ZLIBS)
 rapids_export_package(BUILD ZLIBS example-targets)
 
 # find Threads (needed by cudftestutil)
