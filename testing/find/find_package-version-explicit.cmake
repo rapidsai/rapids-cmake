@@ -32,12 +32,11 @@ include(${rapids-cmake-dir}/find/package.cmake)
 #=============================================================================
 include(${rapids-cmake-dir}/find/package.cmake)
 
-rapids_find_package(CUDAToolkit 11.0 REQUIRED
+rapids_find_package(CUDAToolkit 11 REQUIRED
 										INSTALL_EXPORT_SET test_export_set
 					          BUILD_EXPORT_SET test_export_set)
 
-set(expected_version ${CUDAToolkit_VERSION_MAJOR}.${CUDAToolkit_VERSION_MINOR})
-set(to_match_string "find_dependency(CUDAToolkit ${expected_version})")
+set(to_match_string "find_dependency(CUDAToolkit 11)")
 
 set(path "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/build/package_CUDAToolkit.cmake")
 file(READ "${path}" contents)

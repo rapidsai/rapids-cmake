@@ -104,12 +104,10 @@ macro(rapids_find_package name)
     endif()
 
     # Record the version we found to be what consumers need to find as well
-    if(${name}_VERSION_MAJOR AND ${name}_VERSION_MINOR)
-      list(APPEND _rapids_extra_info VERSION ${${name}_VERSION_MAJOR}}.${${name}_VERSION_MINOR}})
-    elseif(${name}_VERSION_MAJOR)
-      list(APPEND _rapids_extra_info VERSION ${${name}_VERSION_MAJOR}})
+    set(possible_version ${ARGV1})
+    if(possible_version MATCHES "^[0-9]+") 
+      list(APPEND _rapids_extra_info "VERSION" ${possible_version})
     endif()
-
 
     if(RAPIDS_BUILD_EXPORT_SET)
       include("${rapids-cmake-dir}/export/package.cmake")

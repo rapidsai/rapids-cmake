@@ -27,9 +27,8 @@ add_cmake_config_test( find_package-install.cmake )
 add_cmake_config_test( find_package-optional-failed.cmake )
 add_cmake_config_test( find_package-required-found.cmake )
 
-# add_cmake_config_test( find_package-version-explicit.cmake )
-add_cmake_config_test( find_package-version-implicit.cmake )
-# add_cmake_config_test( find_package-version-none.cmake )
+add_cmake_config_test( find_package-version-explicit.cmake )
+add_cmake_config_test( find_package-version-none.cmake )
 
 add_cmake_config_test( find_generate_module-build )
 add_cmake_config_test( find_generate_module-install )

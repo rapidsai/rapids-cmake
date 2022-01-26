@@ -15,7 +15,7 @@
 #=============================================================================
 cmake_minimum_required(VERSION 3.20)
 
-project(fill_cache LANGUAGES NONE)
+project(fill_cache LANGUAGES CXX)
 
 include(${rapids-cmake-dir}/cpm/init.cmake)
 
