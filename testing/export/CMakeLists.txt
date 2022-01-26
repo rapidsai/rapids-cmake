@@ -37,9 +37,11 @@ add_cmake_config_test( export-verify-implicit-major-version-only-matching.cmake 
 add_cmake_config_test( export-verify-version.cmake )
 
 add_cmake_config_test( export_package-build-possible-dir.cmake )
+add_cmake_config_test( export_package-build-with-version.cmake )
 add_cmake_config_test( export_package-build.cmake )
 add_cmake_config_test( export_package-install-possible-dir.cmake )
 add_cmake_config_test( export_package-install.cmake )
+add_cmake_config_test( export_package-install-with-version.cmake )
 add_cmake_config_test( export_package-multiple-export_sets.cmake )
 
 add_cmake_config_test( write_dependencies-cpm-preserve-options.cmake )
