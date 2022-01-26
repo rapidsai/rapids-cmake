@@ -100,9 +100,16 @@ macro(rapids_find_package name)
 
     set(_rapids_extra_info)
     if(RAPIDS_GLOBAL_TARGETS)
-      set(_rapids_extra_info "GLOBAL_TARGETS")
-      list(APPEND _rapids_extra_info ${RAPIDS_GLOBAL_TARGETS})
+      list(APPEND _rapids_extra_info "GLOBAL_TARGETS" ${RAPIDS_GLOBAL_TARGETS})
     endif()
+
+    # Record the version we found to be what consumers need to find as well
+    if(${name}_VERSION_MAJOR AND ${name}_VERSION_MINOR)
+      list(APPEND _rapids_extra_info VERSION ${${name}_VERSION_MAJOR}}.${${name}_VERSION_MINOR}})
+    elseif(${name}_VERSION_MAJOR)
+      list(APPEND _rapids_extra_info VERSION ${${name}_VERSION_MAJOR}})
+    endif()
+
 
     if(RAPIDS_BUILD_EXPORT_SET)
       include("${rapids-cmake-dir}/export/package.cmake")
