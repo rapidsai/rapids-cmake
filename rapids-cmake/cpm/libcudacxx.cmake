@@ -86,8 +86,7 @@ function(rapids_cpm_libcudacxx)
 
   if(RAPIDS_INSTALL_EXPORT_SET)
     include("${rapids-cmake-dir}/export/package.cmake")
-    rapids_export_package(INSTALL libcudacxx ${RAPIDS_INSTALL_EXPORT_SET}
-                          VERSION ${version}
+    rapids_export_package(INSTALL libcudacxx ${RAPIDS_INSTALL_EXPORT_SET} VERSION ${version}
                           GLOBAL_TARGETS libcudacxx::libcudacxx)
   endif()
 

@@ -105,7 +105,7 @@ macro(rapids_find_package name)
 
     # Record the version we found to be what consumers need to find as well
     set(possible_version ${ARGV1})
-    if(possible_version MATCHES "^[0-9]+") 
+    if(possible_version MATCHES "^[0-9]+")
       list(APPEND _rapids_extra_info "VERSION" ${possible_version})
     endif()
 
