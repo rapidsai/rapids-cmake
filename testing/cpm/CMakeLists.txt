@@ -29,12 +29,14 @@ add_cmake_config_test( cpm_init-override-simple.cmake )
 
 add_cmake_config_test( cpm_package_override-bad-path.cmake SHOULD_FAIL "rapids_cpm_package_override can't load")
 add_cmake_config_test( cpm_package_override-before-init.cmake )
+add_cmake_config_test( cpm_package_override-empty.cmake )
 add_cmake_config_test( cpm_package_override-multiple.cmake )
 add_cmake_config_test( cpm_package_override-simple.cmake )
 
 add_cmake_config_test( cpm_gtest-export.cmake )
 add_cmake_config_test( cpm_gtest-simple.cmake )
 
+add_cmake_config_test( cpm_libcudacxx-after_cpmfind.cmake )
 add_cmake_config_test( cpm_libcudacxx-export.cmake )
 add_cmake_config_test( cpm_libcudacxx-simple.cmake )
 

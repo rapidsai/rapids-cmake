@@ -17,7 +17,7 @@ include(${rapids-cmake-dir}/cpm/init.cmake)
 include(${rapids-cmake-dir}/cpm/nvbench.cmake)
 
 rapids_cpm_init()
-
+set(CMAKE_CUDA_ARCHITECTURES OFF)
 rapids_cpm_nvbench(BUILD_EXPORT_SET test)
 rapids_cpm_nvbench(BUILD_EXPORT_SET test2)
 

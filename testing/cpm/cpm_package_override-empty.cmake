@@ -13,25 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-#
-# This is the preferred entry point for projects using rapids-cmake
-#
+include(${rapids-cmake-dir}/cpm/init.cmake)
+include(${rapids-cmake-dir}/cpm/package_override.cmake)
 
-set(rapids-cmake-version 22.02)
-include(FetchContent)
-FetchContent_Declare(
-  rapids-cmake
-  GIT_REPOSITORY https://github.com/rapidsai/rapids-cmake.git
-  GIT_TAG        branch-${rapids-cmake-version}
-)
-FetchContent_GetProperties(rapids-cmake)
-if(rapids-cmake_POPULATED)
-  # Something else has already populated rapids-cmake, only thing
-  # we need to do is setup the CMAKE_MODULE_PATH
-  if(NOT "${rapids-cmake-dir}" IN_LIST CMAKE_MODULE_PATH)
-    list(APPEND CMAKE_MODULE_PATH "${rapids-cmake-dir}")
-  endif()
-else()
-  FetchContent_MakeAvailable(rapids-cmake)
-endif()
+rapids_cpm_init()
 
+# Need to write out an override file
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
+  [=[
+{
+  "packages" : {
+  }
+}
+  ]=])
+
+# Verify that the override can be consumed without errors
+rapids_cpm_package_override(${CMAKE_CURRENT_BINARY_DIR}/override.json)

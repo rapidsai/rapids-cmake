@@ -66,7 +66,7 @@ function(rapids_cpm_rmm)
   endif()
 
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
-  rapids_cpm_package_details(rmm version repository tag shallow)
+  rapids_cpm_package_details(rmm version repository tag shallow exclude)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
   # Once we can require CMake 3.22 this can use `only_major_minor` for version searches
@@ -76,6 +76,7 @@ function(rapids_cpm_rmm)
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
                   GIT_SHALLOW ${shallow}
+                  EXCLUDE_FROM_ALL ${exclude}
                   OPTIONS "BUILD_TESTS OFF" "BUILD_BENCHMARKS OFF")
 
   # Propagate up variables that CPMFindPackage provide

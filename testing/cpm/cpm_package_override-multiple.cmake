@@ -20,9 +20,9 @@ rapids_cpm_init()
 
 # Load the default values for nvbench and GTest projects
 include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
-rapids_cpm_package_details(nvbench nvbench_version nvbench_repository nvbench_tag nvbench_shallow)
-rapids_cpm_package_details(GTest GTest_version GTest_repository GTest_tag GTest_shallow)
-rapids_cpm_package_details(rmm rmm_version rmm_repository rmm_tag rmm_shallow)
+rapids_cpm_package_details(nvbench nvbench_version nvbench_repository nvbench_tag nvbench_shallow nvbench_exclude)
+rapids_cpm_package_details(GTest GTest_version GTest_repository GTest_tag GTest_shallow GTest_exclude)
+rapids_cpm_package_details(rmm rmm_version rmm_repository rmm_tag rmm_shallow rmm_exclude)
 
 # Need to write out an override file
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override1.json
@@ -57,7 +57,7 @@ rapids_cpm_package_override(${CMAKE_CURRENT_BINARY_DIR}/override1.json)
 rapids_cpm_package_override(${CMAKE_CURRENT_BINARY_DIR}/override2.json)
 
 # Verify that the override works
-rapids_cpm_package_details(nvbench version repository tag shallow)
+rapids_cpm_package_details(nvbench version repository tag shallow exclude)
 if(NOT version STREQUAL nvbench_version)
   message(FATAL_ERROR "default version field was removed.")
 endif()
@@ -68,7 +68,7 @@ if(NOT tag STREQUAL "my_tag")
   message(FATAL_ERROR "custom git_tag field was ignored. ${tag} found instead of my_url")
 endif()
 
-rapids_cpm_package_details(GTest version repository tag shallow)
+rapids_cpm_package_details(GTest version repository tag shallow exclude)
 if(NOT version STREQUAL "3.99")
   message(FATAL_ERROR "custom version field was removed. ${version} was found instead")
 endif()
@@ -76,7 +76,7 @@ if(NOT tag MATCHES "3.99")
   message(FATAL_ERROR "custom version field not used when computing git_tag value. ${tag} was found instead")
 endif()
 
-rapids_cpm_package_details(rmm version repository tag shallow)
+rapids_cpm_package_details(rmm version repository tag shallow exclude)
 if(NOT tag MATCHES "new_rmm_tag")
   message(FATAL_ERROR "custom version field not used when computing git_tag value. ${tag} was found instead")
 endif()

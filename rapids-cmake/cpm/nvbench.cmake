@@ -64,7 +64,14 @@ function(rapids_cpm_nvbench)
   endif()
 
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
-  rapids_cpm_package_details(nvbench version repository tag shallow)
+  rapids_cpm_package_details(nvbench version repository tag shallow exclude)
+
+  # CUDA::nvml is an optional package and might not be installed ( aka conda )
+  find_package(CUDAToolkit REQUIRED)
+  set(nvbench_with_nvml "OFF")
+  if(TARGET CUDA::nvml)
+    set(nvbench_with_nvml "ON")
+  endif()
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
   rapids_cpm_find(nvbench ${version} ${ARGN}
@@ -73,7 +80,9 @@ function(rapids_cpm_nvbench)
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
                   GIT_SHALLOW ${shallow}
-                  OPTIONS "NVBench_ENABLE_EXAMPLES OFF" "NVBench_ENABLE_TESTING OFF")
+                  EXCLUDE_FROM_ALL ${exclude}
+                  OPTIONS "NVBench_ENABLE_NVML ${nvbench_with_nvml}" "NVBench_ENABLE_EXAMPLES OFF"
+                          "NVBench_ENABLE_TESTING OFF")
 
   # Propagate up variables that CPMFindPackage provide
   set(nvbench_SOURCE_DIR "${nvbench_SOURCE_DIR}" PARENT_SCOPE)

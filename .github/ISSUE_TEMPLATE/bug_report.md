@@ -21,4 +21,4 @@ A clear and concise description of what you expected to happen.
  - CMake version
 
 **Additional context**
-For harder to track issue it can be helpful to attach the file generated from `cmake --system-information <file>` when executed from the same enviornment as the failure.
+For harder to track issue it can be helpful to attach the file generated from `cmake --system-information <file>` when executed from the same environment as the failure.

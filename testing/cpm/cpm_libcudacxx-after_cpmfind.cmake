@@ -13,25 +13,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-#
-# This is the preferred entry point for projects using rapids-cmake
-#
+include(${rapids-cmake-dir}/cpm/init.cmake)
+include(${rapids-cmake-dir}/cpm/libcudacxx.cmake)
 
-set(rapids-cmake-version 22.02)
-include(FetchContent)
-FetchContent_Declare(
-  rapids-cmake
-  GIT_REPOSITORY https://github.com/rapidsai/rapids-cmake.git
-  GIT_TAG        branch-${rapids-cmake-version}
-)
-FetchContent_GetProperties(rapids-cmake)
-if(rapids-cmake_POPULATED)
-  # Something else has already populated rapids-cmake, only thing
-  # we need to do is setup the CMAKE_MODULE_PATH
-  if(NOT "${rapids-cmake-dir}" IN_LIST CMAKE_MODULE_PATH)
-    list(APPEND CMAKE_MODULE_PATH "${rapids-cmake-dir}")
-  endif()
-else()
-  FetchContent_MakeAvailable(rapids-cmake)
+rapids_cpm_init()
+include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
+rapids_cpm_package_details(libcudacxx version repository tag shallow exclude)
+
+include("${rapids-cmake-dir}/cpm/find.cmake")
+rapids_cpm_find(libcudacxx ${version}
+                CPM_ARGS
+                GIT_REPOSITORY ${repository}
+                GIT_TAG ${tag}
+                GIT_SHALLOW ${shallow}
+                EXCLUDE_FROM_ALL ${exclude}
+                DOWNLOAD_ONLY TRUE)
+
+                
+rapids_cpm_libcudacxx()
+if(NOT TARGET libcudacxx::libcudacxx)
+  message(FATAL_ERROR "Expected libcudacxx::libcudacxx target to exist")
 endif()
 
+rapids_cpm_libcudacxx()
