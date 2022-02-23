@@ -38,7 +38,7 @@ for  consistency across all RAPIDS projects.
   our build directory export set.
 
 ``INSTALL_EXPORT_SET``
-  Record a :cmake:command:`find_dependency(rmm)` call needs to occur as part of
+  Record a :cmake:command:`find_dependency(rmm) <cmake:module:CMakeFindDependencyMacro>` call needs to occur as part of
   our install directory export set.
 
 .. note::

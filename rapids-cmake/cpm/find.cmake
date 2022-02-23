@@ -66,7 +66,7 @@ consistency. List all targets used by your project in `GLOBAL_TARGET`.
   our build directory export set.
 
 ``INSTALL_EXPORT_SET``
-  Record a :cmake:command:`find_dependency(<PackageName> ...)` call needs to occur as part of
+  Record a :cmake:command:`find_dependency(<PackageName> ...) <cmake:module:CMakeFindDependencyMacro>` call needs to occur as part of
   our install directory export set.
 
 ``CPM_ARGS``
@@ -92,7 +92,7 @@ Result Variables
   If :cmake:variable:`CPM_<PackageName>_SOURCE` is set, we use :cmake:command:`CPMAddPackage` instead of
   :cmake:command:`CPMFindPackage`. :cmake:command:`CPMAddPackage` always adds the package at the desired
   :cmake:variable:`CPM_<PackageName>_SOURCE` location, and won't attempt to locate it via
-  :cmake:command:`find_package()` first.
+  :cmake:command:`find_package() <cmake:command:find_package>` first.
 
 
 Examples

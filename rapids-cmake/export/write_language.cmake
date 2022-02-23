@@ -30,18 +30,19 @@ globally.
 
 
 The contents of `<file_path>` will be a self-contained file that when called
-via :cmake:command:`include` will make sure the requested language is enabled
-globally.
+via :cmake:command:`include <cmake:command:include>` will make sure the requested
+language is enabled globally.
 
-This is required as CMake's :cmake:command:`enable_language` only supports
-enabling languages for the current directory scope, and doesn't support
+This is required as CMake's :cmake:command:`enable_language <cmake:command:enable_language>`
+only supports enabling languages for the current directory scope, and doesn't support
 being called from within functions. These limitations make it impossible
 for packages included via `CPM` to enable extra languages.
 
 .. note::
-  This uses some serious CMake black magic to make sure that `enable_language` occurs
-  both at the call site, and up the entire `add_subdirectory` stack so the language
-  is enabled globally.
+  This uses some serious CMake black magic to make sure that
+  :cmake:command:`enable_language <cmake:command:enable_language>` occurs both at the call site,
+  and up the entire :cmake:command:`enable_language <cmake:command:add_subdirectory>` stack so
+  the language is enabled globally.
 
 
 #]=======================================================================]

@@ -21,8 +21,8 @@ rapids_export_package
 
 .. versionadded:: v21.06.00
 
-Record a given <PackageName> found by :cmake:command:`find_package` is required for a
-given export set
+Record a given <PackageName> found by :cmake:command:`find_package <cmake:command:find_package>`
+is required for a given export set
 
 .. code-block:: cmake
 
@@ -32,8 +32,8 @@ given export set
                          [GLOBAL_TARGETS <targets...>]
                         )
 
-Records a given <PackageName> found by :cmake:command:`find_package` is required for a
-given export set. When the associated :cmake:command:`rapids_export(BUILD|INSTALL)` or
+Records a given <PackageName> found by :cmake:command:`find_package <cmake:command:find_package>`
+is required for a given export set. When the associated :cmake:command:`rapids_export(BUILD|INSTALL)` or
 :cmake:command:`rapids_export_write_dependencies(BUILD|INSTALL)` command is invoked the
 generated information will include a :cmake:command:`find_dependency` call for <PackageName>.
 
