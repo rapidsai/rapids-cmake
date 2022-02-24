@@ -29,6 +29,7 @@ given export set
   rapids_export_package( (BUILD|INSTALL)
                          <PackageName>
                          <ExportSet>
+                         [VERSION] major.minor
                          [GLOBAL_TARGETS <targets...>]
                         )
 
@@ -43,6 +44,16 @@ generated information will include a :cmake:command:`find_dependency` call for <
 ``INSTALL``
   Will record <PackageName> is part of the build directory export set
 
+``VERSION``
+  .. versionadded:: v22.04.00
+  Record which `major.minor` version of the package is required for consumers.
+
+
+``GLOBAL_TARGETS``
+  Which targets from this package should be made global when the
+  package is imported in.
+
+
 #]=======================================================================]
 function(rapids_export_package type name export_set)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.export.package")
@@ -50,7 +61,7 @@ function(rapids_export_package type name export_set)
   string(TOLOWER ${type} type)
 
   set(options "")
-  set(one_value EXPORT_SET)
+  set(one_value EXPORT_SET VERSION)
   set(multi_value GLOBAL_TARGETS)
   cmake_parse_arguments(RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
@@ -61,6 +72,7 @@ function(rapids_export_package type name export_set)
     endif()
   endif()
 
+  set(version ${RAPIDS_VERSION})
   configure_file("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/${type}_package.cmake.in"
                  "${CMAKE_BINARY_DIR}/rapids-cmake/${export_set}/${type}/package_${name}.cmake"
                  @ONLY)

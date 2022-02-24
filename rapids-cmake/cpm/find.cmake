@@ -177,7 +177,8 @@ function(rapids_cpm_find name version)
 
   if(RAPIDS_INSTALL_EXPORT_SET)
     include("${rapids-cmake-dir}/export/package.cmake")
-    rapids_export_package(INSTALL ${name} ${RAPIDS_INSTALL_EXPORT_SET} ${extra_info})
+    rapids_export_package(INSTALL ${name} ${RAPIDS_INSTALL_EXPORT_SET} VERSION ${version}
+                                                                       ${extra_info})
   endif()
 
   # Propagate up variables that CPMFindPackage provide
