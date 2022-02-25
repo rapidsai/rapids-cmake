@@ -24,7 +24,7 @@ if(NOT EXISTS "${path}")
 endif()
 
 # verify that the expected version is in FAKE_PACKAGE.cmake
-set(to_match_string [=[22.08)]=])
+set(to_match_string [=[22.08 QUIET)]=])
 file(READ "${path}" contents)
 string(FIND "${contents}" "${to_match_string}" is_found)
 if(is_found EQUAL -1)

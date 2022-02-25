@@ -38,7 +38,7 @@ rapids_find_package(CUDAToolkit REQUIRED
 
 # no version specified at find time, verify none recorded
 # If we record the found version we break things like CUDA backwards runtime compat
-set(to_match_string "find_dependency(CUDAToolkit )")
+set(to_match_string "find_dependency(CUDAToolkit)")
 
 set(path "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/build/package_CUDAToolkit.cmake")
 file(READ "${path}" contents)

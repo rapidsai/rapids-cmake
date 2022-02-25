@@ -7,6 +7,7 @@ if(possible_package_dir AND NOT DEFINED @name@_DIR)
   set(@name@_DIR "${possible_package_dir}")
 endif()
 
+find_package(@name@ @version@ QUIET)
 find_dependency(@name@)
 
 if(possible_package_dir)
