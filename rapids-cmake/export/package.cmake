@@ -72,10 +72,17 @@ function(rapids_export_package type name export_set)
     endif()
   endif()
 
-  set(version ${RAPIDS_VERSION})
-  configure_file("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/${type}_package.cmake.in"
-                 "${CMAKE_BINARY_DIR}/rapids-cmake/${export_set}/${type}/package_${name}.cmake"
-                 @ONLY)
+  if(RAPIDS_VERSION)
+    set(version ${RAPIDS_VERSION})
+    configure_file("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/${type}_package_versioned.cmake.in"
+                   "${CMAKE_BINARY_DIR}/rapids-cmake/${export_set}/${type}/package_${name}.cmake"
+                   @ONLY)
+  else()
+    message(STATUS "NO RAPIDS_VERSION for ${name}")
+    configure_file("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/${type}_package.cmake.in"
+                   "${CMAKE_BINARY_DIR}/rapids-cmake/${export_set}/${type}/package_${name}.cmake"
+                   @ONLY)
+  endif()
 
   if(NOT TARGET rapids_export_${type}_${export_set})
     add_library(rapids_export_${type}_${export_set} INTERFACE)
