@@ -55,9 +55,9 @@ calls to :cmake:command:`find_dependency`, or :cmake:command:`CPMFindPackage`.
 ``VERSION``
   Explicitly list the version of the package being exported. By
   default :cmake:command:`rapids_export` uses the version specified by the
-  root level :cmake:command:`project` call. If no version has been specified
-  either way or `OFF` is provided as the `VERSION` value, no version compatibility
-  checks will be generated.
+  root level :cmake:command:`project <cmake:command:project>` call. If no version has
+  been specified either way or `OFF` is provided as the `VERSION` value, no version
+  compatibility checks will be generated.
 
   Depending on the version string different compatibility modes will be used.
 
@@ -107,11 +107,11 @@ calls to :cmake:command:`find_dependency`, or :cmake:command:`CPMFindPackage`.
   of your package. This makes sure all consumers properly setup these
   languages correctly.
 
-  This is required as CMake's :cmake:command:`enable_language` only supports
-  enabling languages for the current directory scope, and doesn't support
-  being called from within functions. Marking languages here overcomes
-  these limitations and makes it possible for packages included via
-  `CPM` to enable languages.
+  This is required as CMake's :cmake:command:`enable_language <cmake:command:enable_language>`
+  only supports enabling languages for the current directory scope, and
+  doesn't support being called from within functions. Marking languages
+  here overcomes these limitations and makes it possible for packages included
+  via `CPM` to enable languages.
 
 
 Example on how to properly use :cmake:command:`rapids_export`:

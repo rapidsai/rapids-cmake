@@ -38,12 +38,12 @@ across all RAPIDS projects.
   our build directory export set.
 
 ``INSTALL_EXPORT_SET``
-  Record a :cmake:command:`find_dependency(<PackageName> ...)` call needs to occur as part of
+  Record a :cmake:command:`find_dependency(<PackageName> ...) <cmake:module:CMakeFindDependencyMacro>` call needs to occur as part of
   our build directory export set.
 
 .. note::
   Installation of spdlog will occur if an INSTALL_EXPORT_SET is provided, and spdlog
-  is added to the project via :cmake:command:`add_subdirectory` by CPM.
+  is added to the project via :cmake:command:`add_subdirectory <cmake:command:add_subdirectory>` by CPM.
 
 Result Targets
 ^^^^^^^^^^^^^^
