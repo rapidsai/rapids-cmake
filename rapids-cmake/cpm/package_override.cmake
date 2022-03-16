@@ -67,8 +67,8 @@ function(rapids_cpm_package_override filepath)
   string(JSON package_count LENGTH "${json_data}" packages)
   math(EXPR package_count "${package_count} - 1")
 
-  # For each project cache the subset of the json for that project in a global property
-  # so that packasge_details.cmake can fetch that information
+  # For each project cache the subset of the json for that project in a global property so that
+  # packasge_details.cmake can fetch that information
   if(package_count GREATER_EQUAL 0)
     # cmake-lint: disable=E1120
     foreach(index RANGE ${package_count})
@@ -76,7 +76,7 @@ function(rapids_cpm_package_override filepath)
       string(JSON data GET "${json_data}" packages "${package_name}")
       get_property(override_exists GLOBAL PROPERTY rapids_cpm_${package_name}_override_json DEFINED)
       if(NOT override_exists)
-        #only add the first override for a project we encounter
+        # only add the first override for a project we encounter
         set_property(GLOBAL PROPERTY rapids_cpm_${package_name}_override_json "${data}")
       endif()
     endforeach()
@@ -85,10 +85,7 @@ function(rapids_cpm_package_override filepath)
     include(FetchContent)
     include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
     rapids_cpm_package_details(${package_name} version repository tag shallow exclude)
-    FetchContent_Declare(${package_name}
-      GIT_REPOSITORY ${repository}
-      GIT_TAG        ${tag}
-    )
+    FetchContent_Declare(${package_name} GIT_REPOSITORY ${repository} GIT_TAG ${tag})
 
   endif()
 endfunction()
