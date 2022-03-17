@@ -17,7 +17,7 @@
 # This is the preferred entry point for projects using rapids-cmake
 #
 
-set(rapids-cmake-version 22.04)
+set(rapids-cmake-version 22.06)
 include(FetchContent)
 FetchContent_Declare(
   rapids-cmake
