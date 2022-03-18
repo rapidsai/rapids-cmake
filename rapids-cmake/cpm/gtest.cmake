@@ -61,9 +61,9 @@ function(rapids_cpm_gtest)
 
   set(EXTRA_CPM_ARGS)
   if(CMAKE_VERSION VERSION_LESS 3.23)
-    # CMake 3.23+ built-in FindGTest is required to have the GTest::gmock_main and GTest::gmock targets
-    # so always use gtest-config.cmake for now
-    string(APPEND EXTRA_CPM_ARGS  "NO_MODULE")
+    # CMake 3.23+ built-in FindGTest is required to have the GTest::gmock_main and GTest::gmock
+    # targets so always use gtest-config.cmake for now
+    string(APPEND EXTRA_CPM_ARGS "NO_MODULE")
   endif()
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
