@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021, NVIDIA CORPORATION.
+# Copyright (c) 2021-2022, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,6 +28,8 @@ Generate a projects -Config.cmake module and all related information
   rapids_export( (BUILD|INSTALL) <project_name>
       EXPORT_SET <export_set>
       [ GLOBAL_TARGETS <targets...> ]
+      [ COMPONENTS <components...> ]
+      [ COMPONENTS_EXPORT_SET <component 1 export set, component 2 export set...> ]
       [ VERSION <X.Y.Z> ]
       [ NAMESPACE <name_space> ]
       [ DOCUMENTATION <doc_variable> ]
@@ -51,6 +53,30 @@ calls to :cmake:command:`find_dependency`, or :cmake:command:`CPMFindPackage`.
 ``GLOBAL_TARGETS``
   Explicitly list what targets should be made globally visibile to
   the consuming project.
+
+``COMPONENTS``
+.. versionadded:: v22.04.00
+  A list of the optional `COMPONENTS` that are offered by this exported
+  package. The names listed here will be what consumers calling
+  :cmake:command:`find_package` will use to enable these components.
+
+  For each entry in `COMPONENTS` it is requird to have an entry in
+  `COMPONENTS_EXPORT_SET` at the same positional location.
+    -> COMPONENTS A B
+    -> COMPONENTS A-export B-export
+  This is needed so that :cmake:command:`rapids_export` can correctly
+  establish the dependency and import target information for each
+  component.
+
+
+``COMPONENTS_EXPORT_SET``
+.. versionadded:: v22.04.00
+
+  A list of the associated export set for each optional `COMPONENT`.
+
+  Each entry in `COMPONENTS_EXPORT_SET` is associated to the component
+  as the same position in the `COMPONENTS` list.
+
 
 ``VERSION``
   Explicitly list the version of the package being exported. By
@@ -161,9 +187,13 @@ function(rapids_export type project_name)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.export.export")
   string(TOLOWER ${type} type)
 
+  set(project_name_orig ${project_name})
+  string(TOLOWER ${project_name} project_name)
+  string(TOUPPER ${project_name} project_name_uppercase)
+
   set(options "")
   set(one_value EXPORT_SET VERSION NAMESPACE DOCUMENTATION FINAL_CODE_BLOCK)
-  set(multi_value GLOBAL_TARGETS LANGUAGES)
+  set(multi_value GLOBAL_TARGETS COMPONENTS COMPONENTS_EXPORT_SET LANGUAGES)
   cmake_parse_arguments(RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
   set(rapids_version_set ON)
@@ -184,10 +214,25 @@ function(rapids_export type project_name)
     rapids_export_parse_version(${RAPIDS_VERSION} rapids_orig rapids_project_version)
   endif()
 
-  set(RAPIDS_PROJECT_VERSION "${project_name}::")
+  set(RAPIDS_PROJECT_NAMESPACE "${project_name_orig}::")
   if(DEFINED RAPIDS_NAMESPACE)
-    set(RAPIDS_PROJECT_VERSION ${RAPIDS_NAMESPACE})
+    set(RAPIDS_PROJECT_NAMESPACE ${RAPIDS_NAMESPACE})
   endif()
+
+  if(RAPIDS_COMPONENTS AND NOT RAPIDS_COMPONENTS_EXPORT_SET)
+    message(FATAL_ERROR "rapids_export(${type} ${project_name} is missing COMPONENTS_EXPORT_SET as COMPONENTS was provided."
+    )
+  endif()
+  if(RAPIDS_COMPONENTS_EXPORT_SET AND NOT RAPIDS_COMPONENTS)
+    message(FATAL_ERROR "rapids_export(${type} ${project_name} is missing COMPONENTS as COMPONENTS_EXPORT_SET was provided."
+    )
+  endif()
+
+  include("${rapids-cmake-dir}/export/detail/component.cmake")
+  foreach(comp comp_export_set IN ZIP_LISTS RAPIDS_COMPONENTS RAPIDS_COMPONENTS_EXPORT_SET)
+    rapids_export_component(${type} ${project_name} ${comp} ${comp_export_set}
+                            ${RAPIDS_PROJECT_NAMESPACE})
+  endforeach()
 
   set(RAPIDS_PROJECT_DOCUMENTATION "Generated ${project_name}-config module")
   if(DEFINED RAPIDS_DOCUMENTATION)
@@ -205,8 +250,6 @@ function(rapids_export type project_name)
   endif()
 
   # Write configuration and version files
-  string(TOLOWER ${project_name} project_name)
-  string(TOUPPER ${project_name} project_name_uppercase)
   if(type STREQUAL "install")
     include("${rapids-cmake-dir}/cmake/install_lib_dir.cmake")
     rapids_cmake_install_lib_dir(install_location)
@@ -225,7 +268,7 @@ function(rapids_export type project_name)
     endif()
 
     install(EXPORT ${RAPIDS_EXPORT_SET} FILE ${project_name}-targets.cmake
-            NAMESPACE ${RAPIDS_PROJECT_VERSION} DESTINATION "${install_location}")
+            NAMESPACE ${RAPIDS_PROJECT_NAMESPACE} DESTINATION "${install_location}")
 
     if(TARGET rapids_export_install_${RAPIDS_EXPORT_SET})
       include("${rapids-cmake-dir}/export/write_dependencies.cmake")
@@ -256,7 +299,7 @@ function(rapids_export type project_name)
         COMPATIBILITY ${rapids_project_version_compat})
     endif()
 
-    export(EXPORT ${RAPIDS_EXPORT_SET} NAMESPACE ${RAPIDS_PROJECT_VERSION}
+    export(EXPORT ${RAPIDS_EXPORT_SET} NAMESPACE ${RAPIDS_PROJECT_NAMESPACE}
            FILE "${install_location}/${project_name}-targets.cmake")
 
     if(TARGET rapids_export_build_${RAPIDS_EXPORT_SET})
