@@ -27,18 +27,18 @@ function(rapids_export_parse_version rapids_version orig_prefix ver_value)
   # Generate an explicit VERSION string without zeroes to work around:
   # https://gitlab.kitware.com/cmake/cmake/-/issues/22207
   set(version_compat SameMajorVersion)
-  if(orig_major_version)
+  if(DEFINED orig_major_version)
     math(EXPR rapids_major_version "${orig_major_version} + 0" OUTPUT_FORMAT DECIMAL)
     string(APPEND rapids_project_version "${rapids_major_version}")
   endif()
 
-  if(orig_minor_version)
+  if(DEFINED orig_minor_version)
     math(EXPR rapids_minor_version "${orig_minor_version} + 0" OUTPUT_FORMAT DECIMAL)
     string(APPEND rapids_project_version ".${rapids_minor_version}")
     set(version_compat SameMinorVersion)
   endif()
 
-  if(orig_patch_version)
+  if(DEFINED orig_patch_version)
     math(EXPR rapids_patch_version "${orig_patch_version} + 0" OUTPUT_FORMAT DECIMAL)
     string(APPEND rapids_project_version ".${rapids_patch_version}")
     set(version_compat SameMinorVersion)

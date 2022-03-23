@@ -30,6 +30,7 @@ add_cmake_config_test( export-verify-bad-doc-var.cmake SHOULD_FAIL "DOCUMENTATIO
 add_cmake_config_test( export-verify-calendar-version-matching.cmake )
 add_cmake_config_test( export-verify-explicit-disabled-version.cmake )
 add_cmake_config_test( export-verify-explicit-major-version-only-matching.cmake )
+add_cmake_config_test( export-verify-explicit-patch-version-value-of-zero.cmake )
 add_cmake_config_test( export-verify-explicit-version-value.cmake )
 add_cmake_config_test( export-verify-file-names.cmake )
 add_cmake_config_test( export-verify-implicit-disabled-version.cmake )
