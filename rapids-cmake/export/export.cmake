@@ -184,9 +184,9 @@ function(rapids_export type project_name)
     rapids_export_parse_version(${RAPIDS_VERSION} rapids_orig rapids_project_version)
   endif()
 
-  set(RAPIDS_PROJECT_VERSION "${project_name}::")
+  set(RAPIDS_PROJECT_NAMESPACE "${project_name}::")
   if(DEFINED RAPIDS_NAMESPACE)
-    set(RAPIDS_PROJECT_VERSION ${RAPIDS_NAMESPACE})
+    set(RAPIDS_PROJECT_NAMESPACE ${RAPIDS_NAMESPACE})
   endif()
 
   set(RAPIDS_PROJECT_DOCUMENTATION "Generated ${project_name}-config module")
@@ -225,7 +225,7 @@ function(rapids_export type project_name)
     endif()
 
     install(EXPORT ${RAPIDS_EXPORT_SET} FILE ${project_name}-targets.cmake
-            NAMESPACE ${RAPIDS_PROJECT_VERSION} DESTINATION "${install_location}")
+            NAMESPACE ${RAPIDS_PROJECT_NAMESPACE} DESTINATION "${install_location}")
 
     if(TARGET rapids_export_install_${RAPIDS_EXPORT_SET})
       include("${rapids-cmake-dir}/export/write_dependencies.cmake")
@@ -256,7 +256,7 @@ function(rapids_export type project_name)
         COMPATIBILITY ${rapids_project_version_compat})
     endif()
 
-    export(EXPORT ${RAPIDS_EXPORT_SET} NAMESPACE ${RAPIDS_PROJECT_VERSION}
+    export(EXPORT ${RAPIDS_EXPORT_SET} NAMESPACE ${RAPIDS_PROJECT_NAMESPACE}
            FILE "${install_location}/${project_name}-targets.cmake")
 
     if(TARGET rapids_export_build_${RAPIDS_EXPORT_SET})
