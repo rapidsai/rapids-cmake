@@ -59,17 +59,10 @@ function(rapids_cpm_gtest)
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
   rapids_cpm_package_details(GTest version repository tag shallow exclude)
 
-  set(EXTRA_CPM_ARGS)
-  if(CMAKE_VERSION VERSION_LESS 3.23)
-    # CMake 3.23+ built-in FindGTest is required to have the GTest::gmock_main and GTest::gmock
-    # targets so always use gtest-config.cmake for now
-    string(APPEND EXTRA_CPM_ARGS "NO_MODULE")
-  endif()
-
   include("${rapids-cmake-dir}/cpm/find.cmake")
   rapids_cpm_find(GTest ${version} ${ARGN}
                   GLOBAL_TARGETS GTest::gtest GTest::gmock GTest::gtest_main GTest::gmock_main
-                  CPM_ARGS FIND_PACKAGE_ARGUMENTS "EXACT ${EXTRA_CPM_ARGS}"
+                  CPM_ARGS FIND_PACKAGE_ARGUMENTS "EXACT"
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
                   GIT_SHALLOW ${shallow}
