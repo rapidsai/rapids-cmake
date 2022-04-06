@@ -38,6 +38,7 @@ set(rapids_global_languages @RAPIDS_LANGUAGES@)
 foreach(lang IN LISTS rapids_global_languages)
   include("${CMAKE_CURRENT_LIST_DIR}/@project_name@-${lang}-language.cmake")
 endforeach()
+unset(rapids_global_languages)
 
 if(EXISTS "${CMAKE_CURRENT_LIST_DIR}/@project_name@-dependencies.cmake")
   include("${CMAKE_CURRENT_LIST_DIR}/@project_name@-dependencies.cmake")

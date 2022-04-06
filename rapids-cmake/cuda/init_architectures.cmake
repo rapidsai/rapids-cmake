@@ -33,10 +33,10 @@ Parses the :cmake:variable:`CMAKE_CUDA_ARCHITECTURES` for special
 values `ALL`, `NATIVE` and `""`.
 
 .. note::
-  Required to be called before :cmake:command:`project()`
+  Required to be called before :cmake:command:`project() <cmake:command:project>`
 
   Will automatically call :cmake:command:`rapids_cuda_set_architectures` immediately
-  after :cmake:command:`project()` establishing the correct values for
+  after :cmake:command:`project() <cmake:command:project>` establishing the correct values for
   :cmake:variable:`CMAKE_CUDA_ARCHITECTURES`.
 
 ``project_name``

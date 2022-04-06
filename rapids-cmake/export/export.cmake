@@ -55,9 +55,9 @@ calls to :cmake:command:`find_dependency`, or :cmake:command:`CPMFindPackage`.
 ``VERSION``
   Explicitly list the version of the package being exported. By
   default :cmake:command:`rapids_export` uses the version specified by the
-  root level :cmake:command:`project` call. If no version has been specified
-  either way or `OFF` is provided as the `VERSION` value, no version compatibility
-  checks will be generated.
+  root level :cmake:command:`project <cmake:command:project>` call. If no version has
+  been specified either way or `OFF` is provided as the `VERSION` value, no version
+  compatibility checks will be generated.
 
   Depending on the version string different compatibility modes will be used.
 
@@ -107,11 +107,11 @@ calls to :cmake:command:`find_dependency`, or :cmake:command:`CPMFindPackage`.
   of your package. This makes sure all consumers properly setup these
   languages correctly.
 
-  This is required as CMake's :cmake:command:`enable_language` only supports
-  enabling languages for the current directory scope, and doesn't support
-  being called from within functions. Marking languages here overcomes
-  these limitations and makes it possible for packages included via
-  `CPM` to enable languages.
+  This is required as CMake's :cmake:command:`enable_language <cmake:command:enable_language>`
+  only supports enabling languages for the current directory scope, and
+  doesn't support being called from within functions. Marking languages
+  here overcomes these limitations and makes it possible for packages included
+  via `CPM` to enable languages.
 
 
 Example on how to properly use :cmake:command:`rapids_export`:
@@ -184,9 +184,9 @@ function(rapids_export type project_name)
     rapids_export_parse_version(${RAPIDS_VERSION} rapids_orig rapids_project_version)
   endif()
 
-  set(RAPIDS_PROJECT_VERSION "${project_name}::")
+  set(RAPIDS_PROJECT_NAMESPACE "${project_name}::")
   if(DEFINED RAPIDS_NAMESPACE)
-    set(RAPIDS_PROJECT_VERSION ${RAPIDS_NAMESPACE})
+    set(RAPIDS_PROJECT_NAMESPACE ${RAPIDS_NAMESPACE})
   endif()
 
   set(RAPIDS_PROJECT_DOCUMENTATION "Generated ${project_name}-config module")
@@ -225,7 +225,7 @@ function(rapids_export type project_name)
     endif()
 
     install(EXPORT ${RAPIDS_EXPORT_SET} FILE ${project_name}-targets.cmake
-            NAMESPACE ${RAPIDS_PROJECT_VERSION} DESTINATION "${install_location}")
+            NAMESPACE ${RAPIDS_PROJECT_NAMESPACE} DESTINATION "${install_location}")
 
     if(TARGET rapids_export_install_${RAPIDS_EXPORT_SET})
       include("${rapids-cmake-dir}/export/write_dependencies.cmake")
@@ -256,7 +256,7 @@ function(rapids_export type project_name)
         COMPATIBILITY ${rapids_project_version_compat})
     endif()
 
-    export(EXPORT ${RAPIDS_EXPORT_SET} NAMESPACE ${RAPIDS_PROJECT_VERSION}
+    export(EXPORT ${RAPIDS_EXPORT_SET} NAMESPACE ${RAPIDS_PROJECT_NAMESPACE}
            FILE "${install_location}/${project_name}-targets.cmake")
 
     if(TARGET rapids_export_build_${RAPIDS_EXPORT_SET})

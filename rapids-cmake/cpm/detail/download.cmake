@@ -42,7 +42,7 @@ function(rapids_cpm_download)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.download")
 
   # When changing version verify no new variables needs to be propagated
-  set(CPM_DOWNLOAD_VERSION 634800c61928d330a6e9559171509a5c3dd479d5) # 0.34.0
+  set(CPM_DOWNLOAD_VERSION 0.35.0)
 
   if(CPM_SOURCE_CACHE)
     # Expand relative path. This is important if the provided path contains a tilde (~)
@@ -71,7 +71,7 @@ function(rapids_cpm_download)
   if(NOT (EXISTS ${CPM_DOWNLOAD_LOCATION}))
     message(VERBOSE "Downloading CPM.cmake to ${CPM_DOWNLOAD_LOCATION}")
     file(DOWNLOAD
-         https://raw.githubusercontent.com/cpm-cmake/CPM.cmake/${CPM_DOWNLOAD_VERSION}/cmake/CPM.cmake
+         https://github.com/cpm-cmake/CPM.cmake/releases/download/v${CPM_DOWNLOAD_VERSION}/CPM.cmake
          ${CPM_DOWNLOAD_LOCATION})
   endif()
 

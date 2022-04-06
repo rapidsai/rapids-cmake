@@ -47,7 +47,7 @@ across all RAPIDS projects.
 
 .. note::
   Installation of Thrust will occur if an INSTALL_EXPORT_SET is provided, and Thrust
-  is added to the project via :cmake:command:`add_subdirectory` by CPM.
+  is added to the project via :cmake:command:`add_subdirectory <cmake:command:add_subdirectory>` by CPM.
 
 
 Result Targets
@@ -101,7 +101,7 @@ function(rapids_cpm_thrust NAMESPACE namespaces_name)
   endif()
 
   if(RAPIDS_INSTALL_EXPORT_SET)
-    set(target_name rapids_export_install_${RAPIDS_BUILD_EXPORT_SET})
+    set(target_name rapids_export_install_${RAPIDS_INSTALL_EXPORT_SET})
     get_target_property(global_targets ${target_name} GLOBAL_TARGETS)
     list(REMOVE_ITEM global_targets "${namespaces_name}::Thrust")
     set_target_properties(${target_name} PROPERTIES GLOBAL_TARGETS "${global_targets}")

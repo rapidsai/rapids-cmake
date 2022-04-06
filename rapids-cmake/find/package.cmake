@@ -100,8 +100,13 @@ macro(rapids_find_package name)
 
     set(_rapids_extra_info)
     if(RAPIDS_GLOBAL_TARGETS)
-      set(_rapids_extra_info "GLOBAL_TARGETS")
-      list(APPEND _rapids_extra_info ${RAPIDS_GLOBAL_TARGETS})
+      list(APPEND _rapids_extra_info "GLOBAL_TARGETS" ${RAPIDS_GLOBAL_TARGETS})
+    endif()
+
+    # Record the version we found to be what consumers need to find as well
+    set(possible_version ${ARGV1})
+    if(possible_version MATCHES "^[0-9]+")
+      list(APPEND _rapids_extra_info "VERSION" ${possible_version})
     endif()
 
     if(RAPIDS_BUILD_EXPORT_SET)

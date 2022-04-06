@@ -57,16 +57,7 @@ Result Variables
 function(rapids_cuda_set_architectures mode)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cuda.set_architectures")
 
-  set(supported_archs "60" "62" "70" "72" "75" "80" "86")
-
-  # Check for embedded vs workstation architectures
-  if(CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64")
-    # This is being built for Linux4Tegra or SBSA ARM64
-    list(REMOVE_ITEM supported_archs "60" "70")
-  else()
-    # This is being built for an x86 or x86_64 architecture
-    list(REMOVE_ITEM supported_archs "62" "72")
-  endif()
+  set(supported_archs "60" "70" "75" "80" "86")
 
   if(CMAKE_CUDA_COMPILER_ID STREQUAL "NVIDIA" AND CMAKE_CUDA_COMPILER_VERSION VERSION_LESS 11.1.0)
     list(REMOVE_ITEM supported_archs "86")

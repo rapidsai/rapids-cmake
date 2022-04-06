@@ -30,6 +30,7 @@ add_cmake_config_test( export-verify-bad-doc-var.cmake SHOULD_FAIL "DOCUMENTATIO
 add_cmake_config_test( export-verify-calendar-version-matching.cmake )
 add_cmake_config_test( export-verify-explicit-disabled-version.cmake )
 add_cmake_config_test( export-verify-explicit-major-version-only-matching.cmake )
+add_cmake_config_test( export-verify-explicit-patch-version-value-of-zero.cmake )
 add_cmake_config_test( export-verify-explicit-version-value.cmake )
 add_cmake_config_test( export-verify-file-names.cmake )
 add_cmake_config_test( export-verify-implicit-disabled-version.cmake )
@@ -37,9 +38,11 @@ add_cmake_config_test( export-verify-implicit-major-version-only-matching.cmake 
 add_cmake_config_test( export-verify-version.cmake )
 
 add_cmake_config_test( export_package-build-possible-dir.cmake )
+add_cmake_config_test( export_package-build-with-version.cmake )
 add_cmake_config_test( export_package-build.cmake )
 add_cmake_config_test( export_package-install-possible-dir.cmake )
 add_cmake_config_test( export_package-install.cmake )
+add_cmake_config_test( export_package-install-with-version.cmake )
 add_cmake_config_test( export_package-multiple-export_sets.cmake )
 
 add_cmake_config_test( write_dependencies-cpm-preserve-options.cmake )
