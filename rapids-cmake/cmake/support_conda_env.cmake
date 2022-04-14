@@ -31,11 +31,11 @@ Creates a global interface target called `target_name` that holds
 the CONDA include and link directories, when executed.
 
 Also offers the ability to modify :cmake:variable:`CMAKE_PREFIX_PATH <cmake:variable:CMAKE_PREFIX_PATH>` to
-include the paths in environment variables `BUILD_PREFIX`, `PREFIX`,
+include the paths in environment variables `PREFIX`, `BUILD_PREFIX`,
 and `CONDA_PREFIX` based on the current CONDA environment.
 
 ``MODIFY_PREFIX_PATH``
-    When in a conda build environment the contents of `$ENV{BUILD_PREFIX}` and `$ENV{PREFIX}`
+    When in a conda build environment the contents of `$ENV{PREFIX}` and `$ENV{BUILD_PREFIX}`
     will be inserted to the front of :cmake:variable:`CMAKE_PREFIX_PATH <cmake:variable:CMAKE_PREFIX_PATH>`.
 
     When in a conda environment the contents of `$ENV{CONDA_PREFIX}` will be inserted to
@@ -75,12 +75,12 @@ function(rapids_cmake_support_conda_env target)
     set(prefix_paths)
 
     if(in_conda_build)
-      target_include_directories(${target} INTERFACE "$ENV{BUILD_PREFIX}/include"
-                                                     "$ENV{PREFIX}/include")
-      target_link_directories(${target} INTERFACE "$ENV{BUILD_PREFIX}/lib" "$ENV{PREFIX}/lib")
+      target_include_directories(${target} INTERFACE "$ENV{PREFIX}/include"
+                                                     "$ENV{BUILD_PREFIX}/include")
+      target_link_directories(${target} INTERFACE "$ENV{PREFIX}/lib" "$ENV{BUILD_PREFIX}/lib")
 
       if(modify_prefix_path)
-        list(PREPEND CMAKE_PREFIX_PATH "$ENV{BUILD_PREFIX}" "$ENV{PREFIX}")
+        list(PREPEND CMAKE_PREFIX_PATH "$ENV{PREFIX}" "$ENV{BUILD_PREFIX}")
         set(CMAKE_PREFIX_PATH "${CMAKE_PREFIX_PATH}" PARENT_SCOPE)
         message(VERBOSE "Conda build detected, CMAKE_PREFIX_PATH set to: ${CMAKE_PREFIX_PATH}")
       endif()

@@ -70,7 +70,7 @@ endif()
 list(GET CMAKE_PREFIX_PATH 0 first_value)
 list(GET CMAKE_PREFIX_PATH 1 second_value)
 list(GET CMAKE_PREFIX_PATH 2 third_value)
-set(correct_list "$ENV{BUILD_PREFIX}" "$ENV{PREFIX}" "placeholder")
+set(correct_list "$ENV{PREFIX}" "$ENV{BUILD_PREFIX}" "placeholder")
 set(actual_list "${first_value}" "${second_value}" "${third_value}")
 
 foreach(correct actual IN ZIP_LISTS correct_list actual_list)
