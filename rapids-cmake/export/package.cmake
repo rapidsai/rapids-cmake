@@ -78,7 +78,6 @@ function(rapids_export_package type name export_set)
                    "${CMAKE_BINARY_DIR}/rapids-cmake/${export_set}/${type}/package_${name}.cmake"
                    @ONLY)
   else()
-    message(STATUS "NO RAPIDS_VERSION for ${name}")
     configure_file("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/${type}_package.cmake.in"
                    "${CMAKE_BINARY_DIR}/rapids-cmake/${export_set}/${type}/package_${name}.cmake"
                    @ONLY)
