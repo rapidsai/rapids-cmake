@@ -22,7 +22,7 @@ include(FetchContent)
 FetchContent_Declare(
   rapids-cmake
   GIT_REPOSITORY https://github.com/vyasr/rapids-cmake.git
-  GIT_TAG        rapids_cython
+  GIT_TAG        rapids-cython
 )
 FetchContent_GetProperties(rapids-cmake)
 if(rapids-cmake_POPULATED)
