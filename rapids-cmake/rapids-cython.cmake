@@ -15,4 +15,4 @@
 #=============================================================================
 include_guard(GLOBAL)
 
-include(${CMAKE_CURRENT_LIST_DIR}/cython/create_modules.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/cython/create_cython_modules.cmake)
