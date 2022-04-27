@@ -21,8 +21,8 @@ set(rapids-cmake-version 22.06)
 include(FetchContent)
 FetchContent_Declare(
   rapids-cmake
-  GIT_REPOSITORY https://github.com/rapidsai/rapids-cmake.git
-  GIT_TAG        branch-${rapids-cmake-version}
+  GIT_REPOSITORY https://github.com/vyasr/rapids-cmake.git
+  GIT_TAG        rapids_cython
 )
 FetchContent_GetProperties(rapids-cmake)
 if(rapids-cmake_POPULATED)
