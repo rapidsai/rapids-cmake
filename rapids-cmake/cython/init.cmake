@@ -32,6 +32,12 @@ Result Variables
   :cmake:variable:`CYTHON_FLAGS` will be set to a standard set of a flags to pass to the command line cython invocation.
 
 #]=======================================================================]
+
+# TODO: What is the correct way to get this path inside the macro below? If
+# there isn't one, is there a different solution that would be more appropriate?
+set(RAPIDS_CYTHON_PATH)
+file(REAL_PATH "${CMAKE_CURRENT_LIST_DIR}" RAPIDS_CYTHON_PATH)
+
 macro(rapids_cython_init)
   # Verify that we are using scikit-build.
   if (NOT DEFINED SKBUILD)
@@ -39,7 +45,7 @@ macro(rapids_cython_init)
   endif()
 
   # Incorporate scikit-build patches.
-  include(${CMAKE_CURRENT_LIST_DIR}/skbuild_patches.cmake)
+  include("${RAPIDS_CYTHON_PATH}/detail/skbuild_patches.cmake")
 
   # TODO: Do we want to use rapids_find_package here? It's a little odd because
   # they aren't independent packages, they are part of scikit-build, so I don't
