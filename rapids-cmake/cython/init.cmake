@@ -51,6 +51,9 @@ macro(rapids_cython_init)
   set(CYTHON_FLAGS
       "--directive binding=True,embedsignature=True,always_allow_keywords=True"
       CACHE STRING "The directives for Cython compilation.")
+  # TODO: The above flags must be configurable. We may not want/need it to be a
+  # cache variable, so we need to figure out the best way to enable users to
+  # change the variable.
 
   # Flag
   set(RAPIDS_CYTHON_INITIALIZED TRUE)
