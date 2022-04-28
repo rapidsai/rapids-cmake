@@ -38,6 +38,9 @@ macro(rapids_cython_init)
     message(FATAL_ERROR "rapids-cython must be used with scikit-build")
   endif()
 
+  # Incorporate scikit-build patches.
+  include(${CMAKE_CURRENT_LIST_DIR}/skbuild_patches.cmake)
+
   # TODO: Do we want to use rapids_find_package here? It's a little odd because
   # they aren't independent packages, they are part of scikit-build, so I don't
   # know if tracking them as dependencies for an export set really makes sense.

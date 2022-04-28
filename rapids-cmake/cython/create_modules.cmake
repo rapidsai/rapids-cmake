@@ -51,7 +51,7 @@ function(rapids_cython_create_modules cython_modules linked_libraries install_ba
     # To avoid libraries being prefixed with "lib".
     set_target_properties(${cython_module} PROPERTIES PREFIX "")
     foreach(lib ${linked_libraries})
-      target_link_libraries(${cython_module} ${lib})
+      target_link_libraries(${cython_module} PUBLIC ${lib})
     endforeach()
 
     # Compute the install directory relative to the source and rely on installs being relative to
