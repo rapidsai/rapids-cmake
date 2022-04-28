@@ -24,6 +24,13 @@ Perform standard initialization of any CMake build using scikit-build to create 
 
   rapids_cython_init()
 
+TODO: Should the cache variable be documented differently from the normal one?
+
+Result Variables
+^^^^^^^^^^^^^^^^
+  :cmake:variable:`RAPIDS_CYTHON_INITIALIZED` will be set to TRUE.
+  :cmake:variable:`CYTHON_FLAGS` will be set to a standard set of a flags to pass to the command line cython invocation.
+
 #]=======================================================================]
 macro(rapids_cython_init)
   # Verify that we are using scikit-build.
