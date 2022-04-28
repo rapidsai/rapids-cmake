@@ -15,19 +15,6 @@
 #=============================================================================
 include_guard(GLOBAL)
 
-find_package(PythonExtensions REQUIRED)
-find_package(Cython REQUIRED)
-
-# TODO: Verify that the scopes of the below variables (CYTHON_FLAGS,
-# ignored_variable) are suitable for the way that they're being used.
-
-# Set standard Cython directives that all RAPIDS projects should use in compilation.
-set(CYTHON_FLAGS
-    "--directive binding=True,embedsignature=True,always_allow_keywords=True"
-    CACHE STRING "The directives for Cython compilation.")
-
-# Ignore unused variable warning.
-set(ignored_variable "${SKBUILD}" PARENT_SCOPE)
-
-include(${CMAKE_CURRENT_LIST_DIR}/cython/skbuild_patches.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/cython/init.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/cython/create_cython_modules.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/cython/skbuild_patches.cmake)

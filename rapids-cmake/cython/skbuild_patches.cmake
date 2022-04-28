@@ -32,6 +32,8 @@ PR: https://github.com/scikit-build/scikit-build/pull/703
 # TODO: Should we guard this based on a scikit-build version? Override this function to avoid
 # scikit-build clobbering symbol visibility.
 function(_set_python_extension_symbol_visibility _target)
+  rapids_cython_verify_init()
+
   if(PYTHON_VERSION_MAJOR VERSION_GREATER 2)
     set(_modinit_prefix "PyInit_")
   else()

@@ -25,12 +25,7 @@ Generate C(++) from Cython and create Python modules.
   create_cython_modules(<ModuleName...>)
 
 Creates a Cython target for a module, then adds a corresponding Python
-extension module. This function assumes that we are in a scikit-build managed
-build and that ``find_package(Cython)`` has already been called.
-
-TODO: Is there any way to avoid the above restriction? I don't think we'd want
-to add a find_package call here, but maybe it would be OK and we could use
-rapids_find_package for tracking.
+extension module. This function must be called after rapids_cython_init.
 
 ``cython_modules``
   The list of modules to build.
@@ -46,6 +41,8 @@ rapids_find_package for tracking.
 
 #]=======================================================================]
 function(create_cython_modules cython_modules linked_libraries install_base_directory)
+  rapids_cython_verify_init()
+
   foreach(cython_module ${cython_modules})
     add_cython_target(${cython_module} CXX PY3)
     add_library(${cython_module} MODULE ${cython_module})
