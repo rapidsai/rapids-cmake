@@ -68,6 +68,6 @@ Simple helper function for rapids-cython components to verify that rapids_cython
 #]=======================================================================]
 function(rapids_cython_verify_init)
   if (NOT DEFINED RAPIDS_CYTHON_INITIALIZED)
-    message(FATAL_ERROR "You must call rapids_cython_init before calling create_cython_modules")
+    message(FATAL_ERROR "You must call rapids_cython_init before calling this function")
   endif()
 endfunction()

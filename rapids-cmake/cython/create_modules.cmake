@@ -13,7 +13,7 @@
 # =============================================================================
 
 #[=======================================================================[.rst:
-create_cython_modules
+rapids_cython_create_modules
 ---------------------
 
 .. versionadded:: v22.06.00
@@ -22,7 +22,7 @@ Generate C(++) from Cython and create Python modules.
 
 .. code-block:: cmake
 
-  create_cython_modules(<ModuleName...>)
+  rapids_cython_create_modules(<ModuleName...>)
 
 Creates a Cython target for a module, then adds a corresponding Python
 extension module. This function must be called after rapids_cython_init.
@@ -40,7 +40,7 @@ extension module. This function must be called after rapids_cython_init.
   configured installations such as installing in place vs. out of place.
 
 #]=======================================================================]
-function(create_cython_modules cython_modules linked_libraries install_base_directory)
+function(rapids_cython_create_modules cython_modules linked_libraries install_base_directory)
   rapids_cython_verify_init()
 
   foreach(cython_module ${cython_modules})
