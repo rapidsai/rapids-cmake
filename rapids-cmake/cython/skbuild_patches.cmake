@@ -16,6 +16,8 @@
 _set_python_extension_symbol_visibility
 ---------------------------------------
 
+.. versionadded:: v22.06.00
+
 The original version of this function in scikit-build runs a linker script to
 modify the visibility of symbols. This version is a patch to avoid overwriting
 the visibility of symbols because otherwise any library that exports symbols

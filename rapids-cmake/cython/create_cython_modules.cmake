@@ -16,6 +16,8 @@
 create_cython_modules
 ---------------------
 
+.. versionadded:: v22.06.00
+
 Generate C(++) from Cython and create Python modules.
 
 .. code-block:: cmake
