@@ -46,7 +46,8 @@ function(rapids_cython_create_modules)
   set(_rapids_cython_options)
   set(_rapids_cython_one_value INSTALL_BASE_DIRECTORY)
   set(_rapids_cython_multi_value MODULES LINKED_LIBRARIES)
-  cmake_parse_arguments(RAPIDS_CYTHON "${_rapids_cython_options}" "${_rapids_cython_one_value}" "${_rapids_cython_multi_value}" ${ARGN})
+  cmake_parse_arguments(RAPIDS_CYTHON "${_rapids_cython_options}" "${_rapids_cython_one_value}"
+                        "${_rapids_cython_multi_value}" ${ARGN})
 
   foreach(cython_module ${RAPIDS_CYTHON_MODULES})
     add_cython_target(${cython_module} CXX PY3)

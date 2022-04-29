@@ -44,14 +44,10 @@ function(_set_python_extension_symbol_visibility _target)
     set_target_properties(${_target} PROPERTIES LINK_FLAGS "/EXPORT:${_modinit_prefix}${_target}")
   elseif("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU" AND NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     set(_script_path ${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/${_target}-version-script.map)
-    file(
-      WRITE ${_script_path}
-      # Note: The change is to this script, which does not indiscriminately mark all non PyInit
-      # symbols as local.
-      "{global: ${_modinit_prefix}${_target}; };")
-    set_property(
-      TARGET ${_target}
-      APPEND_STRING
-      PROPERTY LINK_FLAGS " -Wl,--version-script=\"${_script_path}\"")
+    file(WRITE ${_script_path} # Note: The change is to this script, which does not indiscriminately
+                               # mark all non PyInit symbols as local.
+         "{global: ${_modinit_prefix}${_target}; };")
+    set_property(TARGET ${_target} APPEND_STRING
+                 PROPERTY LINK_FLAGS " -Wl,--version-script=\"${_script_path}\"")
   endif()
 endfunction()
