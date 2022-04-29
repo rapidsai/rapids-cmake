@@ -237,7 +237,7 @@
           "FIND_ARGS": "+"
         }
       },
-      "rapids_cython_create_module": {
+      "rapids_cython_create_modules": {
         "pargs": {
           "nargs": "0"
         },
