@@ -236,6 +236,16 @@
           "GLOBAL_TARGETS": "+",
           "FIND_ARGS": "+"
         }
+      },
+      "rapids_cython_create_module": {
+        "pargs": {
+          "nargs": "0"
+        },
+        "kwargs": {
+          "MODULES": "+",
+          "LINKED_LIBRARIES": "*",
+          "INSTALL_BASE_DIRECTORY": "1"
+        }
       }
 
     }
