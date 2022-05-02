@@ -14,7 +14,7 @@
 
 include_guard(GLOBAL)
 
-include(${CMAKE_CURRENT_LIST_DIR}/init.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/../init.cmake)
 
 #[=======================================================================[.rst:
 _set_python_extension_symbol_visibility
