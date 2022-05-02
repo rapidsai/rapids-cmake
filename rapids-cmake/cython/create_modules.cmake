@@ -12,6 +12,8 @@
 # the License.
 # =============================================================================
 
+include(${CMAKE_CURRENT_LIST_DIR}/init.cmake)
+
 #[=======================================================================[.rst:
 rapids_cython_create_modules
 ---------------------
@@ -46,8 +48,6 @@ extension module.
   configured installations such as installing in place vs. out of place.
 
 #]=======================================================================]
-include(rapids-cmake/cython/init.cmake)
-
 function(rapids_cython_create_modules)
   rapids_cython_verify_init()
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cython.create_modules")

@@ -12,6 +12,8 @@
 # the License.
 # =============================================================================
 
+include(${CMAKE_CURRENT_LIST_DIR}/init.cmake)
+
 #[=======================================================================[.rst:
 _set_python_extension_symbol_visibility
 ---------------------------------------
@@ -29,11 +31,6 @@ Issue: https://github.com/scikit-build/scikit-build/issues/668
 PR: https://github.com/scikit-build/scikit-build/pull/703
 
 #]=======================================================================]
-# This function overrides a scikit-build function with the same name. The
-# behavior is almost identical, except that this version's linker script does
-# not modify the visibility of any symbols except to PyInit.
-include(rapids-cmake/cython/init.cmake)
-
 function(_set_python_extension_symbol_visibility _target)
   # TODO: Should we guard this based on a scikit-build version?
   rapids_cython_verify_init()
