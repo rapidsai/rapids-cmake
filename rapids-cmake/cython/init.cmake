@@ -33,8 +33,6 @@ Perform standard initialization of any CMake build using scikit-build to create 
 
   rapids_cython_init()
 
-TODO: Should the cache variable be documented differently from the normal one?
-
 Result Variables
 ^^^^^^^^^^^^^^^^
   :cmake:variable:`RAPIDS_CYTHON_INITIALIZED` will be set to TRUE.
@@ -42,28 +40,28 @@ Result Variables
 
 #]=======================================================================]
 macro(rapids_cython_init)
-  # Verify that we are using scikit-build.
-  if(NOT DEFINED SKBUILD)
-    message(FATAL_ERROR "rapids-cython must be used with scikit-build")
+  list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cython.init")
+  # Only initialize once.
+  if (NOT DEFINED RAPIDS_CYTHON_INITIALIZED)
+    # Verify that we are using scikit-build.
+    if(NOT DEFINED SKBUILD)
+      message(FATAL_ERROR "rapids-cython must be used with scikit-build")
+    endif()
+
+    # Incorporate scikit-build patches.
+    include("${RAPIDS_CYTHON_PATH}/detail/skbuild_patches.cmake")
+
+    find_package(PythonExtensions REQUIRED)
+    find_package(Cython REQUIRED)
+
+    # Set standard Cython directives that all RAPIDS projects should use in compilation.
+    if (NOT DEFINED CYTHON_FLAGS)
+      set(CYTHON_FLAGS "--directive binding=True,embedsignature=True,always_allow_keywords=True")
+    endif()
+
+    # Flag
+    set(RAPIDS_CYTHON_INITIALIZED TRUE)
   endif()
-
-  # Incorporate scikit-build patches.
-  include("${RAPIDS_CYTHON_PATH}/detail/skbuild_patches.cmake")
-
-  # TODO: Do we want to use rapids_find_package here? It's a little odd because they aren't
-  # independent packages, they are part of scikit-build, so I don't know if tracking them as
-  # dependencies for an export set really makes sense.
-  find_package(PythonExtensions REQUIRED)
-  find_package(Cython REQUIRED)
-
-  # Set standard Cython directives that all RAPIDS projects should use in compilation.
-  set(CYTHON_FLAGS "--directive binding=True,embedsignature=True,always_allow_keywords=True"
-      CACHE STRING "The directives for Cython compilation.")
-  # TODO: The above flags must be configurable. We may not want/need it to be a cache variable, so
-  # we need to figure out the best way to enable users to change the variable.
-
-  # Flag
-  set(RAPIDS_CYTHON_INITIALIZED TRUE)
 endmacro()
 
 #[=======================================================================[.rst:
