@@ -61,7 +61,7 @@ function(rapids_cython_create_modules)
                         "${_rapids_cython_multi_value}" ${ARGN})
 
   set(language "C")
-  if (RAPIDS_CYTHON_CXX)
+  if(RAPIDS_CYTHON_CXX)
     set(language "CXX")
   endif()
 
@@ -73,7 +73,7 @@ function(rapids_cython_create_modules)
     # To avoid libraries being prefixed with "lib".
     set_target_properties(${cython_module} PROPERTIES PREFIX "")
     if(DEFINED ${RAPIDS_CYTHON_LINKED_LIBRARIES})
-        target_link_libraries(${cython_module} PUBLIC ${RAPIDS_CYTHON_LINKED_LIBRARIES})
+      target_link_libraries(${cython_module} PUBLIC ${RAPIDS_CYTHON_LINKED_LIBRARIES})
     endif()
 
     # Compute the install directory relative to the source and rely on installs being relative to

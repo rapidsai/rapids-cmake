@@ -44,7 +44,7 @@ Result Variables
 macro(rapids_cython_init)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cython.init")
   # Only initialize once.
-  if (NOT DEFINED RAPIDS_CYTHON_INITIALIZED)
+  if(NOT DEFINED RAPIDS_CYTHON_INITIALIZED)
     # Verify that we are using scikit-build.
     if(NOT DEFINED SKBUILD)
       message(FATAL_ERROR "rapids-cython must be used with scikit-build")
@@ -57,7 +57,7 @@ macro(rapids_cython_init)
     find_package(Cython REQUIRED)
 
     # Set standard Cython directives that all RAPIDS projects should use in compilation.
-    if (NOT DEFINED CYTHON_FLAGS)
+    if(NOT DEFINED CYTHON_FLAGS)
       set(CYTHON_FLAGS "--directive binding=True,embedsignature=True,always_allow_keywords=True")
     endif()
 
