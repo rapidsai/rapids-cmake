@@ -14,7 +14,7 @@
 
 include_guard(GLOBAL)
 
-include(${CMAKE_CURRENT_LIST_DIR}/init.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/detail/verify_init.cmake)
 
 #[=======================================================================[.rst:
 rapids_cython_create_modules
@@ -65,7 +65,7 @@ function(rapids_cython_create_modules)
     set(language "CXX")
   endif()
 
-  foreach(cython_module IN LIST RAPIDS_CYTHON_EXTENSION_MODULES)
+  foreach(cython_module IN LISTS RAPIDS_CYTHON_EXTENSION_MODULES)
     add_cython_target(${cython_module} ${language} PY3)
     add_library(${cython_module} MODULE ${cython_module})
     python_extension_module(${cython_module})
