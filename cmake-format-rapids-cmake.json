@@ -237,6 +237,11 @@
           "FIND_ARGS": "+"
         }
       },
+      "rapids_cython_init": {
+        "pargs": {
+          "nargs": "0"
+        }
+      },
       "rapids_cython_create_modules": {
         "pargs": {
           "nargs": "0"
