@@ -37,8 +37,12 @@ extension module.
 ``CXX``
   Flag indicating that the Cython files need to generate C++ rather than C.
 
-``EXTENSION_MODULES``
-  The list of Python extension modules to build.
+``SOURCE_FILES``
+  The list of Cython source files to be built into Python extension modules.
+  Note that this function assumes that Cython source files have a one-one
+  correspondence with extension modules to build, i.e. for every `<Name>.pyx`
+  in SOURCE_FILES we assume that `<Name>.pyx` is a Cython source file for which
+  an extension module `<Name>` should be built.
 
 ``LINKED_LIBRARIES``
   The list of libraries that need to be linked into all modules. In RAPIDS,
@@ -56,7 +60,7 @@ function(rapids_cython_create_modules)
 
   set(_rapids_cython_options CXX)
   set(_rapids_cython_one_value INSTALL_ROOT)
-  set(_rapids_cython_multi_value EXTENSION_MODULES LINKED_LIBRARIES)
+  set(_rapids_cython_multi_value SOURCE_FILES LINKED_LIBRARIES)
   cmake_parse_arguments(RAPIDS_CYTHON "${_rapids_cython_options}" "${_rapids_cython_one_value}"
                         "${_rapids_cython_multi_value}" ${ARGN})
 
@@ -65,9 +69,10 @@ function(rapids_cython_create_modules)
     set(language "CXX")
   endif()
 
-  foreach(cython_module IN LISTS RAPIDS_CYTHON_EXTENSION_MODULES)
-    add_cython_target(${cython_module} ${language} PY3)
-    add_library(${cython_module} MODULE ${cython_module})
+  foreach(cython_filename IN LISTS RAPIDS_CYTHON_SOURCE_FILES)
+    cmake_path(REMOVE_EXTENSION cython_filename OUTPUT_VARIABLE cython_module)
+    add_cython_target(${cython_module} ${language} PY3 OUTPUT_VAR cythonized_file)
+    add_library(${cython_module} MODULE ${cythonized_file})
     python_extension_module(${cython_module})
 
     # To avoid libraries being prefixed with "lib".
