@@ -30,6 +30,9 @@ extension module.
 .. note::
   Requires :cmake:command:`rapids_cython_init` to be called before usage.
 
+``CXX``
+  Flag indicating that the Cython files need to generate C++ rather than C.
+
 ``EXTENSION_MODULES``
   The list of Python extension modules to build.
 
@@ -58,10 +61,10 @@ function(rapids_cython_create_modules)
   set(language "C")
   if (RAPIDS_CYTHON_CXX)
     set(language "CXX")
-  else()
+  endif()
 
   foreach(cython_module IN LIST RAPIDS_CYTHON_EXTENSION_MODULES)
-      add_cython_target(${cython_module} ${language} PY3)
+    add_cython_target(${cython_module} ${language} PY3)
     add_library(${cython_module} MODULE ${cython_module})
     python_extension_module(${cython_module})
 
