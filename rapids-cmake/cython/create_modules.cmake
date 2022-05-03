@@ -71,16 +71,16 @@ function(rapids_cython_create_modules)
 
   foreach(cython_filename IN LISTS RAPIDS_CYTHON_SOURCE_FILES)
     # Normalize file paths to be relative to the current directory.
-    cmake_path(NORMAL_PATH cython_filename)
-    cmake_path(IS_ABSOLUTE cython_filename is_absolute)
-    if(is_absolute)
-      cmake_path(RELATIVE_PATH cython_filename)
-    endif()
+    # cmake_path(NORMAL_PATH cython_filename)
+    # cmake_path(IS_ABSOLUTE cython_filename is_absolute)
+    # if(is_absolute)
+    #   cmake_path(RELATIVE_PATH cython_filename)
+    # endif()
 
     # Generate a reasonable module name.
     cmake_path(REMOVE_EXTENSION cython_filename OUTPUT_VARIABLE cython_module)
-    file(TO_CMAKE_PATH "${cython_module}" cython_module)
-    string(REPLACE "/" "_" cython_module cython_module)
+    # file(TO_CMAKE_PATH "${cython_module}" cython_module)
+    # string(REPLACE "/" "_" cython_module "${cython_module}")
 
     add_cython_target(${cython_module} ${language} PY3 OUTPUT_VAR cythonized_file)
     add_library(${cython_module} MODULE ${cythonized_file})
@@ -88,8 +88,10 @@ function(rapids_cython_create_modules)
 
     # To avoid libraries being prefixed with "lib".
     set_target_properties(${cython_module} PROPERTIES PREFIX "")
-    if(DEFINED ${RAPIDS_CYTHON_LINKED_LIBRARIES})
-      target_link_libraries(${cython_module} PUBLIC ${RAPIDS_CYTHON_LINKED_LIBRARIES})
+    if(DEFINED RAPIDS_CYTHON_LINKED_LIBRARIES)
+      target_link_libraries(${cython_module} ${RAPIDS_CYTHON_LINKED_LIBRARIES})
+      # TODO: Can't use the keyword form because skbuild doesn't and CMake doesn't allow you to mix and match.
+      # target_link_libraries(${cython_module} PUBLIC ${RAPIDS_CYTHON_LINKED_LIBRARIES})
     endif()
 
     # Compute the install directory relative to the source and rely on installs being relative to
