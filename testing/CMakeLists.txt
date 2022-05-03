@@ -23,6 +23,7 @@ include(utils/cmake_build_test.cmake)
 
 add_subdirectory(cmake)
 add_subdirectory(cuda)
+add_subdirectory(cython)
 add_subdirectory(export)
 add_subdirectory(find)
 
