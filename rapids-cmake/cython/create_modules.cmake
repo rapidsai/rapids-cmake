@@ -70,7 +70,18 @@ function(rapids_cython_create_modules)
   endif()
 
   foreach(cython_filename IN LISTS RAPIDS_CYTHON_SOURCE_FILES)
+    # Normalize file paths to be relative to the current directory.
+    cmake_path(NORMAL_PATH cython_filename)
+    cmake_path(IS_ABSOLUTE cython_filename is_absolute)
+    if(is_absolute)
+      cmake_path(RELATIVE_PATH cython_filename)
+    endif()
+
+    # Generate a reasonable module name.
     cmake_path(REMOVE_EXTENSION cython_filename OUTPUT_VARIABLE cython_module)
+    file(TO_CMAKE_PATH "${cython_module}" cython_module)
+    string(REPLACE "/" "_" cython_module cython_module)
+
     add_cython_target(${cython_module} ${language} PY3 OUTPUT_VAR cythonized_file)
     add_library(${cython_module} MODULE ${cythonized_file})
     python_extension_module(${cython_module})
