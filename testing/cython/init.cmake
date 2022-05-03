@@ -13,6 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-add_cmake_config_test(rapids-cython.cmake)
+include(${rapids-cmake-dir}/cython/init.cmake)
 
-add_cmake_config_test(init.cmake)
+rapids_cython_init()
+if(NOT DEFINED RAPIDS_CYTHON_INITIALIZED)
+  message(FATAL_ERROR "rapids_cython_init didn't correctly set RAPIDS_CYTHON_INITIALIZED")
+endif()
+
+STRING(REGEX MATCHALL "*--directives*" matches "${CYTHON_FLAGS}")
+LIST(LENGTH matches num_directives)
+
+if(NOT DEFINED CYTHON_FLAGS OR num_directives NOT EQUAL 1)
+  message(FATAL_ERROR "rapids_cython_init didn't correctly set CYTHON_FLAGS")
+endif()
+
+rapids_cython_init()
+if(num_directives NOT EQUAL 1)
+  message(FATAL_ERROR "rapids_cython_init is not idempotent")
+endif()
