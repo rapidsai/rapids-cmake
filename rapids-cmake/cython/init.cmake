@@ -14,15 +14,6 @@
 
 include_guard(GLOBAL)
 
-# TODO: What is the correct way to get this path inside the macro below? If there isn't one, is
-# there a different solution that would be more appropriate?
-set(RAPIDS_CYTHON_PATH)
-# cmake-lint: disable=E1126
-file(REAL_PATH "${CMAKE_CURRENT_LIST_DIR}" RAPIDS_CYTHON_PATH)
-# TODO: cmake-lint doesn't like the above line. I think it's because it doesn't recognize the
-# REAL_PATH form of `file` and doesn't realize that it selects a specific form of the `file`
-# command, but I could be misunderstanding the issue.
-
 #[=======================================================================[.rst:
 rapids_cython_init
 ------------------
@@ -47,11 +38,14 @@ macro(rapids_cython_init)
   if(NOT DEFINED RAPIDS_CYTHON_INITIALIZED)
     # Verify that we are using scikit-build.
     if(NOT DEFINED SKBUILD)
-      message(FATAL_ERROR "rapids-cython must be used with scikit-build")
+      message(WARNING
+          "rapids-cython expects scikit-build to be active before being used. \
+          The SKBUILD variable is not currently set, indicating that scikit-build \
+          is not active, so builds may behave unexpectedly.")
     endif()
 
     # Incorporate scikit-build patches.
-    include("${RAPIDS_CYTHON_PATH}/detail/skbuild_patches.cmake")
+    include("${rapids-cmake-dir}/cython/detail/skbuild_patches.cmake")
 
     find_package(PythonExtensions REQUIRED)
     find_package(Cython REQUIRED)

@@ -14,8 +14,6 @@
 
 include_guard(GLOBAL)
 
-include(${CMAKE_CURRENT_LIST_DIR}/detail/verify_init.cmake)
-
 #[=======================================================================[.rst:
 rapids_cython_create_modules
 ---------------------
@@ -26,7 +24,7 @@ Generate C(++) from Cython and create Python modules.
 
 .. code-block:: cmake
 
-  rapids_cython_create_modules(<ModuleName...>)
+  rapids_cython_create_modules([CXX] [SOURCE_FILES <src1> <src2> ...] [LINKED_LIBRARIES <lib1> <lib2> ... ]  [INSTALL_ROOT <install_path> )
 
 Creates a Cython target for a module, then adds a corresponding Python
 extension module.
@@ -55,7 +53,9 @@ extension module.
 
 #]=======================================================================]
 function(rapids_cython_create_modules)
+  include(${CMAKE_CURRENT_LIST_DIR}/detail/verify_init.cmake)
   rapids_cython_verify_init()
+
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cython.create_modules")
 
   set(_rapids_cython_options CXX)
