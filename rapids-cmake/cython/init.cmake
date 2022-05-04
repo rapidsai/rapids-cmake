@@ -38,8 +38,7 @@ macro(rapids_cython_init)
   if(NOT DEFINED RAPIDS_CYTHON_INITIALIZED)
     # Verify that we are using scikit-build.
     if(NOT DEFINED SKBUILD)
-      message(WARNING
-          "rapids-cython expects scikit-build to be active before being used. \
+      message(WARNING "rapids-cython expects scikit-build to be active before being used. \
           The SKBUILD variable is not currently set, indicating that scikit-build \
           is not active, so builds may behave unexpectedly.")
     endif()
@@ -50,8 +49,8 @@ macro(rapids_cython_init)
     find_package(PythonExtensions REQUIRED)
     find_package(Cython REQUIRED)
 
-    # Set standard Cython directives that all RAPIDS projects should use in
-    # compilation. Users flags will not be overridden.
+    # Set standard Cython directives that all RAPIDS projects should use in compilation. Users flags
+    # will not be overridden.
     if(NOT CYTHON_FLAGS)
       set(CYTHON_FLAGS "--directive binding=True,embedsignature=True,always_allow_keywords=True"
           CACHE STRING "The directives for Cython compilation.")
