@@ -23,7 +23,6 @@ include(utils/cmake_build_test.cmake)
 
 add_subdirectory(cmake)
 add_subdirectory(cuda)
-add_subdirectory(cython)
 add_subdirectory(export)
 add_subdirectory(find)
 
@@ -36,6 +35,7 @@ if(RAPIDS_CMAKE_ENABLE_DOWNLOAD_TESTS)
   setup_cpm_cache()
 
   add_subdirectory(cpm)
+  add_subdirectory(cython)
   add_subdirectory(other)
 endif()
 
