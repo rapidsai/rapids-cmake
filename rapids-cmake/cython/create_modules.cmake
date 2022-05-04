@@ -53,7 +53,7 @@ extension module.
 
 #]=======================================================================]
 function(rapids_cython_create_modules)
-  include(${CMAKE_CURRENT_LIST_DIR}/detail/verify_init.cmake)
+  include(${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/verify_init.cmake)
   rapids_cython_verify_init()
 
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cython.create_modules")
