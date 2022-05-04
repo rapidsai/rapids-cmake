@@ -43,15 +43,15 @@ macro(rapids_cython_init)
           is not active, so builds may behave unexpectedly.")
     endif()
 
-    if(NOT DEFINED CYTHON_FLAGS)
-      set(CYTHON_FLAGS "--directive binding=True,embedsignature=True,always_allow_keywords=True")
-    endif()
-
     # Incorporate scikit-build patches.
     include("${rapids-cmake-dir}/cython/detail/skbuild_patches.cmake")
 
     find_package(PythonExtensions REQUIRED)
     find_package(Cython REQUIRED)
+
+    if(NOT CYTHON_FLAGS)
+      set(CYTHON_FLAGS "--directive binding=True,embedsignature=True,always_allow_keywords=True")
+    endif()
 
     # Flag
     set(RAPIDS_CYTHON_INITIALIZED TRUE)
