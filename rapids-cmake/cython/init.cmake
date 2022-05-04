@@ -50,9 +50,11 @@ macro(rapids_cython_init)
     find_package(PythonExtensions REQUIRED)
     find_package(Cython REQUIRED)
 
-    # Set standard Cython directives that all RAPIDS projects should use in compilation.
-    if(NOT DEFINED CYTHON_FLAGS)
-      set(CYTHON_FLAGS "--directive binding=True,embedsignature=True,always_allow_keywords=True")
+    # Set standard Cython directives that all RAPIDS projects should use in
+    # compilation. Users flags will not be overridden.
+    if(NOT CYTHON_FLAGS)
+      set(CYTHON_FLAGS "--directive binding=True,embedsignature=True,always_allow_keywords=True"
+          CACHE STRING "The directives for Cython compilation.")
     endif()
 
     # Flag
