@@ -14,16 +14,16 @@
 # limitations under the License.
 #=============================================================================
 
-# TODO: For some reason I have to specify this before the includes below even
-# though none of them execute code. Without that ordering, I get an error from
-# inside UseCython.cmake about CMP0057 violations, a policy that was introduced
-# in 3.3. This is true even if I don't ever run rapids_cython_init, which
-# should be what calls find_package(Cython). Does the include lead to some sort
-# of syntactic parsing of all possible nested inclusions (including inside the
-# rapids_cython_init macro) even if it's not executed?
-cmake_minimum_required(VERSION 3.20)
+# TODO: For some reason I have to specify the minimum required cmake version
+# before including init.cmake below even though none of them execute code.
+# Without that ordering, I get an error when I call rapids_cython_init about
+# CMP0057 violations, a policy that was introduced in 3.3. Why does it matter
+# at include time instead of at run time? I assume it has something to do with
+# state saved when the macro in init.cmake is defined because UseCython.cmake
+# is only actually loaded when rapids_cython_init is called.
 
 include(${rapids-cmake-dir}/cython/create_modules.cmake)
+cmake_minimum_required(VERSION 3.20)
 include(${rapids-cmake-dir}/cython/init.cmake)
 
 project(rapids_cython-create_modules LANGUAGES C CXX)
@@ -41,27 +41,10 @@ LIST(APPEND CMAKE_MODULE_PATH "${skbuild_resource_dir}")
 
 rapids_cython_init()
 
+# Test that an empty invocation works.
+rapids_cython_create_modules()
+
 # Test that a basic invocation with a single file works.
 rapids_cython_create_modules(
     SOURCE_FILES test.pyx
     )
-
-#string(REGEX MATCHALL ".*--directive.*" matches "${CYTHON_FLAGS}")
-#list(LENGTH matches num_directives)
-#
-#if(NOT CYTHON_FLAGS OR NOT num_directives EQUAL 1)
-#  message(FATAL_ERROR "rapids_cython_init didn't correctly set CYTHON_FLAGS")
-#endif()
-#
-#if(NOT COMMAND _set_python_extension_symbol_visibility)
-#  message(FATAL_ERROR "rapids_cython_init didn't create the _set_python_extension_symbol_visibility command")
-#endif()
-#
-## Test that rapids_cython_init is idempotent.
-#rapids_cython_init()
-#string(REGEX MATCHALL ".*--directive.*" matches "${CYTHON_FLAGS}")
-#list(LENGTH matches num_directives)
-#
-#if(NOT num_directives EQUAL 1)
-#  message(FATAL_ERROR "rapids_cython_init is not idempotent, num_directives = ${num_directives}")
-#endif()

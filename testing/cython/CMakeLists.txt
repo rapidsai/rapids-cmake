@@ -20,3 +20,4 @@ add_cmake_config_test(init.cmake)
 add_cmake_config_test(create_modules_errors.cmake SHOULD_FAIL "You must call rapids_cython_init before calling this function")
 
 add_cmake_config_test(create_modules)
+add_cmake_config_test(create_modules_with_library)

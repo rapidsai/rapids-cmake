@@ -41,8 +41,13 @@ LIST(APPEND CMAKE_MODULE_PATH "${skbuild_resource_dir}")
 
 rapids_cython_init()
 
-# Test that we can specify a library.
-add_library(rapids_cython_test_library)
+# TODO: This whole file only exists because we cannot create multiple global
+# targets with the same name, so this can't go into ths same test as the other
+# create_modules. I don't want to modify the rapids_cython_create_modules
+# function to accept a different module name just for testing though. Is there
+# another alternative?
+# Test that we can specify a (fake) library.
+add_library(rapids_cython_test_library test)
 rapids_cython_create_modules(
     SOURCE_FILES test.pyx
     LINKED_LIBRARIES rapids_cython_test_library
