@@ -13,10 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
+if(DEFINED CYTHON_FLAGS)
+    message(FATAL_ERROR "Cython flags are already defined!")
+endif()
 include(${rapids-cmake-dir}/cython/init.cmake)
 
-# Ensure that scikit-build's CMake files are discoverable.
-file(GLOB skbuild_resource_dir "${CPM_SOURCE_CACHE}/skbuild/*/skbuild/resources/cmake")
+# Silence warning about running without scikit-build.
+set(SKBUILD ON)
+
+
+# Ensure that scikit-build's CMake files are discoverable. The glob is to
+# capture the current git commit hash.
+file(GLOB skbuild_resource_dir LIST_DIRECTORIES ON "${CPM_SOURCE_CACHE}/skbuild/*/skbuild/resources/cmake")
 LIST(APPEND CMAKE_MODULE_PATH "${skbuild_resource_dir}")
 
 # Test that rapids_cython_init initializes the expected variables.
@@ -25,8 +33,8 @@ if(NOT DEFINED RAPIDS_CYTHON_INITIALIZED)
   message(FATAL_ERROR "rapids_cython_init didn't correctly set RAPIDS_CYTHON_INITIALIZED")
 endif()
 
-STRING(REGEX MATCHALL ".*--directives.*" matches "${CYTHON_FLAGS}")
-LIST(LENGTH matches num_directives)
+string(REGEX MATCHALL ".*--directives.*" matches "${CYTHON_FLAGS}")
+list(LENGTH matches num_directives)
 
 if(NOT CYTHON_FLAGS OR NOT num_directives EQUAL 1)
   message(FATAL_ERROR "rapids_cython_init didn't correctly set CYTHON_FLAGS")
@@ -38,8 +46,8 @@ endif()
 
 # Test that rapids_cython_init is idempotent.
 rapids_cython_init()
-STRING(REGEX MATCHALL ".*--directives.*" matches "${CYTHON_FLAGS}")
-LIST(LENGTH matches num_directives)
+string(REGEX MATCHALL ".*--directives.*" matches "${CYTHON_FLAGS}")
+list(LENGTH matches num_directives)
 
 if(NOT num_directives EQUAL 1)
   message(FATAL_ERROR "rapids_cython_init is not idempotent, num_directives = ${num_directives}")
