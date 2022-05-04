@@ -46,10 +46,10 @@ extension module.
   The list of libraries that need to be linked into all modules. In RAPIDS,
   this list usually contains (at minimum) the corresponding C++ libraries.
 
-``INSTALL_ROOT``
-  The source directory of the project. This directory is used to compute the
-  relative install path, which is necessary to propertly support differently
-  configured installations such as installing in place vs. out of place.
+``INSTALL_DIR``
+  The path relative to the installation prefix so that it can be converted to
+  an absolute path in a relocatable way. If not provided, defaults to the path
+  to CMAKE_CURRENT_SOURCE_DIR relative to PROJECT_SOURCE_DIR.
 
 #]=======================================================================]
 function(rapids_cython_create_modules)
@@ -59,7 +59,7 @@ function(rapids_cython_create_modules)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cython.create_modules")
 
   set(_rapids_cython_options CXX)
-  set(_rapids_cython_one_value INSTALL_ROOT)
+  set(_rapids_cython_one_value INSTALL_DIR)
   set(_rapids_cython_multi_value SOURCE_FILES LINKED_LIBRARIES)
   cmake_parse_arguments(RAPIDS_CYTHON "${_rapids_cython_options}" "${_rapids_cython_one_value}"
                         "${_rapids_cython_multi_value}" ${ARGN})
@@ -87,14 +87,14 @@ function(rapids_cython_create_modules)
     set_target_properties(${cython_module} PROPERTIES PREFIX "")
     if(DEFINED RAPIDS_CYTHON_LINKED_LIBRARIES)
       target_link_libraries(${cython_module} ${RAPIDS_CYTHON_LINKED_LIBRARIES})
-      # TODO: Can't use the keyword form because skbuild doesn't and CMake doesn't allow you to mix
-      # and match. target_link_libraries(${cython_module} PUBLIC ${RAPIDS_CYTHON_LINKED_LIBRARIES})
     endif()
 
     # Compute the install directory relative to the source and rely on installs being relative to
     # the CMAKE_PREFIX_PATH for e.g. editable installs.
-    cmake_path(RELATIVE_PATH CMAKE_CURRENT_SOURCE_DIR BASE_DIRECTORY ${RAPIDS_CYTHON_INSTALL_ROOT}
-               OUTPUT_VARIABLE install_dst)
-    install(TARGETS ${cython_module} DESTINATION ${install_dst})
+    if(NOT DEFINED RAPIDS_CYTHON_INSTALL_DIR)
+      cmake_path(RELATIVE_PATH CMAKE_CURRENT_SOURCE_DIR BASE_DIRECTORY "${PROJECT_SOURCE_DIR}"
+                 OUTPUT_VARIABLE RAPIDS_CYTHON_INSTALL_DIR)
+    endif()
+    install(TARGETS ${cython_module} DESTINATION ${RAPIDS_CYTHON_INSTALL_DIR})
   endforeach()
 endfunction()
