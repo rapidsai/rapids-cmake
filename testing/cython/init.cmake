@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
+# Are the flags getting pulled from the cache variable somehow? I don't see how
+# that would happen since rapids_cython_init() hasn't even been called once at
+# this point, though.
 if(DEFINED CYTHON_FLAGS)
     message(FATAL_ERROR "Cython flags are already defined!")
 endif()
