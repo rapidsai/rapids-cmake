@@ -74,7 +74,8 @@ function(rapids_cython_create_modules)
     cmake_path(GET cython_filename FILENAME cython_module)
     cmake_path(REMOVE_EXTENSION cython_module)
 
-    add_cython_target(${cython_module} "${cython_filename}" ${language} PY3 OUTPUT_VAR cythonized_file)
+    add_cython_target(${cython_module} "${cython_filename}" ${language} PY3 OUTPUT_VAR
+                      cythonized_file)
     add_library(${cython_module} MODULE ${cythonized_file})
     python_extension_module(${cython_module})
 
