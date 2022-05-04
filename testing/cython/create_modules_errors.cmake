@@ -13,10 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
+include(${rapids-cmake-dir}/cython/create_modules.cmake)
 
-add_cmake_config_test(rapids-cython.cmake)
-
-add_cmake_config_test(init.cmake)
-add_cmake_config_test(create_modules_errors.cmake SHOULD_FAIL "You must call rapids_cython_init before calling this function")
-
-add_cmake_config_test(create_modules)
+# Test that a invocation without calling rapids_cython_init fails.
+rapids_cython_create_modules(
+    SOURCE_FILES test.pyx
+    )

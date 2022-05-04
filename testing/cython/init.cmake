@@ -18,7 +18,6 @@ include(${rapids-cmake-dir}/cython/init.cmake)
 # Silence warning about running without scikit-build.
 set(SKBUILD ON)
 
-
 # Ensure that scikit-build's CMake files are discoverable. The glob is to
 # capture the current git commit hash.
 file(GLOB skbuild_resource_dir LIST_DIRECTORIES ON "${CPM_SOURCE_CACHE}/skbuild/*/skbuild/resources/cmake")
