@@ -41,6 +41,9 @@ macro(rapids_cython_init)
       message(WARNING "rapids-cython expects scikit-build to be active before being used. \
           The SKBUILD variable is not currently set, indicating that scikit-build \
           is not active, so builds may behave unexpectedly.")
+    else()
+      # Access the variable to avoid unused variable warnings."
+      message(TRACE "Accessing SKBUILD variable ${SKBUILD}")
     endif()
 
     # Incorporate scikit-build patches.
