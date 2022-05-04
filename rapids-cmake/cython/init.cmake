@@ -43,12 +43,8 @@ macro(rapids_cython_init)
           is not active, so builds may behave unexpectedly.")
     endif()
 
-    if(DEFINED CYTHON_FLAGS)
-      message(FATAL_ERROR "The flags: ${CYTHON_FLAGS}")
-    endif()
     if(NOT DEFINED CYTHON_FLAGS)
       set(CYTHON_FLAGS "--directive binding=True,embedsignature=True,always_allow_keywords=True")
-      message(FATAL_ERROR "The flags are ${CYTHON_FLAGS}")
     endif()
 
     # Incorporate scikit-build patches.
