@@ -24,7 +24,7 @@ Generate C(++) from Cython and create Python modules.
 
 .. code-block:: cmake
 
-  rapids_cython_create_modules([CXX] [SOURCE_FILES <src1> <src2> ...] [LINKED_LIBRARIES <lib1> <lib2> ... ]  [INSTALL_ROOT <install_path> )
+  rapids_cython_create_modules([CXX] [SOURCE_FILES <src1> <src2> ...] [LINKED_LIBRARIES <lib1> <lib2> ... ]  [INSTALL_DIR <install_path> )
 
 Creates a Cython target for a module, then adds a corresponding Python
 extension module.

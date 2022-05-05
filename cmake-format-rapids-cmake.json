@@ -247,9 +247,9 @@
           "nargs": "0"
         },
         "kwargs": {
-          "MODULES": "+",
+          "SOURCE_FILES": "*",
           "LINKED_LIBRARIES": "*",
-          "INSTALL_BASE_DIRECTORY": "1"
+          "INSTALL_DIR": "1"
         }
       }
 
