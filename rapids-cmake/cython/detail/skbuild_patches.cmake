@@ -32,7 +32,6 @@ PR: https://github.com/scikit-build/scikit-build/pull/703
 
 #]=======================================================================]
 function(_set_python_extension_symbol_visibility _target)
-  # TODO: Should we guard this function's existence based on a scikit-build version?
   include(${CMAKE_CURRENT_FUNCTION_LIST_DIR}/verify_init.cmake)
   rapids_cython_verify_init()
 

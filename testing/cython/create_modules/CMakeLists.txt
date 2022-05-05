@@ -14,23 +14,13 @@
 # limitations under the License.
 #=============================================================================
 
-# TODO: For some reason I have to specify the minimum required cmake version
-# before including init.cmake below even though none of them execute code.
-# Without that ordering, I get an error when I call rapids_cython_init about
-# CMP0057 violations, a policy that was introduced in 3.3. Why does it matter
-# at include time instead of at run time? I assume it has something to do with
-# state saved when the macro in init.cmake is defined because UseCython.cmake
-# is only actually loaded when rapids_cython_init is called.
+cmake_minimum_required(VERSION 3.20)
 
 include(${rapids-cmake-dir}/cython/create_modules.cmake)
-cmake_minimum_required(VERSION 3.20)
 include(${rapids-cmake-dir}/cython/init.cmake)
 
 project(rapids_cython-create_modules LANGUAGES C CXX)
 
-# TODO: Is there any way to handle setting SKBUILD and the CMAKE_MODULE_PATH
-# using a general macro defined in testing/cython/CMakeLists.txt to wrap all
-# tests?
 # Silence warning about running without scikit-build.
 set(SKBUILD ON)
 
