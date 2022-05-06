@@ -35,6 +35,7 @@ if(RAPIDS_CMAKE_ENABLE_DOWNLOAD_TESTS)
   setup_cpm_cache()
 
   add_subdirectory(cpm)
+  add_subdirectory(cython)
   add_subdirectory(other)
 endif()
 
