@@ -13,32 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-cmake_minimum_required(VERSION 3.20)
-
-project(fill_cache LANGUAGES CXX)
-
 include(${rapids-cmake-dir}/cpm/init.cmake)
-
-include(${rapids-cmake-dir}/cpm/gtest.cmake)
-include(${rapids-cmake-dir}/cpm/libcudacxx.cmake)
-include(${rapids-cmake-dir}/cpm/nvbench.cmake)
 include(${rapids-cmake-dir}/cpm/nvcomp.cmake)
-include(${rapids-cmake-dir}/cpm/rmm.cmake)
-include(${rapids-cmake-dir}/cpm/spdlog.cmake)
-include(${rapids-cmake-dir}/cpm/thrust.cmake)
 
 rapids_cpm_init()
+set(CMAKE_CUDA_ARCHITECTURES OFF)
+rapids_cpm_nvcomp(BUILD_EXPORT_SET test)
+rapids_cpm_nvcomp(BUILD_EXPORT_SET test2)
 
-set(CPM_SOURCE_CACHE "${CMAKE_BINARY_DIR}")
-set(CPM_DOWNLOAD_ALL "ON")
-rapids_cpm_gtest(DOWNLOAD_ONLY ON)
-rapids_cpm_libcudacxx(DOWNLOAD_ONLY ON)
-rapids_cpm_nvbench(DOWNLOAD_ONLY ON)
-rapids_cpm_nvcomp(DOWNLOAD_ONLY ON)
-rapids_cpm_rmm(DOWNLOAD_ONLY ON)
-rapids_cpm_spdlog(DOWNLOAD_ONLY ON)
-rapids_cpm_thrust(temp DOWNLOAD_ONLY ON)
-rapids_cpm_find(skbuild 0.14.1
-                GIT_REPOSITORY https://github.com/scikit-build/scikit-build.git
-                GIT_TAG 0.14.1
-                )
+get_target_property(packages rapids_export_build_test PACKAGE_NAMES)
+if(NOT nvcomp IN_LIST packages)
+  message(FATAL_ERROR "rapids_cpm_nvcomp failed to record nvcomp needs to be exported")
+endif()
+
+get_target_property(packages rapids_export_build_test2 PACKAGE_NAMES)
+if(NOT nvcomp IN_LIST packages)
+  message(FATAL_ERROR "rapids_cpm_nvcomp failed to record nvcomp needs to be exported")
+endif()
