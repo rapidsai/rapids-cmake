@@ -74,13 +74,16 @@ function(rapids_cython_create_modules)
     cmake_path(GET cython_filename FILENAME cython_module)
     cmake_path(REMOVE_EXTENSION cython_module)
 
+    # Generate C++ from Cython and create a library for the resulting extension module to compile.
     add_cython_target(${cython_module} "${cython_filename}" ${language} PY3 OUTPUT_VAR
                       cythonized_file)
     add_library(${cython_module} MODULE ${cythonized_file})
     python_extension_module(${cython_module})
 
-    # To avoid libraries being prefixed with "lib".
+    # Avoid libraries being prefixed with "lib".
     set_target_properties(${cython_module} PROPERTIES PREFIX "")
+
+    # Link the module to the requested libraries
     if(DEFINED RAPIDS_CYTHON_LINKED_LIBRARIES)
       target_link_libraries(${cython_module} ${RAPIDS_CYTHON_LINKED_LIBRARIES})
     endif()
