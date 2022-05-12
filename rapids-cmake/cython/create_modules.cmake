@@ -103,6 +103,9 @@ function(rapids_cython_create_modules)
     endif()
     install(TARGETS ${cython_module} DESTINATION ${RAPIDS_CYTHON_INSTALL_DIR})
 
+    # Default the INSTALL_RPATH for all modules to $ORIGIN.
+    set_target_properties(${cython_module} PROPERTIES INSTALL_RPATH "\$ORIGIN")
+
     list(APPEND CREATED_TARGETS "${cython_module}")
   endforeach()
 
