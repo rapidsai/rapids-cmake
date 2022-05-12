@@ -49,7 +49,7 @@ Result Targets
 Result Variables
 ^^^^^^^^^^^^^^^^
   :cmake:variable:`nvbench_SOURCE_DIR` is set to the path to the source directory of nvbench.
-  :cmake:variable:`nvbench_BINAR_DIR`  is set to the path to the build directory of  nvbench.
+  :cmake:variable:`nvbench_BINARY_DIR` is set to the path to the build directory of  nvbench.
   :cmake:variable:`nvbench_ADDED`      is set to a true value if nvbench has not been added before.
   :cmake:variable:`nvbench_VERSION`    is set to the version of nvbench specified by the versions.json.
 

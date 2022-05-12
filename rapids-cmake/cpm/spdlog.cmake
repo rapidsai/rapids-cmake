@@ -52,7 +52,7 @@ Result Targets
 Result Variables
 ^^^^^^^^^^^^^^^^
   :cmake:variable:`spdlog_SOURCE_DIR` is set to the path to the source directory of spdlog.
-  :cmake:variable:`spdlog_BINAR_DIR`  is set to the path to the build directory of  spdlog.
+  :cmake:variable:`spdlog_BINARY_DIR` is set to the path to the build directory of  spdlog.
   :cmake:variable:`spdlog_ADDED`      is set to a true value if spdlog has not been added before.
   :cmake:variable:`spdlog_VERSION`    is set to the version of spdlog specified by the versions.json.
 

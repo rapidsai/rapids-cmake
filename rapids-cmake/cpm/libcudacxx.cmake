@@ -48,7 +48,7 @@ Result Targets
 Result Variables
 ^^^^^^^^^^^^^^^^
   :cmake:variable:`libcudacxx_SOURCE_DIR` is set to the path to the source directory of libcudacxx.
-  :cmake:variable:`libcudacxx_BINAR_DIR`  is set to the path to the build directory of  libcudacxx.
+  :cmake:variable:`libcudacxx_BINARY_DIR` is set to the path to the build directory of  libcudacxx.
   :cmake:variable:`libcudacxx_ADDED`      is set to a true value if libcudacxx has not been added before.
   :cmake:variable:`libcudacxx_VERSION`    is set to the version of libcudacxx specified by the versions.json.
 
