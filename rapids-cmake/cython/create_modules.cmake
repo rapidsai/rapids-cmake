@@ -51,6 +51,11 @@ extension module.
   an absolute path in a relocatable way. If not provided, defaults to the path
   to CMAKE_CURRENT_SOURCE_DIR relative to PROJECT_SOURCE_DIR.
 
+Result Variables
+^^^^^^^^^^^^^^^^
+  :cmake:variable:`RAPIDS_CYTHON_CREATED_TARGETS` will be set to a list of
+  targets created by this function.
+
 #]=======================================================================]
 function(rapids_cython_create_modules)
   include(${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/verify_init.cmake)
@@ -68,6 +73,8 @@ function(rapids_cython_create_modules)
   if(RAPIDS_CYTHON_CXX)
     set(language "CXX")
   endif()
+
+  set(CREATED_TARGETS "")
 
   foreach(cython_filename IN LISTS RAPIDS_CYTHON_SOURCE_FILES)
     # Generate a reasonable module name.
@@ -95,5 +102,9 @@ function(rapids_cython_create_modules)
                  OUTPUT_VARIABLE RAPIDS_CYTHON_INSTALL_DIR)
     endif()
     install(TARGETS ${cython_module} DESTINATION ${RAPIDS_CYTHON_INSTALL_DIR})
+
+    list(APPEND CREATED_TARGETS "${cython_module}")
   endforeach()
+
+  set(RAPIDS_CYTHON_CREATED_TARGETS ${CREATED_TARGETS} PARENT_SCOPE)
 endfunction()
