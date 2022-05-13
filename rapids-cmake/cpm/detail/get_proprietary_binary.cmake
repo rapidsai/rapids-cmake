@@ -31,18 +31,21 @@ the current CPU target architecture ( x86_64, aarch64, etc )
 
 #]=======================================================================]
 function(rapids_cpm_get_proprietary_binary package_name version)
+  list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.rapids_cpm_get_proprietary_binary")
 
-  get_property(override_json_data GLOBAL PROPERTY rapids_cpm_${package_name}_override_json)
+  include("${rapids-cmake-dir}/cpm/detail/get_default_json.cmake")
+  include("${rapids-cmake-dir}/cpm/detail/get_override_json.cmake")
+  get_default_json(${package_name} json_data)
+  get_override_json(${package_name} override_json_data)
+
   # need to search the `proprietary_binary` dictionary for a key with the same name as
   # lower_case(`CMAKE_SYSTEM_PROCESSOR-CMAKE_SYSTEM_NAME`).
   set(key "${CMAKE_SYSTEM_PROCESSOR}-${CMAKE_SYSTEM_NAME}")
   string(TOLOWER ${key} key)
-
   if(override_json_data)
     string(JSON proprietary_binary ERROR_VARIABLE have_error GET "${override_json_data}"
            "proprietary_binary" "${key}")
   else()
-    get_property(json_data GLOBAL PROPERTY rapids_cpm_${package_name}_json)
     string(JSON proprietary_binary ERROR_VARIABLE have_error GET "${json_data}"
            "proprietary_binary" "${key}")
   endif()
