@@ -94,7 +94,7 @@ as needed.
     with the `USE_PROPRIETARY_BLOB` set to `ON`.
 
     Supports the following placeholders:
-        - ``${rapids-cmake-version}`` will be evulated to 'major.minor' of the current rapids-cmake cal-ver value.
+        - ``${rapids-cmake-version}`` will be evaluated to 'major.minor' of the current rapids-cmake cal-ver value.
         - ``${version}`` will be evaluated to the contents of the ``version`` field.
 
     If this field exists in the default package, the value will be ignored when an override file
