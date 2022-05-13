@@ -33,7 +33,7 @@ the current CPU target architecture ( x86_64, aarch64, etc )
 function(rapids_cpm_get_proprietary_binary package_name version)
 
   get_property(override_json_data GLOBAL PROPERTY rapids_cpm_${package_name}_override_json)
-  # need to search the `proprietary_binary` dictonary for a key with the same name as
+  # need to search the `proprietary_binary` dictionary for a key with the same name as
   # lower_case(`CMAKE_SYSTEM_PROCESSOR-CMAKE_SYSTEM_NAME`).
   set(key "${CMAKE_SYSTEM_PROCESSOR}-${CMAKE_SYSTEM_NAME}")
   string(TOLOWER ${key} key)
