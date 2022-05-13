@@ -26,8 +26,9 @@ Generate C(++) from Cython and create Python modules.
 
   rapids_cython_create_modules([CXX] [SOURCE_FILES <src1> <src2> ...] [LINKED_LIBRARIES <lib1> <lib2> ... ]  [INSTALL_DIR <install_path> )
 
-Creates a Cython target for a module, then adds a corresponding Python
-extension module.
+Creates a Cython target for each provided source file, then adds a
+corresponding Python extension module. Each built library has its RPATH set to
+$ORIGIN.
 
 .. note::
   Requires :cmake:command:`rapids_cython_init` to be called before usage.
@@ -51,6 +52,11 @@ extension module.
   an absolute path in a relocatable way. If not provided, defaults to the path
   to CMAKE_CURRENT_SOURCE_DIR relative to PROJECT_SOURCE_DIR.
 
+Result Variables
+^^^^^^^^^^^^^^^^
+  :cmake:variable:`RAPIDS_CYTHON_CREATED_TARGETS` will be set to a list of
+  targets created by this function.
+
 #]=======================================================================]
 function(rapids_cython_create_modules)
   include(${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/verify_init.cmake)
@@ -69,18 +75,23 @@ function(rapids_cython_create_modules)
     set(language "CXX")
   endif()
 
+  set(CREATED_TARGETS "")
+
   foreach(cython_filename IN LISTS RAPIDS_CYTHON_SOURCE_FILES)
     # Generate a reasonable module name.
     cmake_path(GET cython_filename FILENAME cython_module)
     cmake_path(REMOVE_EXTENSION cython_module)
 
+    # Generate C++ from Cython and create a library for the resulting extension module to compile.
     add_cython_target(${cython_module} "${cython_filename}" ${language} PY3 OUTPUT_VAR
                       cythonized_file)
     add_library(${cython_module} MODULE ${cythonized_file})
     python_extension_module(${cython_module})
 
-    # To avoid libraries being prefixed with "lib".
+    # Avoid libraries being prefixed with "lib".
     set_target_properties(${cython_module} PROPERTIES PREFIX "")
+
+    # Link the module to the requested libraries
     if(DEFINED RAPIDS_CYTHON_LINKED_LIBRARIES)
       target_link_libraries(${cython_module} ${RAPIDS_CYTHON_LINKED_LIBRARIES})
     endif()
@@ -92,5 +103,12 @@ function(rapids_cython_create_modules)
                  OUTPUT_VARIABLE RAPIDS_CYTHON_INSTALL_DIR)
     endif()
     install(TARGETS ${cython_module} DESTINATION ${RAPIDS_CYTHON_INSTALL_DIR})
+
+    # Default the INSTALL_RPATH for all modules to $ORIGIN.
+    set_target_properties(${cython_module} PROPERTIES INSTALL_RPATH "\$ORIGIN")
+
+    list(APPEND CREATED_TARGETS "${cython_module}")
   endforeach()
+
+  set(RAPIDS_CYTHON_CREATED_TARGETS ${CREATED_TARGETS} PARENT_SCOPE)
 endfunction()
