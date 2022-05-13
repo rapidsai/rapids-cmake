@@ -71,13 +71,12 @@ function(rapids_cpm_nvcomp)
   set(multi_value)
   cmake_parse_arguments(RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
-  #Fix up RAPIDS_UNPARSED_ARGUMENTS to have EXPORT_SETS
-  #As this is need for rapids_cpm_find
+  # Fix up RAPIDS_UNPARSED_ARGUMENTS to have EXPORT_SETS As this is need for rapids_cpm_find
   if(RAPIDS_INSTALL_EXPORT_SET)
-    list(APPEND RAPIDS_UNPARSED_ARGUMENTS  INSTALL_EXPORT_SET ${RAPIDS_INSTALL_EXPORT_SET})
+    list(APPEND RAPIDS_UNPARSED_ARGUMENTS INSTALL_EXPORT_SET ${RAPIDS_INSTALL_EXPORT_SET})
   endif()
   if(RAPIDS_BUILD_EXPORT_SET)
-    list(APPEND RAPIDS_UNPARSED_ARGUMENTS  BUILD_EXPORT_SET ${RAPIDS_BUILD_EXPORT_SET})
+    list(APPEND RAPIDS_UNPARSED_ARGUMENTS BUILD_EXPORT_SET ${RAPIDS_BUILD_EXPORT_SET})
   endif()
 
   set(to_exclude OFF)
@@ -104,7 +103,8 @@ function(rapids_cpm_nvcomp)
                   GIT_TAG ${tag}
                   GIT_SHALLOW ${shallow}
                   EXCLUDE_FROM_ALL ${to_exclude}
-                  OPTIONS "BUILD_STATIC ON" "BUILD_TESTS OFF" "BUILD_BENCHMARKS OFF" "BUILD_EXAMPLES OFF")
+                  OPTIONS "BUILD_STATIC ON" "BUILD_TESTS OFF" "BUILD_BENCHMARKS OFF"
+                          "BUILD_EXAMPLES OFF")
 
   # nvcomp creates the correct namespace aliases
   if(NOT TARGET nvcomp::nvcomp AND TARGET nvcomp)
@@ -118,8 +118,8 @@ function(rapids_cpm_nvcomp)
   set(nvcomp_VERSION ${version} PARENT_SCOPE)
   set(nvcomp_proprietary_binary ${nvcomp_proprietary_binary} PARENT_SCOPE)
 
-  # Setup up install rules when using the proprietary_binary
-  # When building from source, nvcomp will set the correct install rules
+  # Setup up install rules when using the proprietary_binary When building from source, nvcomp will
+  # set the correct install rules
   include("${rapids-cmake-dir}/export/find_package_root.cmake")
   if(RAPIDS_INSTALL_EXPORT_SET AND nvcomp_proprietary_binary)
     include(GNUInstallDirs)
