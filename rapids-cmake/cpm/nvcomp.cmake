@@ -47,7 +47,7 @@ across all RAPIDS projects.
   is added to the project via :cmake:command:`add_subdirectory <cmake:command:add_subdirectory>` by CPM.
 
 ``USE_PROPRIETARY_BINARY``
-  By enabling this flag you and using the software, you agree to fully comply with the terms and conditions of
+  By enabling this flag and using the software, you agree to fully comply with the terms and conditions of
   nvcomp's NVIDIA Software License Agreement. Found at https://developer.download.nvidia.com/compute/nvcomp/2.3/LICENSE.txt
 
 Result Targets
