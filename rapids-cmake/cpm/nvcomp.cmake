@@ -79,13 +79,12 @@ function(rapids_cpm_nvcomp)
     list(APPEND RAPIDS_UNPARSED_ARGUMENTS BUILD_EXPORT_SET ${RAPIDS_BUILD_EXPORT_SET})
   endif()
 
+  include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
+  rapids_cpm_package_details(nvcomp version repository tag shallow exclude)
   set(to_exclude OFF)
   if(NOT RAPIDS_INSTALL_EXPORT_SET OR exclude)
     set(to_exclude ON)
   endif()
-
-  include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
-  rapids_cpm_package_details(nvcomp version repository tag shallow exclude)
 
   # first see if we have a proprietary pre-built binary listed in versions.json and it if requested.
   set(nvcomp_proprietary_binary OFF) # will be set to true by rapids_cpm_get_proprietary_binary
