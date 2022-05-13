@@ -89,7 +89,7 @@ as needed.
     As this represents a proprietary binary only the following packages support this command:
         - nvcomp
 
-    Due to requirements of proprietary binarues, explicit opt-in by the user on usage is required.
+    Due to requirements of proprietary binaries, explicit opt-in by the user on usage is required.
     Therefore for this binary to be used the caller must call the associated `rapids_cpm` command
     with the `USE_PROPRIETARY_BLOB` set to `ON`.
 
