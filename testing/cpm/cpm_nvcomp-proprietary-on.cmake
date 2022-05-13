@@ -24,7 +24,7 @@ endif()
 
 rapids_cpm_nvcomp(USE_PROPRIETARY_BINARY ON)
 
-if(NOT TARGET nvcomp::nvcomp)
+if(NOT nvcomp_proprietary_binary)
   message(FATAL_ERROR "Expected nvcomp::nvcomp target to exist")
 endif()
 

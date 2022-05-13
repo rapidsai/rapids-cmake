@@ -24,7 +24,7 @@ endif()
 
 rapids_cpm_nvcomp(USE_PROPRIETARY_BINARY OFF)
 
-if(TARGET nvcomp::nvcomp)
+if(nvcomp_proprietary_binary)
   message(FATAL_ERROR "Ignored `USE_PROPRIETARY_BINARY OFF` and brought in the binary version")
 endif()
 

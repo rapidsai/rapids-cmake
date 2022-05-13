@@ -73,5 +73,6 @@ function(rapids_cpm_get_proprietary_binary package_name version)
 
     # Tell the subsequent rapids_cpm_find where to search so that it uses this binary
     set(${package_name}_ROOT "${${pkg_name}_SOURCE_DIR}" PARENT_SCOPE)
+    set(${package_name}_proprietary_binary ON PARENT_SCOPE)
   endif()
 endfunction()
