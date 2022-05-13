@@ -125,8 +125,8 @@ function(rapids_cpm_nvcomp)
     install(DIRECTORY "${nvcomp_ROOT}/lib/" DESTINATION ${CMAKE_INSTALL_LIBDIR})
     install(DIRECTORY "${nvcomp_ROOT}/include/" DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
     # place the license information in the location that conda uses
-    install(FILES "${nvcomp_ROOT}/NOTICE" DESTINATION info/licenses/ RENAME NVCOMP_NOTICE)
-    install(FILES "${nvcomp_ROOT}/LICENSE" DESTINATION info/licenses/ RENAME NVCOMP_LICENSE)
+    install(FILES "${nvcomp_ROOT}/NOTICE" DESTINATION info/ RENAME NVCOMP_NOTICE)
+    install(FILES "${nvcomp_ROOT}/LICENSE" DESTINATION info/ RENAME NVCOMP_LICENSE)
   endif()
 
   if(RAPIDS_BUILD_EXPORT_SET AND nvcomp_proprietary_binary)
