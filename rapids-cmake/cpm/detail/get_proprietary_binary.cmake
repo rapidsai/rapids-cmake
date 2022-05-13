@@ -39,11 +39,12 @@ function(rapids_cpm_get_proprietary_binary package_name version)
   string(TOLOWER ${key} key)
 
   if(override_json_data)
-    string(JSON value ERROR_VARIABLE have_error GET "${override_json_data}" "proprietary_binary"
-           "${key}")
+    string(JSON proprietary_binary ERROR_VARIABLE have_error GET "${override_json_data}"
+           "proprietary_binary" "${key}")
   else()
     get_property(json_data GLOBAL PROPERTY rapids_cpm_${package_name}_json)
-    string(JSON value ERROR_VARIABLE have_error GET "${json_data}" "proprietary_binary" "${key}")
+    string(JSON proprietary_binary ERROR_VARIABLE have_error GET "${json_data}"
+           "proprietary_binary" "${key}")
   endif()
 
   if(have_error)
@@ -52,9 +53,6 @@ function(rapids_cpm_get_proprietary_binary package_name version)
     )
     return()
   endif()
-
-  # proprietary_binary now is the url that we need to download
-  set(proprietary_binary ${value})
 
   if(NOT DEFINED rapids-cmake-version)
     include("${rapids-cmake-dir}/rapids-version.cmake")
