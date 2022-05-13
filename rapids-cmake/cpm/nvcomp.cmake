@@ -71,7 +71,7 @@ function(rapids_cpm_nvcomp)
   set(multi_value)
   cmake_parse_arguments(RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
-  # Fix up RAPIDS_UNPARSED_ARGUMENTS to have EXPORT_SETS As this is need for rapids_cpm_find
+  # Fix up RAPIDS_UNPARSED_ARGUMENTS to have EXPORT_SETS as this is need for rapids_cpm_find
   if(RAPIDS_INSTALL_EXPORT_SET)
     list(APPEND RAPIDS_UNPARSED_ARGUMENTS INSTALL_EXPORT_SET ${RAPIDS_INSTALL_EXPORT_SET})
   endif()
