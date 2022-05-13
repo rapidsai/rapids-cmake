@@ -105,7 +105,8 @@ function(rapids_cpm_nvcomp)
                   OPTIONS "BUILD_STATIC ON" "BUILD_TESTS OFF" "BUILD_BENCHMARKS OFF"
                           "BUILD_EXAMPLES OFF")
 
-  # nvcomp creates the correct namespace aliases
+  # provice consistent targets between a found nvcomp
+  # and one building from source
   if(NOT TARGET nvcomp::nvcomp AND TARGET nvcomp)
     add_library(nvcomp::nvcomp ALIAS nvcomp)
   endif()
