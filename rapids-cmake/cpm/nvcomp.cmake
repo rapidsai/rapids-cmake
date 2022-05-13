@@ -88,7 +88,6 @@ function(rapids_cpm_nvcomp)
   rapids_cpm_package_details(nvcomp version repository tag shallow exclude)
 
   # first see if we have a proprietary pre-built binary listed in versions.json and it if requested.
-  #
   set(nvcomp_proprietary_binary OFF) # will be set to true by rapids_cpm_get_proprietary_binary
   if(RAPIDS_USE_PROPRIETARY_BINARY)
     include("${rapids-cmake-dir}/cpm/detail/get_proprietary_binary.cmake")
