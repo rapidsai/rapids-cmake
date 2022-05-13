@@ -132,9 +132,6 @@ function(rapids_cpm_nvcomp)
   if(RAPIDS_BUILD_EXPORT_SET AND nvcomp_proprietary_binary)
     # point our consumers to where they can find the pre-built version
     rapids_export_find_package_root(BUILD nvcomp "${nvcomp_ROOT}" ${RAPIDS_BUILD_EXPORT_SET})
-  elseif(RAPIDS_BUILD_EXPORT_SET)
-    # point our consumers to where they can find the source version
-    rapids_export_find_package_root(BUILD nvcomp "${nvcomp_BINARY_DIR}" ${RAPIDS_BUILD_EXPORT_SET})
   endif()
 
 endfunction()
