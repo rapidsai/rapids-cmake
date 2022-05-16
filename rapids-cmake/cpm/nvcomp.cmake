@@ -50,6 +50,16 @@ across all RAPIDS projects.
   By enabling this flag and using the software, you agree to fully comply with the terms and conditions of
   nvcomp's NVIDIA Software License Agreement. Found at https://developer.download.nvidia.com/compute/nvcomp/2.3/LICENSE.txt
 
+  NVComp offers pre-built proprietary version of the library ( for x86_64 only ) that offer more features compared to the
+  open source version. Since NVComp currently doesn't offer pre-built versions for all platforms, callers should verify
+  the the request for a proprietary binary was fulfilled by checking the :cmake:variable:`nvcomp_proprietary_binary`
+  variable after calling :cmake:command:`rapids_cpm_nvcomp`.
+
+.. note::
+  If an override entry exists for the nvcomp package it MUST have a proprietary_binary entry for this to
+  flag to do anything. Any override without this entry is considered to invalidate the existin proprietary
+  binary entry.
+
 Result Targets
 ^^^^^^^^^^^^^^
   nvcomp::nvcomp target will be created
