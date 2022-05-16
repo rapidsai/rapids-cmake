@@ -13,32 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-cmake_minimum_required(VERSION 3.20)
-
-project(fill_cache LANGUAGES CXX)
-
 include(${rapids-cmake-dir}/cpm/init.cmake)
-
-include(${rapids-cmake-dir}/cpm/gtest.cmake)
-include(${rapids-cmake-dir}/cpm/libcudacxx.cmake)
-include(${rapids-cmake-dir}/cpm/nvbench.cmake)
 include(${rapids-cmake-dir}/cpm/nvcomp.cmake)
-include(${rapids-cmake-dir}/cpm/rmm.cmake)
-include(${rapids-cmake-dir}/cpm/spdlog.cmake)
-include(${rapids-cmake-dir}/cpm/thrust.cmake)
 
 rapids_cpm_init()
 
-set(CPM_SOURCE_CACHE "${CMAKE_BINARY_DIR}")
-set(CPM_DOWNLOAD_ALL "ON")
-rapids_cpm_gtest(DOWNLOAD_ONLY ON)
-rapids_cpm_libcudacxx(DOWNLOAD_ONLY ON)
-rapids_cpm_nvbench(DOWNLOAD_ONLY ON)
-rapids_cpm_nvcomp(DOWNLOAD_ONLY ON)
-rapids_cpm_rmm(DOWNLOAD_ONLY ON)
-rapids_cpm_spdlog(DOWNLOAD_ONLY ON)
-rapids_cpm_thrust(temp DOWNLOAD_ONLY ON)
-rapids_cpm_find(skbuild 0.14.1
-                GIT_REPOSITORY https://github.com/scikit-build/scikit-build.git
-                GIT_TAG 0.14.1
-                )
+if(TARGET nvcomp::nvcomp)
+  message(FATAL_ERROR "Expected nvcomp::nvcomp expected to not exist")
+endif()
+
+rapids_cpm_nvcomp(USE_PROPRIETARY_BINARY ON)
+
+if(NOT nvcomp_proprietary_binary)
+  message(FATAL_ERROR "Expected nvcomp::nvcomp target to exist")
+endif()
+
+# Make sure we can be called multiple times
+rapids_cpm_nvcomp()

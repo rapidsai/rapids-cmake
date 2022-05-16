@@ -44,6 +44,13 @@ add_cmake_config_test( cpm_libcudacxx-simple.cmake )
 add_cmake_config_test( cpm_nvbench-export.cmake )
 add_cmake_config_test( cpm_nvbench-simple.cmake )
 
+add_cmake_config_test( cpm_nvcomp-export.cmake )
+add_cmake_config_test( cpm_nvcomp-proprietary-off.cmake )
+add_cmake_config_test( cpm_nvcomp-proprietary-on.cmake )
+add_cmake_config_test( cpm_nvcomp-simple.cmake )
+add_cmake_config_test( cpm_nvcomp-invalid-arch.cmake )
+add_cmake_config_test( cpm_nvcomp-override-clears-proprietary_binary.cmake )
+
 add_cmake_config_test( cpm_rmm-export.cmake )
 add_cmake_config_test( cpm_rmm-simple.cmake )
 
