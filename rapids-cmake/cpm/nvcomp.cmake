@@ -114,8 +114,7 @@ function(rapids_cpm_nvcomp)
                   OPTIONS "BUILD_STATIC ON" "BUILD_TESTS OFF" "BUILD_BENCHMARKS OFF"
                           "BUILD_EXAMPLES OFF")
 
-  # provice consistent targets between a found nvcomp
-  # and one building from source
+  # provice consistent targets between a found nvcomp and one building from source
   if(NOT TARGET nvcomp::nvcomp AND TARGET nvcomp)
     add_library(nvcomp::nvcomp ALIAS nvcomp)
   endif()
@@ -127,8 +126,8 @@ function(rapids_cpm_nvcomp)
   set(nvcomp_VERSION ${version} PARENT_SCOPE)
   set(nvcomp_proprietary_binary ${nvcomp_proprietary_binary} PARENT_SCOPE)
 
-  # Set up up install rules when using the proprietary_binary. When building from source, nvcomp will
-  # set the correct install rules
+  # Set up up install rules when using the proprietary_binary. When building from source, nvcomp
+  # will set the correct install rules
   include("${rapids-cmake-dir}/export/find_package_root.cmake")
   if(RAPIDS_INSTALL_EXPORT_SET AND nvcomp_proprietary_binary)
     include(GNUInstallDirs)
