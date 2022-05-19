@@ -65,7 +65,7 @@ function(rapids_cython_create_modules)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cython.create_modules")
 
   set(_rapids_cython_options CXX)
-  set(_rapids_cython_one_value INSTALL_DIR PREFIX)
+  set(_rapids_cython_one_value INSTALL_DIR MODULE_PREFIX)
   set(_rapids_cython_multi_value SOURCE_FILES LINKED_LIBRARIES)
   cmake_parse_arguments(RAPIDS_CYTHON "${_rapids_cython_options}" "${_rapids_cython_one_value}"
                         "${_rapids_cython_multi_value}" ${ARGN})
@@ -77,15 +77,15 @@ function(rapids_cython_create_modules)
 
   set(CREATED_TARGETS "")
 
-  if(NOT DEFINED RAPIDS_CYTHON_PREFIX)
-    set(RAPIDS_CYTHON_PREFIX "")
+  if(NOT DEFINED RAPIDS_CYTHON_MODULE_PREFIX)
+      set(RAPIDS_CYTHON_MODULE_PREFIX "")
   endif()
 
   foreach(cython_filename IN LISTS RAPIDS_CYTHON_SOURCE_FILES)
     # Generate a reasonable module name.
     cmake_path(GET cython_filename FILENAME cython_module)
     cmake_path(REMOVE_EXTENSION cython_module)
-    string(PREPEND cython_module RAPIDS_CYTHON_PREFIX)
+    string(PREPEND cython_module RAPIDS_CYTHON_MODULE_PREFIX)
 
     # Generate C++ from Cython and create a library for the resulting extension module to compile.
     add_cython_target(${cython_module} "${cython_filename}" ${language} PY3 OUTPUT_VAR
