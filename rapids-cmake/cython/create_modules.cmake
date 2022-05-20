@@ -86,16 +86,18 @@ function(rapids_cython_create_modules)
     cmake_path(GET cython_filename FILENAME cython_module)
     cmake_path(REMOVE_EXTENSION cython_module)
 
-    # Generate C++ from Cython and create a library for the resulting extension module to compile.
-    add_cython_target(${cython_module} "${cython_filename}" ${language} PY3 OUTPUT_VAR
-                      cythonized_file)
-    set(cython_module_library_name "${RAPIDS_CYTHON_MODULE_PREFIX}${cython_module}")
-    add_library(${cython_module_library_name} MODULE ${cythonized_file})
-    python_extension_module(${cython_module_library_name})
-    set_target_properties(${cython_module_library_name} PROPERTIES library_output_name ${cython_module})
+    # Save the name of the module without the provided prefix so that we can control the output.
+    set(cython_module_filename "${cython_module}")
+    string(PREPEND cython_module ${RAPIDS_CYTHON_MODULE_PREFIX})
 
-    # Avoid libraries being prefixed with "lib".
-    set_target_properties(${cython_module} PROPERTIES PREFIX "")
+    # Generate C++ from Cython and create a library for the resulting extension module to compile.
+    add_cython_target(${cython_module_filename} "${cython_filename}" ${language} PY3 OUTPUT_VAR
+                      cythonized_file)
+    add_library(${cython_module} MODULE ${cythonized_file})
+    python_extension_module(${cython_module})
+
+    # The final library name must match the original filename and must ignore the prefix.
+    set_target_properties(${cython_module} PROPERTIES LIBRARY_OUTPUT_NAME ${cython_module_filename})
 
     # Link the module to the requested libraries
     if(DEFINED RAPIDS_CYTHON_LINKED_LIBRARIES)
