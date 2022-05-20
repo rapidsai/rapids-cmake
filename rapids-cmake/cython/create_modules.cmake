@@ -89,9 +89,10 @@ function(rapids_cython_create_modules)
     # Generate C++ from Cython and create a library for the resulting extension module to compile.
     add_cython_target(${cython_module} "${cython_filename}" ${language} PY3 OUTPUT_VAR
                       cythonized_file)
-    string(PREPEND cython_module ${RAPIDS_CYTHON_MODULE_PREFIX})
-    add_library(${cython_module} MODULE ${cythonized_file})
-    python_extension_module(${cython_module})
+    set(cython_module_library_name "${RAPIDS_CYTHON_MODULE_PREFIX}${cython_module}")
+    add_library(${cython_module_library_name} MODULE ${cythonized_file})
+    python_extension_module(${cython_module_library_name})
+    set_target_properties(${cython_module_library_name} PROPERTIES library_output_name ${cython_module})
 
     # Avoid libraries being prefixed with "lib".
     set_target_properties(${cython_module} PROPERTIES PREFIX "")
