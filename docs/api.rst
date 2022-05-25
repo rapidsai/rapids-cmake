@@ -53,6 +53,17 @@ package uses :ref:`can be found here. <cpm_versions>`
    /packages/rapids_cpm_thrust
    /command/rapids_cpm_package_override
 
+Cython
+****
+
+The `rapids_cython` functions allow projects to easily build cython modules using
+scikit-build.
+
+.. toctree::
+   :titlesonly:
+
+   /command/rapids_cython_init
+   /command/rapids_cython_create_modules
 
 
 Find

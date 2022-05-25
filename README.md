@@ -77,6 +77,15 @@ The most commonly used function are:
 - `rapids_cuda_init_architectures(<project_name>)` handles initialization of `CMAKE_CUDA_ARCHITECTURE`. MUST BE CALLED BEFORE `PROJECT()`
 - `rapids_cuda_init_runtime(<mode>)` handles initialization of `CMAKE_CUDA_RUNTIME_LIBRARY`.
 
+### cython
+
+The `rapids_cython` functions allow projects to easily build cython modules using
+scikit-build.
+
+- `raipds_cython_init()` handles initialization of scikit-build and cython.
+- `rapids_create_modules([CXX] [SOURCE_FILES <src1> <src2> ...] [LINKED_LIBRARIES <lib1> <lib2> ... ]  [INSTALL_DIR <install_path> )` Will create cython modules for each provided source file
+
+
 ### export
 
 The `rapids-export` module contains core functionality to allow projects to easily record and write out
