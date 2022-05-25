@@ -59,6 +59,10 @@ Cython
 The `rapids_cython` functions allow projects to easily build cython modules using
 `scikit-build <https://scikit-build.readthedocs.io/en/latest/>`_.
 
+.. note::
+  Use of the rapids-cython component of rapids-cmake requires scikit-build. The behavior of the functions provided by
+  this component is undefined if they are invoked outside of a build managed by scikit-build.
+
 .. toctree::
    :titlesonly:
 
