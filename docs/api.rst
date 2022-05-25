@@ -57,7 +57,7 @@ Cython
 ****
 
 The `rapids_cython` functions allow projects to easily build cython modules using
-scikit-build.
+`scikit-build <https://scikit-build.readthedocs.io/en/latest/>`_.
 
 .. toctree::
    :titlesonly:
