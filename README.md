@@ -82,8 +82,8 @@ The most commonly used function are:
 The `rapids_cython` functions allow projects to easily build cython modules using
 scikit-build.
 
-- `raipds_cython_init()` handles initialization of scikit-build and cython.
-- `rapids_create_modules([CXX] [SOURCE_FILES <src1> <src2> ...] [LINKED_LIBRARIES <lib1> <lib2> ... ]  [INSTALL_DIR <install_path> )` Will create cython modules for each provided source file
+- `rapids_cython_init()` handles initialization of scikit-build and cython.
+- `rapids_create_modules([CXX] [SOURCE_FILES <src1> <src2> ...] [LINKED_LIBRARIES <lib1> <lib2> ... ]  [INSTALL_DIR <install_path> )` will create cython modules for each provided source file
 
 
 ### export
