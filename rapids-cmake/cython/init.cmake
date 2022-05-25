@@ -26,6 +26,10 @@ Perform standard initialization of any CMake build using scikit-build to create 
 
   rapids_cython_init()
 
+.. note::
+  Use of the rapids-cython component of rapids-cmake requires scikit-build. The behavior of the functions provided by
+  this component is undefined if they are invoked outside of a build managed by scikit-build.
+
 Result Variables
 ^^^^^^^^^^^^^^^^
   :cmake:variable:`RAPIDS_CYTHON_INITIALIZED` will be set to TRUE.
