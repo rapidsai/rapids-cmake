@@ -38,3 +38,17 @@ rapids_cython_create_modules()
 rapids_cython_create_modules(
     SOURCE_FILES test.pyx
     )
+
+if(NOT TARGET test)
+  message(FATAL_ERROR "rapids_cython_init didn't create the prefixed target test")
+endif()
+
+# Test that we can use a prefix to generate a different library target.
+rapids_cython_create_modules(
+    SOURCE_FILES test.pyx
+    MODULE_PREFIX "test_"
+    )
+
+if(NOT TARGET test_test)
+  message(FATAL_ERROR "rapids_cython_init didn't create the prefixed library target test::test")
+endif()
