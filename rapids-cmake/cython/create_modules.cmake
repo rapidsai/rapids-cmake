@@ -24,7 +24,7 @@ Generate C(++) from Cython and create Python modules.
 
 .. code-block:: cmake
 
-  rapids_cython_create_modules([CXX] [SOURCE_FILES <src1> <src2> ...] [LINKED_LIBRARIES <lib1> <lib2> ... ]  [INSTALL_DIR <install_path> )
+  rapids_cython_create_modules([CXX] [SOURCE_FILES <src1> <src2> ...] [LINKED_LIBRARIES <lib1> <lib2> ... ]  [INSTALL_DIR <install_path>] [MODULE_PREFIX <module_prefix>] )
 
 Creates a Cython target for each provided source file, then adds a
 corresponding Python extension module. Each built library has its RPATH set to
@@ -51,6 +51,11 @@ $ORIGIN.
   The path relative to the installation prefix so that it can be converted to
   an absolute path in a relocatable way. If not provided, defaults to the path
   to CMAKE_CURRENT_SOURCE_DIR relative to PROJECT_SOURCE_DIR.
+
+``MODULE_PREFIX``
+  A prefix used to name the generated library targets. This functionality is
+  useful when multiple Cython modules in different subpackages of the the same
+  project have the same name. The default prefix is the empty string.
 
 Result Variables
 ^^^^^^^^^^^^^^^^
