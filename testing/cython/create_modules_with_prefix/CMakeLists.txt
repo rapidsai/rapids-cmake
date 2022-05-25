@@ -34,11 +34,12 @@ rapids_cython_init()
 # Test that an empty invocation works.
 rapids_cython_create_modules()
 
-# Test that a basic invocation with a single file works.
+# Test that we can use a prefix to generate a different library target.
 rapids_cython_create_modules(
     SOURCE_FILES test.pyx
+    MODULE_PREFIX "test_"
     )
 
-if(NOT TARGET test)
-  message(FATAL_ERROR "rapids_cython_init didn't create the prefixed target test")
+if(NOT TARGET test_test)
+  message(FATAL_ERROR "rapids_cython_init didn't create the prefixed library target test::test")
 endif()
