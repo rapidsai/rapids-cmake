@@ -83,7 +83,7 @@ function(rapids_cython_create_modules)
   set(CREATED_TARGETS "")
 
   if(NOT DEFINED RAPIDS_CYTHON_MODULE_PREFIX)
-      set(RAPIDS_CYTHON_MODULE_PREFIX "")
+    set(RAPIDS_CYTHON_MODULE_PREFIX "")
   endif()
 
   foreach(cython_filename IN LISTS RAPIDS_CYTHON_SOURCE_FILES)
