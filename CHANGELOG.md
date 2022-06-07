@@ -1,18 +1,123 @@
-# rapids-cmake 22.06.00 (Date TBD)
+# rapids-cmake 22.06.00 (7 June 2022)
 
-Please see https://github.com/rapidsai/rapids-cmake/releases/tag/v22.06.00a for the latest changes to this development branch.
+## 🐛 Bug Fixes
 
-# rapids-cmake 22.04.00 (Date TBD)
+- nvcomp install rules need to match the pre-built layout (#194) @robertmaynard
+- Use target name variable. (#187) @bdice
+- Remove uneeded message from rapids_export_package (#183) @robertmaynard
+- rapids_cpm_thrust: Correctly find version 1.15.0 (#181) @robertmaynard
+- rapids_cpm_thrust: Correctly find version 1.15.0 (#180) @robertmaynard
 
-Please see https://github.com/rapidsai/rapids-cmake/releases/tag/v22.04.00a for the latest changes to this development branch.
+## 📖 Documentation
 
-# rapids-cmake 22.02.00 (Date TBD)
+- Correct spelling mistake in cpm package docs (#188) @robertmaynard
 
-Please see https://github.com/rapidsai/rapids-cmake/releases/tag/v22.02.00a for the latest changes to this development branch.
+## 🚀 New Features
 
-# rapids-cmake 21.12.00 (Date TBD)
+- Add rapids_cpm_nvcomp with prebuilt binary support (#190) @robertmaynard
+- Default Cython module RUNPATH to $ORIGIN and return the list of created targets (#189) @vyasr
+- Add rapids-cython component for scikit-build based Python package builds (#184) @vyasr
+- Add more exhaustive set of tests are version values of 0 (#178) @robertmaynard
+- rapids_cpm_package_override now hooks into FetchContent (#164) @robertmaynard
 
-Please see https://github.com/rapidsai/rapids-cmake/releases/tag/v21.12.00a for the latest changes to this development branch.
+## 🛠️ Improvements
+
+- Update nvbench tag (#193) @PointKernel
+
+# rapids-cmake 22.04.00 (6 Apr 2022)
+
+## 🐛 Bug Fixes
+
+- rapids_export now handles explicit version values of 0 correctly (#174) @robertmaynard
+- rapids_export now internally uses better named variables (#172) @robertmaynard
+- rapids_cpm_gtest will properly find GTest 1.10 packages (#168) @robertmaynard
+- CMAKE_CUDA_ARCHITECTURES `ALL` will not insert 62 or 72 (#161) @robertmaynard
+- Tracked package versions are now not required, but preferred. (#160) @robertmaynard
+- cpm_thrust would fail when provided only an install export set (#155) @robertmaynard
+- rapids_export generated config.cmake no longer leaks variables (#149) @robertmaynard
+
+## 📖 Documentation
+
+- Docs use intersphinx correctly to link to CMake command docs (#159) @robertmaynard
+- Example explains when you should use `rapids_find_generate_module` (#153) @robertmaynard
+- Add CMake intersphinx support (#147) @bdice
+
+## 🚀 New Features
+
+- Bump CPM 0.35 for per package CPM_DOWNLOAD controls (#158) @robertmaynard
+- Track package versions to the generated `find_dependency` calls (#156) @robertmaynard
+- Update to latest nvbench (#150) @robertmaynard
+
+## 🛠️ Improvements
+
+- Temporarily disable new `ops-bot` functionality (#170) @ajschmidt8
+- Use exact gtest version (#165) @trxcllnt
+- Add `.github/ops-bot.yaml` config file (#163) @ajschmidt8
+
+# rapids-cmake 22.02.00 (2 Feb 2022)
+
+## 🐛 Bug Fixes
+
+- Ensure that nvbench doesn&#39;t require nvml when `CUDA::nvml` doesn&#39;t exist (#146) @robertmaynard
+- rapids_cpm_libcudacxx handle CPM already finding libcudacxx before being called (#130) @robertmaynard
+
+## 📖 Documentation
+
+- Fix typos (#142) @ajschmidt8
+- Fix type-o in docs `&lt;PackageName&gt;_BINARY_DIR` instead of `&lt;PackageName&gt;_BINAR_DIR` (#140) @dagardner-nv
+- Set the `always_download` value in versions.json to the common case (#135) @robertmaynard
+- Update Changelog to capture all 21.08 and 21.10 changes (#134) @robertmaynard
+- Correct minor formatting issues (#132) @robertmaynard
+- Document how to control the git rep/tag that RAPIDS.cmake uses (#131) @robertmaynard
+
+## 🚀 New Features
+
+- rapids-cmake now supports an empty package entry in the override file (#145) @robertmaynard
+- Update NVBench for 22.02 to be the latest version (#144) @robertmaynard
+- Update rapids-cmake packages to libcudacxx 1.7 (#143) @robertmaynard
+- Update rapids-cmake packages to Thrust 1.15 (#138) @robertmaynard
+- add exclude_from_all flag to version.json (#137) @robertmaynard
+- Add `PREFIX` option to write_version_file / write_git_revision_file (#118) @robertmaynard
+
+## 🛠️ Improvements
+
+- Remove rapids_cmake_install_lib_dir unstable side effect checks (#136) @robertmaynard
+
+# rapids-cmake 21.12.00 (9 Dec 2021)
+
+## 🐛 Bug Fixes
+
+- rapids_cpm_libcudacxx install logic is safe for multiple inclusion (#124) @robertmaynard
+- rapids_cpm_libcudacxx ensures CMAKE_INSTALL_INCLUDEDIR exists (#122) @robertmaynard
+- rapids_cpm_find restores CPM variables when project was already added (#121) @robertmaynard
+- rapids_cpm_thrust doesn&#39;t place temp file in a searched location (#120) @robertmaynard
+- Require the exact version of Thrust in the versions.json file (#119) @trxcllnt
+- CMake option second parameter is the help string, not the default value (#114) @robertmaynard
+- Make sure we don&#39;t do a shallow clone on nvbench (#113) @robertmaynard
+- Pin NVBench to a known working SHA1 (#112) @robertmaynard
+- Build directory config.cmake now sets the correct targets to global (#110) @robertmaynard
+- rapids_cpm_thrust installs to a location that won&#39;t be marked system (#98) @robertmaynard
+- find_package now will find modules that CPM has downloaded. (#96) @robertmaynard
+- rapids_cpm_thrust dont export namespaced thrust target (#93) @robertmaynard
+- rapids_cpm_spdlog specifies the correct install variable (#91) @robertmaynard
+- rapids_cpm_init: `CPM_SOURCE_CACHE` doesn&#39;t mean the CPM file exists (#87) @robertmaynard
+
+## 📖 Documentation
+
+- Better document that rapids_cpm_find supports abitrary projects (#108) @robertmaynard
+- Update the example to showcase rapids-cmake 21.12 (#107) @robertmaynard
+- Properly generate rapids_cuda_init_runtime docs (#106) @robertmaynard
+
+## 🚀 New Features
+
+- Introduce rapids_cpm_libcudacxx (#111) @robertmaynard
+- Record formatting rules for rapids_cpm_find DOWNLOAD_ONLY option (#94) @robertmaynard
+- rapids_cmake_install_lib_dir now aware of GNUInstallDirs improvements in CMake 3.22 (#85) @robertmaynard
+- rapids-cmake defaults to always download overriden packages (#83) @robertmaynard
+
+## 🛠️ Improvements
+
+- Prefer `CPM_&lt;pkg&gt;_SOURCE` dirs over `find_package()` in `rapids_cpm_find` (#92) @trxcllnt
 
 # rapids-cmake 21.10.00 (7 Oct 2021)
 
