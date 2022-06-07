@@ -52,7 +52,7 @@ Result Targets
 Result Variables
 ^^^^^^^^^^^^^^^^
   :cmake:variable:`rmm_SOURCE_DIR` is set to the path to the source directory of RMM.
-  :cmake:variable:`rmm_BINAR_DIR`  is set to the path to the build directory of  RMM.
+  :cmake:variable:`rmm_BINARY_DIR` is set to the path to the build directory of  RMM.
   :cmake:variable:`rmm_ADDED`      is set to a true value if RMM has not been added before.
   :cmake:variable:`rmm_VERSION`    is set to the version of RMM specified by the versions.json.
 

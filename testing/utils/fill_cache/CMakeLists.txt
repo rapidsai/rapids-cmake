@@ -22,6 +22,7 @@ include(${rapids-cmake-dir}/cpm/init.cmake)
 include(${rapids-cmake-dir}/cpm/gtest.cmake)
 include(${rapids-cmake-dir}/cpm/libcudacxx.cmake)
 include(${rapids-cmake-dir}/cpm/nvbench.cmake)
+include(${rapids-cmake-dir}/cpm/nvcomp.cmake)
 include(${rapids-cmake-dir}/cpm/rmm.cmake)
 include(${rapids-cmake-dir}/cpm/spdlog.cmake)
 include(${rapids-cmake-dir}/cpm/thrust.cmake)
@@ -33,9 +34,11 @@ set(CPM_DOWNLOAD_ALL "ON")
 rapids_cpm_gtest(DOWNLOAD_ONLY ON)
 rapids_cpm_libcudacxx(DOWNLOAD_ONLY ON)
 rapids_cpm_nvbench(DOWNLOAD_ONLY ON)
+rapids_cpm_nvcomp(DOWNLOAD_ONLY ON)
 rapids_cpm_rmm(DOWNLOAD_ONLY ON)
 rapids_cpm_spdlog(DOWNLOAD_ONLY ON)
 rapids_cpm_thrust(temp DOWNLOAD_ONLY ON)
-
-
-
+rapids_cpm_find(skbuild 0.14.1
+                GIT_REPOSITORY https://github.com/scikit-build/scikit-build.git
+                GIT_TAG 0.14.1
+                )

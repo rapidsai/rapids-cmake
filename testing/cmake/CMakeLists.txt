@@ -53,6 +53,7 @@ add_cmake_build_test( write_git_revision-no-git )
 add_cmake_build_test( write_git_revision-simple )
 
 add_cmake_build_test( write_version-absolute )
+add_cmake_build_test( write_version-all-zeroes )
 add_cmake_build_test( write_version-custom-prefix )
 add_cmake_build_test( write_version-leading-zeroes )
 add_cmake_build_test( write_version-relative )

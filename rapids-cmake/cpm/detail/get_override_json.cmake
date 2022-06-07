@@ -13,25 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-#
-# This is the preferred entry point for projects using rapids-cmake
-#
+include_guard(GLOBAL)
 
-set(rapids-cmake-version 22.06)
-include(FetchContent)
-FetchContent_Declare(
-  rapids-cmake
-  GIT_REPOSITORY https://github.com/rapidsai/rapids-cmake.git
-  GIT_TAG        branch-${rapids-cmake-version}
-)
-FetchContent_GetProperties(rapids-cmake)
-if(rapids-cmake_POPULATED)
-  # Something else has already populated rapids-cmake, only thing
-  # we need to do is setup the CMAKE_MODULE_PATH
-  if(NOT "${rapids-cmake-dir}" IN_LIST CMAKE_MODULE_PATH)
-    list(APPEND CMAKE_MODULE_PATH "${rapids-cmake-dir}")
-  endif()
-else()
-  FetchContent_MakeAvailable(rapids-cmake)
-endif()
+#[=======================================================================[.rst:
+get_override_json
+--------------------------
 
+. code-block:: cmake
+
+  get_override_json(package_name output_variable)
+
+#]=======================================================================]
+function(get_override_json package_name output_variable)
+  list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.get_override_json")
+  get_property(json_data GLOBAL PROPERTY rapids_cpm_${package_name}_override_json)
+  set(${output_variable} "${json_data}" PARENT_SCOPE)
+endfunction()

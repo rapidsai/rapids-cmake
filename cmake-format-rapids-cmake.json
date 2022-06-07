@@ -103,6 +103,16 @@
           "BUILD_EXPORT_SET": 1
         }
       },
+      "rapids_cpm_nvcomp": {
+        "pargs": {
+          "nargs": 0
+        },
+        "kwargs": {
+          "BUILD_EXPORT_SET": 1,
+          "INSTALL_EXPORT_SET": 1,
+          "USE_PROPRIETARY_BINARY": 1
+        }
+      },
       "rapids_cpm_rmm": {
         "pargs": {
           "nargs": 0
@@ -235,6 +245,21 @@
           "INSTALL_EXPORT_SET": 1,
           "GLOBAL_TARGETS": "+",
           "FIND_ARGS": "+"
+        }
+      },
+      "rapids_cython_init": {
+        "pargs": {
+          "nargs": "0"
+        }
+      },
+      "rapids_cython_create_modules": {
+        "pargs": {
+          "nargs": "0"
+        },
+        "kwargs": {
+          "SOURCE_FILES": "*",
+          "LINKED_LIBRARIES": "*",
+          "INSTALL_DIR": "1"
         }
       }
 

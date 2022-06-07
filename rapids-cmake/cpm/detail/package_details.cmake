@@ -38,8 +38,10 @@ function(rapids_cpm_package_details package_name version_var url_var tag_var sha
   include("${rapids-cmake-dir}/cpm/detail/load_preset_versions.cmake")
   rapids_cpm_load_preset_versions()
 
-  get_property(override_json_data GLOBAL PROPERTY rapids_cpm_${package_name}_override_json)
-  get_property(json_data GLOBAL PROPERTY rapids_cpm_${package_name}_json)
+  include("${rapids-cmake-dir}/cpm/detail/get_default_json.cmake")
+  include("${rapids-cmake-dir}/cpm/detail/get_override_json.cmake")
+  get_default_json(${package_name} json_data)
+  get_override_json(${package_name} override_json_data)
 
   # Parse required fields
   function(rapids_cpm_json_get_value name)

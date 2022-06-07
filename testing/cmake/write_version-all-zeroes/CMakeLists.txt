@@ -13,25 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-#
-# This is the preferred entry point for projects using rapids-cmake
-#
+include(${rapids-cmake-dir}/cmake/write_version_file.cmake)
 
-set(rapids-cmake-version 22.06)
-include(FetchContent)
-FetchContent_Declare(
-  rapids-cmake
-  GIT_REPOSITORY https://github.com/rapidsai/rapids-cmake.git
-  GIT_TAG        branch-${rapids-cmake-version}
-)
-FetchContent_GetProperties(rapids-cmake)
-if(rapids-cmake_POPULATED)
-  # Something else has already populated rapids-cmake, only thing
-  # we need to do is setup the CMAKE_MODULE_PATH
-  if(NOT "${rapids-cmake-dir}" IN_LIST CMAKE_MODULE_PATH)
-    list(APPEND CMAKE_MODULE_PATH "${rapids-cmake-dir}")
-  endif()
-else()
-  FetchContent_MakeAvailable(rapids-cmake)
-endif()
+cmake_minimum_required(VERSION 3.20)
 
+project(DEMO VERSION 0.0000.1 LANGUAGES NONE)
+rapids_cmake_write_version_file(version.h)
+
+enable_language(CXX)
+add_executable(write_version main.cpp)
+target_include_directories(write_version PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
+target_compile_features(write_version PRIVATE cxx_std_14)

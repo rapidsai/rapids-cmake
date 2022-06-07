@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021, NVIDIA CORPORATION.
+# Copyright (c) 2022, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,25 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-#
-# This is the preferred entry point for projects using rapids-cmake
-#
+include(${rapids-cmake-dir}/cpm/init.cmake)
+include(${rapids-cmake-dir}/cpm/nvcomp.cmake)
 
-set(rapids-cmake-version 22.06)
-include(FetchContent)
-FetchContent_Declare(
-  rapids-cmake
-  GIT_REPOSITORY https://github.com/rapidsai/rapids-cmake.git
-  GIT_TAG        branch-${rapids-cmake-version}
-)
-FetchContent_GetProperties(rapids-cmake)
-if(rapids-cmake_POPULATED)
-  # Something else has already populated rapids-cmake, only thing
-  # we need to do is setup the CMAKE_MODULE_PATH
-  if(NOT "${rapids-cmake-dir}" IN_LIST CMAKE_MODULE_PATH)
-    list(APPEND CMAKE_MODULE_PATH "${rapids-cmake-dir}")
-  endif()
-else()
-  FetchContent_MakeAvailable(rapids-cmake)
+rapids_cpm_init()
+rapids_cpm_nvcomp(BUILD_EXPORT_SET test)
+rapids_cpm_nvcomp(BUILD_EXPORT_SET test2)
+
+get_target_property(packages rapids_export_build_test PACKAGE_NAMES)
+if(NOT nvcomp IN_LIST packages)
+  message(FATAL_ERROR "rapids_cpm_nvcomp failed to record nvcomp needs to be exported")
 endif()
 
+get_target_property(packages rapids_export_build_test2 PACKAGE_NAMES)
+if(NOT nvcomp IN_LIST packages)
+  message(FATAL_ERROR "rapids_cpm_nvcomp failed to record nvcomp needs to be exported")
+endif()

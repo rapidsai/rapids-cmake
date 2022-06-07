@@ -43,7 +43,7 @@ Result Targets
 Result Variables
 ^^^^^^^^^^^^^^^^
   :cmake:variable:`GTest_SOURCE_DIR` is set to the path to the source directory of GTest.
-  :cmake:variable:`GTest_BINAR_DIR`  is set to the path to the build directory of  GTest.
+  :cmake:variable:`GTest_BINARY_DIR` is set to the path to the build directory of  GTest.
   :cmake:variable:`GTest_ADDED`      is set to a true value if GTest has not been added before.
   :cmake:variable:`GTest_VERSION`    is set to the version of GTest specified by the versions.json.
 
