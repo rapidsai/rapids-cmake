@@ -74,4 +74,10 @@ function(rapids_cpm_cuco)
                   # rapids_export_package instead.
                   EXCLUDE_FROM_ALL ${exclude})
 
+  # Propagate up variables that CPMFindPackage provide
+  set(cuco_SOURCE_DIR "${cuco_SOURCE_DIR}" PARENT_SCOPE)
+  set(cuco_BINARY_DIR "${cuco_BINARY_DIR}" PARENT_SCOPE)
+  set(cuco_ADDED "${cuco_ADDED}" PARENT_SCOPE)
+  set(cuco_VERSION ${version} PARENT_SCOPE)
+
 endfunction()
