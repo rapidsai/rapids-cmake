@@ -64,17 +64,15 @@ function(rapids_cpm_cuco)
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
                   GIT_SHALLOW ${shallow}
-                  # TODO: I'm not sure if we want to make this configurable.
-                  # cudf currently sets this based on a separate variable, but
-                  # raft does not, and doing so isn't consistent with other
-                  # rapids-cmake cpm find commands. cudf later manually runs a
+                  # TODO: I'm not sure if we want to make this configurable. cudf currently sets
+                  # this based on a separate variable, but raft does not, and doing so isn't
+                  # consistent with other rapids-cmake cpm find commands. cudf later manually runs a
                   # rapids_export_package instead.
                   EXCLUDE_FROM_ALL ${exclude})
 
   if(CUCO_BUILD_EXPORT_SET)
     include("${rapids-cmake-dir}/export/package.cmake")
-    rapids_export_package(BUILD cuco ${CUCO_BUILD_EXPORT_SET}
-                          GLOBAL_TARGETS cuco::cuco)
+    rapids_export_package(BUILD cuco ${CUCO_BUILD_EXPORT_SET} GLOBAL_TARGETS cuco::cuco)
 
     include("${rapids-cmake-dir}/export/find_package_root.cmake")
     rapids_export_find_package_root(BUILD cuco [=[${CMAKE_CURRENT_LIST_DIR}]=]
