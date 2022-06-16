@@ -56,7 +56,7 @@ function(rapids_cpm_cuco)
 
   # Fix up CUCO_UNPARSED_ARGUMENTS to have INSTALL_EXPORT_SET as this is need for rapids_cpm_find
   if(CUCO_INSTALL_EXPORT_SET)
-      list(APPEND CUCO_UNPARSED_ARGUMENTS INSTALL_EXPORT_SET ${CUCO_INSTALL_EXPORT_SET})
+    list(APPEND CUCO_UNPARSED_ARGUMENTS INSTALL_EXPORT_SET ${CUCO_INSTALL_EXPORT_SET})
   endif()
 
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
@@ -64,7 +64,7 @@ function(rapids_cpm_cuco)
 
   set(to_exclude OFF)
   if(NOT CUCO_INSTALL_EXPORT_SET OR exclude)
-      set(to_exclude ON)
+    set(to_exclude ON)
   endif()
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
