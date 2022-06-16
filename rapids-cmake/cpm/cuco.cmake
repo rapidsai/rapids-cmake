@@ -41,6 +41,10 @@ across all RAPIDS projects.
   Record a :cmake:command:`find_dependency(cuco) <cmake:module:CMakeFindDependencyMacro>` call needs to occur as part of
   our install directory export set.
 
+.. note::
+  Installation of cuco will always occur when it is built as a subcomponent of the
+  calling project.
+
 Result Targets
 ^^^^^^^^^^^^^^
   cuco::cuco target will be created
