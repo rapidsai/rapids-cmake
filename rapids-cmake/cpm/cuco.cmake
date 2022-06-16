@@ -52,23 +52,23 @@ function(rapids_cpm_cuco)
   set(options)
   set(one_value INSTALL_EXPORT_SET)
   set(multi_value)
-  cmake_parse_arguments(CUCO "${options}" "${one_value}" "${multi_value}" ${ARGN})
+  cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
-  # Fix up CUCO_UNPARSED_ARGUMENTS to have INSTALL_EXPORT_SET as this is need for rapids_cpm_find
-  if(CUCO_INSTALL_EXPORT_SET)
-    list(APPEND CUCO_UNPARSED_ARGUMENTS INSTALL_EXPORT_SET ${CUCO_INSTALL_EXPORT_SET})
+  # Fix up _RAPIDS_UNPARSED_ARGUMENTS to have INSTALL_EXPORT_SET as this is need for rapids_cpm_find
+  if(_RAPIDS_INSTALL_EXPORT_SET)
+    list(APPEND _RAPIDS_UNPARSED_ARGUMENTS INSTALL_EXPORT_SET ${_RAPIDS_INSTALL_EXPORT_SET})
   endif()
 
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
   rapids_cpm_package_details(cuco version repository tag shallow exclude)
 
   set(to_exclude OFF)
-  if(NOT CUCO_INSTALL_EXPORT_SET OR exclude)
+  if(NOT _RAPIDS_INSTALL_EXPORT_SET OR exclude)
     set(to_exclude ON)
   endif()
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
-  rapids_cpm_find(cuco ${version} ${CUCO_UNPARSED_ARGUMENTS}
+  rapids_cpm_find(cuco ${version} ${_RAPIDS_UNPARSED_ARGUMENTS}
                   GLOBAL_TARGETS cuco::cuco
                   CPM_ARGS
                   GIT_REPOSITORY ${repository}
