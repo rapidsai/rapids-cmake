@@ -41,10 +41,6 @@ for  consistency across all RAPIDS projects.
   Record a :cmake:command:`find_dependency(rmm) <cmake:module:CMakeFindDependencyMacro>` call needs to occur as part of
   our install directory export set.
 
-.. note::
-  Installation of RMM will always occur when it is built as a subcomponent of the
-  calling project.
-
 Result Targets
 ^^^^^^^^^^^^^^
   rmm::rmm target will be created
@@ -60,23 +56,32 @@ Result Variables
 function(rapids_cpm_rmm)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.rmm")
 
-  set(to_install FALSE)
-  if(INSTALL_EXPORT_SET IN_LIST ARGN)
-    set(to_install TRUE)
+  set(options)
+  set(one_value INSTALL_EXPORT_SET)
+  set(multi_value)
+  cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
+
+  # Fix up RAPIDS_UNPARSED_ARGUMENTS to have EXPORT_SETS as this is need for rapids_cpm_find
+  if(_RAPIDS_INSTALL_EXPORT_SET)
+    list(APPEND _RAPIDS_UNPARSED_ARGUMENTS INSTALL_EXPORT_SET ${_RAPIDS_INSTALL_EXPORT_SET})
   endif()
 
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
   rapids_cpm_package_details(rmm version repository tag shallow exclude)
+  set(to_exclude OFF)
+  if(NOT _RAPIDS_INSTALL_EXPORT_SET OR exclude)
+    set(to_exclude ON)
+  endif()
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
   # Once we can require CMake 3.22 this can use `only_major_minor` for version searches
-  rapids_cpm_find(rmm "${version}.0" ${ARGN}
+  rapids_cpm_find(rmm "${version}.0" ${_RAPIDS_UNPARSED_ARGUMENTS}
                   GLOBAL_TARGETS rmm::rmm
                   CPM_ARGS
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
                   GIT_SHALLOW ${shallow}
-                  EXCLUDE_FROM_ALL ${exclude}
+                  EXCLUDE_FROM_ALL ${to_exclude}
                   OPTIONS "BUILD_TESTS OFF" "BUILD_BENCHMARKS OFF")
 
   # Propagate up variables that CPMFindPackage provide
