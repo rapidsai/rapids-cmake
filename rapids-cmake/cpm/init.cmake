@@ -50,8 +50,8 @@ function(rapids_cpm_init)
   set(_rapids_options)
   set(_rapids_one_value OVERRIDE)
   set(_rapids_multi_value)
-  cmake_parse_arguments(_RAPIDS "${_rapids_options}" "${_rapids_one_value}" "${_rapids_multi_value}"
-                        ${ARGN})
+  cmake_parse_arguments(_RAPIDS "${_rapids_options}" "${_rapids_one_value}"
+                        "${_rapids_multi_value}" ${ARGN})
 
   include("${rapids-cmake-dir}/cpm/detail/load_preset_versions.cmake")
   rapids_cpm_load_preset_versions()

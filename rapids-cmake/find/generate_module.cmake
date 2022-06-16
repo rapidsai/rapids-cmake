@@ -135,13 +135,14 @@ function(rapids_find_generate_module name)
 
     if(DEFINED _RAPIDS_VERSION)
       list(TRANSFORM _RAPIDS_PKG_LIB_NAMES APPEND "${_RAPIDS_VERSION}" OUTPUT_VARIABLE lib_version1)
-      list(TRANSFORM _RAPIDS_PKG_LIB_NAMES APPEND ".${_RAPIDS_VERSION}" OUTPUT_VARIABLE lib_version2)
+      list(TRANSFORM _RAPIDS_PKG_LIB_NAMES APPEND ".${_RAPIDS_VERSION}" OUTPUT_VARIABLE
+                                                                        lib_version2)
       list(PREPEND _RAPIDS_PKG_LIB_NAMES ${lib_version1} ${lib_version2})
 
       list(TRANSFORM _RAPIDS_PKG_LIB_DEBUG_NAMES APPEND "${_RAPIDS_VERSION}" OUTPUT_VARIABLE
-                                                                           lib_version1)
+                                                                             lib_version1)
       list(TRANSFORM _RAPIDS_PKG_LIB_DEBUG_NAMES APPEND ".${_RAPIDS_VERSION}" OUTPUT_VARIABLE
-                                                                            lib_version2)
+                                                                              lib_version2)
       list(PREPEND _RAPIDS_PKG_LIB_DEBUG_NAMES ${lib_version1} ${lib_version2})
     endif()
   endif()

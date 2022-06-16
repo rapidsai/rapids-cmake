@@ -100,7 +100,8 @@ function(rapids_cmake_write_git_revision_file target file_path)
                     BYPRODUCTS "${file_path}"
                     COMMENT "Generate git revision file for ${target}"
                     COMMAND ${CMAKE_COMMAND} -DWORKING_DIRECTORY=${CMAKE_CURRENT_SOURCE_DIR}
-                            -DGIT_EXECUTABLE=${GIT_EXECUTABLE} -D_RAPIDS_GIT_PREFIX=${_RAPIDS_PREFIX}
+                            -DGIT_EXECUTABLE=${GIT_EXECUTABLE}
+                            -D_RAPIDS_GIT_PREFIX=${_RAPIDS_PREFIX}
                             -DTEMPLATE_FILE=${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/git_revision.hpp.in
                             -DFILE_TO_WRITE=${file_path} -P
                             ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/compute_git_info.cmake

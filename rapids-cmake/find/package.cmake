@@ -78,8 +78,8 @@ macro(rapids_find_package name)
   set(_rapids_options FIND_ARGS REQUIRED)
   set(_rapids_one_value BUILD_EXPORT_SET INSTALL_EXPORT_SET)
   set(_rapids_multi_value GLOBAL_TARGETS)
-  cmake_parse_arguments(_RAPIDS "${_rapids_options}" "${_rapids_one_value}" "${_rapids_multi_value}"
-                        ${ARGN})
+  cmake_parse_arguments(_RAPIDS "${_rapids_options}" "${_rapids_one_value}"
+                        "${_rapids_multi_value}" ${ARGN})
 
   set(_rapids_required_flag)
   if(_RAPIDS_REQUIRED)
