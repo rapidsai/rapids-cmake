@@ -19,7 +19,7 @@ include(${rapids-cmake-dir}/cpm/cuco.cmake)
 rapids_cpm_init()
 
 if(TARGET cuco::cuco)
-  message(FATAL_ERROR "Expected cuco::cuco expected to not exist")
+  message(FATAL_ERROR "Expected cuco::cuco target not to exist")
 endif()
 
 rapids_cpm_cuco()
