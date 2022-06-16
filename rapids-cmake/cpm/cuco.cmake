@@ -67,7 +67,8 @@ function(rapids_cpm_cuco)
                   # TODO: I'm not sure if we want to make this configurable.
                   # cudf currently sets this based on a separate variable, but
                   # raft does not, and doing so isn't consistent with other
-                  # rapids-cmake cpm find commands.
+                  # rapids-cmake cpm find commands. cudf later manually runs a
+                  # rapids_export_package instead.
                   EXCLUDE_FROM_ALL ${exclude})
 
   if(CUCO_BUILD_EXPORT_SET)
