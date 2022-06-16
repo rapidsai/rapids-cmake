@@ -55,7 +55,7 @@ as needed.
     An optional boolean value that represents if we should do a shallow git clone
     or not.
 
-    If no such field exists the default is `false`.
+    If no such field exists the default is `true`.
 
 ``exclude_from_all``
 
