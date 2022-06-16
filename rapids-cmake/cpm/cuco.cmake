@@ -59,7 +59,7 @@ function(rapids_cpm_cuco)
   cmake_parse_arguments(CUCO "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
-  rapids_cpm_package_details(libcudacxx version repository tag shallow exclude)
+  rapids_cpm_package_details(cuco version repository tag shallow exclude)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
   rapids_cpm_find(cuco ${version} ${CUCO_UNPARSED_ARGUMENTS}
