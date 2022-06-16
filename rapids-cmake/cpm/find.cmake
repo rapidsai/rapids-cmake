@@ -129,15 +129,15 @@ function(rapids_cpm_find name version)
   set(options CPM_ARGS)
   set(one_value BUILD_EXPORT_SET INSTALL_EXPORT_SET)
   set(multi_value GLOBAL_TARGETS)
-  cmake_parse_arguments(RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
+  cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
-  if(NOT DEFINED RAPIDS_CPM_ARGS)
+  if(NOT DEFINED _RAPIDS_CPM_ARGS)
     message(FATAL_ERROR "rapids_cpm_find requires you to specify CPM_ARGS before any CPM arguments")
   endif()
 
   set(package_needs_to_be_added TRUE)
-  if(RAPIDS_GLOBAL_TARGETS)
-    foreach(target IN LISTS RAPIDS_GLOBAL_TARGETS)
+  if(_RAPIDS_GLOBAL_TARGETS)
+    foreach(target IN LISTS _RAPIDS_GLOBAL_TARGETS)
       if(TARGET ${target})
         set(package_needs_to_be_added FALSE)
         break()
@@ -147,9 +147,9 @@ function(rapids_cpm_find name version)
 
   if(package_needs_to_be_added)
     if(CPM_${name}_SOURCE)
-      CPMAddPackage(NAME ${name} VERSION ${version} ${RAPIDS_UNPARSED_ARGUMENTS})
+      CPMAddPackage(NAME ${name} VERSION ${version} ${_RAPIDS_UNPARSED_ARGUMENTS})
     else()
-      CPMFindPackage(NAME ${name} VERSION ${version} ${RAPIDS_UNPARSED_ARGUMENTS})
+      CPMFindPackage(NAME ${name} VERSION ${version} ${_RAPIDS_UNPARSED_ARGUMENTS})
     endif()
   else()
     # Restore any CPM variables that might be cached
@@ -160,24 +160,24 @@ function(rapids_cpm_find name version)
   endif()
 
   set(extra_info)
-  if(RAPIDS_GLOBAL_TARGETS)
+  if(_RAPIDS_GLOBAL_TARGETS)
     include("${rapids-cmake-dir}/cmake/make_global.cmake")
-    rapids_cmake_make_global(RAPIDS_GLOBAL_TARGETS)
+    rapids_cmake_make_global(_RAPIDS_GLOBAL_TARGETS)
 
     set(extra_info "GLOBAL_TARGETS")
-    list(APPEND extra_info ${RAPIDS_GLOBAL_TARGETS})
+    list(APPEND extra_info ${_RAPIDS_GLOBAL_TARGETS})
   endif()
 
-  if(RAPIDS_BUILD_EXPORT_SET)
+  if(_RAPIDS_BUILD_EXPORT_SET)
     include("${rapids-cmake-dir}/export/cpm.cmake")
-    rapids_export_cpm(BUILD ${name} ${RAPIDS_BUILD_EXPORT_SET}
-                      CPM_ARGS NAME ${name} VERSION ${version} ${RAPIDS_UNPARSED_ARGUMENTS}
+    rapids_export_cpm(BUILD ${name} ${_RAPIDS_BUILD_EXPORT_SET}
+                      CPM_ARGS NAME ${name} VERSION ${version} ${_RAPIDS_UNPARSED_ARGUMENTS}
                                ${extra_info})
   endif()
 
-  if(RAPIDS_INSTALL_EXPORT_SET)
+  if(_RAPIDS_INSTALL_EXPORT_SET)
     include("${rapids-cmake-dir}/export/package.cmake")
-    rapids_export_package(INSTALL ${name} ${RAPIDS_INSTALL_EXPORT_SET} VERSION ${version}
+    rapids_export_package(INSTALL ${name} ${_RAPIDS_INSTALL_EXPORT_SET} VERSION ${version}
                                                                        ${extra_info})
   endif()
 

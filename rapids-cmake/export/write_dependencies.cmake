@@ -71,15 +71,15 @@ function(rapids_export_write_dependencies type export_set file_path)
   list(REMOVE_DUPLICATES deps)
 
   # Do we need a Template header?
-  set(RAPIDS_EXPORT_CONTENTS)
+  set(_RAPIDS_EXPORT_CONTENTS)
   if(uses_cpm)
     file(READ "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/../cpm/detail/download.cmake" cpm_logic)
-    string(APPEND RAPIDS_EXPORT_CONTENTS ${cpm_logic})
-    string(APPEND RAPIDS_EXPORT_CONTENTS "rapids_cpm_download()\n\n")
+    string(APPEND _RAPIDS_EXPORT_CONTENTS ${cpm_logic})
+    string(APPEND _RAPIDS_EXPORT_CONTENTS "rapids_cpm_download()\n\n")
 
     if(type STREQUAL build)
       string(APPEND
-             RAPIDS_EXPORT_CONTENTS
+             _RAPIDS_EXPORT_CONTENTS
              "# re-use our CPM source cache if not set
 if(NOT DEFINED CPM_SOURCE_CACHE)
   set(CPM_SOURCE_CACHE \"@CPM_SOURCE_CACHE@\")
@@ -93,7 +93,7 @@ endif()\n")
       get_property(root_dir_path TARGET rapids_export_${type}_${export_set}
                    PROPERTY "FIND_ROOT_FOR_${package}")
       set(dep_content "set(${package}_ROOT \"${root_dir_path}\")")
-      string(APPEND RAPIDS_EXPORT_CONTENTS "${dep_content}\n")
+      string(APPEND _RAPIDS_EXPORT_CONTENTS "${dep_content}\n")
     endforeach()
   endif()
 
@@ -101,7 +101,7 @@ endif()\n")
     cmake_path(GET file_path PARENT_PATH find_module_dest)
     file(COPY ${find_modules} DESTINATION "${find_module_dest}")
 
-    string(APPEND RAPIDS_EXPORT_CONTENTS
+    string(APPEND _RAPIDS_EXPORT_CONTENTS
            [=[list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}")]=] "\n")
   endif()
 
@@ -115,15 +115,15 @@ endif()\n")
     elseif(EXISTS "${dep_dir}/package_${dep}.cmake")
       file(READ "${dep_dir}/package_${dep}.cmake" dep_content)
     endif()
-    string(APPEND RAPIDS_EXPORT_CONTENTS "${dep_content}\n")
+    string(APPEND _RAPIDS_EXPORT_CONTENTS "${dep_content}\n")
   endforeach()
-  string(APPEND RAPIDS_EXPORT_CONTENTS "\n")
+  string(APPEND _RAPIDS_EXPORT_CONTENTS "\n")
 
   # Handle promotion to global targets
   get_property(global_targets TARGET rapids_export_${type}_${export_set} PROPERTY "GLOBAL_TARGETS")
   list(REMOVE_DUPLICATES global_targets)
 
-  string(APPEND RAPIDS_EXPORT_CONTENTS "set(rapids_global_targets ${global_targets})\n")
+  string(APPEND _RAPIDS_EXPORT_CONTENTS "set(rapids_global_targets ${global_targets})\n")
 
   configure_file("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/dependencies.cmake.in" "${file_path}"
                  @ONLY)

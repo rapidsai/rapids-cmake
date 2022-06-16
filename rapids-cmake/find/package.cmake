@@ -78,20 +78,20 @@ macro(rapids_find_package name)
   set(_rapids_options FIND_ARGS REQUIRED)
   set(_rapids_one_value BUILD_EXPORT_SET INSTALL_EXPORT_SET)
   set(_rapids_multi_value GLOBAL_TARGETS)
-  cmake_parse_arguments(RAPIDS "${_rapids_options}" "${_rapids_one_value}" "${_rapids_multi_value}"
+  cmake_parse_arguments(_RAPIDS "${_rapids_options}" "${_rapids_one_value}" "${_rapids_multi_value}"
                         ${ARGN})
 
   set(_rapids_required_flag)
-  if(RAPIDS_REQUIRED)
+  if(_RAPIDS_REQUIRED)
     set(_rapids_required_flag REQUIRED)
   endif()
 
-  find_package(${name} ${_rapids_required_flag} ${RAPIDS_UNPARSED_ARGUMENTS})
+  find_package(${name} ${_rapids_required_flag} ${_RAPIDS_UNPARSED_ARGUMENTS})
   unset(_rapids_required_flag)
 
-  if(RAPIDS_GLOBAL_TARGETS)
+  if(_RAPIDS_GLOBAL_TARGETS)
     include("${rapids-cmake-dir}/cmake/make_global.cmake")
-    rapids_cmake_make_global(RAPIDS_GLOBAL_TARGETS)
+    rapids_cmake_make_global(_RAPIDS_GLOBAL_TARGETS)
   endif()
 
   # Only record the export requirements if the package was found This allows us to handle implicit
@@ -99,8 +99,8 @@ macro(rapids_find_package name)
   if(${${name}_FOUND})
 
     set(_rapids_extra_info)
-    if(RAPIDS_GLOBAL_TARGETS)
-      list(APPEND _rapids_extra_info "GLOBAL_TARGETS" ${RAPIDS_GLOBAL_TARGETS})
+    if(_RAPIDS_GLOBAL_TARGETS)
+      list(APPEND _rapids_extra_info "GLOBAL_TARGETS" ${_RAPIDS_GLOBAL_TARGETS})
     endif()
 
     # Record the version we found to be what consumers need to find as well
@@ -109,14 +109,14 @@ macro(rapids_find_package name)
       list(APPEND _rapids_extra_info "VERSION" ${possible_version})
     endif()
 
-    if(RAPIDS_BUILD_EXPORT_SET)
+    if(_RAPIDS_BUILD_EXPORT_SET)
       include("${rapids-cmake-dir}/export/package.cmake")
-      rapids_export_package(BUILD ${name} ${RAPIDS_BUILD_EXPORT_SET} ${_rapids_extra_info})
+      rapids_export_package(BUILD ${name} ${_RAPIDS_BUILD_EXPORT_SET} ${_rapids_extra_info})
     endif()
 
-    if(RAPIDS_INSTALL_EXPORT_SET)
+    if(_RAPIDS_INSTALL_EXPORT_SET)
       include("${rapids-cmake-dir}/export/package.cmake")
-      rapids_export_package(INSTALL ${name} ${RAPIDS_INSTALL_EXPORT_SET} ${_rapids_extra_info})
+      rapids_export_package(INSTALL ${name} ${_RAPIDS_INSTALL_EXPORT_SET} ${_rapids_extra_info})
     endif()
 
     unset(_rapids_extra_info)
@@ -124,8 +124,8 @@ macro(rapids_find_package name)
 
   # Cleanup all our local variables
   foreach(_rapids_local_var IN LISTS _rapids_options _rapids_one_value _rapids_multi_value)
-    if(DEFINED RAPIDS_${_rapids_local_var})
-      unset(RAPIDS_${_rapids_local_var})
+    if(DEFINED _RAPIDS_${_rapids_local_var})
+      unset(_RAPIDS_${_rapids_local_var})
     endif()
   endforeach()
   unset(_rapids_local_var)

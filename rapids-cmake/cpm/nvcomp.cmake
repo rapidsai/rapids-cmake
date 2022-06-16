@@ -79,32 +79,32 @@ function(rapids_cpm_nvcomp)
   set(options)
   set(one_value USE_PROPRIETARY_BINARY BUILD_EXPORT_SET INSTALL_EXPORT_SET)
   set(multi_value)
-  cmake_parse_arguments(RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
+  cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
-  # Fix up RAPIDS_UNPARSED_ARGUMENTS to have EXPORT_SETS as this is need for rapids_cpm_find
-  if(RAPIDS_INSTALL_EXPORT_SET)
-    list(APPEND RAPIDS_UNPARSED_ARGUMENTS INSTALL_EXPORT_SET ${RAPIDS_INSTALL_EXPORT_SET})
+  # Fix up _RAPIDS_UNPARSED_ARGUMENTS to have EXPORT_SETS as this is need for rapids_cpm_find
+  if(_RAPIDS_INSTALL_EXPORT_SET)
+    list(APPEND _RAPIDS_UNPARSED_ARGUMENTS INSTALL_EXPORT_SET ${_RAPIDS_INSTALL_EXPORT_SET})
   endif()
-  if(RAPIDS_BUILD_EXPORT_SET)
-    list(APPEND RAPIDS_UNPARSED_ARGUMENTS BUILD_EXPORT_SET ${RAPIDS_BUILD_EXPORT_SET})
+  if(_RAPIDS_BUILD_EXPORT_SET)
+    list(APPEND _RAPIDS_UNPARSED_ARGUMENTS BUILD_EXPORT_SET ${_RAPIDS_BUILD_EXPORT_SET})
   endif()
 
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
   rapids_cpm_package_details(nvcomp version repository tag shallow exclude)
   set(to_exclude OFF)
-  if(NOT RAPIDS_INSTALL_EXPORT_SET OR exclude)
+  if(NOT _RAPIDS_INSTALL_EXPORT_SET OR exclude)
     set(to_exclude ON)
   endif()
 
   # first see if we have a proprietary pre-built binary listed in versions.json and it if requested.
   set(nvcomp_proprietary_binary OFF) # will be set to true by rapids_cpm_get_proprietary_binary
-  if(RAPIDS_USE_PROPRIETARY_BINARY)
+  if(_RAPIDS_USE_PROPRIETARY_BINARY)
     include("${rapids-cmake-dir}/cpm/detail/get_proprietary_binary.cmake")
     rapids_cpm_get_proprietary_binary(nvcomp ${version})
   endif()
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
-  rapids_cpm_find(nvcomp ${version} ${RAPIDS_UNPARSED_ARGUMENTS}
+  rapids_cpm_find(nvcomp ${version} ${_RAPIDS_UNPARSED_ARGUMENTS}
                   GLOBAL_TARGETS nvcomp::nvcomp
                   CPM_ARGS
                   GIT_REPOSITORY ${repository}
@@ -129,7 +129,7 @@ function(rapids_cpm_nvcomp)
   # Set up up install rules when using the proprietary_binary. When building from source, nvcomp
   # will set the correct install rules
   include("${rapids-cmake-dir}/export/find_package_root.cmake")
-  if(RAPIDS_INSTALL_EXPORT_SET AND nvcomp_proprietary_binary)
+  if(_RAPIDS_INSTALL_EXPORT_SET AND nvcomp_proprietary_binary)
     include(GNUInstallDirs)
     install(DIRECTORY "${nvcomp_ROOT}/lib/" DESTINATION lib)
     install(DIRECTORY "${nvcomp_ROOT}/include/" DESTINATION include)
@@ -138,9 +138,9 @@ function(rapids_cpm_nvcomp)
     install(FILES "${nvcomp_ROOT}/LICENSE" DESTINATION info/ RENAME NVCOMP_LICENSE)
   endif()
 
-  if(RAPIDS_BUILD_EXPORT_SET AND nvcomp_proprietary_binary)
+  if(_RAPIDS_BUILD_EXPORT_SET AND nvcomp_proprietary_binary)
     # point our consumers to where they can find the pre-built version
-    rapids_export_find_package_root(BUILD nvcomp "${nvcomp_ROOT}" ${RAPIDS_BUILD_EXPORT_SET})
+    rapids_export_find_package_root(BUILD nvcomp "${nvcomp_ROOT}" ${_RAPIDS_BUILD_EXPORT_SET})
   endif()
 
 endfunction()

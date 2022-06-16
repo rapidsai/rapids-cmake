@@ -50,15 +50,15 @@ function(rapids_cpm_init)
   set(_rapids_options)
   set(_rapids_one_value OVERRIDE)
   set(_rapids_multi_value)
-  cmake_parse_arguments(RAPIDS "${_rapids_options}" "${_rapids_one_value}" "${_rapids_multi_value}"
+  cmake_parse_arguments(_RAPIDS "${_rapids_options}" "${_rapids_one_value}" "${_rapids_multi_value}"
                         ${ARGN})
 
   include("${rapids-cmake-dir}/cpm/detail/load_preset_versions.cmake")
   rapids_cpm_load_preset_versions()
 
-  if(RAPIDS_OVERRIDE)
+  if(_RAPIDS_OVERRIDE)
     include("${rapids-cmake-dir}/cpm/package_override.cmake")
-    rapids_cpm_package_override("${RAPIDS_OVERRIDE}")
+    rapids_cpm_package_override("${_RAPIDS_OVERRIDE}")
   endif()
 
   include("${rapids-cmake-dir}/cpm/detail/download.cmake")
