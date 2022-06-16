@@ -42,6 +42,7 @@
     },
     "cuco" : {
       "version" : "0.0.1",
+      "git_shallow" : false,
       "git_url" : "https://github.com/NVIDIA/cuCollections.git",
       "git_tag" : "55029034c3f82bca36148c9be29941b37492394d"
     }
