@@ -44,6 +44,7 @@ package uses :ref:`can be found here. <cpm_versions>`
 .. toctree::
    :titlesonly:
 
+   /packages/rapids_cpm_cuco
    /packages/rapids_cpm_gtest
    /packages/rapids_cpm_libcudacxx
    /packages/rapids_cpm_nvbench
