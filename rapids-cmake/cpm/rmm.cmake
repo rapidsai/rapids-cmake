@@ -57,7 +57,7 @@ function(rapids_cpm_rmm)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.rmm")
 
   set(options)
-  set(one_value USE_PROPRIETARY_BINARY INSTALL_EXPORT_SET)
+  set(one_value INSTALL_EXPORT_SET)
   set(multi_value)
   cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
