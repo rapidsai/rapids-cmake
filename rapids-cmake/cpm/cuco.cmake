@@ -72,7 +72,8 @@ function(rapids_cpm_cuco)
                   # this based on a separate variable, but raft does not, and doing so isn't
                   # consistent with other rapids-cmake cpm find commands. cudf later manually runs a
                   # rapids_export_package instead.
-                  EXCLUDE_FROM_ALL ${exclude})
+                  EXCLUDE_FROM_ALL ${exclude}
+                  OPTIONS "BUILD_TESTS OFF" "BUILD_BENCHMARKS OFF" "BUILD_EXAMPLES OFF")
 
   # Propagate up variables that CPMFindPackage provide
   set(cuco_SOURCE_DIR "${cuco_SOURCE_DIR}" PARENT_SCOPE)
