@@ -41,10 +41,6 @@ across all RAPIDS projects.
   Record a :cmake:command:`find_dependency(cuco) <cmake:module:CMakeFindDependencyMacro>` call needs to occur as part of
   our install directory export set.
 
-.. note::
-  Installation of cuco will always occur when it is built as a subcomponent of the
-  calling project.
-
 Result Targets
 ^^^^^^^^^^^^^^
   cuco::cuco target will be created
@@ -53,13 +49,23 @@ Result Targets
 function(rapids_cpm_cuco)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.cuco")
 
-  set(options CPM_ARGS)
-  set(one_value BUILD_EXPORT_SET INSTALL_EXPORT_SET)
+  set(options)
+  set(one_value INSTALL_EXPORT_SET)
   set(multi_value)
   cmake_parse_arguments(CUCO "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
+  # Fix up CUCO_UNPARSED_ARGUMENTS to have INSTALL_EXPORT_SET as this is need for rapids_cpm_find
+  if(CUCO_INSTALL_EXPORT_SET)
+      list(APPEND CUCO_UNPARSED_ARGUMENTS INSTALL_EXPORT_SET ${CUCO_INSTALL_EXPORT_SET})
+  endif()
+
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
   rapids_cpm_package_details(cuco version repository tag shallow exclude)
+
+  set(to_exclude OFF)
+  if(NOT CUCO_INSTALL_EXPORT_SET OR exclude)
+      set(to_exclude ON)
+  endif()
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
   rapids_cpm_find(cuco ${version} ${CUCO_UNPARSED_ARGUMENTS}
@@ -68,11 +74,7 @@ function(rapids_cpm_cuco)
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
                   GIT_SHALLOW ${shallow}
-                  # TODO: I'm not sure if we want to make this configurable. cudf currently sets
-                  # this based on a separate variable, but raft does not, and doing so isn't
-                  # consistent with other rapids-cmake cpm find commands. cudf later manually runs a
-                  # rapids_export_package instead.
-                  EXCLUDE_FROM_ALL ${exclude}
+                  EXCLUDE_FROM_ALL ${to_exclude}
                   OPTIONS "BUILD_TESTS OFF" "BUILD_BENCHMARKS OFF" "BUILD_EXAMPLES OFF")
 
   # Propagate up variables that CPMFindPackage provide
