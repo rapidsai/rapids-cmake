@@ -74,19 +74,4 @@ function(rapids_cpm_cuco)
                   # rapids_export_package instead.
                   EXCLUDE_FROM_ALL ${exclude})
 
-  if(CUCO_BUILD_EXPORT_SET)
-    include("${rapids-cmake-dir}/export/package.cmake")
-    rapids_export_package(BUILD cuco ${CUCO_BUILD_EXPORT_SET} GLOBAL_TARGETS cuco::cuco)
-
-    include("${rapids-cmake-dir}/export/find_package_root.cmake")
-    rapids_export_find_package_root(BUILD cuco [=[${CMAKE_CURRENT_LIST_DIR}]=]
-                                    ${CUCO_BUILD_EXPORT_SET})
-  endif()
-
-  if(CUCO_INSTALL_EXPORT_SET)
-    include("${rapids-cmake-dir}/export/package.cmake")
-    rapids_export_package(INSTALL cuco ${CUCO_INSTALL_EXPORT_SET} VERSION ${version}
-                          GLOBAL_TARGETS cuco::cuco)
-  endif()
-
 endfunction()
