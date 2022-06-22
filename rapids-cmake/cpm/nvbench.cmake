@@ -29,11 +29,15 @@ across all RAPIDS projects.
 
 .. code-block:: cmake
 
-  rapids_cpm_nvbench( [BUILD_EXPORT_SET <export-name>] )
+  rapids_cpm_nvbench( [BUILD_EXPORT_SET <export-name>]
+                      [<CPM_ARGS> ...])
 
 ``BUILD_EXPORT_SET``
   Record that a :cmake:command:`CPMFindPackage(nvbench)` call needs to occur as part of
   our build directory export set.
+
+``CPM_ARGS``
+  Any arguments after `CPM_ARGS` will be forwarded to the underlying :cmake:command:`CPMFindPackage(<PackageName> ...)` call
 
 .. note::
 

@@ -31,15 +31,10 @@ for  consistency across all RAPIDS projects.
 
   rapids_cpm_rmm( [BUILD_EXPORT_SET <export-name>]
                   [INSTALL_EXPORT_SET <export-name>]
-                )
+                  [<CPM_ARGS> ...])
 
-``BUILD_EXPORT_SET``
-  Record that a :cmake:command:`CPMFindPackage(rmm)` call needs to occur as part of
-  our build directory export set.
-
-``INSTALL_EXPORT_SET``
-  Record a :cmake:command:`find_dependency(rmm) <cmake:module:CMakeFindDependencyMacro>` call needs to occur as part of
-  our install directory export set.
+.. |PKG_NAME| replace:: rmm
+.. include:: common_package_args.txt
 
 Result Targets
 ^^^^^^^^^^^^^^

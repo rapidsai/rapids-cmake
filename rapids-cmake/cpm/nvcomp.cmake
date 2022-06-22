@@ -18,7 +18,6 @@ include_guard(GLOBAL)
 #[=======================================================================[.rst:
 rapids_cpm_nvcomp
 -----------------
-
 .. versionadded:: v22.06.00
 
 Allow projects to find or build `nvComp` via `CPM` with built-in
@@ -29,22 +28,10 @@ across all RAPIDS projects.
 
 .. code-block:: cmake
 
-  rapids_cpm_nvcomp( [BUILD_EXPORT_SET <export-name>]
+  rapids_cpm_nvcomp( [USE_PROPRIETARY_BINARY <ON|OFF>]
+                     [BUILD_EXPORT_SET <export-name>]
                      [INSTALL_EXPORT_SET <export-name>]
-                     [USE_PROPRIETARY_BINARY <ON|OFF>]
-                   )
-
-``BUILD_EXPORT_SET``
-  Record that a :cmake:command:`CPMFindPackage(<PackageName> ...)` call needs to occur as part of
-  our build directory export set.
-
-``INSTALL_EXPORT_SET``
-  Record a :cmake:command:`find_dependency(<PackageName> ...) <cmake:module:CMakeFindDependencyMacro>` call needs to occur as part of
-  our build directory export set.
-
-.. note::
-  Installation of nvcomp will occur if an INSTALL_EXPORT_SET is provided, and nvcomp
-  is added to the project via :cmake:command:`add_subdirectory <cmake:command:add_subdirectory>` by CPM.
+                     [<CPM_ARGS> ...])
 
 ``USE_PROPRIETARY_BINARY``
   By enabling this flag and using the software, you agree to fully comply with the terms and conditions of
@@ -59,6 +46,9 @@ across all RAPIDS projects.
   If an override entry exists for the nvcomp package it MUST have a proprietary_binary entry for this to
   flag to do anything. Any override without this entry is considered to invalidate the existin proprietary
   binary entry.
+
+.. |PKG_NAME| replace:: nvcomp
+.. include:: common_package_args.txt
 
 Result Targets
 ^^^^^^^^^^^^^^
