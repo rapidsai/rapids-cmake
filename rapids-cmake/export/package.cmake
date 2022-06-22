@@ -46,8 +46,8 @@ generated information will include a :cmake:command:`find_dependency` call for <
 
 ``VERSION``
   .. versionadded:: v22.04.00
-  Record which `major.minor` version of the package is required for consumers.
 
+  Record which `major.minor` version of the package is required for consumers.
 
 ``GLOBAL_TARGETS``
   Which targets from this package should be made global when the
