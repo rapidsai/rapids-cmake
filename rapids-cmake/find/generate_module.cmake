@@ -110,39 +110,40 @@ function(rapids_find_generate_module name)
   set(options NO_CONFIG)
   set(one_value VERSION BUILD_EXPORT_SET INSTALL_EXPORT_SET)
   set(multi_value HEADER_NAMES LIBRARY_NAMES INCLUDE_SUFFIXES)
-  cmake_parse_arguments(RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
+  cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
-  if(NOT DEFINED RAPIDS_HEADER_NAMES)
+  if(NOT DEFINED _RAPIDS_HEADER_NAMES)
     message(FATAL_ERROR "rapids_find_generate_module requires HEADER_NAMES to be provided")
   endif()
 
-  set(RAPIDS_PKG_NAME ${name})
+  set(_RAPIDS_PKG_NAME ${name})
 
   # Construct any extra suffix search paths
-  set(RAPIDS_PATH_SEARCH_ARGS)
-  if(RAPIDS_INCLUDE_SUFFIXES)
-    string(APPEND RAPIDS_PATH_SEARCH_ARGS "PATH_SUFFIXES ${RAPIDS_INCLUDE_SUFFIXES}")
+  set(_RAPIDS_PATH_SEARCH_ARGS)
+  if(_RAPIDS_INCLUDE_SUFFIXES)
+    string(APPEND _RAPIDS_PATH_SEARCH_ARGS "PATH_SUFFIXES ${_RAPIDS_INCLUDE_SUFFIXES}")
   endif()
 
-  set(RAPIDS_HEADER_ONLY TRUE)
-  if(DEFINED RAPIDS_LIBRARY_NAMES)
-    set(RAPIDS_HEADER_ONLY FALSE)
+  set(_RAPIDS_HEADER_ONLY TRUE)
+  if(DEFINED _RAPIDS_LIBRARY_NAMES)
+    set(_RAPIDS_HEADER_ONLY FALSE)
 
     # Construct the release and debug library names handling version number suffixes
-    set(RAPIDS_PKG_LIB_NAMES ${RAPIDS_LIBRARY_NAMES})
-    set(RAPIDS_PKG_LIB_DEBUG_NAMES ${RAPIDS_LIBRARY_NAMES})
-    list(TRANSFORM RAPIDS_PKG_LIB_DEBUG_NAMES APPEND "d")
+    set(_RAPIDS_PKG_LIB_NAMES ${_RAPIDS_LIBRARY_NAMES})
+    set(_RAPIDS_PKG_LIB_DEBUG_NAMES ${_RAPIDS_LIBRARY_NAMES})
+    list(TRANSFORM _RAPIDS_PKG_LIB_DEBUG_NAMES APPEND "d")
 
-    if(DEFINED RAPIDS_VERSION)
-      list(TRANSFORM RAPIDS_PKG_LIB_NAMES APPEND "${RAPIDS_VERSION}" OUTPUT_VARIABLE lib_version1)
-      list(TRANSFORM RAPIDS_PKG_LIB_NAMES APPEND ".${RAPIDS_VERSION}" OUTPUT_VARIABLE lib_version2)
-      list(PREPEND RAPIDS_PKG_LIB_NAMES ${lib_version1} ${lib_version2})
+    if(DEFINED _RAPIDS_VERSION)
+      list(TRANSFORM _RAPIDS_PKG_LIB_NAMES APPEND "${_RAPIDS_VERSION}" OUTPUT_VARIABLE lib_version1)
+      list(TRANSFORM _RAPIDS_PKG_LIB_NAMES APPEND ".${_RAPIDS_VERSION}" OUTPUT_VARIABLE
+                                                                        lib_version2)
+      list(PREPEND _RAPIDS_PKG_LIB_NAMES ${lib_version1} ${lib_version2})
 
-      list(TRANSFORM RAPIDS_PKG_LIB_DEBUG_NAMES APPEND "${RAPIDS_VERSION}" OUTPUT_VARIABLE
-                                                                           lib_version1)
-      list(TRANSFORM RAPIDS_PKG_LIB_DEBUG_NAMES APPEND ".${RAPIDS_VERSION}" OUTPUT_VARIABLE
-                                                                            lib_version2)
-      list(PREPEND RAPIDS_PKG_LIB_DEBUG_NAMES ${lib_version1} ${lib_version2})
+      list(TRANSFORM _RAPIDS_PKG_LIB_DEBUG_NAMES APPEND "${_RAPIDS_VERSION}" OUTPUT_VARIABLE
+                                                                             lib_version1)
+      list(TRANSFORM _RAPIDS_PKG_LIB_DEBUG_NAMES APPEND ".${_RAPIDS_VERSION}" OUTPUT_VARIABLE
+                                                                              lib_version2)
+      list(PREPEND _RAPIDS_PKG_LIB_DEBUG_NAMES ${lib_version1} ${lib_version2})
     endif()
   endif()
 
@@ -157,18 +158,18 @@ function(rapids_find_generate_module name)
   endif()
 
   # Record what export sets this module is part of
-  if(RAPIDS_BUILD_EXPORT_SET)
+  if(_RAPIDS_BUILD_EXPORT_SET)
     include("${rapids-cmake-dir}/export/find_package_file.cmake")
     rapids_export_find_package_file(BUILD
                                     "${CMAKE_BINARY_DIR}/cmake/find_modules/Find${name}.cmake"
-                                    ${RAPIDS_BUILD_EXPORT_SET})
+                                    ${_RAPIDS_BUILD_EXPORT_SET})
   endif()
 
-  if(RAPIDS_INSTALL_EXPORT_SET)
+  if(_RAPIDS_INSTALL_EXPORT_SET)
     include("${rapids-cmake-dir}/export/find_package_file.cmake")
     rapids_export_find_package_file(INSTALL
                                     "${CMAKE_BINARY_DIR}/cmake/find_modules/Find${name}.cmake"
-                                    ${RAPIDS_INSTALL_EXPORT_SET})
+                                    ${_RAPIDS_INSTALL_EXPORT_SET})
   endif()
 endfunction()
 

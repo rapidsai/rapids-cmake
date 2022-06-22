@@ -91,24 +91,24 @@ function(rapids_cpm_thrust NAMESPACE namespaces_name)
   set(options CPM_ARGS)
   set(one_value BUILD_EXPORT_SET INSTALL_EXPORT_SET)
   set(multi_value)
-  cmake_parse_arguments(RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
+  cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
-  if(RAPIDS_BUILD_EXPORT_SET)
-    set(target_name rapids_export_build_${RAPIDS_BUILD_EXPORT_SET})
+  if(_RAPIDS_BUILD_EXPORT_SET)
+    set(target_name rapids_export_build_${_RAPIDS_BUILD_EXPORT_SET})
     get_target_property(global_targets ${target_name} GLOBAL_TARGETS)
     list(REMOVE_ITEM global_targets "${namespaces_name}::Thrust")
     set_target_properties(${target_name} PROPERTIES GLOBAL_TARGETS "${global_targets}")
   endif()
 
-  if(RAPIDS_INSTALL_EXPORT_SET)
-    set(target_name rapids_export_install_${RAPIDS_INSTALL_EXPORT_SET})
+  if(_RAPIDS_INSTALL_EXPORT_SET)
+    set(target_name rapids_export_install_${_RAPIDS_INSTALL_EXPORT_SET})
     get_target_property(global_targets ${target_name} GLOBAL_TARGETS)
     list(REMOVE_ITEM global_targets "${namespaces_name}::Thrust")
     set_target_properties(${target_name} PROPERTIES GLOBAL_TARGETS "${global_targets}")
   endif()
 
   # only install thrust when we have an in-source version
-  if(Thrust_SOURCE_DIR AND RAPIDS_INSTALL_EXPORT_SET)
+  if(Thrust_SOURCE_DIR AND _RAPIDS_INSTALL_EXPORT_SET)
     #[==[
     Projects such as cudf, and rmm require a newer versions of thrust than can be found in the oldest supported CUDA toolkit.
     This requires these components to install/packaged so that consumers use the same version. To make sure that the custom
@@ -150,7 +150,7 @@ function(rapids_cpm_thrust NAMESPACE namespaces_name)
 
     # We need to install the forwarders in `lib/cmake/thrust` and `lib/cmake/cub`
     set(scratch_dir
-        "${CMAKE_BINARY_DIR}/rapids-cmake/${RAPIDS_INSTALL_EXPORT_SET}/install/scratch/")
+        "${CMAKE_BINARY_DIR}/rapids-cmake/${_RAPIDS_INSTALL_EXPORT_SET}/install/scratch/")
 
     file(WRITE "${scratch_dir}/thrust-config.cmake"
          [=[include("${CMAKE_CURRENT_LIST_DIR}/../../../include/rapids/thrust/thrust/cmake/thrust-config.cmake")]=]

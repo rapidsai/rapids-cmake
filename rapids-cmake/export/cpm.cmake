@@ -62,7 +62,7 @@ function(rapids_export_cpm type name export_set)
   set(options "")
   set(one_value EXPORT_SET)
   set(multi_value GLOBAL_TARGETS CPM_ARGS)
-  cmake_parse_arguments(RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
+  cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
   if(type STREQUAL build)
     if(DEFINED ${name}_DIR AND ${name}_DIR)
@@ -87,10 +87,10 @@ function(rapids_export_cpm type name export_set)
   # Need to record the <PackageName> to `rapids_export_${type}_${export_set}`
   set_property(TARGET rapids_export_${type}_${export_set} APPEND PROPERTY "PACKAGE_NAMES" "${name}")
 
-  if(RAPIDS_GLOBAL_TARGETS)
+  if(_RAPIDS_GLOBAL_TARGETS)
     # record our targets that need to be marked as global when imported
     set_property(TARGET rapids_export_${type}_${export_set} APPEND
-                 PROPERTY "GLOBAL_TARGETS" "${RAPIDS_GLOBAL_TARGETS}")
+                 PROPERTY "GLOBAL_TARGETS" "${_RAPIDS_GLOBAL_TARGETS}")
   endif()
 
 endfunction()
