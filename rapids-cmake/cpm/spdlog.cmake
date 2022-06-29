@@ -31,19 +31,10 @@ across all RAPIDS projects.
 
   rapids_cpm_spdlog( [BUILD_EXPORT_SET <export-name>]
                      [INSTALL_EXPORT_SET <export-name>]
-                   )
+                     [<CPM_ARGS> ...])
 
-``BUILD_EXPORT_SET``
-  Record that a :cmake:command:`CPMFindPackage(<PackageName> ...)` call needs to occur as part of
-  our build directory export set.
-
-``INSTALL_EXPORT_SET``
-  Record a :cmake:command:`find_dependency(<PackageName> ...) <cmake:module:CMakeFindDependencyMacro>` call needs to occur as part of
-  our build directory export set.
-
-.. note::
-  Installation of spdlog will occur if an INSTALL_EXPORT_SET is provided, and spdlog
-  is added to the project via :cmake:command:`add_subdirectory <cmake:command:add_subdirectory>` by CPM.
+.. |PKG_NAME| replace:: spdlog
+.. include:: common_package_args.txt
 
 Result Targets
 ^^^^^^^^^^^^^^

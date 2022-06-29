@@ -31,19 +31,21 @@ across all RAPIDS projects.
 
   rapids_cpm_cuco( [BUILD_EXPORT_SET <export-name>]
                    [INSTALL_EXPORT_SET <export-name>]
-                   )
+                   [<CPM_ARGS> ...])
 
-``BUILD_EXPORT_SET``
-  Record that a :cmake:command:`CPMFindPackage(cuco)` call needs to occur as part of
-  our build directory export set.
-
-``INSTALL_EXPORT_SET``
-  Record a :cmake:command:`find_dependency(cuco) <cmake:module:CMakeFindDependencyMacro>` call needs to occur as part of
-  our install directory export set.
+.. |PKG_NAME| replace:: cuco
+.. include:: common_package_args.txt
 
 Result Targets
 ^^^^^^^^^^^^^^
   cuco::cuco target will be created
+
+Result Variables
+^^^^^^^^^^^^^^^^
+  :cmake:variable:`cuco_SOURCE_DIR` is set to the path to the source directory of cuco.
+  :cmake:variable:`cuco_BINARY_DIR` is set to the path to the build directory of cuco.
+  :cmake:variable:`cuco_ADDED`      is set to a true value if cuco has not been added before.
+  :cmake:variable:`cuco_VERSION`    is set to the version of cuco specified by the versions.json.
 
 #]=======================================================================]
 function(rapids_cpm_cuco)

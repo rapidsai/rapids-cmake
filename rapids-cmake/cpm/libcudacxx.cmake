@@ -31,15 +31,10 @@ across all RAPIDS projects.
 
   rapids_cpm_libcudacxx( [BUILD_EXPORT_SET <export-name>]
                          [INSTALL_EXPORT_SET <export-name>]
-                        )
+                         [<CPM_ARGS> ...])
 
-``BUILD_EXPORT_SET``
-  Record that a :cmake:command:`CPMFindPackage(libcudacxx)` call needs to occur as part of
-  our build directory export set.
-
-``INSTALL_EXPORT_SET``
-  Record a :cmake:command:`find_dependency(libcudacxx) <cmake:module:CMakeFindDependencyMacro>` call needs to occur as part of
-  our install directory export set.
+.. |PKG_NAME| replace:: libcudacxx
+.. include:: common_package_args.txt
 
 Result Targets
 ^^^^^^^^^^^^^^
