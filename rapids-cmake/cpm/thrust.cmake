@@ -124,16 +124,16 @@ function(rapids_cpm_thrust NAMESPACE namespaces_name)
     #]==]
     include(GNUInstallDirs)
     install(DIRECTORY "${Thrust_SOURCE_DIR}/thrust"
-            DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/rapids/thrust/" FILES_MATCHING
+            DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/rapids/thrust" FILES_MATCHING
             REGEX "\\.(h|inl)$")
     install(DIRECTORY "${Thrust_SOURCE_DIR}/dependencies/cub/cub"
-            DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/rapids/thrust/dependencies/" FILES_MATCHING
+            DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/rapids/thrust/dependencies" FILES_MATCHING
             PATTERN "*.cuh")
 
     install(DIRECTORY "${Thrust_SOURCE_DIR}/thrust/cmake"
-            DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/rapids/thrust/thrust/")
+            DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/rapids/thrust/thrust")
     install(DIRECTORY "${Thrust_SOURCE_DIR}/dependencies/cub/cub/cmake"
-            DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/rapids/thrust/dependencies/cub/")
+            DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/rapids/thrust/dependencies/cub")
 
     include("${rapids-cmake-dir}/cmake/install_lib_dir.cmake")
     rapids_cmake_install_lib_dir(install_location) # Use the correct conda aware path
