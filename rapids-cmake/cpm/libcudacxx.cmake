@@ -58,8 +58,7 @@ function(rapids_cpm_libcudacxx)
 
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
   rapids_cpm_package_details(libcudacxx version repository tag shallow exclude)
-  rapids_find_package(libcudacxx ${version}
-                      GLOBAL_TARGETS libcudacxx::libcudacxx
+  rapids_find_package(libcudacxx ${version} GLOBAL_TARGETS libcudacxx::libcudacxx
                       BUILD_EXPORT_SET ${_RAPIDS_BUILD_EXPORT_SET}
                       INSTALL_EXPORT_SET ${_RAPIDS_INSTALL_EXPORT_SET})
 
