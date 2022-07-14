@@ -70,9 +70,8 @@ function(rapids_cpm_get_proprietary_binary package_name version)
     include(FetchContent)
     set(pkg_name "${package_name}_proprietary_binary")
 
-    # Prefer to use the download time for timestamp, instead of the timestamp in the archive
-    # unless explicitly set by user. This allows for proper rebuilds when a projects
-    # url changes
+    # Prefer to use the download time for timestamp, instead of the timestamp in the archive unless
+    # explicitly set by user. This allows for proper rebuilds when a projects url changes
     if(POLICY CMP0135)
       cmake_policy(SET CMP0135 NEW)
       set(CMAKE_POLICY_DEFAULT_CMP0135 NEW)
