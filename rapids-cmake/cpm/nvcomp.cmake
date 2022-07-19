@@ -63,6 +63,7 @@ Result Variables
   :cmake:variable:`nvcomp_proprietary_binary` is set to ON if the proprietary binary is being used
 
 #]=======================================================================]
+# cmake-lint: disable=R0915
 function(rapids_cpm_nvcomp)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.nvcomp")
 
@@ -91,6 +92,17 @@ function(rapids_cpm_nvcomp)
   if(_RAPIDS_USE_PROPRIETARY_BINARY)
     include("${rapids-cmake-dir}/cpm/detail/get_proprietary_binary.cmake")
     rapids_cpm_get_proprietary_binary(nvcomp ${version})
+
+    # Remove incorrect public dependency on the static cuda runtime We have to modify the
+    # nvcomp-targets.cmake since these entries will cause a failure when rapids_cpm_find is called.
+    if(nvcomp_proprietary_binary)
+      set(target_file "${nvcomp_ROOT}/lib/cmake/nvcomp/nvcomp-targets.cmake")
+      if(EXISTS "${target_file}")
+        file(READ "${target_file}" file_contents)
+        string(REPLACE "CUDA::cudart_static" "" file_contents "${file_contents}")
+        file(WRITE "${target_file}" "${file_contents}")
+      endif()
+    endif()
   endif()
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
