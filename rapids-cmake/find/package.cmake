@@ -27,7 +27,7 @@ tracking of these dependencies for correct export support.
 .. code-block:: cmake
 
   rapids_find_package(<PackageName>
-                      [REQUIRED]
+                      [ all normal find_package options ]
                       [GLOBAL_TARGETS <targets...>]
                       [BUILD_EXPORT_SET <name>]
                       [INSTALL_EXPORT_SET <name>]
@@ -46,6 +46,17 @@ so users have consistency. List all targets used by your project in `GLOBAL_TARG
 .. note::
   If the project/package you are looking for doesn't have an existing
   CMake Find module, please look at using :cmake:command:`rapids_find_generate_module`.
+
+.. note::
+  This function supports two call modes:
+  1. The same initial signature as :cmake:command:`find_package`, followed by
+     `BUILD_EXPORT_SET` and/or `INSTALL_EXPORT_SET` as the last two arguments.
+  2. `BUILD_EXPORT_SET` and/or `INSTALL_EXPORT_SET` defined after the package
+     name, followed by `FIND_ARGS` and the rest of the :cmake:command:`find_package`
+     arguments you'd like to pass. The `FIND_ARGS` delimiter is necessary because
+     :cmake:command:`cmake_parse_arguments` is a greedy parser and will consume
+     the :cmake:command:`find_package` arguments unless they're part of a separate
+     argument option.
 
 ``PackageName``
   Name of the package to find.
@@ -75,19 +86,13 @@ macro(rapids_find_package name)
   # same. If it doesn't it would make drop in replacements impossible
   #
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.find.package")
-  set(_rapids_options FIND_ARGS REQUIRED)
+  set(_rapids_options FIND_ARGS)
   set(_rapids_one_value BUILD_EXPORT_SET INSTALL_EXPORT_SET)
   set(_rapids_multi_value GLOBAL_TARGETS)
   cmake_parse_arguments(_RAPIDS "${_rapids_options}" "${_rapids_one_value}"
                         "${_rapids_multi_value}" ${ARGN})
 
-  set(_rapids_required_flag)
-  if(_RAPIDS_REQUIRED)
-    set(_rapids_required_flag REQUIRED)
-  endif()
-
-  find_package(${name} ${_rapids_required_flag} ${_RAPIDS_UNPARSED_ARGUMENTS})
-  unset(_rapids_required_flag)
+  find_package(${name} ${_RAPIDS_UNPARSED_ARGUMENTS})
 
   if(_RAPIDS_GLOBAL_TARGETS)
     include("${rapids-cmake-dir}/cmake/make_global.cmake")
