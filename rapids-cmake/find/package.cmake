@@ -93,7 +93,7 @@ The :cmake:command:`rapids_find_package` function supports two call modes.
       GLOBAL_TARGETS ZLIB::ZLIB
       INSTALL_EXPORT_SET my-export-set
       BUILD_EXPORT_SET my-export-set
-      FIND_ARGS 1.2 QUIET REQUIRED
+      FIND_ARGS 1.2 REQUIRED
     )
 
 
