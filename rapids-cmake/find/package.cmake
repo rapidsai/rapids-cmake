@@ -38,7 +38,7 @@ tracking of these dependencies for correct export support.
 Invokes :cmake:command:`find_package <cmake:command:find_package>` call and
 associate this with the listed build and install export set for correct export
 generation. Will propagate all variables set by
-:cmake:command:`find_package <cmake:command:find_package>` to the callers scope.
+:cmake:command:`find_package <cmake:command:find_package>` to the caller's scope.
 
 Since the visibility of CMake's targets differ between targets built locally and
 those imported, :cmake:command:`rapids_find_package` promotes imported targets
