@@ -72,7 +72,7 @@ The :cmake:command:`rapids_find_package` function supports two call modes.
 
   1. Is when all the parameters for :cmake:command:`find_package <cmake:command:find_package>`
   are first followed by rapids parameters such as `BUILD_EXPORT_SET` and
-  `INSTALL_EXPORT_SET` last. Here is an example on what this call would look like:
+  `INSTALL_EXPORT_SET` last. Here is an example of what this call would look like:
 
   .. code-block:: cmake
 
