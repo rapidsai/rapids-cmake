@@ -61,7 +61,7 @@ in `GLOBAL_TARGETS`.
   as part of our build directory export set.
 
 ``FIND_ARGS``
-  Required placeholder to be provied before any extra arguments that need to
+  Required placeholder to be provided before any extra arguments that need to
   be passed down to cmake:command:`find_pacakge <cmake:command:find_package>`
 
 .. note::
