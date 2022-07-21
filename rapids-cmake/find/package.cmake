@@ -43,7 +43,7 @@ generation. Will propagate all variables set by
 Since the visibility of CMake's targets differ between targets built locally and
 those imported, :cmake:command:`rapids_find_package` promotes imported targets
 to be global so users have consistency. List all targets used by your project
-in `GLOBAL_TARGET`.
+in `GLOBAL_TARGETS`.
 
 ``PackageName``
   Name of the package to find.
