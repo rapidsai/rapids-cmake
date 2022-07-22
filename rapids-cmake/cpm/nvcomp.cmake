@@ -95,7 +95,7 @@ function(rapids_cpm_nvcomp)
 
     # Remove incorrect public dependency on the static cuda runtime We have to modify the
     # nvcomp-targets.cmake since these entries will cause a failure when rapids_cpm_find is called.
-    if(nvcomp_proprietary_binary)
+    if(nvcomp_proprietary_binary AND ${version} STREQUAL "2.3.2")
       set(target_file "${nvcomp_ROOT}/lib/cmake/nvcomp/nvcomp-targets.cmake")
       if(EXISTS "${target_file}")
         file(READ "${target_file}" file_contents)
