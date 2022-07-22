@@ -35,28 +35,15 @@ tracking of these dependencies for correct export support.
                         all normal find_package options ]
                       )
 
-Invokes :cmake:command:`find_package` call and associate this with the listed
-build and install export set for correct export generation. Will propagate
-all variables set by :cmake:command:`find_package` to the callers scope.
+Invokes :cmake:command:`find_package <cmake:command:find_package>` call and
+associate this with the listed build and install export set for correct export
+generation. Will propagate all variables set by
+:cmake:command:`find_package <cmake:command:find_package>` to the caller's scope.
 
-Since the visibility of CMake's targets differ between targets built locally and those
-imported, :cmake:command:`rapids_find_package` promotes imported targets to be global
-so users have consistency. List all targets used by your project in `GLOBAL_TARGET`.
-
-.. note::
-  If the project/package you are looking for doesn't have an existing
-  CMake Find module, please look at using :cmake:command:`rapids_find_generate_module`.
-
-.. note::
-  This function supports two call modes:
-  1. The same initial signature as :cmake:command:`find_package`, followed by
-     `BUILD_EXPORT_SET` and/or `INSTALL_EXPORT_SET` as the last two arguments.
-  2. `BUILD_EXPORT_SET` and/or `INSTALL_EXPORT_SET` defined after the package
-     name, followed by `FIND_ARGS` and the rest of the :cmake:command:`find_package`
-     arguments you'd like to pass. The `FIND_ARGS` delimiter is necessary because
-     :cmake:command:`cmake_parse_arguments` is a greedy parser and will consume
-     the :cmake:command:`find_package` arguments unless they're part of a separate
-     argument option.
+Since the visibility of CMake's targets differ between targets built locally and
+those imported, :cmake:command:`rapids_find_package` promotes imported targets
+to be global so users have consistency. List all targets used by your project
+in `GLOBAL_TARGETS`.
 
 ``PackageName``
   Name of the package to find.
@@ -74,8 +61,40 @@ so users have consistency. List all targets used by your project in `GLOBAL_TARG
   as part of our build directory export set.
 
 ``FIND_ARGS``
-  Required placeholder to be provied before any extra arguments that need to
-  be passed down to cmake:command:`find_pacakge`
+  Required placeholder to be provided before any extra arguments that need to
+  be passed down to :cmake:command:`find_package <cmake:command:find_package>`
+
+.. note::
+  If the project/package you are looking for doesn't have an existing
+  CMake Find module, please look at using :cmake:command:`rapids_find_generate_module`.
+
+The :cmake:command:`rapids_find_package` function supports two call modes.
+
+  1. When all the parameters for :cmake:command:`find_package <cmake:command:find_package>`
+  are first followed by rapids parameters such as `BUILD_EXPORT_SET` and
+  `INSTALL_EXPORT_SET` last. Here is an example of what this call would look like:
+
+  .. code-block:: cmake
+
+    rapids_find_package(ZLIB 1.2 REQUIRED
+      GLOBAL_TARGETS ZLIB::ZLIB
+      INSTALL_EXPORT_SET my-export-set
+      BUILD_EXPORT_SET my-export-set
+    )
+
+  2. When the rapids parameters come first, and in that case they must be
+  followed by the `FIND_ARGS` keyword. This ensures proper argument propagation
+  to the underlying :cmake:command:`find_package <cmake:command:find_package>`.
+  Here is an example of what this call would look like:
+
+  .. code-block:: cmake
+
+    rapids_find_package(ZLIB
+      GLOBAL_TARGETS ZLIB::ZLIB
+      INSTALL_EXPORT_SET my-export-set
+      BUILD_EXPORT_SET my-export-set
+      FIND_ARGS 1.2 REQUIRED
+    )
 
 
 #]=======================================================================]
