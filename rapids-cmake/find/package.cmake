@@ -62,7 +62,7 @@ in `GLOBAL_TARGETS`.
 
 ``FIND_ARGS``
   Required placeholder to be provided before any extra arguments that need to
-  be passed down to cmake:command:`find_pacakge <cmake:command:find_package>`
+  be passed down to :cmake:command:`find_package <cmake:command:find_package>`
 
 .. note::
   If the project/package you are looking for doesn't have an existing
