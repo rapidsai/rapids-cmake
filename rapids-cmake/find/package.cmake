@@ -82,7 +82,7 @@ The :cmake:command:`rapids_find_package` function supports two call modes.
       BUILD_EXPORT_SET my-export-set
     )
 
-  2. Is when the rapids parameters come first, and in that case they must be
+  2. When the rapids parameters come first, and in that case they must be
   followed by the `FIND_ARGS` keyword. This ensures proper argument propagation
   to the underlying :cmake:command:`find_package <cmake:command:find_package>`.
   Here is an example of what this call would look like:
