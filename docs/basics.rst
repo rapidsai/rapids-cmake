@@ -12,7 +12,7 @@ Content <https://cmake.org/cmake/help/latest/module/FetchContent.html>`_ into yo
 
   cmake_minimum_required(...)
 
-  file(DOWNLOAD https://raw.githubusercontent.com/rapidsai/rapids-cmake/branch-22.08/RAPIDS.cmake
+  file(DOWNLOAD https://raw.githubusercontent.com/rapidsai/rapids-cmake/branch-22.10/RAPIDS.cmake
     ${CMAKE_BINARY_DIR}/RAPIDS.cmake)
   include(${CMAKE_BINARY_DIR}/RAPIDS.cmake)
   include(rapids-cmake)
@@ -54,7 +54,7 @@ like this:
     GIT_REPOSITORY https://github.com/<my_fork>/rapids-cmake.git
     GIT_TAG        <my_feature_branch>
   )
-  file(DOWNLOAD https://raw.githubusercontent.com/rapidsai/rapids-cmake/branch-22.08/RAPIDS.cmake
+  file(DOWNLOAD https://raw.githubusercontent.com/rapidsai/rapids-cmake/branch-22.10/RAPIDS.cmake
       ${CMAKE_BINARY_DIR}/RAPIDS.cmake)
   include(${CMAKE_BINARY_DIR}/RAPIDS.cmake)
 
