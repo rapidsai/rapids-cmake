@@ -126,7 +126,7 @@ endif()
                     FINAL_CODE_BLOCK code_string)
     endif()
 
-    if(_RAPIDS_INSTALL_EXPORT_SET)
+    if(_RAPIDS_INSTALL_EXPORT_SET AND NOT exclude)
       include(GNUInstallDirs) # For CMAKE_INSTALL_INCLUDEDIR
       install(DIRECTORY "${libcudacxx_SOURCE_DIR}/include/"
               DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/rapids/libcudacxx")

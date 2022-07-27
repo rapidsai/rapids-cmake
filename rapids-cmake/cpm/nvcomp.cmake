@@ -131,7 +131,7 @@ function(rapids_cpm_nvcomp)
   # Set up up install rules when using the proprietary_binary. When building from source, nvcomp
   # will set the correct install rules
   include("${rapids-cmake-dir}/export/find_package_root.cmake")
-  if(_RAPIDS_INSTALL_EXPORT_SET AND nvcomp_proprietary_binary)
+  if(NOT to_exclude AND nvcomp_proprietary_binary)
     include(GNUInstallDirs)
     install(DIRECTORY "${nvcomp_ROOT}/lib/" DESTINATION lib)
     install(DIRECTORY "${nvcomp_ROOT}/include/" DESTINATION include)
