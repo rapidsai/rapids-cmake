@@ -29,7 +29,7 @@ function(rapids_cuda_detect_architectures possible_archs_var gpu_archs)
   set(error_file ${PROJECT_BINARY_DIR}/eval_gpu_archs.stderr.log)
 
   if(NOT DEFINED CMAKE_CUDA_COMPILER)
-    message(FATAL_ERROR "No CUDA compiler specified, unable to determine machines GPUs.")
+    message(FATAL_ERROR "No CUDA compiler specified, unable to determine machine's GPUs.")
   endif()
 
   if(NOT EXISTS "${eval_exe}")
