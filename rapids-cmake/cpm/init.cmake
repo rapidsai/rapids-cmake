@@ -61,6 +61,13 @@ function(rapids_cpm_init)
     rapids_cpm_package_override("${_RAPIDS_OVERRIDE}")
   endif()
 
+  # Prefer to use the download time for timestamp, instead of the timestamp in the archive unless
+  # explicitly set by user. This allows for proper rebuilds when a projects url changes
+  if(POLICY CMP0135)
+    cmake_policy(SET CMP0135 NEW)
+    set(CMAKE_POLICY_DEFAULT_CMP0135 NEW CACHE STRING "")
+  endif()
+
   include("${rapids-cmake-dir}/cpm/detail/download.cmake")
   rapids_cpm_download()
 
