@@ -65,7 +65,7 @@ function(rapids_cmake_install_lib_dir out_variable_name)
   include(GNUInstallDirs)
   set(computed_path "${CMAKE_INSTALL_LIBDIR}")
   if(modify_install_libdir)
-    # GNUInstallDirs will have set `CMAKE_INSTALL_LIBDIR` as a cache path So we only need to make
+    # GNUInstallDirs will have set `CMAKE_INSTALL_LIBDIR` as a cache path so we only need to make
     # sure our path overrides any local variable
     set(CMAKE_INSTALL_LIBDIR ${computed_path} PARENT_SCOPE)
   endif()
