@@ -15,7 +15,7 @@
 #=============================================================================
 include(${rapids-cmake-dir}/find/generate_module.cmake)
 
-cmake_minimum_required(VERSION 3.23)
+cmake_minimum_required(VERSION 3.23.1)
 project(rapids-test-project LANGUAGES CXX)
 
 set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}")
