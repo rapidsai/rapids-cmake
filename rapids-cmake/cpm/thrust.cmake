@@ -77,8 +77,8 @@ function(rapids_cpm_thrust NAMESPACE namespaces_name)
     include(GNUInstallDirs)
     set(CMAKE_INSTALL_INCLUDEDIR "${CMAKE_INSTALL_INCLUDEDIR}/rapids")
 
-    # Thrust 1.17 has a bug where it doesn't properly install CUB,
-    # so we need to manually invoke cub's install rules
+    # Thrust 1.17 has a bug where it doesn't properly install CUB, so we need to manually invoke
+    # cub's install rules
     set(THRUST_INSTALL_CUB_HEADERS OFF)
     set(CUB_SOURCE_DIR "${Thrust_SOURCE_DIR}/dependencies/cub")
     set(CUB_BINARY_DIR "${Thrust_BINARY_DIR}")
