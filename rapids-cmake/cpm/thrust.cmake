@@ -55,31 +55,37 @@ Result Variables
 function(rapids_cpm_thrust NAMESPACE namespaces_name)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.thrust")
 
-  set(options)
-  set(one_value BUILD_EXPORT_SET INSTALL_EXPORT_SET)
-  set(multi_value)
-  cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
-
-  set(enable_install OFF)
-  if(_RAPIDS_INSTALL_EXPORT_SET)
-    set(enable_install ON)
-    # Make sure we install thrust into the `include/rapids` subdirectory instead of the default
-    include(GNUInstallDirs)
-    set(CMAKE_INSTALL_INCLUDEDIR "${CMAKE_INSTALL_INCLUDEDIR}/rapids")
-  endif()
-
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
   rapids_cpm_package_details(Thrust version repository tag shallow exclude)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
-  rapids_cpm_find(Thrust ${version} ${_RAPIDS_UNPARSED_ARGUMENTS}
+  rapids_cpm_find(Thrust ${version} ${ARGN}
                   GLOBAL_TARGETS ${namespaces_name}::Thrust
                   CPM_ARGS FIND_PACKAGE_ARGUMENTS EXACT
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
                   GIT_SHALLOW ${shallow}
-                  EXCLUDE_FROM_ALL ${exclude}
-                  OPTIONS "THRUST_ENABLE_INSTALL_RULES ${enable_install}")
+                  EXCLUDE_FROM_ALL ${exclude})
+
+  set(options)
+  set(one_value BUILD_EXPORT_SET INSTALL_EXPORT_SET)
+  set(multi_value)
+  cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
+
+  if(Thrust_SOURCE_DIR AND _RAPIDS_INSTALL_EXPORT_SET AND NOT exclude)
+    # Make sure we install thrust into the `include/rapids` subdirectory instead of the default
+    include(GNUInstallDirs)
+    set(CMAKE_INSTALL_INCLUDEDIR "${CMAKE_INSTALL_INCLUDEDIR}/rapids")
+
+    # Thrust 1.17 has a bug where it doesn't properly install CUB,
+    # so we need to manually invoke cub's install rules
+    set(THRUST_INSTALL_CUB_HEADERS OFF)
+    set(CUB_SOURCE_DIR "${Thrust_SOURCE_DIR}/dependencies/cub")
+    set(CUB_BINARY_DIR "${Thrust_BINARY_DIR}")
+
+    include("${Thrust_SOURCE_DIR}/cmake/ThrustInstallRules.cmake")
+    include("${CUB_SOURCE_DIR}/cmake/CubInstallRules.cmake")
+  endif()
 
   if(NOT TARGET ${namespaces_name}::Thrust)
     thrust_create_target(${namespaces_name}::Thrust FROM_OPTIONS)
