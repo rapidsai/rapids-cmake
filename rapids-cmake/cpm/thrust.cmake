@@ -77,14 +77,15 @@ function(rapids_cpm_thrust NAMESPACE namespaces_name)
     include(GNUInstallDirs)
     set(CMAKE_INSTALL_INCLUDEDIR "${CMAKE_INSTALL_INCLUDEDIR}/rapids")
 
-    # Thrust 1.17 has a bug where it doesn't properly install CUB, so we need to manually invoke
-    # cub's install rules
-    set(THRUST_INSTALL_CUB_HEADERS OFF)
-    set(CUB_SOURCE_DIR "${Thrust_SOURCE_DIR}/dependencies/cub")
-    set(CUB_BINARY_DIR "${Thrust_BINARY_DIR}")
-
-    include("${Thrust_SOURCE_DIR}/cmake/ThrustInstallRules.cmake")
-    include("${CUB_SOURCE_DIR}/cmake/CubInstallRules.cmake")
+    # Thrust 1.17 has a bug where it doesn't generate proper exclude rules for the `[cub|thrust]-header-search`
+    # files, which causes the build tree version to be installed instead of the install version
+    if(NOT EXISTS "${Thrust_BINARY_DIR}/cmake/ThrustInstallRulesForRapids.cmake")
+      file(READ "${Thrust_SOURCE_DIR}/cmake/ThrustInstallRules.cmake" contents)
+      string(REPLACE "PATTERN cub-header-search EXCLUDE" "REGEX cub-header-search.* EXCLUDE" contents "${contents}")
+      string(REPLACE "PATTERN thrust-header-search EXCLUDE" "REGEX thrust-header-search.* EXCLUDE" contents "${contents}")
+      file(WRITE "${Thrust_BINARY_DIR}/cmake/ThrustInstallRulesForRapids.cmake" ${contents})
+    endif()
+    include("${Thrust_BINARY_DIR}/cmake/ThrustInstallRulesForRapids.cmake")
   endif()
 
   if(NOT TARGET ${namespaces_name}::Thrust)
