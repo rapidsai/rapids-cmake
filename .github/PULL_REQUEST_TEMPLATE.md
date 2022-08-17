@@ -17,6 +17,8 @@ Here are some guidelines to help the review process go smoothly.
    - Each user facing function should be added to the `cmake-format.json` document
     - Run `cmake-genparsers -f json` on the `.cmake` file as a starting point
    - Each function first line should be `list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.<component>.<function>")`
+   - Internal variables for things like `cmake_parse_arguments` should use `_RAPIDS`
+     instead of `RAPIDS`, so we don't incorrectly use an existing variable like `RAPIDS_VERSION`
 
    - A file should not modify any state simply by being included. State modification should
      only occur inside functions unless absolutely necessary due to restrictions of the CMake

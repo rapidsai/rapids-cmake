@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021, NVIDIA CORPORATION.
+# Copyright (c) 2022, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-# can't have an include guard on this file
-# that breaks its usage by cpm/detail/package_details
+include(${rapids-cmake-dir}/find/package.cmake)
 
-set(rapids-cmake-version 22.08)
+rapids_find_package(ZLIB 99999999999 EXACT REQUIRED
+  INSTALL_EXPORT_SET test_export_set GLOBAL_TARGETS ZLIB::ZLIB)

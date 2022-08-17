@@ -24,7 +24,7 @@ if(possible_package_dir AND NOT DEFINED @name@_DIR)
 endif()
 
 CPMFindPackage(
-  "@RAPIDS_CPM_ARGS@"
+  "@_RAPIDS_CPM_ARGS@"
   )
 
 if(possible_package_dir)

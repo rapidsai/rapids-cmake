@@ -80,7 +80,7 @@ function(rapids_cmake_write_git_revision_file target file_path)
   set(options "")
   set(one_value PREFIX)
   set(multi_value "")
-  cmake_parse_arguments(RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
+  cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
   cmake_path(IS_RELATIVE file_path is_relative)
   if(is_relative)
@@ -89,8 +89,8 @@ function(rapids_cmake_write_git_revision_file target file_path)
     set(output_path "${file_path}")
   endif()
 
-  if(NOT RAPIDS_PREFIX)
-    set(RAPIDS_PREFIX "${PROJECT_NAME}")
+  if(NOT _RAPIDS_PREFIX)
+    set(_RAPIDS_PREFIX "${PROJECT_NAME}")
   endif()
 
   # Find Git
@@ -100,7 +100,8 @@ function(rapids_cmake_write_git_revision_file target file_path)
                     BYPRODUCTS "${file_path}"
                     COMMENT "Generate git revision file for ${target}"
                     COMMAND ${CMAKE_COMMAND} -DWORKING_DIRECTORY=${CMAKE_CURRENT_SOURCE_DIR}
-                            -DGIT_EXECUTABLE=${GIT_EXECUTABLE} -DRAPIDS_GIT_PREFIX=${RAPIDS_PREFIX}
+                            -DGIT_EXECUTABLE=${GIT_EXECUTABLE}
+                            -D_RAPIDS_GIT_PREFIX=${_RAPIDS_PREFIX}
                             -DTEMPLATE_FILE=${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/git_revision.hpp.in
                             -DFILE_TO_WRITE=${file_path} -P
                             ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/compute_git_info.cmake

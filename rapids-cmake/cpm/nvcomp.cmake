@@ -18,7 +18,6 @@ include_guard(GLOBAL)
 #[=======================================================================[.rst:
 rapids_cpm_nvcomp
 -----------------
-
 .. versionadded:: v22.06.00
 
 Allow projects to find or build `nvComp` via `CPM` with built-in
@@ -29,22 +28,10 @@ across all RAPIDS projects.
 
 .. code-block:: cmake
 
-  rapids_cpm_nvcomp( [BUILD_EXPORT_SET <export-name>]
+  rapids_cpm_nvcomp( [USE_PROPRIETARY_BINARY <ON|OFF>]
+                     [BUILD_EXPORT_SET <export-name>]
                      [INSTALL_EXPORT_SET <export-name>]
-                     [USE_PROPRIETARY_BINARY <ON|OFF>]
-                   )
-
-``BUILD_EXPORT_SET``
-  Record that a :cmake:command:`CPMFindPackage(<PackageName> ...)` call needs to occur as part of
-  our build directory export set.
-
-``INSTALL_EXPORT_SET``
-  Record a :cmake:command:`find_dependency(<PackageName> ...) <cmake:module:CMakeFindDependencyMacro>` call needs to occur as part of
-  our build directory export set.
-
-.. note::
-  Installation of nvcomp will occur if an INSTALL_EXPORT_SET is provided, and nvcomp
-  is added to the project via :cmake:command:`add_subdirectory <cmake:command:add_subdirectory>` by CPM.
+                     [<CPM_ARGS> ...])
 
 ``USE_PROPRIETARY_BINARY``
   By enabling this flag and using the software, you agree to fully comply with the terms and conditions of
@@ -60,6 +47,9 @@ across all RAPIDS projects.
   flag to do anything. Any override without this entry is considered to invalidate the existin proprietary
   binary entry.
 
+.. |PKG_NAME| replace:: nvcomp
+.. include:: common_package_args.txt
+
 Result Targets
 ^^^^^^^^^^^^^^
   nvcomp::nvcomp target will be created
@@ -73,38 +63,50 @@ Result Variables
   :cmake:variable:`nvcomp_proprietary_binary` is set to ON if the proprietary binary is being used
 
 #]=======================================================================]
+# cmake-lint: disable=R0915
 function(rapids_cpm_nvcomp)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.nvcomp")
 
   set(options)
   set(one_value USE_PROPRIETARY_BINARY BUILD_EXPORT_SET INSTALL_EXPORT_SET)
   set(multi_value)
-  cmake_parse_arguments(RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
+  cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
-  # Fix up RAPIDS_UNPARSED_ARGUMENTS to have EXPORT_SETS as this is need for rapids_cpm_find
-  if(RAPIDS_INSTALL_EXPORT_SET)
-    list(APPEND RAPIDS_UNPARSED_ARGUMENTS INSTALL_EXPORT_SET ${RAPIDS_INSTALL_EXPORT_SET})
+  # Fix up _RAPIDS_UNPARSED_ARGUMENTS to have EXPORT_SETS as this is need for rapids_cpm_find
+  if(_RAPIDS_INSTALL_EXPORT_SET)
+    list(APPEND _RAPIDS_UNPARSED_ARGUMENTS INSTALL_EXPORT_SET ${_RAPIDS_INSTALL_EXPORT_SET})
   endif()
-  if(RAPIDS_BUILD_EXPORT_SET)
-    list(APPEND RAPIDS_UNPARSED_ARGUMENTS BUILD_EXPORT_SET ${RAPIDS_BUILD_EXPORT_SET})
+  if(_RAPIDS_BUILD_EXPORT_SET)
+    list(APPEND _RAPIDS_UNPARSED_ARGUMENTS BUILD_EXPORT_SET ${_RAPIDS_BUILD_EXPORT_SET})
   endif()
 
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
   rapids_cpm_package_details(nvcomp version repository tag shallow exclude)
   set(to_exclude OFF)
-  if(NOT RAPIDS_INSTALL_EXPORT_SET OR exclude)
+  if(NOT _RAPIDS_INSTALL_EXPORT_SET OR exclude)
     set(to_exclude ON)
   endif()
 
   # first see if we have a proprietary pre-built binary listed in versions.json and it if requested.
   set(nvcomp_proprietary_binary OFF) # will be set to true by rapids_cpm_get_proprietary_binary
-  if(RAPIDS_USE_PROPRIETARY_BINARY)
+  if(_RAPIDS_USE_PROPRIETARY_BINARY)
     include("${rapids-cmake-dir}/cpm/detail/get_proprietary_binary.cmake")
     rapids_cpm_get_proprietary_binary(nvcomp ${version})
+
+    # Remove incorrect public dependency on the static cuda runtime We have to modify the
+    # nvcomp-targets.cmake since these entries will cause a failure when rapids_cpm_find is called.
+    if(nvcomp_proprietary_binary)
+      set(target_file "${nvcomp_ROOT}/lib/cmake/nvcomp/nvcomp-targets.cmake")
+      if(EXISTS "${target_file}")
+        file(READ "${target_file}" file_contents)
+        string(REPLACE "CUDA::cudart_static" "" file_contents "${file_contents}")
+        file(WRITE "${target_file}" "${file_contents}")
+      endif()
+    endif()
   endif()
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
-  rapids_cpm_find(nvcomp ${version} ${RAPIDS_UNPARSED_ARGUMENTS}
+  rapids_cpm_find(nvcomp ${version} ${_RAPIDS_UNPARSED_ARGUMENTS}
                   GLOBAL_TARGETS nvcomp::nvcomp
                   CPM_ARGS
                   GIT_REPOSITORY ${repository}
@@ -129,7 +131,7 @@ function(rapids_cpm_nvcomp)
   # Set up up install rules when using the proprietary_binary. When building from source, nvcomp
   # will set the correct install rules
   include("${rapids-cmake-dir}/export/find_package_root.cmake")
-  if(RAPIDS_INSTALL_EXPORT_SET AND nvcomp_proprietary_binary)
+  if(NOT to_exclude AND nvcomp_proprietary_binary)
     include(GNUInstallDirs)
     install(DIRECTORY "${nvcomp_ROOT}/lib/" DESTINATION lib)
     install(DIRECTORY "${nvcomp_ROOT}/include/" DESTINATION include)
@@ -138,9 +140,9 @@ function(rapids_cpm_nvcomp)
     install(FILES "${nvcomp_ROOT}/LICENSE" DESTINATION info/ RENAME NVCOMP_LICENSE)
   endif()
 
-  if(RAPIDS_BUILD_EXPORT_SET AND nvcomp_proprietary_binary)
+  if(_RAPIDS_BUILD_EXPORT_SET AND nvcomp_proprietary_binary)
     # point our consumers to where they can find the pre-built version
-    rapids_export_find_package_root(BUILD nvcomp "${nvcomp_ROOT}" ${RAPIDS_BUILD_EXPORT_SET})
+    rapids_export_find_package_root(BUILD nvcomp "${nvcomp_ROOT}" ${_RAPIDS_BUILD_EXPORT_SET})
   endif()
 
 endfunction()

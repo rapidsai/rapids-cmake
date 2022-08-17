@@ -28,5 +28,12 @@ if(NOT nvcomp_proprietary_binary)
   message(FATAL_ERROR "Expected nvcomp::nvcomp target to exist")
 endif()
 
+# Make sure CUDA::cudart_static isn't in the interface link lines
+get_target_property(libs nvcomp::nvcomp INTERFACE_LINK_LIBRARIES)
+
+if("CUDA::cudart_static" IN_LIST libs)
+  message(FATAL_ERROR "nvcomp::nvcomp shouldn't link to CUDA::cudart_static")
+endif()
+
 # Make sure we can be called multiple times
 rapids_cpm_nvcomp()

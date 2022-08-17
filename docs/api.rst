@@ -31,7 +31,7 @@ tracking of these dependencies for correct export support.
    /command/rapids_cpm_init
    /command/rapids_cpm_find
 
-CPM Pre-Configured Pacakges
+CPM Pre-Configured Packages
 ***************************
 
 These `rapids_cpm` functions allow projects to easily find or build common
@@ -44,6 +44,7 @@ package uses :ref:`can be found here. <cpm_versions>`
 .. toctree::
    :titlesonly:
 
+   /packages/rapids_cpm_cuco
    /packages/rapids_cpm_gtest
    /packages/rapids_cpm_libcudacxx
    /packages/rapids_cpm_nvbench
@@ -53,6 +54,21 @@ package uses :ref:`can be found here. <cpm_versions>`
    /packages/rapids_cpm_thrust
    /command/rapids_cpm_package_override
 
+Cython
+******
+
+The `rapids_cython` functions allow projects to easily build cython modules using
+`scikit-build <https://scikit-build.readthedocs.io/en/latest/>`_.
+
+.. note::
+  Use of the rapids-cython component of rapids-cmake requires scikit-build. The behavior of the functions provided by
+  this component is undefined if they are invoked outside of a build managed by scikit-build.
+
+.. toctree::
+   :titlesonly:
+
+   /command/rapids_cython_init
+   /command/rapids_cython_create_modules
 
 
 Find

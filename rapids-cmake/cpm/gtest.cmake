@@ -31,10 +31,10 @@ across all RAPIDS projects.
 
   rapids_cpm_gtest( [BUILD_EXPORT_SET <export-name>]
                     [INSTALL_EXPORT_SET <export-name>]
-                  )
-.. note::
-  Installation of GTest will occur if an INSTALL_EXPORT_SET is provided, and GTest
-  is added to the project via :cmake:command:`add_subdirectory <cmake:command:add_subdirectory>` by CPM.
+                    [<CPM_ARGS> ...])
+
+.. |PKG_NAME| replace:: GTest
+.. include:: common_package_args.txt
 
 Result Targets
 ^^^^^^^^^^^^^^

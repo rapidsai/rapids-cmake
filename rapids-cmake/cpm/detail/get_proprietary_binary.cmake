@@ -69,6 +69,7 @@ function(rapids_cpm_get_proprietary_binary package_name version)
     # download and extract the binaries since they don't exist on the machine
     include(FetchContent)
     set(pkg_name "${package_name}_proprietary_binary")
+
     FetchContent_Declare(${pkg_name} URL ${proprietary_binary})
     FetchContent_MakeAvailable(${pkg_name})
 

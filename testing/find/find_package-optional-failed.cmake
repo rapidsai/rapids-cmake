@@ -47,8 +47,8 @@ endif()
 
 # Check the export information was invoked
 if(TARGET rapids_export_build_test_export_set)
-  message(FATAL_ERROR "rapids_find_package shoulnd't have constructed a export set")
+  message(FATAL_ERROR "rapids_find_package shouldn't have constructed a export set")
 endif()
 if(TARGET rapids_export_install_test_export_set)
-  message(FATAL_ERROR "rapids_find_package shoulnd't have constructed a export set")
+  message(FATAL_ERROR "rapids_find_package shouldn't have constructed a export set")
 endif()
