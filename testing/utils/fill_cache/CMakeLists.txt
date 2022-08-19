@@ -18,6 +18,7 @@ cmake_minimum_required(VERSION 3.20)
 project(fill_cache LANGUAGES CXX)
 
 include(${rapids-cmake-dir}/cpm/init.cmake)
+rapids_cpm_init()
 
 include(${rapids-cmake-dir}/cpm/gtest.cmake)
 include(${rapids-cmake-dir}/cpm/libcudacxx.cmake)
@@ -26,8 +27,6 @@ include(${rapids-cmake-dir}/cpm/nvcomp.cmake)
 include(${rapids-cmake-dir}/cpm/rmm.cmake)
 include(${rapids-cmake-dir}/cpm/spdlog.cmake)
 include(${rapids-cmake-dir}/cpm/thrust.cmake)
-
-rapids_cpm_init()
 
 set(CPM_SOURCE_CACHE "${CMAKE_BINARY_DIR}")
 
