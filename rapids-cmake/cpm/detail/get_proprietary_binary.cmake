@@ -70,6 +70,11 @@ function(rapids_cpm_get_proprietary_binary package_name version)
     include(FetchContent)
     set(pkg_name "${package_name}_proprietary_binary")
 
+    if(POLICY CMP0135)
+      cmake_policy(SET CMP0135 NEW)
+      set(CMAKE_POLICY_DEFAULT_CMP0135 NEW)
+    endif()
+
     FetchContent_Declare(${pkg_name} URL ${proprietary_binary})
     FetchContent_MakeAvailable(${pkg_name})
 
