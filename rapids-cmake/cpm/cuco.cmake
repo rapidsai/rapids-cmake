@@ -57,15 +57,17 @@ function(rapids_cpm_cuco)
   cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
   # Fix up _RAPIDS_UNPARSED_ARGUMENTS to have INSTALL_EXPORT_SET as this is need for rapids_cpm_find
+  set(to_install OFF)
   if(_RAPIDS_INSTALL_EXPORT_SET)
     list(APPEND _RAPIDS_UNPARSED_ARGUMENTS INSTALL_EXPORT_SET ${_RAPIDS_INSTALL_EXPORT_SET})
+    set(to_install ON)
   endif()
 
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
   rapids_cpm_package_details(cuco version repository tag shallow exclude)
 
   set(to_exclude OFF)
-  if(NOT _RAPIDS_INSTALL_EXPORT_SET OR exclude)
+  if(NOT to_install OR exclude)
     set(to_exclude ON)
   endif()
 
@@ -77,7 +79,8 @@ function(rapids_cpm_cuco)
                   GIT_TAG ${tag}
                   GIT_SHALLOW ${shallow}
                   EXCLUDE_FROM_ALL ${to_exclude}
-                  OPTIONS "BUILD_TESTS OFF" "BUILD_BENCHMARKS OFF" "BUILD_EXAMPLES OFF")
+                  OPTIONS "BUILD_TESTS OFF" "BUILD_BENCHMARKS OFF" "BUILD_EXAMPLES OFF"
+                          "INSTALL_CUCO ${to_install}")
 
   # Propagate up variables that CPMFindPackage provide
   set(cuco_SOURCE_DIR "${cuco_SOURCE_DIR}" PARENT_SCOPE)

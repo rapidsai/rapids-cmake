@@ -19,6 +19,7 @@ project(fill_cache LANGUAGES CXX)
 
 include(${rapids-cmake-dir}/cpm/init.cmake)
 
+include(${rapids-cmake-dir}/cpm/cuco.cmake)
 include(${rapids-cmake-dir}/cpm/gtest.cmake)
 include(${rapids-cmake-dir}/cpm/libcudacxx.cmake)
 include(${rapids-cmake-dir}/cpm/nvbench.cmake)
@@ -33,6 +34,7 @@ set(CPM_SOURCE_CACHE "${CMAKE_BINARY_DIR}")
 
 # Download all source packages
 set(CPM_DOWNLOAD_ALL "ON")
+rapids_cpm_cuco(DOWNLOAD_ONLY ON)
 rapids_cpm_gtest(DOWNLOAD_ONLY ON)
 rapids_cpm_libcudacxx(DOWNLOAD_ONLY ON)
 rapids_cpm_nvbench(DOWNLOAD_ONLY ON)
