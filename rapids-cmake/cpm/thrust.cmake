@@ -73,11 +73,10 @@ function(rapids_cpm_thrust NAMESPACE namespaces_name)
   cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
   if(Thrust_SOURCE_DIR AND _RAPIDS_BUILD_EXPORT_SET)
-    # Store where CMake can find the Thrust-config.cmake that comes
-    # part of Thrust source code
+    # Store where CMake can find the Thrust-config.cmake that comes part of Thrust source code
     include("${rapids-cmake-dir}/export/find_package_root.cmake")
-    rapids_export_find_package_root(
-      BUILD Thrust "${Thrust_SOURCE_DIR}/cmake" ${_RAPIDS_BUILD_EXPORT_SET})
+    rapids_export_find_package_root(BUILD Thrust "${Thrust_SOURCE_DIR}/cmake"
+                                    ${_RAPIDS_BUILD_EXPORT_SET})
   endif()
 
   if(Thrust_SOURCE_DIR AND _RAPIDS_INSTALL_EXPORT_SET AND NOT exclude)
