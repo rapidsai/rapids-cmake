@@ -71,28 +71,29 @@ function(rapids_cpm_libcudacxx)
   if(libcudacxx_SOURCE_DIR AND _RAPIDS_BUILD_EXPORT_SET)
     # Store where CMake can find our custom libcudacxx
     include("${rapids-cmake-dir}/export/find_package_root.cmake")
-    rapids_export_find_package_root(
-      BUILD libcudacxx "${libcudacxx_SOURCE_DIR}/cmake" ${_RAPIDS_BUILD_EXPORT_SET})
+    rapids_export_find_package_root(BUILD libcudacxx "${libcudacxx_SOURCE_DIR}/cmake"
+                                    ${_RAPIDS_BUILD_EXPORT_SET})
   endif()
 
   if(libcudacxx_SOURCE_DIR AND _RAPIDS_INSTALL_EXPORT_SET AND NOT exclude)
-    # By default if we allow libcudacxx to install into `CMAKE_INSTALL_INCLUDEDIR` alongside rmm (or other pacakges)
-    # we will get a install tree that looks like this:
+    # By default if we allow libcudacxx to install into `CMAKE_INSTALL_INCLUDEDIR` alongside rmm (or
+    # other pacakges) we will get a install tree that looks like this:
 
-    #   install/include/rmm
-    #   install/include/cub
-    #   install/include/libcudacxx
+    # install/include/rmm install/include/cub install/include/libcudacxx
 
-    # This is a problem for CMake+NVCC due to the rules around import targets, and user/system includes. In this case both
-    # rmm and libcudacxx will specify an include path of `install/include`, while libcudacxx tries to mark it as an user include,
-    # since rmm uses CMake's default of system include. Compilers when provided the same include as both user and system
-    # always goes with system.
+    # This is a problem for CMake+NVCC due to the rules around import targets, and user/system
+    # includes. In this case both rmm and libcudacxx will specify an include path of
+    # `install/include`, while libcudacxx tries to mark it as an user include, since rmm uses
+    # CMake's default of system include. Compilers when provided the same include as both user and
+    # system always goes with system.
 
-    # Now while rmm could also mark `install/include` as system this just pushes the issue to another dependency which
-    # isn't built by RAPIDS and comes by and marks `install/include` as system.
+    # Now while rmm could also mark `install/include` as system this just pushes the issue to
+    # another dependency which isn't built by RAPIDS and comes by and marks `install/include` as
+    # system.
 
-    # Instead the more reliable option is to make sure that we get libcudacxx to be placed in an unique include path that
-    # to other project will use. In the case of rapids-cmake we install the headers to `include/rapids/thrust`
+    # Instead the more reliable option is to make sure that we get libcudacxx to be placed in an
+    # unique include path that to other project will use. In the case of rapids-cmake we install the
+    # headers to `include/rapids/thrust`
     include(GNUInstallDirs)
     set(CMAKE_INSTALL_INCLUDEDIR "${CMAKE_INSTALL_INCLUDEDIR}/rapids/libcudacxx")
 
@@ -103,8 +104,8 @@ function(rapids_cpm_libcudacxx)
       file(READ "${libcudacxx_SOURCE_DIR}/cmake/libcudacxxInstallRules.cmake" contents)
       string(REPLACE "PATTERN cub-header-search EXCLUDE" "REGEX cub-header-search.* EXCLUDE"
                      contents "${contents}")
-      string(REPLACE "PATTERN libcudacxx-header-search EXCLUDE" "REGEX libcudacxx-header-search.* EXCLUDE"
-                     contents "${contents}")
+      string(REPLACE "PATTERN libcudacxx-header-search EXCLUDE"
+                     "REGEX libcudacxx-header-search.* EXCLUDE" contents "${contents}")
       file(WRITE "${libcudacxx_BINARY_DIR}/cmake/libcudacxxInstallRulesForRapids.cmake" ${contents})
     endif()
     set(libcudacxx_ENABLE_INSTALL_RULES ON)
