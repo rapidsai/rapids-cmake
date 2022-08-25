@@ -62,3 +62,4 @@ add_cmake_config_test( cpm_thrust-simple.cmake )
 
 add_cmake_config_test( cpm_cuco-simple.cmake )
 add_cmake_config_test( cpm_cuco-export.cmake )
+add_cmake_config_test( cpm_cuco-libcudacxx-no-install-export.cmake )
