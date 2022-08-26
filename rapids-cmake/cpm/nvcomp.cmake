@@ -104,12 +104,13 @@ function(rapids_cpm_nvcomp)
       endif()
     endif()
 
-    # Record the nvcomp_DIR so that if USE_PROPRIETARY_BINARY is disabled
-    # we can safely clear the nvcomp_DIR value
+    # Record the nvcomp_DIR so that if USE_PROPRIETARY_BINARY is disabled we can safely clear the
+    # nvcomp_DIR value
     if(nvcomp_proprietary_binary)
       set(nvcomp_proprietary_binary_dir "${nvcomp_ROOT}/lib/cmake/nvcomp")
       cmake_path(NORMAL_PATH nvcomp_proprietary_binary_dir)
-      set(rapids_cpm_nvcomp_proprietary_binary_dir "${nvcomp_proprietary_binary_dir}" CACHE INTERNAL "nvcomp proprietary location")
+      set(rapids_cpm_nvcomp_proprietary_binary_dir "${nvcomp_proprietary_binary_dir}"
+          CACHE INTERNAL "nvcomp proprietary location")
     endif()
   elseif(DEFINED nvcomp_DIR)
     cmake_path(NORMAL_PATH nvcomp_DIR)
