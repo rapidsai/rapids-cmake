@@ -93,7 +93,7 @@ function(rapids_cpm_libcudacxx)
 
     # Instead the more reliable option is to make sure that we get libcudacxx to be placed in an
     # unique include path that the other project will use. In the case of rapids-cmake we install the
-    # headers to `include/rapids/thrust`
+    # headers to `include/rapids/libcudacxx`
     include(GNUInstallDirs)
     set(CMAKE_INSTALL_INCLUDEDIR "${CMAKE_INSTALL_INCLUDEDIR}/rapids/libcudacxx")
 
