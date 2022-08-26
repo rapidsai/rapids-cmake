@@ -82,10 +82,18 @@ function(rapids_cpm_gtest)
   set(GTest_ADDED "${GTest_ADDED}" PARENT_SCOPE)
   set(GTest_VERSION ${version} PARENT_SCOPE)
 
+  if(TARGET GTest::gtest AND NOT TARGET GTest::gmock)
+    message(WARNING "The GTest package found doesn't provide gmock. If you run into 'GTest::gmock target not found' issues you need to use a different version of GTest.The easiest way is to request building GTest from source by adding the following to the cmake invocation:
+  '-DCPM_DOWNLOAD_GTest=ON'")
+  endif()
+
   if(NOT TARGET GTest::gtest AND TARGET gtest)
     add_library(GTest::gtest ALIAS gtest)
-    add_library(GTest::gmock ALIAS gmock)
     add_library(GTest::gtest_main ALIAS gtest_main)
+  endif()
+
+  if(NOT TARGET GTest::gmock AND TARGET gmock)
+    add_library(GTest::gmock ALIAS gmock)
     add_library(GTest::gmock_main ALIAS gmock_main)
   endif()
 endfunction()
