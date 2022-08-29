@@ -28,7 +28,8 @@ Establish the :cmake:variable:`CMAKE_BUILD_TYPE` default value.
     rapids_cmake_build_type(default_type)
 
 If the generator is `Ninja` or `Makefile` the :cmake:variable:`CMAKE_BUILD_TYPE`
-variable will be established if not explicitly set by the user. This removes
+variable will be established if not explicitly set by the user either by
+the env variable `CMAKE_BUILD_TYPE` or by passing `-DCMAKE_BUILD_TYPE=`. This removes
 situations where the `No-Config` / `Empty` build type is used.
 
 ``default_type``

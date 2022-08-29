@@ -69,8 +69,7 @@ function(rapids_cpm_rmm)
   endif()
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
-  # Once we can require CMake 3.22 this can use `only_major_minor` for version searches
-  rapids_cpm_find(rmm "${version}.0" ${_RAPIDS_UNPARSED_ARGUMENTS}
+  rapids_cpm_find(rmm ${version} ${ARGN} {_RAPIDS_UNPARSED_ARGUMENTS}
                   GLOBAL_TARGETS rmm::rmm
                   CPM_ARGS
                   GIT_REPOSITORY ${repository}

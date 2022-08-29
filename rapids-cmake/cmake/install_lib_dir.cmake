@@ -53,54 +53,25 @@ function(rapids_cmake_install_lib_dir out_variable_name)
   cmake_path(ABSOLUTE_PATH install_prefix NORMALIZE)
 
   set(use_conda_lib_dir FALSE)
-  if(CMAKE_VERSION VERSION_LESS 3.22)
-    # Starting with 3.22, CMake is fully aware of the conda 'lib' requirements so we don't need to
-    # do this check at all
-    if(DEFINED ENV{CONDA_BUILD} AND DEFINED ENV{PREFIX})
-      set(conda_prefix "$ENV{PREFIX}")
-      cmake_path(ABSOLUTE_PATH conda_prefix NORMALIZE)
-      if(install_prefix STREQUAL conda_prefix)
-        set(use_conda_lib_dir TRUE)
-      endif()
-    elseif(DEFINED ENV{CONDA_PREFIX})
-      set(conda_prefix "$ENV{CONDA_PREFIX}")
-      cmake_path(ABSOLUTE_PATH conda_prefix NORMALIZE)
-      if(install_prefix STREQUAL conda_prefix)
-        set(use_conda_lib_dir TRUE)
-      endif()
-    endif()
-  endif()
 
   set(computed_path)
-  if(use_conda_lib_dir)
-    # CONDA requires everything to be installed to 'lib' no matter the distro
-    set(computed_path "lib")
-    if(modify_install_libdir)
-      # GNUInstallDirs sets `CMAKE_INSTALL_LIBDIR` as a cache path, so we need to do that as well
-      set(CMAKE_INSTALL_LIBDIR ${computed_path} CACHE PATH
-                                                      "Object code libraries (${computed_path})")
 
-      # Make sure our path overrides any local variable
-      set(CMAKE_INSTALL_LIBDIR ${computed_path} PARENT_SCOPE)
-    endif()
-  else()
-    # We need to defer to GNUInstallDirs but not allow it to set CMAKE_INSTALL_LIBDIR
-    set(remove_install_dir TRUE)
-    if(DEFINED CMAKE_INSTALL_LIBDIR)
-      set(remove_install_dir FALSE)
-    endif()
+  # We need to defer to GNUInstallDirs but not allow it to set CMAKE_INSTALL_LIBDIR
+  set(remove_install_dir TRUE)
+  if(DEFINED CMAKE_INSTALL_LIBDIR)
+    set(remove_install_dir FALSE)
+  endif()
 
-    include(GNUInstallDirs)
-    set(computed_path "${CMAKE_INSTALL_LIBDIR}")
-    if(modify_install_libdir)
-      # GNUInstallDirs will have set `CMAKE_INSTALL_LIBDIR` as a cache path So we only need to make
-      # sure our path overrides any local variable
-      set(CMAKE_INSTALL_LIBDIR ${computed_path} PARENT_SCOPE)
-    endif()
+  include(GNUInstallDirs)
+  set(computed_path "${CMAKE_INSTALL_LIBDIR}")
+  if(modify_install_libdir)
+    # GNUInstallDirs will have set `CMAKE_INSTALL_LIBDIR` as a cache path so we only need to make
+    # sure our path overrides any local variable
+    set(CMAKE_INSTALL_LIBDIR ${computed_path} PARENT_SCOPE)
+  endif()
 
-    if(remove_install_dir)
-      unset(CMAKE_INSTALL_LIBDIR CACHE)
-    endif()
+  if(remove_install_dir)
+    unset(CMAKE_INSTALL_LIBDIR CACHE)
   endif()
 
   set(${out_variable_name} ${computed_path} PARENT_SCOPE)
