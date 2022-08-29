@@ -16,7 +16,7 @@
 include(${rapids-cmake-dir}/cpm/init.cmake)
 include(${rapids-cmake-dir}/cpm/find.cmake)
 
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.23.1)
 project(rapids-test-project LANGUAGES CXX)
 
 set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}")
