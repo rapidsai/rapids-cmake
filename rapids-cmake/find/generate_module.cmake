@@ -16,7 +16,7 @@
 include_guard(GLOBAL)
 
 cmake_policy(PUSH)
-cmake_policy(VERSION 3.20)
+cmake_policy(VERSION 3.23)
 
 #[=======================================================================[.rst:
 rapids_find_generate_module
