@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021, NVIDIA CORPORATION.
+# Copyright (c) 2022, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,27 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
+cmake_minimum_required(VERSION 3.23)
+project(rapids-cpm-find-gtest-no-gmock LANGUAGES CXX)
+
 include(${rapids-cmake-dir}/cpm/init.cmake)
-include(${rapids-cmake-dir}/cpm/find.cmake)
+include(${rapids-cmake-dir}/cpm/gtest.cmake)
 
-cmake_minimum_required(VERSION 3.23.1)
-project(rapids-test-project LANGUAGES CXX)
-
-
-set(CPM_cucxx_SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/mock_cucxx_source_dir")
+set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/mock_installed_gtest")
 
 rapids_cpm_init()
-rapids_cpm_find(cucxx 1.0)
+rapids_cpm_gtest()
 
-# Should find CPM generated `Findcucxx.cmake`
-find_package(cucxx REQUIRED)
-
-set(expected_find_path "${CPM_MODULE_PATH}/Findcucxx.cmake")
-if(NOT EXISTS "${expected_find_path}")
-  message(FATAL_ERROR "Findcucxx.cmake was not generated")
+if (NOT TARGET GTest::gtest)
+  message(FATAL_ERROR "rapids_cpm_find failed to add mocked gtest version")
 endif()
 
-if(NOT TARGET MOCK_CUCXX)
-  message(FATAL_ERROR "cucxx targets should be generated")
+if (TARGET GTest::gmock)
+  message(FATAL_ERROR "rapids_cpm_find failed to add mocked gtest version")
 endif()
-

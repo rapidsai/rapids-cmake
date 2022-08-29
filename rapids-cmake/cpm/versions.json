@@ -13,7 +13,7 @@
       "git_tag" : "12d13bdc5e74801645eba3e46a64081b9b020dca"
     },
     "nvcomp" : {
-      "version" : "2.3.2",
+      "version" : "2.3.3",
       "git_url" : "https://github.com/NVIDIA/nvcomp.git",
       "git_tag" : "v2.2.0",
       "proprietary_binary" : {
@@ -31,9 +31,9 @@
       "git_tag" : "v${version}"
     },
     "Thrust" : {
-      "version" : "1.15.0.0",
+      "version" : "1.17.0",
       "git_url" : "https://github.com/NVIDIA/thrust.git",
-      "git_tag" : "1.15.0"
+      "git_tag" : "${version}"
     },
     "libcudacxx" : {
       "version" : "1.7.0",
@@ -44,7 +44,7 @@
       "version" : "0.0.1",
       "git_shallow" : false,
       "git_url" : "https://github.com/NVIDIA/cuCollections.git",
-      "git_tag" : "3a49fc7143366e33334ce25846fb9854fbdc99f3"
+      "git_tag" : "3ff2032ef1c9de1d1dfc7ed3779d8cec07346191"
     }
   }
 }
