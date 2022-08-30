@@ -18,11 +18,18 @@
 #
 
 set(rapids-cmake-version 22.10)
+if(POLICY CMP0135)
+  cmake_policy(PUSH)
+  cmake_policy(SET CMP0135 NEW)
+endif()
 include(FetchContent)
 FetchContent_Declare(
   rapids-cmake
-  URL https://github.com/rapidsai/rapids-cmake/archive/refs/heads/branch-22.10.zip
+  URL https://github.com/rapidsai/rapids-cmake/archive/refs/heads/branch-${rapids-cmake-version}.zip
 )
+if(POLICY CMP0135)
+  cmake_policy(POP)
+endif()
 FetchContent_GetProperties(rapids-cmake)
 if(rapids-cmake_POPULATED)
   # Something else has already populated rapids-cmake, only thing
