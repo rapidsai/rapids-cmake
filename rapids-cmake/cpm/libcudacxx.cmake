@@ -71,7 +71,7 @@ function(rapids_cpm_libcudacxx)
   if(libcudacxx_SOURCE_DIR AND _RAPIDS_BUILD_EXPORT_SET)
     # Store where CMake can find our custom libcudacxx
     include("${rapids-cmake-dir}/export/find_package_root.cmake")
-    rapids_export_find_package_root(BUILD libcudacxx "${libcudacxx_SOURCE_DIR}/cmake"
+    rapids_export_find_package_root(BUILD libcudacxx "${libcudacxx_SOURCE_DIR}/lib/cmake"
                                     ${_RAPIDS_BUILD_EXPORT_SET})
   endif()
 
