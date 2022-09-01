@@ -135,9 +135,6 @@ At times projects or developers will need to verify ``rapids-cmake`` branches. T
   include(${CMAKE_CURRENT_BINARY_DIR}/RAPIDS.cmake)
 ```
 
-This tells ``FetchContent`` to ignore the explicit url and branch in ``RAPIDS.cmake`` and use the
-values provided.
-
 A few notes:
 
 - An explicitly defined ``rapids-cmake-url`` will always be used
