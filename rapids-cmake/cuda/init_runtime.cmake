@@ -43,8 +43,12 @@ function(rapids_cuda_init_runtime use_static value)
 
   if(NOT DEFINED CMAKE_CUDA_RUNTIME_LIBRARY)
     if(${value})
+      # Control legacy FindCUDA.cmake behavior too
+      set(CUDA_USE_STATIC_CUDA_RUNTIME ON PARENT_SCOPE)
       set(CMAKE_CUDA_RUNTIME_LIBRARY "Static" PARENT_SCOPE)
     else()
+      # Control legacy FindCUDA.cmake behavior too
+      set(CUDA_USE_STATIC_CUDA_RUNTIME OFF PARENT_SCOPE)
       set(CMAKE_CUDA_RUNTIME_LIBRARY "Shared" PARENT_SCOPE)
     endif()
   endif()
