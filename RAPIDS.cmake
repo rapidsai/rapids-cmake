@@ -23,7 +23,7 @@ if(NOT rapids-cmake-version)
   set(rapids-cmake-version 22.10)
 endif()
 
-# Allow users to control which Github repo is fetched
+# Allow users to control which GitHub repo is fetched
 if(NOT rapids-cmake-repo)
   # Define a default repo if the user doesn't set one
   set(rapids-cmake-repo rapidsai/rapids-cmake)
