@@ -78,6 +78,7 @@ The most commonly used function are:
 
 - `rapids_cuda_init_architectures(<project_name>)` handles initialization of `CMAKE_CUDA_ARCHITECTURE`. MUST BE CALLED BEFORE `PROJECT()`
 - `rapids_cuda_init_runtime(<mode>)` handles initialization of `CMAKE_CUDA_RUNTIME_LIBRARY`.
+- `rapids_cuda_patch_toolkit()` corrects bugs in the CUDAToolkit module that are being upstreamed.
 
 ### cython
 
