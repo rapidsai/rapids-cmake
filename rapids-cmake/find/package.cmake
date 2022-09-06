@@ -28,6 +28,7 @@ tracking of these dependencies for correct export support.
 
   rapids_find_package(<PackageName>
                       [ all normal find_package options ]
+                      [COMPONENTS <components...>]
                       [GLOBAL_TARGETS <targets...>]
                       [BUILD_EXPORT_SET <name>]
                       [INSTALL_EXPORT_SET <name>]
@@ -47,6 +48,12 @@ in `GLOBAL_TARGETS`.
 
 ``PackageName``
   Name of the package to find.
+
+``COMPONENTS``
+  .. versionadded:: v22.10.00
+
+  A list of required components that are required to be found for this
+  package to be considered valid.
 
 ``GLOBAL_TARGETS``
   Which targets from this package should be made global. This information
@@ -107,9 +114,13 @@ macro(rapids_find_package name)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.find.package")
   set(_rapids_options FIND_ARGS)
   set(_rapids_one_value BUILD_EXPORT_SET INSTALL_EXPORT_SET)
-  set(_rapids_multi_value GLOBAL_TARGETS)
+  set(_rapids_multi_value COMPONENTS GLOBAL_TARGETS)
   cmake_parse_arguments(_RAPIDS "${_rapids_options}" "${_rapids_one_value}"
                         "${_rapids_multi_value}" ${ARGN})
+
+  if(_RAPIDS_COMPONENTS)
+    list(APPEND _RAPIDS_UNPARSED_ARGUMENTS COMPONENTS ${_RAPIDS_COMPONENTS})
+  endif()
 
   find_package(${name} ${_RAPIDS_UNPARSED_ARGUMENTS})
 
@@ -125,6 +136,9 @@ macro(rapids_find_package name)
     set(_rapids_extra_info)
     if(_RAPIDS_GLOBAL_TARGETS)
       list(APPEND _rapids_extra_info "GLOBAL_TARGETS" ${_RAPIDS_GLOBAL_TARGETS})
+    endif()
+    if(_RAPIDS_COMPONENTS)
+      list(APPEND _rapids_extra_info "COMPONENTS" ${_RAPIDS_COMPONENTS})
     endif()
 
     # Record the version we found to be what consumers need to find as well
