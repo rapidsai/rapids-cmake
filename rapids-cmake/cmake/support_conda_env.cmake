@@ -78,6 +78,8 @@ function(rapids_cmake_support_conda_env target)
       target_include_directories(${target} INTERFACE "$ENV{PREFIX}/include"
                                                      "$ENV{BUILD_PREFIX}/include")
       target_link_directories(${target} INTERFACE "$ENV{PREFIX}/lib" "$ENV{BUILD_PREFIX}/lib")
+      target_link_options(${target} INTERFACE "$<HOST_LINK:SHELL:LINKER:-rpath-link=$ENV{PREFIX}/lib>")
+      target_link_options(${target} INTERFACE "$<HOST_LINK:SHELL:LINKER:-rpath-link=$ENV{BUILD_PREFIX}/lib>")
 
       if(modify_prefix_path)
         list(PREPEND CMAKE_PREFIX_PATH "$ENV{PREFIX}" "$ENV{BUILD_PREFIX}")
@@ -88,6 +90,7 @@ function(rapids_cmake_support_conda_env target)
     elseif(in_conda_prefix)
       target_include_directories(${target} INTERFACE "$ENV{CONDA_PREFIX}/include")
       target_link_directories(${target} INTERFACE "$ENV{CONDA_PREFIX}/lib")
+      target_link_options(${target} INTERFACE "$<HOST_LINK:SHELL:LINKER:-rpath-link=$ENV{CONDA_PREFIX}/lib>")
 
       if(modify_prefix_path)
         list(PREPEND CMAKE_PREFIX_PATH "$ENV{CONDA_PREFIX}")
