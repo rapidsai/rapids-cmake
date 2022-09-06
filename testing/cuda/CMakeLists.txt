@@ -27,8 +27,10 @@ add_cmake_config_test( init_arch-native.cmake )
 add_cmake_config_test( init_arch-native-via-empty-str )
 add_cmake_config_test( init_arch-user.cmake )
 
+add_cmake_config_test( patch_toolkit.cmake )
+add_cmake_config_test( patch_toolkit-nested )
+
 add_cmake_config_test( set_arch-all.cmake )
 add_cmake_config_test( set_arch-existing.cmake )
 add_cmake_config_test( set_arch-invalid-mode.cmake )
 add_cmake_config_test( set_arch-native.cmake )
-

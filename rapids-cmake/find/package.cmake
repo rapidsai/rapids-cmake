@@ -133,6 +133,11 @@ macro(rapids_find_package name)
   # OPTIONAL find packages
   if(${${name}_FOUND})
 
+    if(${name} STREQUAL "CUDAToolkit")
+      include("${rapids-cmake-dir}/cuda/patch_toolkit.cmake")
+      rapids_cuda_patch_toolkit()
+    endif()
+
     set(_rapids_extra_info)
     if(_RAPIDS_GLOBAL_TARGETS)
       list(APPEND _rapids_extra_info "GLOBAL_TARGETS" ${_RAPIDS_GLOBAL_TARGETS})

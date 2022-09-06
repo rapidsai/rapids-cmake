@@ -23,6 +23,8 @@ add_cmake_config_test( find_package-components-failed.cmake )
 add_cmake_config_test( find_package-build.cmake )
 add_cmake_config_test( find_package-install.cmake )
 
+add_cmake_config_test( find_package-cudatoolkit-patching.cmake )
+
 # The inverse of `find_package-optional-failed` is the
 # above two tests.
 # The inverse of `find_package-required-found` is always
