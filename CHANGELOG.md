@@ -1,10 +1,35 @@
-# rapids-cmake 22.10.00 (Date TBD)
+# rapids-cmake 22.08.00 (17 Aug 2022)
 
-Please see https://github.com/rapidsai/rapids-cmake/releases/tag/v22.10.00a for the latest changes to this development branch.
+## 🐛 Bug Fixes
 
-# rapids-cmake 22.08.00 (Date TBD)
+- json exclude flag behaves as expected libcudacx//thrust/nvcomp ([#223](https://github.com/rapidsai/rapids-cmake/pull/223)) [@robertmaynard](https://github.com/robertmaynard)
+- Remove nvcomp dependency on CUDA::cudart_static ([#218](https://github.com/rapidsai/rapids-cmake/pull/218)) [@robertmaynard](https://github.com/robertmaynard)
+- Timestamps for URL downloads match the download time ([#215](https://github.com/rapidsai/rapids-cmake/pull/215)) [@robertmaynard](https://github.com/robertmaynard)
+- Revert &quot;Update nvcomp to 2.3.2 ([#209)&quot; (#210](https://github.com/rapidsai/rapids-cmake/pull/209)&quot; (#210)) [@vyasr](https://github.com/vyasr)
+- rapids-cmake won&#39;t ever use an existing variable starting with RAPIDS_ ([#203](https://github.com/rapidsai/rapids-cmake/pull/203)) [@robertmaynard](https://github.com/robertmaynard)
 
-Please see https://github.com/rapidsai/rapids-cmake/releases/tag/v22.08.00a for the latest changes to this development branch.
+## 📖 Documentation
+
+- Docs now provide rapids_find_package examples ([#220](https://github.com/rapidsai/rapids-cmake/pull/220)) [@robertmaynard](https://github.com/robertmaynard)
+- Minor typo fix in api.rst ([#207](https://github.com/rapidsai/rapids-cmake/pull/207)) [@vyasr](https://github.com/vyasr)
+- rapids_cpm_&lt;pkgs&gt; document handling of unparsed args ([#206](https://github.com/rapidsai/rapids-cmake/pull/206)) [@robertmaynard](https://github.com/robertmaynard)
+- Docs/remove doc warnings ([#205](https://github.com/rapidsai/rapids-cmake/pull/205)) [@robertmaynard](https://github.com/robertmaynard)
+- Fix docs: default behavior is to use a shallow git clone. ([#204](https://github.com/rapidsai/rapids-cmake/pull/204)) [@bdice](https://github.com/bdice)
+- Add rapids_cython to the html docs ([#197](https://github.com/rapidsai/rapids-cmake/pull/197)) [@robertmaynard](https://github.com/robertmaynard)
+
+## 🚀 New Features
+
+- More robust solution of CMake policy 135 ([#224](https://github.com/rapidsai/rapids-cmake/pull/224)) [@robertmaynard](https://github.com/robertmaynard)
+- Update cuco git tag ([#213](https://github.com/rapidsai/rapids-cmake/pull/213)) [@PointKernel](https://github.com/PointKernel)
+- Revert &quot;Revert &quot;Update nvcomp to 2.3.2 ([#209)&quot; (#210)&quot; (#211](https://github.com/rapidsai/rapids-cmake/pull/209)&quot; (#210)&quot; (#211)) [@vyasr](https://github.com/vyasr)
+- Update nvcomp to 2.3.2 ([#209](https://github.com/rapidsai/rapids-cmake/pull/209)) [@robertmaynard](https://github.com/robertmaynard)
+- rapids_cpm_rmm no longer install when no INSTALL_EXPORT_SET listed ([#202](https://github.com/rapidsai/rapids-cmake/pull/202)) [@robertmaynard](https://github.com/robertmaynard)
+- Adds support for pulling cuCollections using rapids-cmake ([#201](https://github.com/rapidsai/rapids-cmake/pull/201)) [@vyasr](https://github.com/vyasr)
+- Add support for a prefix in Cython module targets ([#198](https://github.com/rapidsai/rapids-cmake/pull/198)) [@vyasr](https://github.com/vyasr)
+
+## 🛠️ Improvements
+
+- `rapids_find_package()` called with explicit version and REQUIRED should fail ([#214](https://github.com/rapidsai/rapids-cmake/pull/214)) [@trxcllnt](https://github.com/trxcllnt)
 
 # rapids-cmake 22.06.00 (7 June 2022)
 
