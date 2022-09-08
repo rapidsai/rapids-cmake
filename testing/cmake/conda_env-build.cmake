@@ -48,6 +48,18 @@ if("$ENV{CONDA_PREFIX}/lib" IN_LIST link_dirs)
   message(FATAL_ERROR "Not expected for env{CONDA_PREFIX} to be in the link dirs of `conda_env`")
 endif()
 
+get_target_property(link_options conda_env INTERFACE_LINK_OPTIONS)
+message(STATUS "link_options: ${link_options}")
+if( NOT "$<HOST_LINK:SHELL:LINKER:-rpath-link=$ENV{BUILD_PREFIX}/lib>" IN_LIST link_options)
+  message(FATAL_ERROR "Expected rpath-link=env{BUILD_PREFIX} to be in the link options of `conda_env`")
+endif()
+if( NOT "$<HOST_LINK:SHELL:LINKER:-rpath-link=$ENV{PREFIX}/lib>" IN_LIST link_options)
+  message(FATAL_ERROR "Expected rpath-link=env{PREFIX} to be in the link options of `conda_env`")
+endif()
+if("$<HOST_LINK:SHELL:LINKER:-rpath-link=$ENV{CONDA_PREFIX}/lib>" IN_LIST link_options)
+  message(FATAL_ERROR "Not expected for rpath-link=env{CONDA_PREFIX} to be in the link options of `conda_env`")
+endif()
+
 # No effect as the target already exists
 set(before_call_value "${CMAKE_PREFIX_PATH}" )
 rapids_cmake_support_conda_env(conda_env MODIFY_PREFIX_PATH)
