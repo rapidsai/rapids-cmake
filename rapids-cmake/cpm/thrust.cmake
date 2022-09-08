@@ -52,11 +52,15 @@ Result Variables
   :cmake:variable:`Thrust_VERSION`    is set to the version of Thrust specified by the versions.json.
 
 #]=======================================================================]
+# cmake-lint: disable=R0915
 function(rapids_cpm_thrust NAMESPACE namespaces_name)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.thrust")
 
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
   rapids_cpm_package_details(Thrust version repository tag shallow exclude)
+
+  include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
+  rapids_cpm_generate_patch_command(Thrust ${version} patch_command)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
   rapids_cpm_find(Thrust ${version} ${ARGN}
@@ -65,7 +69,11 @@ function(rapids_cpm_thrust NAMESPACE namespaces_name)
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
                   GIT_SHALLOW ${shallow}
+                  PATCH_COMMAND ${patch_command}
                   EXCLUDE_FROM_ALL ${exclude})
+
+  include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
+  rapids_cpm_display_patch_status(Thrust)
 
   set(options)
   set(one_value BUILD_EXPORT_SET INSTALL_EXPORT_SET)

@@ -59,6 +59,9 @@ function(rapids_cpm_gtest)
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
   rapids_cpm_package_details(GTest version repository tag shallow exclude)
 
+  include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
+  rapids_cpm_generate_patch_command(GTest ${version} patch_command)
+
   include("${rapids-cmake-dir}/cpm/find.cmake")
   rapids_cpm_find(GTest ${version} ${ARGN}
                   GLOBAL_TARGETS GTest::gtest GTest::gmock GTest::gtest_main GTest::gmock_main
@@ -66,8 +69,12 @@ function(rapids_cpm_gtest)
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
                   GIT_SHALLOW ${shallow}
+                  PATCH_COMMAND ${patch_command}
                   EXCLUDE_FROM_ALL ${exclude}
                   OPTIONS "INSTALL_GTEST ${to_install}")
+
+  include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
+  rapids_cpm_display_patch_status(GTest)
 
   # Propagate up variables that CPMFindPackage provide
   set(GTest_SOURCE_DIR "${GTest_SOURCE_DIR}" PARENT_SCOPE)

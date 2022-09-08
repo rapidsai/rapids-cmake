@@ -60,7 +60,8 @@
           "GIT_REPOSITORY": "1",
           "GIT_TAG": "1",
           "GIT_SHALLOW": "1",
-          "OPTIONS": "+"
+          "OPTIONS": "+",
+          "PATCH_COMMAND": "1"
         }
       },
       "rapids_cpm_init": {

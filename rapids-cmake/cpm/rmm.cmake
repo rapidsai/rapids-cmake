@@ -68,6 +68,9 @@ function(rapids_cpm_rmm)
     set(to_exclude ON)
   endif()
 
+  include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
+  rapids_cpm_generate_patch_command(rmm ${version} patch_command)
+
   include("${rapids-cmake-dir}/cpm/find.cmake")
   rapids_cpm_find(rmm ${version} ${ARGN} {_RAPIDS_UNPARSED_ARGUMENTS}
                   GLOBAL_TARGETS rmm::rmm
@@ -75,8 +78,12 @@ function(rapids_cpm_rmm)
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
                   GIT_SHALLOW ${shallow}
+                  PATCH_COMMAND ${patch_command}
                   EXCLUDE_FROM_ALL ${to_exclude}
                   OPTIONS "BUILD_TESTS OFF" "BUILD_BENCHMARKS OFF")
+
+  include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
+  rapids_cpm_display_patch_status(rmm)
 
   # Propagate up variables that CPMFindPackage provide
   set(rmm_SOURCE_DIR "${rmm_SOURCE_DIR}" PARENT_SCOPE)

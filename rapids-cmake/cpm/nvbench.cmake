@@ -77,6 +77,9 @@ function(rapids_cpm_nvbench)
     set(nvbench_with_nvml "ON")
   endif()
 
+  include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
+  rapids_cpm_generate_patch_command(nvbench ${version} patch_command)
+
   include("${rapids-cmake-dir}/cpm/find.cmake")
   rapids_cpm_find(nvbench ${version} ${ARGN}
                   GLOBAL_TARGETS nvbench::nvbench nvbench::main
@@ -84,9 +87,13 @@ function(rapids_cpm_nvbench)
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
                   GIT_SHALLOW ${shallow}
+                  PATCH_COMMAND ${patch_command}
                   EXCLUDE_FROM_ALL ${exclude}
                   OPTIONS "NVBench_ENABLE_NVML ${nvbench_with_nvml}" "NVBench_ENABLE_EXAMPLES OFF"
                           "NVBench_ENABLE_TESTING OFF")
+
+  include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
+  rapids_cpm_display_patch_status(nvbench)
 
   # Propagate up variables that CPMFindPackage provide
   set(nvbench_SOURCE_DIR "${nvbench_SOURCE_DIR}" PARENT_SCOPE)

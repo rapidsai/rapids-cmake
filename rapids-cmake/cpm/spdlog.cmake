@@ -59,6 +59,9 @@ function(rapids_cpm_spdlog)
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
   rapids_cpm_package_details(spdlog version repository tag shallow exclude)
 
+  include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
+  rapids_cpm_generate_patch_command(spdlog ${version} patch_command)
+
   include("${rapids-cmake-dir}/cpm/find.cmake")
   rapids_cpm_find(spdlog ${version} ${ARGN}
                   GLOBAL_TARGETS spdlog::spdlog spdlog::spdlog_header_only
@@ -66,8 +69,12 @@ function(rapids_cpm_spdlog)
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
                   GIT_SHALLOW ${shallow}
+                  PATCH_COMMAND ${patch_command}
                   EXCLUDE_FROM_ALL ${exclude}
                   OPTIONS "SPDLOG_INSTALL ${to_install}")
+
+  include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
+  rapids_cpm_display_patch_status(spdlog)
 
   # Propagate up variables that CPMFindPackage provide
   set(spdlog_SOURCE_DIR "${spdlog_SOURCE_DIR}" PARENT_SCOPE)
