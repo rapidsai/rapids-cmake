@@ -70,10 +70,12 @@ include(${CMAKE_ROOT}/Modules/FindPackageHandleStandardArgs.cmake)
 
 if(@_RAPIDS_PKG_NAME@_IS_HEADER_ONLY)
   find_package_handle_standard_args(@_RAPIDS_PKG_NAME@
+                                    FOUND_VAR @_RAPIDS_PKG_NAME@_FOUND
                                     REQUIRED_VARS @_RAPIDS_PKG_NAME@_INCLUDE_DIR
                                     VERSION_VAR @_RAPIDS_VERSION@)
 else()
   find_package_handle_standard_args(@_RAPIDS_PKG_NAME@
+                                    FOUND_VAR @_RAPIDS_PKG_NAME@_FOUND
                                     REQUIRED_VARS @_RAPIDS_PKG_NAME@_LIBRARY @_RAPIDS_PKG_NAME@_INCLUDE_DIR
                                     VERSION_VAR @_RAPIDS_VERSION@)
 endif()
