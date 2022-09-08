@@ -56,6 +56,14 @@ Result Variables
 function(rapids_cpm_thrust NAMESPACE namespaces_name)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.thrust")
 
+  set(to_install OFF)
+  if(INSTALL_EXPORT_SET IN_LIST ARGN)
+    set(to_install ON)
+    # Make sure we install thrust into the `include/rapids` subdirectory instead of the default
+    include(GNUInstallDirs)
+    set(CMAKE_INSTALL_INCLUDEDIR "${CMAKE_INSTALL_INCLUDEDIR}/rapids")
+  endif()
+
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
   rapids_cpm_package_details(Thrust version repository tag shallow exclude)
 
@@ -70,7 +78,8 @@ function(rapids_cpm_thrust NAMESPACE namespaces_name)
                   GIT_TAG ${tag}
                   GIT_SHALLOW ${shallow}
                   PATCH_COMMAND ${patch_command}
-                  EXCLUDE_FROM_ALL ${exclude})
+                  EXCLUDE_FROM_ALL ${exclude}
+                  OPTIONS "THRUST_ENABLE_INSTALL_RULES ${to_install}")
 
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
   rapids_cpm_display_patch_status(Thrust)
@@ -85,25 +94,6 @@ function(rapids_cpm_thrust NAMESPACE namespaces_name)
     include("${rapids-cmake-dir}/export/find_package_root.cmake")
     rapids_export_find_package_root(BUILD Thrust "${Thrust_SOURCE_DIR}/cmake"
                                     ${_RAPIDS_BUILD_EXPORT_SET})
-  endif()
-
-  if(Thrust_SOURCE_DIR AND _RAPIDS_INSTALL_EXPORT_SET AND NOT exclude)
-    # Make sure we install thrust into the `include/rapids` subdirectory instead of the default
-    include(GNUInstallDirs)
-    set(CMAKE_INSTALL_INCLUDEDIR "${CMAKE_INSTALL_INCLUDEDIR}/rapids")
-
-    # Thrust 1.17 has a bug where it doesn't generate proper exclude rules for the
-    # `[cub|thrust]-header-search` files, which causes the build tree version to be installed
-    # instead of the install version
-    if(NOT EXISTS "${Thrust_BINARY_DIR}/cmake/ThrustInstallRulesForRapids.cmake")
-      file(READ "${Thrust_SOURCE_DIR}/cmake/ThrustInstallRules.cmake" contents)
-      string(REPLACE "PATTERN cub-header-search EXCLUDE" "REGEX cub-header-search.* EXCLUDE"
-                     contents "${contents}")
-      string(REPLACE "PATTERN thrust-header-search EXCLUDE" "REGEX thrust-header-search.* EXCLUDE"
-                     contents "${contents}")
-      file(WRITE "${Thrust_BINARY_DIR}/cmake/ThrustInstallRulesForRapids.cmake" ${contents})
-    endif()
-    include("${Thrust_BINARY_DIR}/cmake/ThrustInstallRulesForRapids.cmake")
   endif()
 
   if(NOT TARGET ${namespaces_name}::Thrust)
