@@ -28,6 +28,10 @@ rapids_find_generate_module( RapidsTest
 
 find_package(RapidsTest REQUIRED)
 
+if(NOT RapidsTest_FOUND)
+  message(FATAL_ERROR "RapidsTest_FOUND should be set to TRUE")
+endif()
+
 if(NOT TARGET RapidsTest::RapidsTest)
   message(FATAL_ERROR "RapidsTest target should be generated")
 endif()
