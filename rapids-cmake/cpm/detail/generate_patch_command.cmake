@@ -51,8 +51,8 @@ function(rapids_cpm_generate_patch_command package_name version patch_command)
   endif()
 
   # Parse required fields
-  function(rapids_cpm_json_get_value jdata name)
-    string(JSON value ERROR_VARIABLE have_error GET "${jdata}" ${name})
+  function(rapids_cpm_json_get_value json_data_ name)
+    string(JSON value ERROR_VARIABLE have_error GET "${json_data_}" ${name})
     if(NOT have_error)
       set(${name} ${value} PARENT_SCOPE)
     endif()
