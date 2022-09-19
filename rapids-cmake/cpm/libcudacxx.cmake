@@ -54,6 +54,9 @@ function(rapids_cpm_libcudacxx)
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
   rapids_cpm_package_details(libcudacxx version repository tag shallow exclude)
 
+  include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
+  rapids_cpm_generate_patch_command(libcudacxx ${version} patch_command)
+
   include("${rapids-cmake-dir}/cpm/find.cmake")
   rapids_cpm_find(libcudacxx ${version} ${ARGN}
                   GLOBAL_TARGETS libcudacxx::libcudacxx
@@ -61,7 +64,11 @@ function(rapids_cpm_libcudacxx)
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
                   GIT_SHALLOW ${shallow}
+                  PATCH_COMMAND ${patch_command}
                   EXCLUDE_FROM_ALL ${exclude})
+
+  include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
+  rapids_cpm_display_patch_status(libcudacxx)
 
   set(options)
   set(one_value BUILD_EXPORT_SET INSTALL_EXPORT_SET)

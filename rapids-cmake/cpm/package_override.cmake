@@ -85,7 +85,15 @@ function(rapids_cpm_package_override filepath)
     include(FetchContent)
     include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
     rapids_cpm_package_details(${package_name} version repository tag shallow exclude)
-    FetchContent_Declare(${package_name} GIT_REPOSITORY ${repository} GIT_TAG ${tag})
+
+    include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
+    rapids_cpm_generate_patch_command(${package_name} ${version} patch_command)
+
+    FetchContent_Declare(${package_name}
+                         GIT_REPOSITORY ${repository}
+                         GIT_TAG ${tag}
+                         GIT_SHALLOW ${shallow}
+                         PATCH_COMMAND ${patch_command} EXCLUDE_FROM_ALL ${exclude})
 
   endif()
 endfunction()
