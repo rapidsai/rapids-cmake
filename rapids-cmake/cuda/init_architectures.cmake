@@ -21,15 +21,15 @@ rapids_cuda_init_architectures
 
 .. versionadded:: v21.06.00
 
-Extends :cmake:variable:`CMAKE_CUDA_ARCHITECTURES` to include support
-for `ALL` and `NATIVE` to make CUDA architecture compilation easier.
+Extends :cmake:variable:`CMAKE_CUDA_ARCHITECTURES <cmake:variable:CMAKE_CUDA_ARCHITECTURES>`
+to include support for `ALL` and `NATIVE` to make CUDA architecture compilation easier.
 
   .. code-block:: cmake
 
     rapids_cuda_init_architectures(<project_name>)
 
 Establishes what CUDA architectures that will be compiled for.
-Parses the :cmake:variable:`CMAKE_CUDA_ARCHITECTURES` for special
+Parses the :cmake:variable:`CMAKE_CUDA_ARCHITECTURES <cmake:variable:CMAKE_CUDA_ARCHITECTURES>` for special
 values `ALL`, `NATIVE` and `""`.
 
 .. note::
@@ -37,16 +37,19 @@ values `ALL`, `NATIVE` and `""`.
 
   Will automatically call :cmake:command:`rapids_cuda_set_architectures` immediately
   after :cmake:command:`project() <cmake:command:project>` establishing the correct values for
-  :cmake:variable:`CMAKE_CUDA_ARCHITECTURES`.
+  :cmake:variable:`CMAKE_CUDA_ARCHITECTURES <cmake:variable:CMAKE_CUDA_ARCHITECTURES>`.
 
 ``project_name``
   Name of the project
 
 ``NATIVE`` or ``""``:
-  When passed will compile for all GPU architectures present on the current machine
+  When passed as the value for :cmake:variable:`CMAKE_CUDA_ARCHITECTURES <cmake:variable:CMAKE_CUDA_ARCHITECTURES>`
+  will compile for all GPU architectures present on the current machine.
 
-``ALL``:
-  When passed will compile for all supported RAPIDS GPU architectures
+``ALL`` or no :cmake:variable:`CMAKE_CUDA_ARCHITECTURES <cmake:variable:CMAKE_CUDA_ARCHITECTURES>` and
+  :cmake:envvar:`ENV{CUDAARCHS} <cmake:envvar:CUDAARCHS>`:
+  When passed as the value for :cmake:variable:`CMAKE_CUDA_ARCHITECTURES <cmake:variable:CMAKE_CUDA_ARCHITECTURES>`
+  will compile for all supported RAPIDS GPU architectures.
 
 
 Example on how to properly use :cmake:command:`rapids_cuda_init_architectures`:
@@ -78,7 +81,12 @@ function(rapids_cuda_init_architectures project_name)
 
   # This needs to be run before enabling the CUDA language since RAPIDS supports the magic string of
   # "ALL"
-  if(NOT DEFINED CMAKE_CUDA_ARCHITECTURES OR CMAKE_CUDA_ARCHITECTURES STREQUAL "ALL")
+  set(no_user_cuda_archs TRUE)
+  if(DEFINED ENV{CUDAARCHS} OR DEFINED CMAKE_CUDA_ARCHITECTURES)
+    set(no_user_cuda_archs FALSE)
+  endif()
+
+  if(no_user_cuda_archs OR CMAKE_CUDA_ARCHITECTURES STREQUAL "ALL")
     set(CMAKE_CUDA_ARCHITECTURES OFF PARENT_SCOPE)
     set(load_file "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/invoke_set_all_architectures.cmake")
   elseif(CMAKE_CUDA_ARCHITECTURES STREQUAL "" OR CMAKE_CUDA_ARCHITECTURES STREQUAL "NATIVE")
