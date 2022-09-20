@@ -29,7 +29,7 @@ Establish what CUDA runtime library should be propagated
 
   Establishes what CUDA runtime will be used, if not already explicitly
   specified, via the :cmake:variable:`CMAKE_CUDA_RUNTIME_LIBRARY <cmake:variable:CMAKE_CUDA_RUNTIME_LIBRARY>`
-  variable. We also set :cmake:variable:`CUDA_USE_STATIC_CUDA_RUNTIME` to control
+  variable. We also set :cmake:variable:`CUDA_USE_STATIC_CUDA_RUNTIME <cmake:module:FindCUDA>` to control
   targets using the legacy `FindCUDA.cmake`
 
   When `USE_STATIC TRUE` is provided all targets will link to a
