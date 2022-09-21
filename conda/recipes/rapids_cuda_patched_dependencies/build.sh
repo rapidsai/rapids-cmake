@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2019, NVIDIA CORPORATION.
+# Copyright (c) 2022, NVIDIA CORPORATION.
 
 # Script assumes the script is executed from the root of the repo directory
 
@@ -7,7 +7,7 @@ REPODIR=$(cd $(dirname $0); pwd)
 SOURCE_DIR=${REPODIR}/conda/recipes/rapids_cuda_patched_dependencies
 BUILD_DIR=${BUILD_DIR:=${REPODIR}/build}
 
-INSTALL_PREFIX=${INSTALL_PREFIX:=${PREFIX:=${CONDA_PREFIX:=$LIBRMM_BUILD_DIR/install}}}
+INSTALL_PREFIX=${INSTALL_PREFIX:=${PREFIX:=${CONDA_PREFIX:=$BUILD_DIR/install}}}
 export PARALLEL_LEVEL=${PARALLEL_LEVEL:-4}
 
 for bd in ${BUILD_DIRS}; do
