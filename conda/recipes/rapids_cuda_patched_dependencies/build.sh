@@ -2,7 +2,7 @@
 
 # Script assumes the script is executed from the root of the repo directory
 
-REPODIR=$(cd $(dirname $0); pwd)
+REPO_DIR=$(cd $(dirname $0); pwd)
 
 SOURCE_DIR=${REPODIR}/conda/recipes/rapids_cuda_patched_dependencies
 BUILD_DIR=${BUILD_DIR:=${REPODIR}/build}
