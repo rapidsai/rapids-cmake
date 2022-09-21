@@ -23,7 +23,6 @@ build:
 requirements:
   build:
     - cmake>=3.20.1,!=3.23.0
-    - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('cuda') }} {{ cuda_version }}
     - sysroot_{{ target_platform }} {{ sysroot_version }}
