@@ -4,8 +4,8 @@
 
 REPO_DIR=$(cd $(dirname $0); pwd)
 
-SOURCE_DIR=${REPODIR}/conda/recipes/rapids_core_dependencies
-BUILD_DIR=${BUILD_DIR:=${REPODIR}/build}
+SOURCE_DIR=${REPO_DIR}/conda/recipes/rapids_core_dependencies
+BUILD_DIR=${BUILD_DIR:=${REPO_DIR}/build}
 
 INSTALL_PREFIX=${INSTALL_PREFIX:=${PREFIX:=${CONDA_PREFIX:=$BUILD_DIR/install}}}
 export PARALLEL_LEVEL=${PARALLEL_LEVEL:-4}
