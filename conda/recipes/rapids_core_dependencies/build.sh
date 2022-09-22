@@ -4,7 +4,7 @@
 
 REPO_DIR=$(cd $(dirname $0); pwd)
 
-SOURCE_DIR=${REPODIR}/conda/recipes/rapids_cuda_patched_dependencies
+SOURCE_DIR=${REPODIR}/conda/recipes/rapids_core_dependencies
 BUILD_DIR=${BUILD_DIR:=${REPODIR}/build}
 
 INSTALL_PREFIX=${INSTALL_PREFIX:=${PREFIX:=${CONDA_PREFIX:=$BUILD_DIR/install}}}

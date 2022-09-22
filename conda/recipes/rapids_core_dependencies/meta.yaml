@@ -6,7 +6,7 @@
 {% set cuda_major=cuda_version.split('.')[0] %}
 
 package:
-  name: rapids_cuda_patched_dependencies
+  name: rapids_core_dependencies
   version: {{ version }}
 
 source:
