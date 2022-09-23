@@ -1,3 +1,7 @@
+# rapids-cmake 22.12.00 (Date TBD)
+
+Please see https://github.com/rapidsai/rapids-cmake/releases/tag/v22.12.00a for the latest changes to this development branch.
+
 # rapids-cmake 22.08.00 (17 Aug 2022)
 
 ## 🐛 Bug Fixes
