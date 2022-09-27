@@ -59,7 +59,7 @@ $ORIGIN.
 
 Result Variables
 ^^^^^^^^^^^^^^^^
-  :cmake:variable:`_RAPIDS_CYTHON_CREATED_TARGETS` will be set to a list of
+  :cmake:variable:`RAPIDS_CYTHON_CREATED_TARGETS` will be set to a list of
   targets created by this function.
 
 #]=======================================================================]
@@ -123,5 +123,5 @@ function(rapids_cython_create_modules)
     list(APPEND CREATED_TARGETS "${cython_module}")
   endforeach()
 
-  set(_RAPIDS_CYTHON_CREATED_TARGETS ${CREATED_TARGETS} PARENT_SCOPE)
+  set(RAPIDS_CYTHON_CREATED_TARGETS ${CREATED_TARGETS} PARENT_SCOPE)
 endfunction()
