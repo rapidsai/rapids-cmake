@@ -34,7 +34,14 @@
     "Thrust" : {
       "version" : "1.17.2",
       "git_url" : "https://github.com/NVIDIA/thrust.git",
-      "git_tag" : "${version}"
+      "git_tag" : "${version}",
+      "patches" : [
+        {
+          "file" : "Thrust/install_rules.diff",
+          "issue" : "Thrust 1.X installs incorrect files [https://github.com/NVIDIA/thrust/issues/1790]",
+          "fixed_in" : "2.0"
+        }
+      ]
     },
     "libcudacxx" : {
       "version" : "1.8.0",

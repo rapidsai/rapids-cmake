@@ -93,17 +93,6 @@ function(rapids_cpm_nvcomp)
     include("${rapids-cmake-dir}/cpm/detail/get_proprietary_binary.cmake")
     rapids_cpm_get_proprietary_binary(nvcomp ${version})
 
-    # Remove incorrect public dependency on the static cuda runtime We have to modify the
-    # nvcomp-targets.cmake since these entries will cause a failure when rapids_cpm_find is called.
-    if(nvcomp_proprietary_binary AND ${version} VERSION_EQUAL "2.3.2")
-      set(target_file "${nvcomp_ROOT}/lib/cmake/nvcomp/nvcomp-targets.cmake")
-      if(EXISTS "${target_file}")
-        file(READ "${target_file}" file_contents)
-        string(REPLACE "CUDA::cudart_static" "" file_contents "${file_contents}")
-        file(WRITE "${target_file}" "${file_contents}")
-      endif()
-    endif()
-
     # Record the nvcomp_DIR so that if USE_PROPRIETARY_BINARY is disabled we can safely clear the
     # nvcomp_DIR value
     if(nvcomp_proprietary_binary)
@@ -120,6 +109,14 @@ function(rapids_cpm_nvcomp)
     endif()
   endif()
 
+  include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
+  rapids_cpm_generate_patch_command(nvcomp ${version} patch_command)
+
+  # Apply any patch commands to the proprietary binary
+  if(nvcomp_proprietary_binary AND patch_command)
+    execute_process(COMMAND ${patch_command} WORKING_DIRECTORY ${nvcomp_ROOT})
+  endif()
+
   include("${rapids-cmake-dir}/cpm/find.cmake")
   rapids_cpm_find(nvcomp ${version} ${_RAPIDS_UNPARSED_ARGUMENTS}
                   GLOBAL_TARGETS nvcomp::nvcomp
@@ -128,8 +125,12 @@ function(rapids_cpm_nvcomp)
                   GIT_TAG ${tag}
                   GIT_SHALLOW ${shallow}
                   EXCLUDE_FROM_ALL ${to_exclude}
+                  PATCH_COMMAND ${patch_command}
                   OPTIONS "BUILD_STATIC ON" "BUILD_TESTS OFF" "BUILD_BENCHMARKS OFF"
                           "BUILD_EXAMPLES OFF")
+
+  include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
+  rapids_cpm_display_patch_status(nvcomp)
 
   # provice consistent targets between a found nvcomp and one building from source
   if(NOT TARGET nvcomp::nvcomp AND TARGET nvcomp)
