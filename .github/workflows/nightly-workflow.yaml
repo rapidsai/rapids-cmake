@@ -1,0 +1,32 @@
+name: nightly
+
+on:
+  workflow_call:
+    inputs:
+      REF:
+        required: true
+        type: string
+
+jobs:
+  cpp-build:
+    secrets: inherit
+    uses: rapidsai/shared-action-workflows/.github/workflows/conda-cpp-matrix-build.yaml@main
+    with:
+      build_type: nightly
+      repo: rapidsai/rapids-cmake
+      ref: ${{ inputs.REF }}
+  cpp-tests:
+    secrets: inherit
+    uses: rapidsai/shared-action-workflows/.github/workflows/conda-cpp-tests.yaml@main
+    with:
+      build_type: nightly
+      repo: rapidsai/rapids-cmake
+      ref: ${{ inputs.REF }}
+  upload-conda:
+    needs: [cpp-build, cpp-tests]
+    secrets: inherit
+    uses: rapidsai/shared-action-workflows/.github/workflows/conda-upload-packages.yaml@main
+    with:
+      build_type: nightly
+      repo: rapidsai/rapids-cmake
+      ref: ${{ inputs.REF }}

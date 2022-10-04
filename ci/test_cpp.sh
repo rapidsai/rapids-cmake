@@ -1,0 +1,31 @@
+#!/bin/bash
+
+#!/bin/bash
+
+set -euo pipefail
+
+rapids-logger "Create test conda environment"
+. /opt/conda/etc/profile.d/conda.sh
+
+rapids-dependency-file-generator \
+  --generate conda \
+  --file_key test \
+  --matrix "cuda=${RAPIDS_CUDA_VERSION%.*};arch=$(arch);py=${RAPIDS_PY_VERSION}" > env.yaml
+
+rapids-mamba-retry env create --force -f env.yaml -n test
+conda activate test
+
+
+rapids-logger "Check GPU usage"
+nvidia-smi
+
+set +e
+
+rapids-logger "Begin cpp tests"
+cmake -S testing -B build
+
+cd build
+ctest
+exitcode=$?
+
+exit ${SUITEERROR}
