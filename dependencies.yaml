@@ -38,13 +38,11 @@ dependencies:
   conda:
     common:
       build:
-        - {{ compiler('c') }}
-        - {{ compiler('cxx') }}
-        - {{ compiler('cuda') }}
+        - c-compiler
+        - cxx-compiler
       test:
-        - {{ compiler('c') }}
-        - {{ compiler('cxx') }}
-        - {{ compiler('cuda') }}
+        - c-compiler
+        - cxx-compiler
     specific:
       - matrix:
           py: "3.8"
