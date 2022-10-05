@@ -29,8 +29,6 @@ dependencies:
       develop:
         - cmakelang=0.6.13
       test:
-        - {{ compiler('c') }}
-        - {{ compiler('cxx') }}
         - cmake>=3.23.1
         - cython>=0.29,<0.30
         - python>=3.8,<3.10
@@ -38,6 +36,15 @@ dependencies:
         - libpng
         - zlib
   conda:
+    common:
+      build:
+        - {{ compiler('c') }}
+        - {{ compiler('cxx') }}
+        - {{ compiler('cuda') }} {{ cuda_version }}
+      test:
+        - {{ compiler('c') }}
+        - {{ compiler('cxx') }}
+        - {{ compiler('cuda') }} {{ cuda_version }}
     specific:
       - matrix:
           py: "3.8"
