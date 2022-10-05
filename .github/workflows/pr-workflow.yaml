@@ -15,6 +15,7 @@ jobs:
     uses: rapidsai/shared-action-workflows/.github/workflows/pr-builder.yaml@main
   checks:
     secrets: inherit
+    enable_check_generated_files: false
     uses: rapidsai/shared-action-workflows/.github/workflows/checks.yaml@main
   conda-cpp-build:
     secrets: inherit
