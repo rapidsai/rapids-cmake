@@ -13,13 +13,13 @@ rapids-dependency-file-generator \
   --matrix "cuda=${RAPIDS_CUDA_VERSION%.*};arch=$(arch);py=${RAPIDS_PY_VERSION}" > env.yaml
 
 rapids-mamba-retry env create --force -f env.yaml -n test
+set +eu
 conda activate test
+set -u
 
 
 rapids-logger "Check GPU usage"
 nvidia-smi
-
-set +e
 
 rapids-logger "Begin cpp tests"
 cmake -S testing -B build
