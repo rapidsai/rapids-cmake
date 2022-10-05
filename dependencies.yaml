@@ -40,11 +40,11 @@ dependencies:
       build:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
-        - {{ compiler('cuda') }} {{ cuda_version }}
+        - {{ compiler('cuda') }}
       test:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
-        - {{ compiler('cuda') }} {{ cuda_version }}
+        - {{ compiler('cuda') }}
     specific:
       - matrix:
           py: "3.8"
