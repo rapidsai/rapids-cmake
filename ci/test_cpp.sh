@@ -28,4 +28,4 @@ cd build
 ctest --output-on-failure
 exitcode=$?
 
-exit ${SUITEERROR}
+exit ${exitcode}
