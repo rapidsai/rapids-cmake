@@ -16,7 +16,8 @@ jobs:
   checks:
     secrets: inherit
     uses: rapidsai/shared-action-workflows/.github/workflows/checks.yaml@main
-    enable_check_generated_files: false
+    with:
+      enable_check_generated_files: false
   conda-cpp-build:
     secrets: inherit
     uses: rapidsai/shared-action-workflows/.github/workflows/conda-cpp-matrix-build.yaml@main
