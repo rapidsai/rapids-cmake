@@ -57,10 +57,13 @@ Result Variables
 function(rapids_cuda_set_architectures mode)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cuda.set_architectures")
 
-  set(supported_archs "60" "70" "75" "80" "86")
+  set(supported_archs "60" "70" "75" "80" "86" "90")
 
   if(CMAKE_CUDA_COMPILER_ID STREQUAL "NVIDIA" AND CMAKE_CUDA_COMPILER_VERSION VERSION_LESS 11.1.0)
     list(REMOVE_ITEM supported_archs "86")
+  endif()
+  if(CMAKE_CUDA_COMPILER_ID STREQUAL "NVIDIA" AND CMAKE_CUDA_COMPILER_VERSION VERSION_LESS 11.8.0)
+    list(REMOVE_ITEM supported_archs "90")
   endif()
 
   if(${mode} STREQUAL "ALL")
