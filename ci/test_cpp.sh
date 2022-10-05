@@ -25,7 +25,7 @@ rapids-logger "Begin cpp tests"
 cmake -S testing -B build
 
 cd build
-ctest
+ctest --output-on-failure
 exitcode=$?
 
 exit ${SUITEERROR}
