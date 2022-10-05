@@ -12,9 +12,11 @@ rapids-dependency-file-generator \
   --matrix "cuda=${RAPIDS_CUDA_VERSION%.*};arch=$(arch);py=${RAPIDS_PY_VERSION}" > env.yaml
 
 rapids-mamba-retry env create --force -f env.yaml -n checks
-conda activate checks
 
-set +e
+set +eu
+conda activate checks
+set -u
+
 
 CMAKE_FILES=(`find  rapids-cmake/ | grep -E "^.*\.cmake?$|^.*/CMakeLists.txt$"`)
 CMAKE_FILES+=("CMakeLists.txt")
