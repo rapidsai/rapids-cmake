@@ -25,7 +25,7 @@ rapids-logger "Begin cpp tests"
 cmake -S testing -B build
 
 cd build
-ctest --output-on-failure
+ctest --schedule-random --output-on-failure
 exitcode=$?
 
 exit ${exitcode}
