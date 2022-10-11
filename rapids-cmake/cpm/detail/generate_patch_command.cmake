@@ -51,11 +51,11 @@ function(rapids_cpm_generate_patch_command package_name version patch_command)
   endif()
   if(NOT no_override_patch)
     set(json_data "${override_json_data}")
-    set(json_path "${override_json_path}" )
+    set(json_path "${override_json_path}")
   endif()
 
-  # Need the current_json_dir variable populated before we parse
-  # any json entries so that we properly evalute this placeholder
+  # Need the current_json_dir variable populated before we parse any json entries so that we
+  # properly evalute this placeholder
   cmake_path(GET json_path PARENT_PATH current_json_dir)
 
   # Parse required fields
