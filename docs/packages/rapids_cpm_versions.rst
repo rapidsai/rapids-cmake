@@ -48,7 +48,7 @@ as needed.
 
     Supports the following placeholders:
         - ``${rapids-cmake-version}`` will be evulated to 'major.minor' of the current rapids-cmake cal-ver value.
-        - ``${version}`` will be evulated to the contents of the ``version`` field.
+        - ``${version}`` will be evaulated to the contents of the ``version`` field.
 
 ``git_shallow``
 
@@ -88,6 +88,9 @@ as needed.
             A required string representing the git diff ( .diff ) or patch ( .patch ) to apply.
             Absolute and relative paths are supported. Relative paths are
             evaluated in relation to the `rapids-cmake/cpm/patches` directory.
+
+            Supports the following placeholders:
+                - ``${current_json_dir}`` will be evaulated to the absolute path to the directory holding the current json file
 
         ``issue``
             A required string that explains the need for the patch. Preference is for the
