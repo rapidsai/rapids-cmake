@@ -48,7 +48,7 @@ as needed.
 
     Supports the following placeholders:
         - ``${rapids-cmake-version}`` will be evulated to 'major.minor' of the current rapids-cmake cal-ver value.
-        - ``${version}`` will be evaulated to the contents of the ``version`` field.
+        - ``${version}`` will be evaluated to the contents of the ``version`` field.
 
 ``git_shallow``
 
