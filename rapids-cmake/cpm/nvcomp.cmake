@@ -95,13 +95,28 @@ function(rapids_cpm_nvcomp)
 
     # Remove incorrect public dependency on the static cuda runtime We have to modify the
     # nvcomp-targets.cmake since these entries will cause a failure when rapids_cpm_find is called.
-    if(nvcomp_proprietary_binary)
+    if(nvcomp_proprietary_binary AND ${version} VERSION_EQUAL "2.3.2")
       set(target_file "${nvcomp_ROOT}/lib/cmake/nvcomp/nvcomp-targets.cmake")
       if(EXISTS "${target_file}")
         file(READ "${target_file}" file_contents)
         string(REPLACE "CUDA::cudart_static" "" file_contents "${file_contents}")
         file(WRITE "${target_file}" "${file_contents}")
       endif()
+    endif()
+
+    # Record the nvcomp_DIR so that if USE_PROPRIETARY_BINARY is disabled we can safely clear the
+    # nvcomp_DIR value
+    if(nvcomp_proprietary_binary)
+      set(nvcomp_proprietary_binary_dir "${nvcomp_ROOT}/lib/cmake/nvcomp")
+      cmake_path(NORMAL_PATH nvcomp_proprietary_binary_dir)
+      set(rapids_cpm_nvcomp_proprietary_binary_dir "${nvcomp_proprietary_binary_dir}"
+          CACHE INTERNAL "nvcomp proprietary location")
+    endif()
+  elseif(DEFINED nvcomp_DIR)
+    cmake_path(NORMAL_PATH nvcomp_DIR)
+    if(nvcomp_DIR STREQUAL rapids_cpm_nvcomp_proprietary_binary_dir)
+      unset(nvcomp_DIR)
+      unset(nvcomp_DIR CACHE)
     endif()
   endif()
 

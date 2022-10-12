@@ -42,7 +42,7 @@ function(rapids_cpm_download)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.download")
 
   # When changing version verify no new variables needs to be propagated
-  set(CPM_DOWNLOAD_VERSION 0.35.0)
+  set(CPM_DOWNLOAD_VERSION 0.35.6)
 
   if(CPM_SOURCE_CACHE)
     # Expand relative path. This is important if the provided path contains a tilde (~)

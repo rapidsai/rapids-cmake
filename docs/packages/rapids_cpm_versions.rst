@@ -75,11 +75,36 @@ as needed.
 
     If no such field exists the default is `false` for default packages, and `true` for any package that has an override.
 
+``patches``
+    An optional list of dictionary sets of git patches to apply to the project
+    when it is built from source.
+
+    .. literalinclude:: /packages/patches.json
+        :language: json
+
+    Each dictonary in the array of patches contains the following fields:
+
+        ``file``
+            A required string representing the git diff ( .diff ) or patch ( .patch ) to apply.
+            Absolute and relative paths are supported. Relative paths are
+            evaluated in relation to the `rapids-cmake/cpm/patches` directory.
+
+        ``issue``
+            A required string that explains the need for the patch. Preference is for the
+            string to also contain the URL to the upstream issue or PR that
+            this patch addresses.
+
+        ``fixed_in``
+            A required entry that represents which version this patch
+            is no longer needed in. If this patch is required for all
+            versions an empty string should be supplied.
+
 ``proprietary_binary``
 
     An optional dictionary of cpu architecture and operating system keys to url values that represents a download for a pre-built proprietary version of the library.
     If a matching key exists the binary will be used instead of the specified git url and tag.
-    To determine the correct key, CMake will query for a key that matches the lower case value of `<arch>-<os>` where `arch` maps to :cmake:variable:`CMAKE_SYSTEM_PROCESSOR` and `os` maps to :cmake:variable:`CMAKE_SYSTEM_NAME`.
+    To determine the correct key, CMake will query for a key that matches the lower case value of `<arch>-<os>` where `arch` maps to
+    :cmake:variable:`CMAKE_SYSTEM_PROCESSOR <cmake:variable:CMAKE_SYSTEM_PROCESSOR>` and `os` maps to :cmake:variable:`CMAKE_SYSTEM_NAME <cmake:variable:CMAKE_SYSTEM_NAME>`.
 
     If no such key exists the request to use a `proprietary_binary` will be ignored.
 

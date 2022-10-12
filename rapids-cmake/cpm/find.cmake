@@ -27,6 +27,7 @@ tracking of these dependencies for correct export support.
 .. code-block:: cmake
 
   rapids_cpm_find(<PackageName> <version>
+                  [COMPONENTS <components...>]
                   [GLOBAL_TARGETS <targets...>]
                   [BUILD_EXPORT_SET <export-name>]
                   [INSTALL_EXPORT_SET <export-name>]
@@ -49,6 +50,12 @@ consistency. List all targets used by your project in `GLOBAL_TARGET`.
 
 ``version``
   Version of the package you would like CPM to find.
+
+``COMPONENTS``
+  .. versionadded:: v22.10.00
+
+  A list of required components that are required to be found for this
+  package to be considered valid when doing a local search.
 
 ``GLOBAL_TARGETS``
   Which targets from this package should be made global. This information
@@ -124,11 +131,12 @@ Example on how to use :cmake:command:`rapids_cpm_find` to include common project
 
 
 #]=======================================================================]
+# cmake-lint: disable=R0912,R0915
 function(rapids_cpm_find name version)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.find")
   set(options CPM_ARGS)
   set(one_value BUILD_EXPORT_SET INSTALL_EXPORT_SET)
-  set(multi_value GLOBAL_TARGETS)
+  set(multi_value COMPONENTS GLOBAL_TARGETS)
   cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
   if(NOT DEFINED _RAPIDS_CPM_ARGS)
@@ -145,6 +153,13 @@ function(rapids_cpm_find name version)
     endforeach()
   endif()
 
+  if(_RAPIDS_COMPONENTS)
+    # We need to pass the set of components as a space separated string and not a list
+    string(REPLACE ";" " " _RAPIDS_COMPONENTS "${_RAPIDS_COMPONENTS}")
+    list(APPEND _RAPIDS_UNPARSED_ARGUMENTS "FIND_PACKAGE_ARGUMENTS"
+         "COMPONENTS ${_RAPIDS_COMPONENTS}")
+  endif()
+
   if(package_needs_to_be_added)
     if(CPM_${name}_SOURCE)
       CPMAddPackage(NAME ${name} VERSION ${version} ${_RAPIDS_UNPARSED_ARGUMENTS})
@@ -159,26 +174,29 @@ function(rapids_cpm_find name version)
     endif()
   endif()
 
-  set(extra_info)
+  set(_rapids_extra_info)
   if(_RAPIDS_GLOBAL_TARGETS)
     include("${rapids-cmake-dir}/cmake/make_global.cmake")
     rapids_cmake_make_global(_RAPIDS_GLOBAL_TARGETS)
 
-    set(extra_info "GLOBAL_TARGETS")
-    list(APPEND extra_info ${_RAPIDS_GLOBAL_TARGETS})
+    list(APPEND _rapids_extra_info "GLOBAL_TARGETS" ${_RAPIDS_GLOBAL_TARGETS})
   endif()
 
   if(_RAPIDS_BUILD_EXPORT_SET)
     include("${rapids-cmake-dir}/export/cpm.cmake")
     rapids_export_cpm(BUILD ${name} ${_RAPIDS_BUILD_EXPORT_SET}
                       CPM_ARGS NAME ${name} VERSION ${version} ${_RAPIDS_UNPARSED_ARGUMENTS}
-                               ${extra_info})
+                               ${_rapids_extra_info})
   endif()
 
   if(_RAPIDS_INSTALL_EXPORT_SET)
     include("${rapids-cmake-dir}/export/package.cmake")
+
+    if(_RAPIDS_COMPONENTS)
+      list(APPEND _rapids_extra_info "COMPONENTS" ${_RAPIDS_COMPONENTS})
+    endif()
     rapids_export_package(INSTALL ${name} ${_RAPIDS_INSTALL_EXPORT_SET} VERSION ${version}
-                                                                        ${extra_info})
+                                                                        ${_rapids_extra_info})
   endif()
 
   # Propagate up variables that CPMFindPackage provide

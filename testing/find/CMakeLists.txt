@@ -17,8 +17,13 @@ add_cmake_config_test( rapids-find.cmake )
 
 add_cmake_config_test( find_package-no-variable-leak.cmake )
 
+add_cmake_config_test( find_package-components )
+add_cmake_config_test( find_package-components-failed.cmake )
+
 add_cmake_config_test( find_package-build.cmake )
 add_cmake_config_test( find_package-install.cmake )
+
+add_cmake_config_test( find_package-cudatoolkit-patching.cmake )
 
 # The inverse of `find_package-optional-failed` is the
 # above two tests.
