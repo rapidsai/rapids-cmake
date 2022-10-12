@@ -90,7 +90,7 @@ as needed.
             evaluated in relation to the `rapids-cmake/cpm/patches` directory.
 
             Supports the following placeholders:
-                - ``${current_json_dir}`` will be evaulated to the absolute path to the directory holding the current json file
+                - ``${current_json_dir}`` will be evaluated to the absolute path to the directory holding the current json file
 
         ``issue``
             A required string that explains the need for the patch. Preference is for the
