@@ -1,4 +1,4 @@
-# rapids-cmake 22.08.00 (12 Oct 2022)
+# rapids-cmake 22.10.00 (12 Oct 2022)
 
 ## 🚨 Breaking Changes
 
