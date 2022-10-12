@@ -55,7 +55,7 @@ function(rapids_cpm_generate_patch_command package_name version patch_command)
   endif()
 
   # Need the current_json_dir variable populated before we parse any json entries so that we
-  # properly evalute this placeholder
+  # properly evaluate this placeholder
   cmake_path(GET json_path PARENT_PATH current_json_dir)
 
   # Parse required fields
