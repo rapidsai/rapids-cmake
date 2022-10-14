@@ -66,7 +66,7 @@ function(rapids_cpm_gbench)
                   OPTIONS "BENCHMARK_ENABLE_GTEST_TESTS OFF"
                           "BENCHMARK_ENABLE_TESTING OFF"
                           "BENCHMARK_ENABLE_INSTALL ${to_install}")
-                                                                                     
+
 
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
   rapids_cpm_display_patch_status(GBench)
