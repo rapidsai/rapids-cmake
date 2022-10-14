@@ -29,12 +29,16 @@ Displays the result of any patches applied to the requested package
 
 #]=======================================================================]
 function(rapids_cpm_display_patch_status package_name)
-  list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.display_patch_status")
-  set(log_file "${CMAKE_BINARY_DIR}/rapids-cmake/patches/${package_name}/log")
-  if(EXISTS "${log_file}")
-    file(STRINGS "${log_file}" contents)
-    foreach(line IN LISTS contents)
-      message(STATUS "${line}")
-    endforeach()
+  # Only display the status information on the first execution of
+  # the call
+  if(${package_name}_ADDED)
+    list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.display_patch_status")
+    set(log_file "${CMAKE_BINARY_DIR}/rapids-cmake/patches/${package_name}/log")
+    if(EXISTS "${log_file}")
+      file(STRINGS "${log_file}" contents)
+      foreach(line IN LISTS contents)
+        message(STATUS "${line}")
+      endforeach()
+    endif()
   endif()
 endfunction()
