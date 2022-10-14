@@ -63,10 +63,8 @@ function(rapids_cpm_gbench)
                   GIT_SHALLOW ${shallow}
                   PATCH_COMMAND ${patch_command}
                   EXCLUDE_FROM_ALL ${exclude}
-                  OPTIONS "BENCHMARK_ENABLE_GTEST_TESTS OFF"
-                          "BENCHMARK_ENABLE_TESTING OFF"
+                  OPTIONS "BENCHMARK_ENABLE_GTEST_TESTS OFF" "BENCHMARK_ENABLE_TESTING OFF"
                           "BENCHMARK_ENABLE_INSTALL ${to_install}")
-
 
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
   rapids_cpm_display_patch_status(GBench)
