@@ -19,7 +19,7 @@ include_guard(GLOBAL)
 rapids_cpm_gbench
 -----------------
 
-.. versionadded:: v21.12.00
+.. versionadded:: v22.12.00
 
 Allow projects to find or build `Google Benchmark` via `CPM` with built-in
 tracking of these dependencies for correct export support.
@@ -55,16 +55,19 @@ function(rapids_cpm_gbench)
   include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
   rapids_cpm_generate_patch_command(GBench ${version} patch_command)
 
+  include("${rapids-cmake-dir}/cmake/install_lib_dir.cmake")
+  rapids_cmake_install_lib_dir(lib_dir)
+
   include("${rapids-cmake-dir}/cpm/find.cmake")
   rapids_cpm_find(GBench ${version} ${ARGN}
-                  GLOBAL_TARGETS benchmark::benchmark
+                  GLOBAL_TARGETS benchmark::benchmark benchmark::benchmark_main
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
                   GIT_SHALLOW ${shallow}
                   PATCH_COMMAND ${patch_command}
                   EXCLUDE_FROM_ALL ${exclude}
                   OPTIONS "BENCHMARK_ENABLE_GTEST_TESTS OFF" "BENCHMARK_ENABLE_TESTING OFF"
-                          "BENCHMARK_ENABLE_INSTALL ${to_install}")
+                  "BENCHMARK_ENABLE_INSTALL ${to_install}" "CMAKE_INSTALL_LIBDIR ${lib_dir}")
 
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
   rapids_cpm_display_patch_status(GBench)
