@@ -125,7 +125,6 @@ function(rapids_cython_create_modules)
       list(APPEND _rpath_dirs "\$ORIGIN/${_lib_dir}")
     endforeach()
     list(JOIN _rpath_dirs ";" _rpath_dirs)
-    message("Setting rpath of ${cython_module} to \$ORIGIN:${_rpath_dirs}")
     set_target_properties(${cython_module} PROPERTIES INSTALL_RPATH "\$ORIGIN;${_rpath_dirs}")
 
     list(APPEND CREATED_TARGETS "${cython_module}")
