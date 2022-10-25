@@ -61,6 +61,7 @@ function(rapids_cpm_gbench)
   include("${rapids-cmake-dir}/cpm/find.cmake")
   rapids_cpm_find(GBench ${version} ${ARGN}
                   GLOBAL_TARGETS benchmark::benchmark benchmark::benchmark_main
+                  CPM_ARGS
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
                   GIT_SHALLOW ${shallow}
