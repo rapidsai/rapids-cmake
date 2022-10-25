@@ -120,9 +120,9 @@ function(rapids_cython_create_modules)
     # Default the INSTALL_RPATH for all modules to $ORIGIN. We also append any
     # lib dirs specified in the current project.
     set(_rpath_dirs)
-    foreach(_lib_dir IN LISTS ${RAPIDS_CYTHON_${PROJECT_NAME}_LIB_DIRS})
-      cmake_path(RELATIVE_PATH _lib_dir OUTPUT_VARIABLE _lib_dir)
-      list(APPEND _rpath_dirs _lib_dir)
+    foreach(_lib_dir IN LISTS RAPIDS_CYTHON_${PROJECT_NAME}_LIB_DIRS)
+      cmake_path(RELATIVE_PATH _lib_dir)
+      list(APPEND _rpath_dirs ${_lib_dir})
     endforeach()
     list(JOIN _rpath_dirs ":" _rpath_dirs)
     message("Setting rpath of ${cython_module} to \$ORIGIN:${_rpath_dirs}")
