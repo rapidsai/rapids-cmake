@@ -117,8 +117,16 @@ function(rapids_cython_create_modules)
     endif()
     install(TARGETS ${cython_module} DESTINATION ${_RAPIDS_CYTHON_INSTALL_DIR})
 
-    # Default the INSTALL_RPATH for all modules to $ORIGIN.
-    set_target_properties(${cython_module} PROPERTIES INSTALL_RPATH "\$ORIGIN")
+    # Default the INSTALL_RPATH for all modules to $ORIGIN. We also append any
+    # lib dirs specified in the current project.
+    set(_rpath_dirs)
+    foreach(_lib_dir IN LISTS ${RAPIDS_CYTHON_${PROJECT_NAME}_LIB_DIRS})
+      cmake_path(RELATIVE_PATH _lib_dir OUTPUT_VARIABLE _lib_dir)
+      list(APPEND _rpath_dirs _lib_dir)
+    endforeach()
+    list(JOIN _rpath_dirs ":" _rpath_dirs)
+    message("Setting rpath of ${cython_module} to \$ORIGIN:${_rpath_dirs}")
+    set_target_properties(${cython_module} PROPERTIES INSTALL_RPATH "\$ORIGIN:${_rpath_dirs}")
 
     list(APPEND CREATED_TARGETS "${cython_module}")
   endforeach()
