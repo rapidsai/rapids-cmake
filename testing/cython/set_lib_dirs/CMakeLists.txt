@@ -30,16 +30,17 @@ set(SKBUILD ON)
 file(GLOB skbuild_resource_dir LIST_DIRECTORIES ON "${CPM_SOURCE_CACHE}/skbuild/*/skbuild/resources/cmake")
 LIST(APPEND CMAKE_MODULE_PATH "${skbuild_resource_dir}")
 
+# Make sure set_lib_dirs can run before rapids_cython_init.
 rapids_cython_set_lib_dirs(../libraries)
 
 rapids_cython_init()
 
-# Test that a basic invocation with a single file works.
+# Test that the RPATH of the resulting target is properly set.
 rapids_cython_create_modules(
     SOURCE_FILES test.pyx
     )
 
 get_target_property(rpath test INSTALL_RPATH)
-if (NOT rpath STREQUAL "$ORIGIN:$ORIGIN/../libraries")
+if (NOT rpath STREQUAL "$ORIGIN;$ORIGIN/../libraries")
   message(FATAL_ERROR "rapids_cython_set_lib_dirs failed to set the RPATH correctly.")
 endif()
