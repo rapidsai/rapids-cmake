@@ -271,6 +271,11 @@
           "LINKED_LIBRARIES": "*",
           "INSTALL_DIR": "1"
         }
+      },
+      "rapids_cython_set_lib_dirs": {
+        "pargs": {
+          "nargs": "*"
+        }
       }
 
     }
