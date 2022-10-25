@@ -43,8 +43,7 @@ function(rapids_cython_set_lib_dirs)
   # Note that this function may be called safely before rapids-cython is initialized.
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cython.set_lib_dirs")
 
-  # Need to convert all paths to absolute so that the later relative path
-  # conversions work.
+  # Need to convert all paths to absolute so that the later relative path conversions work.
   set(_abs_lib_dirs)
   foreach(_lib_dir IN LISTS ARGV)
     cmake_path(ABSOLUTE_PATH _lib_dir)
