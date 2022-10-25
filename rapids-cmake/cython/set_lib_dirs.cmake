@@ -40,9 +40,7 @@ Result Variables
 
 #]=======================================================================]
 function(rapids_cython_set_lib_dirs)
-  include(${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/verify_init.cmake)
-  rapids_cython_verify_init()
-
+  # Note that this function may be called safely before rapids-cython is initialized.
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cython.set_lib_dirs")
 
   set(RAPIDS_CYTHON_${PROJECT_NAME}_LIB_DIRS "${ARGV}")
