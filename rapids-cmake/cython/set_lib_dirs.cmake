@@ -43,5 +43,5 @@ function(rapids_cython_set_lib_dirs)
   # Note that this function may be called safely before rapids-cython is initialized.
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cython.set_lib_dirs")
 
-  set(RAPIDS_CYTHON_${PROJECT_NAME}_LIB_DIRS "${ARGV}")
+  set(RAPIDS_CYTHON_${PROJECT_NAME}_LIB_DIRS "${ARGV}" PARENT_SCOPE)
 endfunction()
