@@ -131,7 +131,7 @@ function(rapids_cython_create_modules)
     # Store any provided associated targets in a global list
     foreach(associated_target IN LISTS _RAPIDS_CYTHON_ASSOCIATED_TARGETS)
       set_property(GLOBAL PROPERTY "rapids_cython_associations_${associated_target}"
-          "${cython_module}" APPEND)
+                                   "${cython_module}" APPEND)
     endforeach()
 
     list(APPEND CREATED_TARGETS "${cython_module}")
