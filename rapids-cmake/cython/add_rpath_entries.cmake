@@ -51,8 +51,7 @@ function(rapids_cython_add_rpath_entries)
   set(options)
   set(one_value ROOT_DIRECTORY TARGET)
   set(multi_value PATHS)
-  cmake_parse_arguments(_RAPIDS_CYTHON "${options}" "${one_value}"
-                        "${multi_value}" ${ARGN})
+  cmake_parse_arguments(_RAPIDS_CYTHON "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
   # By default paths are relative to the current project root.
   if(NOT _RAPIDS_CYTHON_ROOT_DIRECTORY)
@@ -65,8 +64,8 @@ function(rapids_cython_add_rpath_entries)
     if(IS_ABSOLUTE path)
       cmake_path(RELATIVE_PATH path)
     else()
-      # Convert relative paths to paths from the provided root, then make them
-      # relative to the current directory.
+      # Convert relative paths to paths from the provided root, then make them relative to the
+      # current directory.
       cmake_path(ABSOLUTE_PATH path BASE_DIRECTORY "${_RAPIDS_CYTHON_ROOT_DIRECTORY}")
       cmake_path(ABSOLUTE_PATH path)
       cmake_path(RELATIVE_PATH path)
@@ -83,6 +82,4 @@ function(rapids_cython_add_rpath_entries)
     endforeach()
   endif()
 
-
 endfunction()
-
