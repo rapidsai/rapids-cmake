@@ -30,17 +30,20 @@ rapids_cython_add_rpath_entries(
     [ROOT_DIRECTORY <root-dir>]
 )
 
+This function will affect all targets created up to the point of this call. It
+will have no effect on targets created afterwards.
+
 ``TARGET``
   The associated target for which we are setting RPATH entries. Any target
   created using :code:command:`rapids_cython_create_modules` with the argument
   `ASSOCIATED_TARGET associated_target` will have its RPATH entries updated.
 
-  ``PATHS``
+``PATHS``
   The paths to add to the RPATH. Paths may either be absolute or relative to
   the ROOT_DIRECTORY. The paths are always converted to be relative to the
   current directory i.e relative to $ORIGIN in the RPATH.
 
-  ``ROOT_DIRECTORY``
+``ROOT_DIRECTORY``
   The ROOT_DIRECTORY for the provided paths. Defaults to ${PROJECT_SOURCE_DIR}.
   Has no effect on absolute paths.
 
