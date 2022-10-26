@@ -272,11 +272,6 @@
           "INSTALL_DIR": "1"
         }
       },
-      "rapids_cython_set_lib_dirs": {
-        "pargs": {
-          "nargs": "*"
-        }
-      },
       "rapids_cython_add_rpath_entries": {
         "pargs": {
           "nargs": "0"
