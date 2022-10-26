@@ -1,1 +1,1 @@
-.. cmake-module:: ../../rapids-cmake/cython/set_lib_dirs.cmake
+.. cmake-module:: ../../rapids-cmake/cython/add_rpath_entries.cmake
