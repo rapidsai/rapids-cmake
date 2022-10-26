@@ -24,3 +24,5 @@ add_cmake_config_test(create_modules_with_library)
 add_cmake_config_test(create_modules_with_prefix)
 
 add_cmake_config_test(set_lib_dirs)
+
+add_cmake_config_test(add_rpath_entries)
