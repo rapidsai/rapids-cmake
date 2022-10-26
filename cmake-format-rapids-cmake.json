@@ -276,6 +276,16 @@
         "pargs": {
           "nargs": "*"
         }
+      },
+      "rapids_cython_add_rpath_entries": {
+        "pargs": {
+          "nargs": "0"
+        },
+        "kwargs": {
+          "PATHS": "+",
+          "TARGET": "1",
+          "ROOT_DIRECTORY": "1"
+        }
       }
 
     }
