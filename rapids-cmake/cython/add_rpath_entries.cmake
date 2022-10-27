@@ -84,7 +84,6 @@ function(rapids_cython_add_rpath_entries)
     endforeach()
     list(JOIN target_paths ";" target_paths)
 
-    get_target_property(current_rpath ${target} INSTALL_RPATH)
-    set_target_properties(${target} PROPERTIES INSTALL_RPATH "${current_rpath};${target_paths}")
+    set_property(TARGET ${target} APPEND PROPERTY INSTALL_RPATH "${target_paths}")
   endforeach()
 endfunction()
