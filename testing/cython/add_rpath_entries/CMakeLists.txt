@@ -18,8 +18,9 @@ cmake_minimum_required(VERSION 3.20)
 
 include(${rapids-cmake-dir}/cython/create_modules.cmake)
 include(${rapids-cmake-dir}/cython/init.cmake)
+include(${rapids-cmake-dir}/cython/add_rpath_entries.cmake)
 
-project(rapids_cython-create_modules LANGUAGES C CXX)
+project(rapids_cython-set_lib_dirs LANGUAGES C CXX)
 
 # Silence warning about running without scikit-build.
 set(SKBUILD ON)
@@ -31,15 +32,30 @@ LIST(APPEND CMAKE_MODULE_PATH "${skbuild_resource_dir}")
 
 rapids_cython_init()
 
-# Test that an empty invocation works.
-rapids_cython_create_modules()
-
-# Test that we can use a prefix to generate a different library target.
 rapids_cython_create_modules(
     SOURCE_FILES test.pyx
-    MODULE_PREFIX "test_"
+    ASSOCIATED_TARGETS associated_target
     )
 
-if(NOT TARGET test_test)
-  message(FATAL_ERROR "rapids_cython_create_modules didn't create the prefixed library target `test_test`")
+# Test a relative path.
+rapids_cython_add_rpath_entries(TARGET associated_target PATHS ../libraries)
+get_target_property(rpath test INSTALL_RPATH)
+if (NOT rpath STREQUAL "$ORIGIN;$ORIGIN/../libraries")
+  message(FATAL_ERROR "rapids_cython_set_lib_dirs failed to set the RPATH correctly.")
+endif()
+
+# Test a relative path with a root directory.
+rapids_cython_add_rpath_entries(TARGET associated_target PATHS ../libraries ROOT_DIRECTORY ../)
+get_target_property(rpath test INSTALL_RPATH)
+if (NOT rpath STREQUAL "$ORIGIN;$ORIGIN/../libraries;$ORIGIN/../../libraries")
+  message(FATAL_ERROR "rapids_cython_set_lib_dirs failed to set the RPATH correctly.")
+endif()
+
+# Test an absolute path
+rapids_cython_add_rpath_entries(TARGET associated_target PATHS /path/to/libraries)
+get_target_property(rpath test INSTALL_RPATH)
+set(the_path /path/to/libraries)
+cmake_path(RELATIVE_PATH the_path)
+if (NOT rpath STREQUAL "$ORIGIN;$ORIGIN/../libraries;$ORIGIN/../../libraries;$ORIGIN/${the_path}")
+  message(FATAL_ERROR "rapids_cython_set_lib_dirs failed to set the RPATH correctly.")
 endif()

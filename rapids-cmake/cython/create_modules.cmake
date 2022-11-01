@@ -57,6 +57,14 @@ $ORIGIN.
   useful when multiple Cython modules in different subpackages of the the same
   project have the same name. The default prefix is the empty string.
 
+``ASSOCIATED_TARGETS``
+  A list of targets that are associated with the Cython targets created in this
+  function. The target<-->associated target mapping is stored and may be
+  leveraged by the following functions:
+  - :code:command:`rapids_cython_add_rpath_entries` accepts a path for an
+    associated target and updates the RPATH of each target with which that
+    associated target is associated.
+
 Result Variables
 ^^^^^^^^^^^^^^^^
   :cmake:variable:`RAPIDS_CYTHON_CREATED_TARGETS` will be set to a list of
@@ -71,7 +79,7 @@ function(rapids_cython_create_modules)
 
   set(_rapids_cython_options CXX)
   set(_rapids_cython_one_value INSTALL_DIR MODULE_PREFIX)
-  set(_rapids_cython_multi_value SOURCE_FILES LINKED_LIBRARIES)
+  set(_rapids_cython_multi_value SOURCE_FILES LINKED_LIBRARIES ASSOCIATED_TARGETS)
   cmake_parse_arguments(_RAPIDS_CYTHON "${_rapids_cython_options}" "${_rapids_cython_one_value}"
                         "${_rapids_cython_multi_value}" ${ARGN})
 
@@ -119,6 +127,12 @@ function(rapids_cython_create_modules)
 
     # Default the INSTALL_RPATH for all modules to $ORIGIN.
     set_target_properties(${cython_module} PROPERTIES INSTALL_RPATH "\$ORIGIN")
+
+    # Store any provided associated targets in a global list
+    foreach(associated_target IN LISTS _RAPIDS_CYTHON_ASSOCIATED_TARGETS)
+      set_property(GLOBAL PROPERTY "rapids_cython_associations_${associated_target}"
+                                   "${cython_module}" APPEND)
+    endforeach()
 
     list(APPEND CREATED_TARGETS "${cython_module}")
   endforeach()
