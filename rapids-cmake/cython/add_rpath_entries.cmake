@@ -45,7 +45,9 @@ will have no effect on targets created afterwards.
 
 ``ROOT_DIRECTORY``
   The ROOT_DIRECTORY for the provided paths. Defaults to ${PROJECT_SOURCE_DIR}.
-  Has no effect on absolute paths.
+  Has no effect on absolute paths. If the ROOT_DIRECTORY is a relative path, it
+  is assumed to be relative to the directory from which
+  `rapids_cython_add_rpath_entries` is called.
 
 #]=======================================================================]
 function(rapids_cython_add_rpath_entries)
@@ -63,12 +65,10 @@ function(rapids_cython_add_rpath_entries)
 
   # Transform all paths to paths relative to the current directory.
   set(cleaned_paths)
+  cmake_path(ABSOLUTE_PATH _RAPIDS_CYTHON_ROOT_DIRECTORY)
   foreach(path IN LISTS _RAPIDS_CYTHON_PATHS)
     if(NOT IS_ABSOLUTE path)
-      # Convert relative paths to paths from the provided root, then make them relative to the
-      # current directory.
       cmake_path(ABSOLUTE_PATH path BASE_DIRECTORY "${_RAPIDS_CYTHON_ROOT_DIRECTORY}")
-      cmake_path(ABSOLUTE_PATH path)
     endif()
     list(APPEND cleaned_paths "${path}")
   endforeach()
