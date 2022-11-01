@@ -2,6 +2,62 @@
 
 Please see https://github.com/rapidsai/rapids-cmake/releases/tag/v22.12.00a for the latest changes to this development branch.
 
+# rapids-cmake 22.10.00 (12 Oct 2022)
+
+## 🚨 Breaking Changes
+
+- Update rapids-cmake to require cmake 3.23.1 (#227) @robertmaynard
+- put $PREFIX before $BUILD_PREFIX in conda build (#182) @kkraus14
+
+## 🐛 Bug Fixes
+
+- Update to nvcomp 2.4.1 to fix zstd decompression (#286) @robertmaynard
+- Restore rapids_cython_create_modules output variable name (#276) @robertmaynard
+- rapids_cuda_init_architectures now obeys CUDAARCHS env variable (#270) @robertmaynard
+- Update to Thrust 1.17.2 to fix cub ODR issues (#269) @robertmaynard
+- conda_env: pass conda prefix as a rpath-link directory (#263) @robertmaynard
+- Update cuCollections to fix issue with INSTALL_CUCO set to OFF. (#261) @bdice
+- rapids_cpm_libcudacxx correct location of libcudacxx-config (#258) @robertmaynard
+- Update rapids_find_generate_module to cmake 3.23 (#256) @robertmaynard
+- Handle reconfiguring with USE_PROPRIETARY_BINARY value differing (#255) @robertmaynard
+- rapids_cpm_thrust record build directory location of thrust-config (#254) @robertmaynard
+- disable cuco install rules when no INSTALL_EXPORT_SET (#250) @robertmaynard
+- Patch thrust and cub install rules to have proper header searches (#244) @robertmaynard
+- Ensure that we install Thrust and Cub correctly. (#243) @robertmaynard
+- Revert &quot;Update to CPM v0.35.4 for URL downloads... (#236)&quot; (#242) @robertmaynard
+- put $PREFIX before $BUILD_PREFIX in conda build (#182) @kkraus14
+
+## 📖 Documentation
+
+- Correct broken patch_toolkit API docs, and CMake API cross references (#271) @robertmaynard
+- Provide suggestions when encountering an incomplete GTest package (#247) @robertmaynard
+- Docs: RAPIDS.cmake should be placed in current bin dir (#241) @robertmaynard
+- Remove incorrect install location note on rapids_export (#232) @robertmaynard
+
+## 🚀 New Features
+
+- Update to CPM 0.35.6 as it has needed changes for cpm patching support. (#273) @robertmaynard
+- Update to nvcomp 2.4 which now offers aarch64 binaries! (#272) @robertmaynard
+- Support the concept of a patches to apply to a project built via CPM (#264) @robertmaynard
+- Branch 22.10 merge 22.08 (#262) @robertmaynard
+- Introduce rapids_cuda_patch_toolkit (#260) @robertmaynard
+- Update libcudacxx to 1.8 (#253) @robertmaynard
+- Update to CPM version 0.35.5 (#249) @robertmaynard
+- Update to CPM v0.35.4 for URL downloads match the download time (#236) @robertmaynard
+- rapids-cmake dependency tracking now understands COMPONENTS (#234) @robertmaynard
+- Update to thrust 1.17 (#231) @robertmaynard
+- Update to CPM v0.35.3 to support symlink build directories (#230) @robertmaynard
+- Update rapids-cmake to require cmake 3.23.1 (#227) @robertmaynard
+- Improve GPU detection by doing less subsequent executions (#222) @robertmaynard
+
+## 🛠️ Improvements
+
+- Fix typo in `rapids-cmake-url` (#267) @trxcllnt
+- Ensure `&lt;pkg&gt;_FOUND` is set in the generated `Find&lt;pkg&gt;.cmake` file (#266) @trxcllnt
+- Set `CUDA_USE_STATIC_CUDA_RUNTIME` to control legacy `FindCUDA.cmake`behavior (#259) @trxcllnt
+- Use the GitHub `.zip` URI instead of `GIT_REPOSITORY` and `GIT_BRANCH` (#257) @trxcllnt
+- Update nvcomp to 2.3.3 (#221) @vyasr
+
 # rapids-cmake 22.08.00 (17 Aug 2022)
 
 ## 🐛 Bug Fixes
