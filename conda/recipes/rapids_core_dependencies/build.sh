@@ -10,12 +10,14 @@ BUILD_DIR=${BUILD_DIR:=${REPO_DIR}/build}
 INSTALL_PREFIX=${INSTALL_PREFIX:=${PREFIX:=${CONDA_PREFIX:=$BUILD_DIR/install}}}
 export PARALLEL_LEVEL=${PARALLEL_LEVEL:-4}
 
-for bd in ${BUILD_DIRS}; do
-  if [ -d "${bd}" ]; then
-      find "${bd}" -mindepth 1 -delete
-      rmdir "${bd}" || true
-  fi
-done
+# If the dir to clean is a mounted dir in a container, the
+# contents should be removed but the mounted dirs will remain.
+# The find removes all contents but leaves the dirs, the rmdir
+# attempts to remove the dirs but can fail safely.
+if [ -d "${BUILD_DIR}" ]; then
+  find "${BUILD_DIR}" -mindepth 1 -delete
+  rmdir "${BUILD_DIR}" || true
+fi
 
 cmake -S "${SOURCE_DIR}" -B "${BUILD_DIR}" \
     -DCMAKE_INSTALL_LIBDIR="lib" \
