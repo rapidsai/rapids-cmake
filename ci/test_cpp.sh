@@ -8,7 +8,7 @@ rapids-logger "Create test conda environment"
 . /opt/conda/etc/profile.d/conda.sh
 
 rapids-dependency-file-generator \
-  --generate conda \
+  --output conda \
   --file_key test \
   --matrix "cuda=${RAPIDS_CUDA_VERSION%.*}" > env.yaml
 

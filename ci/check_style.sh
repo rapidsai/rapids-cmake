@@ -7,7 +7,7 @@ rapids-logger "Create checks conda environment"
 . /opt/conda/etc/profile.d/conda.sh
 
 rapids-dependency-file-generator \
-  --generate conda \
+  --output conda \
   --file_key checks \
   # FIXME: "checks" environment doesn't depend on a CUDA version.
   # "cuda=*" can be removed after https://github.com/rapidsai/dependency-file-generator/issues/17
