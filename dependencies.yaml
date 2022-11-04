@@ -1,13 +1,13 @@
 # Dependency list for https://github.com/rapidsai/dependency-file-generator
 files:
   test:
-    generate: none
+    output: none
     includes:
       - build
       - cudatoolkit
       - test
   checks:
-    generate: none
+    output: none
     includes:
       - build
       - style_checks
