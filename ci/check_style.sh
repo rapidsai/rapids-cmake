@@ -6,12 +6,12 @@ set -euo pipefail
 rapids-logger "Create checks conda environment"
 . /opt/conda/etc/profile.d/conda.sh
 
+# FIXME: "checks" environment doesn't depend on a CUDA version.
+# "cuda=*" can be removed after https://github.com/rapidsai/dependency-file-generator/issues/17
+# is addressed. Right now "cuda=*" is a no-op to prevent an error from being thrown
 rapids-dependency-file-generator \
   --output conda \
   --file_key checks \
-  # FIXME: "checks" environment doesn't depend on a CUDA version.
-  # "cuda=*" can be removed after https://github.com/rapidsai/dependency-file-generator/issues/17
-  # is addressed. Right now "cuda=*" is a no-op to prevent an error from being thrown
   --matrix "cuda=${RAPIDS_CUDA_VERSION%.*}" > env.yaml
 
 rapids-mamba-retry env create --force -f env.yaml -n checks
