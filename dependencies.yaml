@@ -1,62 +1,60 @@
 # Dependency list for https://github.com/rapidsai/dependency-file-generator
 files:
-  all:
-    generate: conda
-    matrix:
-      cuda: ["11.5", "11.6"]
-      arch: [x86_64]
-    includes:
-      - build
-      - develop
-      - test
   test:
     generate: none
     includes:
+      - build
+      - cudatoolkit
       - test
   checks:
     generate: none
     includes:
       - build
-      - develop
+      - style_checks
 channels:
   - rapidsai
   - conda-forge
 dependencies:
-  conda_and_requirements:
+  build:
     common:
-      build:
-        - cmake>=3.23.1
-      develop:
-        - cmakelang=0.6.13
-      test:
-        - cmake>=3.23.1
-        - cython>=0.29,<0.30
-        - python>=3.8,<3.10
-        - scikit-build>=0.13.1
-        - libpng
-        - zlib
-  conda:
-    common:
-      build:
-        - c-compiler
-        - cxx-compiler
-      test:
-        - c-compiler
-        - cxx-compiler
+      - output_types: [conda, requirements]
+        packages:
+          - cmake>=3.23.1
+      - output_types: conda
+        packages:
+          - c-compiler
+          - cxx-compiler
+  cudatoolkit:
     specific:
-      - matrix:
-          py: "3.8"
-        py_version:
-          - python=3.8
-      - matrix:
-          py: "3.9"
-        py_version:
-          - python=3.9
-      - matrix:
-          cuda: "11.5"
-        build:
-          - cudatoolkit=11.5
-      - matrix:
-          cuda: "11.6"
-        build:
-          - cudatoolkit=11.6
+      - output_types: conda
+        matrices:
+          - matrix:
+              cuda: "11.2"
+            packages:
+              - cudatoolkit=11.2
+          - matrix:
+              cuda: "11.4"
+            packages:
+              - cudatoolkit=11.4
+          - matrix:
+              cuda: "11.5"
+            packages:
+              - cudatoolkit=11.5
+          - matrix:
+              cuda: "11.6"
+            packages:
+              - cudatoolkit=11.6
+  test:
+    common:
+      - output_types: [conda, requirements]
+        packages:
+          - cython>=0.29,<0.30
+          - python>=3.8,<3.10
+          - scikit-build>=0.13.1
+          - libpng
+          - zlib
+  style_checks:
+    common:
+      - output_types: [conda, requirements]
+        packages:
+          - cmakelang=0.6.13

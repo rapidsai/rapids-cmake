@@ -9,7 +9,10 @@ rapids-logger "Create checks conda environment"
 rapids-dependency-file-generator \
   --generate conda \
   --file_key checks \
-  --matrix "cuda=${RAPIDS_CUDA_VERSION%.*};arch=$(arch);py=${RAPIDS_PY_VERSION}" > env.yaml
+  # FIXME: "checks" environment doesn't depend on a CUDA version.
+  # "cuda=*" can be removed after https://github.com/rapidsai/dependency-file-generator/issues/17
+  # is addressed. Right now "cuda=*" is a no-op to prevent an error from being thrown
+  --matrix "cuda=${RAPIDS_CUDA_VERSION%.*}" > env.yaml
 
 rapids-mamba-retry env create --force -f env.yaml -n checks
 
@@ -18,7 +21,7 @@ conda activate checks
 set -u
 
 
-CMAKE_FILES=(`find  rapids-cmake/ | grep -E "^.*\.cmake?$|^.*/CMakeLists.txt$"`)
+CMAKE_FILES=(`find rapids-cmake/ | grep -E "^.*\.cmake?$|^.*/CMakeLists.txt$"`)
 CMAKE_FILES+=("CMakeLists.txt")
 
 CMAKE_FORMATS=()

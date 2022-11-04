@@ -10,7 +10,7 @@ rapids-logger "Create test conda environment"
 rapids-dependency-file-generator \
   --generate conda \
   --file_key test \
-  --matrix "cuda=${RAPIDS_CUDA_VERSION%.*};arch=$(arch)" > env.yaml
+  --matrix "cuda=${RAPIDS_CUDA_VERSION%.*}" > env.yaml
 
 rapids-mamba-retry env create --force -f env.yaml -n test
 set +eu
