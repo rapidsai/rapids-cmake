@@ -40,6 +40,9 @@ function(rapids_cpm_generate_patch_command package_name version patch_command)
   get_default_json(${package_name} json_data)
   get_override_json(${package_name} override_json_data)
 
+  get_property(json_path GLOBAL PROPERTY rapids_cpm_${package_name}_json_file)
+  get_property(override_json_path GLOBAL PROPERTY rapids_cpm_${package_name}_override_json_file)
+
   string(JSON json_data ERROR_VARIABLE no_default_patch GET "${json_data}" patches)
   string(JSON override_json_data ERROR_VARIABLE no_override_patch GET "${override_json_data}"
          patches)
@@ -48,7 +51,12 @@ function(rapids_cpm_generate_patch_command package_name version patch_command)
   endif()
   if(NOT no_override_patch)
     set(json_data "${override_json_data}")
+    set(json_path "${override_json_path}")
   endif()
+
+  # Need the current_json_dir variable populated before we parse any json entries so that we
+  # properly evaluate this placeholder
+  cmake_path(GET json_path PARENT_PATH current_json_dir)
 
   # Parse required fields
   function(rapids_cpm_json_get_value json_data_ name)
@@ -79,6 +87,7 @@ function(rapids_cpm_generate_patch_command package_name version patch_command)
       rapids_cpm_json_get_value(${patch_data} file)
       rapids_cpm_json_get_value(${patch_data} issue)
 
+      cmake_language(EVAL CODE "set(file ${file})")
       cmake_path(IS_RELATIVE file is_relative)
       if(is_relative)
         set(file "${rapids-cmake-dir}/cpm/patches/${file}")

@@ -13,14 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
+include(${rapids-cmake-dir}/cpm/init.cmake)
+include(${rapids-cmake-dir}/cpm/gbench.cmake)
 
-add_cmake_config_test(rapids-cython.cmake)
+rapids_cpm_init()
 
-add_cmake_config_test(init.cmake)
-add_cmake_config_test(create_modules_errors.cmake SHOULD_FAIL "You must call rapids_cython_init before calling this function")
+rapids_cpm_gbench(BUILD_EXPORT_SET bench)
+rapids_cpm_gbench(BUILD_EXPORT_SET bench2)
 
-add_cmake_config_test(create_modules)
-add_cmake_config_test(create_modules_with_library)
-add_cmake_config_test(create_modules_with_prefix)
+get_target_property(packages rapids_export_build_bench PACKAGE_NAMES)
+if(NOT GBench IN_LIST packages)
+  message(FATAL_ERROR "rapids_cpm_gbench failed to record gbench needs to be exported")
+endif()
 
-add_cmake_config_test(add_rpath_entries)
+get_target_property(packages rapids_export_build_bench2 PACKAGE_NAMES)
+if(NOT GBench IN_LIST packages)
+  message(FATAL_ERROR "rapids_cpm_gbench failed to record gbench needs to be exported")
+endif()
