@@ -20,12 +20,12 @@ dependencies:
       - output_types: [conda, requirements]
         packages:
           - cmake>=3.23.1
-          - make
           - ninja
       - output_types: conda
         packages:
           - c-compiler
           - cxx-compiler
+          - make
   cudatoolkit:
     specific:
       - output_types: conda
