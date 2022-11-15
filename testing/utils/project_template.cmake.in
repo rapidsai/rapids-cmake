@@ -18,14 +18,8 @@ cmake_minimum_required(VERSION 3.23.1)
 include(FetchContent)
 
 set(local-rapids-cmake-root "${rapids-cmake-dir}/..")
-FetchContent_Declare(
-  rapids-cmake
-  GIT_REPOSITORY "${local-rapids-cmake-root}/.git"
-  GIT_TAG HEAD
-  )
-
-FetchContent_GetProperties(rapids-cmake)
-FetchContent_Populate(rapids-cmake)
+set(rapids-cmake_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/_deps/rapids-cmake-src")
+set(rapids-cmake_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/_deps/rapids-cmake-build")
 
 # Copy any local uncommited changes over
 file(COPY ${local-rapids-cmake-root}/rapids-cmake/
