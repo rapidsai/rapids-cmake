@@ -15,6 +15,9 @@ set +eu
 conda activate test
 set -u
 
+# Disable `sccache` S3 backend since compile times are negligible
+unset SCCACHE_BUCKET
+
 rapids-print-env
 
 rapids-logger "Check GPU usage"
