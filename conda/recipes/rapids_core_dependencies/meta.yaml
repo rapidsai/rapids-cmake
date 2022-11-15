@@ -24,7 +24,6 @@ requirements:
     - cmake>=3.23.1
     - {{ compiler('cxx') }}
     - {{ compiler('cuda') }} {{ cuda_version }}
-    - make
     - sysroot_{{ target_platform }} {{ sysroot_version }}
   host:
     - cudatoolkit {{ cuda_version }}.*
