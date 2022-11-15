@@ -15,6 +15,7 @@ set +eu
 conda activate test
 set -u
 
+rapids-print-env
 
 rapids-logger "Check GPU usage"
 nvidia-smi
