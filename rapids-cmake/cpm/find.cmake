@@ -21,7 +21,7 @@ rapids_cpm_find
 
 .. versionadded:: v21.06.00
 
-Allow projects to find or build abitrary projects via `CPM` with built-in
+Allow projects to find or build arbitrary projects via `CPM` with built-in
 tracking of these dependencies for correct export support.
 
 .. code-block:: cmake
