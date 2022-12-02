@@ -89,7 +89,7 @@ function(rapids_cuda_init_architectures project_name)
     set(cuda_arch_mode "ALL")
   elseif(CMAKE_CUDA_ARCHITECTURES STREQUAL "" OR CMAKE_CUDA_ARCHITECTURES STREQUAL "NATIVE")
     set(cuda_arch_mode "NATIVE")
-  elseif(NOT (DEFINED ENV{CUDAARCHS} OR DEFINED CMAKE_CUDA_ARCHITECTURES) )
+  elseif(NOT (DEFINED ENV{CUDAARCHS} OR DEFINED CMAKE_CUDA_ARCHITECTURES))
     set(cuda_arch_mode "ALL")
   endif()
 
