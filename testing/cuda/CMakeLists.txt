@@ -21,10 +21,12 @@ add_cmake_config_test( init_runtime-shared.cmake )
 add_cmake_config_test( init_runtime-static.cmake )
 
 add_cmake_config_test( init_arch-all-via-undef )
+add_cmake_config_test( init_arch-all-via-env.cmake )
 add_cmake_config_test( init_arch-all.cmake )
 add_cmake_config_test( init_arch-existing-project-flags.cmake )
 add_cmake_config_test( init_arch-native.cmake )
 add_cmake_config_test( init_arch-native-via-empty-str )
+add_cmake_config_test( init_arch-native-via-env.cmake )
 add_cmake_config_test( init_arch-user.cmake )
 add_cmake_config_test( init_arch-user-via-env.cmake )
 
