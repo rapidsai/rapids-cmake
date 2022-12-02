@@ -79,8 +79,6 @@ function(rapids_cuda_init_architectures project_name)
   # If `CMAKE_CUDA_ARCHITECTURES` is not defined, build for all supported architectures. If
   # `CMAKE_CUDA_ARCHITECTURES` is set to an empty string (""), build for only the current
   # architecture. If `CMAKE_CUDA_ARCHITECTURES` is specified by the user, use user setting.
-
-
   if(DEFINED ENV{CUDAARCHS} AND "$ENV{CUDAARCHS}" STREQUAL "ALL")
     set(cuda_arch_mode "ALL")
   elseif(DEFINED ENV{CUDAARCHS} AND "$ENV{CUDAARCHS}" STREQUAL "NATIVE")
