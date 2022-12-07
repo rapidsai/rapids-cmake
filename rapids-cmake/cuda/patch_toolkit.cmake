@@ -32,7 +32,7 @@ of cublas and cusolver targets are incorrect. This module must be called
 from the same CMakeLists.txt as the first `find_project(CUDAToolkit)` to
 patch the targets.
 
-For all version of Cmake the dependencies of cusparse are incorrect.
+For all versions of CMake, the dependencies of cusparse are incorrect.
 .. note::
   :cmake:command:`rapids_cpm_find` will automatically call this module
   when asked to find the CUDAToolkit.
