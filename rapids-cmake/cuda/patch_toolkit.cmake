@@ -32,6 +32,7 @@ of cublas and cusolver targets are incorrect. This module must be called
 from the same CMakeLists.txt as the first `find_project(CUDAToolkit)` to
 patch the targets.
 
+For all version of Cmake the dependencies of cusparse are incorrect.
 .. note::
   :cmake:command:`rapids_cpm_find` will automatically call this module
   when asked to find the CUDAToolkit.
@@ -41,12 +42,24 @@ function(rapids_cuda_patch_toolkit)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cuda.patch_toolkit")
 
   get_directory_property(itargets IMPORTED_TARGETS)
-  if(CUDA::cublas_static IN_LIST itargets)
-    target_link_libraries(CUDA::cublas INTERFACE CUDA::cublasLt)
-    target_link_libraries(CUDA::cusparse INTERFACE CUDA::cublas)
+  if(CMAKE_VERSION VERSION_LESS 3.24.2)
+    if(CUDA::cublas IN_LIST itargets)
+      target_link_libraries(CUDA::cublas INTERFACE CUDA::cublasLt)
+    endif()
 
-    target_link_libraries(CUDA::cublas_static INTERFACE CUDA::cublasLt_static)
-    target_link_libraries(CUDA::cusolver_static INTERFACE CUDA::cusolver_lapack_static)
+    if(CUDA::cublas_static IN_LIST itargets)
+      target_link_libraries(CUDA::cublas_static INTERFACE CUDA::cublasLt_static)
+    endif()
+
+    if(CUDA::cusolver_static IN_LIST itargets)
+      target_link_libraries(CUDA::cusolver_static INTERFACE CUDA::cusolver_lapack_static)
+    endif()
+  endif()
+
+  if(CUDA::cusparse IN_LIST itargets)
+    target_link_libraries(CUDA::cusparse INTERFACE CUDA::cublas)
+  endif()
+  if(CUDA::cusparse_static IN_LIST itargets)
     target_link_libraries(CUDA::cusparse_static INTERFACE CUDA::cublas_static)
   endif()
 endfunction()
