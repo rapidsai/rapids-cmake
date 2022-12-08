@@ -26,8 +26,6 @@ rapids_find_package(CUDAToolkit)
 
 if(TARGET CUDA::cublas_static)
   verify_links_to(CUDA::cublas CUDA::cublasLt)
-  verify_links_to(CUDA::cusparse CUDA::cublas)
   verify_links_to(CUDA::cublas_static CUDA::cublasLt_static)
-  verify_links_to(CUDA::cusparse_static CUDA::cublas_static)
   verify_links_to(CUDA::cusolver_static CUDA::cusolver_lapack_static)
 endif()

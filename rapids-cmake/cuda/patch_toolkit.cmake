@@ -32,7 +32,6 @@ of cublas and cusolver targets are incorrect. This module must be called
 from the same CMakeLists.txt as the first `find_project(CUDAToolkit)` to
 patch the targets.
 
-For all versions of CMake, the dependencies of cusparse are incorrect.
 .. note::
   :cmake:command:`rapids_cpm_find` will automatically call this module
   when asked to find the CUDAToolkit.
@@ -54,12 +53,5 @@ function(rapids_cuda_patch_toolkit)
     if(CUDA::cusolver_static IN_LIST itargets)
       target_link_libraries(CUDA::cusolver_static INTERFACE CUDA::cusolver_lapack_static)
     endif()
-  endif()
-
-  if(CUDA::cusparse IN_LIST itargets)
-    target_link_libraries(CUDA::cusparse INTERFACE CUDA::cublas)
-  endif()
-  if(CUDA::cusparse_static IN_LIST itargets)
-    target_link_libraries(CUDA::cusparse_static INTERFACE CUDA::cublas_static)
   endif()
 endfunction()
