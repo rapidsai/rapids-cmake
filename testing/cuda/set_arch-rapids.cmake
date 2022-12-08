@@ -15,7 +15,7 @@
 #=============================================================================
 include(${rapids-cmake-dir}/cuda/set_architectures.cmake)
 
-rapids_cuda_set_architectures(ALL)
+rapids_cuda_set_architectures(RAPIDS)
 
 if(NOT DEFINED CMAKE_CUDA_ARCHITECTURES)
   message(FATAL_ERROR "CMAKE_CUDA_ARCHITECTURES should exist after calling rapids_cuda_set_architectures()")

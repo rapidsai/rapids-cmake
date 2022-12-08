@@ -44,8 +44,8 @@ directly.
   GPU architectures present on the current machine. Requires that
   the CUDA language be enabled for the current CMake project.
 
-``ALL``:
-  When passed ALL will compile for all supported RAPIDS GPU architectures
+``RAPIDS``, or ``ALL``:
+  When passed RAPIDS or ALL, we will compile for all supported RAPIDS GPU architectures
 
 Result Variables
 ^^^^^^^^^^^^^^^^
@@ -66,7 +66,7 @@ function(rapids_cuda_set_architectures mode)
     list(REMOVE_ITEM supported_archs "90")
   endif()
 
-  if(${mode} STREQUAL "ALL")
+  if(${mode} STREQUAL "RAPIDS" OR ${mode} STREQUAL "ALL")
 
     # CMake architecture list entry of "80" means to build compute and sm. What we want is for the
     # newest arch only to build that way while the rest built only for sm.
