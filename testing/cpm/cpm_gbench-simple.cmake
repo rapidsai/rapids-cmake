@@ -13,14 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
+include(${rapids-cmake-dir}/cpm/init.cmake)
+include(${rapids-cmake-dir}/cpm/gbench.cmake)
 
-add_cmake_config_test(rapids-cython.cmake)
+rapids_cpm_init()
 
-add_cmake_config_test(init.cmake)
-add_cmake_config_test(create_modules_errors.cmake SHOULD_FAIL "You must call rapids_cython_init before calling this function")
 
-add_cmake_config_test(create_modules)
-add_cmake_config_test(create_modules_with_library)
-add_cmake_config_test(create_modules_with_prefix)
+if(TARGET benchmark::benchmark)
+  message(FATAL_ERROR "Expected benchmark::benchmark expected to not exist")
+endif()
 
-add_cmake_config_test(add_rpath_entries)
+rapids_cpm_gbench()
+
+if(NOT TARGET benchmark::benchmark)
+  message(FATAL_ERROR "Expected benchmark::benchmark target to exist")
+endif()
+
+# Make sure we can be called multiple times
+rapids_cpm_gbench()

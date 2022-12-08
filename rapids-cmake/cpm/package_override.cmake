@@ -78,6 +78,7 @@ function(rapids_cpm_package_override filepath)
       if(NOT override_exists)
         # only add the first override for a project we encounter
         set_property(GLOBAL PROPERTY rapids_cpm_${package_name}_override_json "${data}")
+        set_property(GLOBAL PROPERTY rapids_cpm_${package_name}_override_json_file "${filepath}")
       endif()
     endforeach()
 

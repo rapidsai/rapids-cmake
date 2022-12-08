@@ -1,21 +1,24 @@
 #!/bin/bash
-# Copyright (c) 2021, NVIDIA CORPORATION.
-#############################
-# rapids-cmake Style Tester #
-#############################
+# Copyright (c) 2020, NVIDIA CORPORATION.
 
-# Ignore errors and set path
-set +e
-PATH=/opt/conda/bin:$PATH
-LC_ALL=C.UTF-8
-LANG=C.UTF-8
+set -euo pipefail
 
-# Activate common conda env
+rapids-logger "Create checks conda environment"
 . /opt/conda/etc/profile.d/conda.sh
-conda activate rapids
 
-# Run cmake-format / cmake-lint and get results/return code
-CMAKE_FILES=(`find  rapids-cmake/ | grep -E "^.*\.cmake?$|^.*/CMakeLists.txt$"`)
+rapids-dependency-file-generator \
+  --output conda \
+  --file_key checks \
+  --matrix "" | tee env.yaml
+
+rapids-mamba-retry env create --force -f env.yaml -n checks
+
+set +eu
+conda activate checks
+set -u
+
+
+CMAKE_FILES=(`find rapids-cmake/ | grep -E "^.*\.cmake?$|^.*/CMakeLists.txt$"`)
 CMAKE_FILES+=("CMakeLists.txt")
 
 CMAKE_FORMATS=()

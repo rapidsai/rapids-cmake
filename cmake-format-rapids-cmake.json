@@ -78,6 +78,15 @@
         }
       },
 
+      "rapids_cpm_gbench": {
+        "pargs": {
+          "nargs": 0
+        },
+        "kwargs": {
+          "BUILD_EXPORT_SET": 1,
+          "INSTALL_EXPORT_SET": 1
+        }
+      },
       "rapids_cpm_gtest": {
         "pargs": {
           "nargs": 0
@@ -261,6 +270,16 @@
           "SOURCE_FILES": "*",
           "LINKED_LIBRARIES": "*",
           "INSTALL_DIR": "1"
+        }
+      },
+      "rapids_cython_add_rpath_entries": {
+        "pargs": {
+          "nargs": "0"
+        },
+        "kwargs": {
+          "PATHS": "+",
+          "TARGET": "1",
+          "ROOT_DIRECTORY": "1"
         }
       }
 

@@ -45,6 +45,7 @@ package uses :ref:`can be found here. <cpm_versions>`
    :titlesonly:
 
    /packages/rapids_cpm_cuco
+   /packages/rapids_cpm_gbench
    /packages/rapids_cpm_gtest
    /packages/rapids_cpm_libcudacxx
    /packages/rapids_cpm_nvbench
@@ -69,6 +70,7 @@ The `rapids_cython` functions allow projects to easily build cython modules usin
 
    /command/rapids_cython_init
    /command/rapids_cython_create_modules
+   /command/rapids_cython_add_rpath_entries
 
 
 Find

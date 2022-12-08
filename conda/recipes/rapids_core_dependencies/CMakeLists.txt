@@ -13,14 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
+cmake_minimum_required(VERSION 3.23.1)
 
-add_cmake_config_test(rapids-cython.cmake)
+project(rapids-dependencies LANGUAGES CXX)
 
-add_cmake_config_test(init.cmake)
-add_cmake_config_test(create_modules_errors.cmake SHOULD_FAIL "You must call rapids_cython_init before calling this function")
+set(rapids-cmake-dir "${PROJECT_SOURCE_DIR}/../../../rapids-cmake/")
 
-add_cmake_config_test(create_modules)
-add_cmake_config_test(create_modules_with_library)
-add_cmake_config_test(create_modules_with_prefix)
+include(${rapids-cmake-dir}/cpm/init.cmake)
+rapids_cpm_init()
 
-add_cmake_config_test(add_rpath_entries)
+# Download all source packages
+include(${rapids-cmake-dir}/cpm/libcudacxx.cmake)
+include(${rapids-cmake-dir}/cpm/thrust.cmake)
+set(CPM_DOWNLOAD_ALL "ON")
+rapids_cpm_libcudacxx(INSTALL_EXPORT_SET rapids-dependencies)
+rapids_cpm_thrust(NAMESPACE temp INSTALL_EXPORT_SET rapids-dependencies)

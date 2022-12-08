@@ -36,8 +36,14 @@ add_cmake_config_test( cpm_package_override-empty.cmake )
 add_cmake_config_test( cpm_package_override-multiple.cmake )
 add_cmake_config_test( cpm_package_override-simple.cmake )
 
+
 add_cmake_config_test( cpm_generate_patch_command-invalid.cmake )
 add_cmake_config_test( cpm_generate_patch_command-override.cmake )
+add_cmake_config_test( cpm_generate_patch_command-current_json_dir.cmake )
+
+
+add_cmake_config_test( cpm_gbench-export.cmake )
+add_cmake_config_test( cpm_gbench-simple.cmake )
 
 add_cmake_config_test( cpm_gtest-export.cmake )
 add_cmake_config_test( cpm_gtest-simple.cmake )

@@ -6,6 +6,11 @@
       "git_url" : "https://github.com/google/googletest.git",
       "git_tag" : "release-${version}"
     },
+    "GBench" : {
+      "version" : "1.5.3",
+      "git_url" : "https://github.com/google/benchmark.git",
+      "git_tag" : "v1.5.3"
+    },
     "nvbench" : {
       "version" : "0.0",
       "git_shallow" : false,
@@ -34,10 +39,22 @@
     "Thrust" : {
       "version" : "1.17.2",
       "git_url" : "https://github.com/NVIDIA/thrust.git",
-      "git_tag" : "${version}"
+      "git_tag" : "${version}",
+      "patches" : [
+        {
+          "file" : "Thrust/transform_iter_with_reduce_by_key.diff",
+          "issue" : "Support transform iterator with reduce by key [https://github.com/NVIDIA/thrust/pull/1805]",
+          "fixed_in" : "2.1"
+        },
+        {
+          "file" : "Thrust/install_rules.diff",
+          "issue" : "Thrust 1.X installs incorrect files [https://github.com/NVIDIA/thrust/issues/1790]",
+          "fixed_in" : "2.0"
+        }
+      ]
     },
     "libcudacxx" : {
-      "version" : "1.8.0",
+      "version" : "1.8.1",
       "git_url" : "https://github.com/NVIDIA/libcudacxx.git",
       "git_tag" : "${version}"
     },
@@ -45,7 +62,7 @@
       "version" : "0.0.1",
       "git_shallow" : false,
       "git_url" : "https://github.com/NVIDIA/cuCollections.git",
-      "git_tag" : "77593b39aa72ad859d6196e0a04b40a79db5a794"
+      "git_tag" : "2a194c9831324904120113bc18135e7933369ee8"
     }
   }
 }

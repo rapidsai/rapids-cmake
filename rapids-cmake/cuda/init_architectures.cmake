@@ -28,16 +28,17 @@ to include support for `ALL` and `NATIVE` to make CUDA architecture compilation 
 
     rapids_cuda_init_architectures(<project_name>)
 
-Establishes what CUDA architectures that will be compiled for.
+Used before enabling the CUDA language either via :cmake:command:`project() <cmake:command:project>` or
+:cmake:command:`enable_language() <cmake:command:enable_language>` to establish the CUDA architectures to be compiled for.
 Parses the :cmake:variable:`CMAKE_CUDA_ARCHITECTURES <cmake:variable:CMAKE_CUDA_ARCHITECTURES>` for special
 values `ALL`, `NATIVE` and `""`.
 
 .. note::
-  Required to be called before :cmake:command:`project() <cmake:command:project>`
+  Required to be called before the first :cmake:command:`project() <cmake:command:project>` call.
 
   Will automatically call :cmake:command:`rapids_cuda_set_architectures` immediately
-  after :cmake:command:`project() <cmake:command:project>` establishing the correct values for
-  :cmake:variable:`CMAKE_CUDA_ARCHITECTURES <cmake:variable:CMAKE_CUDA_ARCHITECTURES>`.
+  after :cmake:command:`project() <cmake:command:project>` with the same project name establishing
+  the correct values for :cmake:variable:`CMAKE_CUDA_ARCHITECTURES <cmake:variable:CMAKE_CUDA_ARCHITECTURES>`.
 
 ``project_name``
   Name of the project
