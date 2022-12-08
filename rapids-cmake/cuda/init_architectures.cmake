@@ -29,9 +29,9 @@ to include support for `ALL` and `NATIVE` to make CUDA architecture compilation 
     rapids_cuda_init_architectures(<project_name>)
 
 Used before enabling the CUDA language either via :cmake:command:`project() <cmake:command:project>` to establish the
-CUDA architectures to be compiled for. Parses the :cmake:envvar:`CUDAARCHS <cmake:envvar:CUDAARCHS>`, and
+CUDA architectures to be compiled for. Parses the :cmake:envvar:`ENV{CUDAARCHS} <cmake:envvar:CUDAARCHS>`, and
 :cmake:variable:`CMAKE_CUDA_ARCHITECTURES <cmake:variable:CMAKE_CUDA_ARCHITECTURES>` for special values
-`ALL`, `NATIVE` and `""`.
+`ALL`, `RAPIDS`, `NATIVE` and `""`.
 
 .. note::
   Required to be called before the first :cmake:command:`project() <cmake:command:project>` call.
@@ -43,15 +43,7 @@ CUDA architectures to be compiled for. Parses the :cmake:envvar:`CUDAARCHS <cmak
 ``project_name``
   Name of the project in the subsequent :cmake:command:`project() <cmake:command:project>` call.
 
-``NATIVE`` or ``""``:
-  When passed as the value for :cmake:variable:`CMAKE_CUDA_ARCHITECTURES <cmake:variable:CMAKE_CUDA_ARCHITECTURES>`
-  will compile for all GPU architectures present on the current machine.
-
-``RAPIDS``, ``ALL``, or no :cmake:variable:`CMAKE_CUDA_ARCHITECTURES <cmake:variable:CMAKE_CUDA_ARCHITECTURES>` and
-  :cmake:envvar:`ENV{CUDAARCHS} <cmake:envvar:CUDAARCHS>`:
-  When passed as the value for :cmake:variable:`CMAKE_CUDA_ARCHITECTURES <cmake:variable:CMAKE_CUDA_ARCHITECTURES>`
-  will compile for all supported RAPIDS GPU architectures.
-
+.. include:: supported_cuda_architectures_values.txt
 
 Example on how to properly use :cmake:command:`rapids_cuda_init_architectures`:
 

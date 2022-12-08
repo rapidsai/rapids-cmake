@@ -39,13 +39,7 @@ directly.
 .. note::
   This is automatically called by :cmake:command:`rapids_cuda_init_architectures`
 
-``NATIVE``:
-  When passed NATIVE as the first parameter will compile for all
-  GPU architectures present on the current machine. Requires that
-  the CUDA language be enabled for the current CMake project.
-
-``RAPIDS``, or ``ALL``:
-  When passed RAPIDS or ALL, we will compile for all supported RAPIDS GPU architectures
+.. include:: supported_cuda_architectures_values.txt
 
 Result Variables
 ^^^^^^^^^^^^^^^^
