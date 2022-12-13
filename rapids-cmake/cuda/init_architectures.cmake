@@ -84,8 +84,9 @@ function(rapids_cuda_init_architectures project_name)
     set(cuda_arch_mode "RAPIDS")
   endif()
 
-  # This needs to be run before enabling the CUDA language since RAPIDS supports the magic string of
-  # "ALL"
+  # This needs to be run before enabling the CUDA language since RAPIDS supports magic
+  # values like `RAPIDS`, `ALL`, and `NATIVE` which if propagated cause CMake to fail to determine
+  # the CUDA compiler
   if(cuda_arch_mode STREQUAL "RAPIDS")
     set(CMAKE_CUDA_ARCHITECTURES OFF PARENT_SCOPE)
     set(load_file "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/invoke_set_all_architectures.cmake")
