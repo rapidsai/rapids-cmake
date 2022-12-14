@@ -1,8 +1,8 @@
 # Copyright (c) 2022, NVIDIA CORPORATION.
 
 {% set version = environ.get('GIT_DESCRIBE_TAG', '0.0.0.dev').lstrip('v') + environ.get('VERSION_SUFFIX', '') %}
-{% set cuda_version = '.'.join(environ.get('CUDA', '11.5').split('.')[:2]) %}
-{% set cuda_major=cuda_version.split('.')[0] %}
+{% set cuda_version = '.'.join(environ['RAPIDS_CUDA_VERSION'].split('.')[:2]) %}
+{% set cuda_major = cuda_version.split('.')[0] %}
 
 package:
   name: rapids_core_dependencies
@@ -14,8 +14,6 @@ source:
 build:
   number: {{ GIT_DESCRIBE_NUMBER }}
   string: cuda{{ cuda_major }}_{{ GIT_DESCRIBE_HASH }}_{{ GIT_DESCRIBE_NUMBER }}
-  script_env:
-    - VERSION_SUFFIX
   ignore_run_exports_from:
     - {{ compiler('cuda') }}
 
