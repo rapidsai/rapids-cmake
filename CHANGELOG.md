@@ -2,9 +2,40 @@
 
 Please see https://github.com/rapidsai/rapids-cmake/releases/tag/v23.02.00a for the latest changes to this development branch.
 
-# rapids-cmake 22.12.00 (Date TBD)
+# rapids-cmake 22.12.00 (8 Dec 2022)
 
-Please see https://github.com/rapidsai/rapids-cmake/releases/tag/v22.12.00a for the latest changes to this development branch.
+## 🐛 Bug Fixes
+
+- Don&#39;t use CMake 3.25.0 as it has a show stopping FindCUDAToolkit bug ([#308](https://github.com/rapidsai/rapids-cmake/pull/308)) [@robertmaynard](https://github.com/robertmaynard)
+- Add missing CPM_ARGS to gbench ([#294](https://github.com/rapidsai/rapids-cmake/pull/294)) [@vyasr](https://github.com/vyasr)
+- Patch results are only displayed once per invocation of CMake ([#292](https://github.com/rapidsai/rapids-cmake/pull/292)) [@robertmaynard](https://github.com/robertmaynard)
+- Add thrust output iterator fix to rapids-cmake thrust patches ([#291](https://github.com/rapidsai/rapids-cmake/pull/291)) [@robertmaynard](https://github.com/robertmaynard)
+
+## 📖 Documentation
+
+- Update pull request template to match rest of RAPIDS ([#280](https://github.com/rapidsai/rapids-cmake/pull/280)) [@robertmaynard](https://github.com/robertmaynard)
+- Clarify rapids_cuda_init_architectures behavior ([#279](https://github.com/rapidsai/rapids-cmake/pull/279)) [@robertmaynard](https://github.com/robertmaynard)
+
+## 🚀 New Features
+
+- Update cuco git tag ([#302](https://github.com/rapidsai/rapids-cmake/pull/302)) [@PointKernel](https://github.com/PointKernel)
+- Remove old CI files ([#300](https://github.com/rapidsai/rapids-cmake/pull/300)) [@robertmaynard](https://github.com/robertmaynard)
+- Update cuco to version that supports Ada and Hopper ([#299](https://github.com/rapidsai/rapids-cmake/pull/299)) [@robertmaynard](https://github.com/robertmaynard)
+- Move libcudacxx 1.8.1 so we support sm90 ([#296](https://github.com/rapidsai/rapids-cmake/pull/296)) [@robertmaynard](https://github.com/robertmaynard)
+- Add ability to specify library directories for target rpaths ([#295](https://github.com/rapidsai/rapids-cmake/pull/295)) [@vyasr](https://github.com/vyasr)
+- Add support for cloning Google benchmark ([#293](https://github.com/rapidsai/rapids-cmake/pull/293)) [@vyasr](https://github.com/vyasr)
+- Add `current_json_dir` placeholder in json patch file values ([#289](https://github.com/rapidsai/rapids-cmake/pull/289)) [@robertmaynard](https://github.com/robertmaynard)
+- Add sm90 ( Hopper ) to rapids-cmake &quot;ALL&quot; mode ([#285](https://github.com/rapidsai/rapids-cmake/pull/285)) [@robertmaynard](https://github.com/robertmaynard)
+- Enable copy_prs ops-bot config ([#284](https://github.com/rapidsai/rapids-cmake/pull/284)) [@robertmaynard](https://github.com/robertmaynard)
+- Add GitHub action workflow to rapids-cmake ([#283](https://github.com/rapidsai/rapids-cmake/pull/283)) [@robertmaynard](https://github.com/robertmaynard)
+- Create conda package of patched dependencies ([#275](https://github.com/rapidsai/rapids-cmake/pull/275)) [@robertmaynard](https://github.com/robertmaynard)
+- Switch thrust over to use rapids-cmake patches ([#265](https://github.com/rapidsai/rapids-cmake/pull/265)) [@robertmaynard](https://github.com/robertmaynard)
+
+## 🛠️ Improvements
+
+- Remove `rapids-dependency-file-generator` `FIXME` ([#305](https://github.com/rapidsai/rapids-cmake/pull/305)) [@ajschmidt8](https://github.com/ajschmidt8)
+- Add `ninja` as build dependency ([#301](https://github.com/rapidsai/rapids-cmake/pull/301)) [@ajschmidt8](https://github.com/ajschmidt8)
+- Forward merge 22.10 into 22.12 ([#297](https://github.com/rapidsai/rapids-cmake/pull/297)) [@vyasr](https://github.com/vyasr)
 
 # rapids-cmake 22.10.00 (12 Oct 2022)
 

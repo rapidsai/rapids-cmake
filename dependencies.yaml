@@ -34,6 +34,7 @@ dependencies:
               cuda: "11.2"
             packages:
               - cudatoolkit=11.2
+              - gcc<11.0.0
           - matrix:
               cuda: "11.4"
             packages:
