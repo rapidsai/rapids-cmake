@@ -39,13 +39,7 @@ directly.
 .. note::
   This is automatically called by :cmake:command:`rapids_cuda_init_architectures`
 
-``NATIVE``:
-  When passed NATIVE as the first parameter will compile for all
-  GPU architectures present on the current machine. Requires that
-  the CUDA language be enabled for the current CMake project.
-
-``ALL``:
-  When passed ALL will compile for all supported RAPIDS GPU architectures
+.. include:: supported_cuda_architectures_values.txt
 
 Result Variables
 ^^^^^^^^^^^^^^^^
@@ -66,7 +60,7 @@ function(rapids_cuda_set_architectures mode)
     list(REMOVE_ITEM supported_archs "90")
   endif()
 
-  if(${mode} STREQUAL "ALL")
+  if(${mode} STREQUAL "RAPIDS" OR ${mode} STREQUAL "ALL")
 
     # CMake architecture list entry of "80" means to build compute and sm. What we want is for the
     # newest arch only to build that way while the rest built only for sm.
