@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2023, NVIDIA CORPORATION.
+# Copyright (c) 2021, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@
 # use rapids-cmake via CPM inside the same global project. In those
 # cases it can fail due to CMAKE_MODULE_PREFIX not being exported properly
 
-# Enforce the minimum required CMake version for all users
+# Enfore the minimum required CMake version for all users
 cmake_minimum_required(VERSION 3.23.1 FATAL_ERROR)
 
 set(rapids-cmake-dir "${CMAKE_CURRENT_LIST_DIR}/rapids-cmake")

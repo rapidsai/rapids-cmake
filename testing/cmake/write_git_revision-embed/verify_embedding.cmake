@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2023, NVIDIA CORPORATION.
+# Copyright (c) 2021, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -48,3 +48,6 @@ endif()
 if(NOT contents MATCHES "version=${RAPIDS_WRITE_VERSION}")
   message(FATAL_ERROR "git version not embedded")
 endif()
+
+
+

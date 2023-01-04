@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2020-2023, NVIDIA CORPORATION.
+# Copyright (c) 2020-2021, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -77,7 +77,7 @@ consistency. List all targets used by your project in `GLOBAL_TARGET`.
   our install directory export set.
 
 ``CPM_ARGS``
-  Required placeholder to be provided before any extra arguments that need to
+  Required placeholder to be provied before any extra arguments that need to
   be passed down to :cmake:command:`CPMFindPackage`.
 
 Result Variables

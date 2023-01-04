@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2023, NVIDIA CORPORATION.
+# Copyright (c) 2021, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ and `CONDA_PREFIX` based on the current CONDA environment.
 
 Result Variables
 ^^^^^^^^^^^^^^^^
-  :cmake:variable:`CMAKE_PREFIX_PATH <cmake:variable:CMAKE_PREFIX_PATH>` will be modified when `MODIFY_PREFIX_PATH` is provided
+  :cmake:variable:`CMAKE_PREFIX_PATH <cmake:variable:CMAKE_PREFIX_PATH>` will be modifed when `MODIFY_PREFIX_PATH` is provided
   and called from a conda environment.
 
 Result Targets

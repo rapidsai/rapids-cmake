@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2023, NVIDIA CORPORATION.
+# Copyright (c) 2021, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ Generate a Find*.cmake module for the requested package
 
 Generates a custom Find module for the requested package. Makes
 it easier for projects to look for packages that don't have
-an existing FindModule or don't provide a CONFIG module
+an exisiting FindModule or don't provide a CONFIG module
 when installed.
 
 .. note::
@@ -84,7 +84,7 @@ when installed.
     can be found before those provided by distributions."
 
 ``NO_CONFIG``
-  When provided will stop the generated Find Module from
+  When provied will stop the generated Find Module from
   first searching for the projects shipped Find Config.
 
 ``BUILD_EXPORT_SET``
@@ -100,7 +100,7 @@ when installed.
 
 Result Variables
 ^^^^^^^^^^^^^^^^
-  :cmake:variable:`CMAKE_MODULE_PATH` will be modified to include the
+  :cmake:variable:`CMAKE_MODULE_PATH` will be modifed to include the
   folder where `Find<PackageName>.cmake` is located.
 
 #]=======================================================================]

@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2023, NVIDIA CORPORATION.
+# Copyright (c) 2021, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ be the computed installation directory.
 
 Result Variables
 ^^^^^^^^^^^^^^^^
-  :cmake:command:`CMAKE_INSTALL_LIBDIR <cmake:command:install>` will be modified to be the computed relative directory
+  :cmake:command:`CMAKE_INSTALL_LIBDIR <cmake:command:install>` will be modifed to be the computed relative directory
   (lib or lib64 or lib/<multiarch-tuple>) when `MODIFY_INSTALL_LIBDIR` is provided
 
 #]=======================================================================]

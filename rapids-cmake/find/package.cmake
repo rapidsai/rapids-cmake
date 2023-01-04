@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2023, NVIDIA CORPORATION.
+# Copyright (c) 2021, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -108,7 +108,7 @@ The :cmake:command:`rapids_find_package` function supports two call modes.
 macro(rapids_find_package name)
   #
   # rapids_find_package breaks convention and is a macro on purpose. Since `find_package` allows
-  # arbitrary variable creation ( `<PROJECT_???>` ) we need to have `rapids_find_package` do the
+  # abitrary variable creation ( `<PROJECT_???>` ) we need to have `rapids_find_package` do the
   # same. If it doesn't it would make drop in replacements impossible
   #
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.find.package")

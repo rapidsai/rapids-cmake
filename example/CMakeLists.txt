@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2023, NVIDIA CORPORATION.
+# Copyright (c) 2021, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -86,7 +86,7 @@ include(${rapids-cmake-dir}/cpm/rmm.cmake)
 rapids_cpm_rmm(BUILD_EXPORT_SET example-targets
                INSTALL_EXPORT_SET example-targets)
 
-# Bring in any arbitrary package
+# Bring in any abitrary package
 rapids_cpm_find(fmt 7.1.3
   GLOBAL_TARGETS fmt::fmt
   CPM_ARGS
