@@ -44,7 +44,9 @@ else
 fi
 
 if [[ $1 == "cmake-format" ]]; then
-  cmake-format --in-place --first-comment-is-literal --config-files ${RAPIDS_CMAKE_FORMAT_FILE} ${RAPIDS_CMAKE_ROOT}/ci/checks/cmake_config_format.json -- ${@:2}
+  for cmake_file in "${@:2}"; do
+    cmake-format --in-place --first-comment-is-literal --config-files ${RAPIDS_CMAKE_FORMAT_FILE} ${RAPIDS_CMAKE_ROOT}/ci/checks/cmake_config_format.json -- ${cmake_file}
+  done
 elif [[ $1 == "cmake-lint" ]]; then
   # Since the pre-commit hook is verbose, we have to be careful to only
   # present cmake-lint's output (which is quite verbose) if we actually

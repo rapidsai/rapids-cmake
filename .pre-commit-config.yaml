@@ -30,21 +30,27 @@ repos:
           )
   - repo: local
     hooks:
-      #- id: cmake-format
-      #  name: cmake-format
-      #  entry: ./ci/checks/run-cmake-format.sh cmake-format
-      #  language: python
-      #  types: [cmake]
-      #  # Note that pre-commit autoupdate does not update the versions
-      #  # of dependencies, so we'll have to update this manually.
-      #  additional_dependencies:
-      #    - cmakelang==0.6.13
-      #  verbose: true
-      #  require_serial: true
-      #  files: |
-      #    (?x)^(
-      #      ^rapids-cmake/.*$
-      #    )
+      - id: copyright-check
+        name: copyright-check
+        entry: python ./ci/checks/copyright.py --git-modified-only --update-current-year
+        language: python
+        pass_filenames: false
+        additional_dependencies: [gitpython]
+      - id: cmake-format
+        name: cmake-format
+        entry: ./ci/checks/run-cmake-format.sh cmake-format
+        language: python
+        types: [cmake]
+        # Note that pre-commit autoupdate does not update the versions
+        # of dependencies, so we'll have to update this manually.
+        additional_dependencies:
+          - cmakelang==0.6.13
+        verbose: true
+        require_serial: true
+        files: |
+          (?x)^(
+            ^rapids-cmake/.*$
+          )
       - id: cmake-lint
         name: cmake-lint
         entry: ./ci/checks/run-cmake-format.sh cmake-lint
@@ -60,12 +66,6 @@ repos:
           (?x)^(
             ^rapids-cmake/.*$
           )
-      - id: copyright-check
-        name: copyright-check
-        entry: python ./ci/checks/copyright.py --git-modified-only --update-current-year
-        language: python
-        pass_filenames: false
-        additional_dependencies: [gitpython]
 
 default_language_version:
   python: python3
