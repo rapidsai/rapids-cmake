@@ -28,7 +28,7 @@ rapids_cpm_find(libcudacxx ${version}
                 GIT_SHALLOW ${shallow}
                 EXCLUDE_FROM_ALL ${exclude})
 
-                
+
 rapids_cpm_libcudacxx()
 if(NOT TARGET libcudacxx::libcudacxx)
   message(FATAL_ERROR "Expected libcudacxx::libcudacxx target to exist")

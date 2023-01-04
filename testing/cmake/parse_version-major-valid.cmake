@@ -39,4 +39,3 @@ rapids_cmake_parse_version(MAJOR "21.03.00...22.04.00" major_value)
 if(NOT major_value EQUAL 21)
   message(FATAL_ERROR "rapids_cmake_parse_version(MAJOR) value parsing failed unexpectedly")
 endif()
-

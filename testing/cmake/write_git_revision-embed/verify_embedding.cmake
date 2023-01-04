@@ -48,6 +48,3 @@ endif()
 if(NOT contents MATCHES "version=${RAPIDS_WRITE_VERSION}")
   message(FATAL_ERROR "git version not embedded")
 endif()
-
-
-

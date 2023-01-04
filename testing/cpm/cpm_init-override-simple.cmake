@@ -50,4 +50,3 @@ endif()
 if(NOT CPM_DOWNLOAD_ALL)
   message(FATAL_ERROR "CPM_DOWNLOAD_ALL should be set to true when an override exists")
 endif()
-

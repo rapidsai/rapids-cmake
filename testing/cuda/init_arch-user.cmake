@@ -27,4 +27,3 @@ endif()
 if(NOT CMAKE_CUDA_ARCHITECTURES STREQUAL "80")
   message(FATAL_ERROR "rapids_cuda_init_architectures didn't ignore users CUDA_ARCHITECTURES value")
 endif()
-

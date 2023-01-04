@@ -46,4 +46,3 @@ endif()
 if(NOT tag STREQUAL "my_tag")
   message(FATAL_ERROR "custom git_tag field was ignored. ${tag} found instead of my_tag")
 endif()
-

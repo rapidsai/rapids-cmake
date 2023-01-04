@@ -30,4 +30,3 @@ string(FIND "${contents}" "${to_match_string}" is_found)
 if(is_found EQUAL -1)
   message(FATAL_ERROR "rapids_export_package failed to generate a find_package configuration with version")
 endif()
-

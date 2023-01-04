@@ -36,4 +36,3 @@ target_compile_features(is_dirty PRIVATE cxx_std_14)
 if(RAPIDS_WRITE_VERSION MATCHES "dirty")
   target_compile_definitions(is_dirty PRIVATE "-DIS_DIRTY")
 endif()
-

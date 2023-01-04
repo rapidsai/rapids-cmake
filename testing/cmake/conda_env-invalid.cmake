@@ -36,4 +36,3 @@ endif()
 if(NOT "${before_call_value}" STREQUAL "${CMAKE_PREFIX_PATH}")
   message(FATAL_ERROR "Not expected for `rapids_cmake_support_conda_env` to modify CMAKE_PREFIX_PATH")
 endif()
-

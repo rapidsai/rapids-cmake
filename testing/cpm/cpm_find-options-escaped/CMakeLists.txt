@@ -49,4 +49,3 @@ string(FIND "${contents}" "${to_match_string}" is_found)
 if(is_found EQUAL -1)
   message(FATAL_ERROR "rapids_cpm_find(BUILD) failed to perserve quotes around CPM arguments")
 endif()
-

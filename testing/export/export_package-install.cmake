@@ -57,4 +57,3 @@ if(EXISTS "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/build/package_ZLIB.c
    EXISTS "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/build/package_PNG.cmake")
   message(FATAL_ERROR "rapids_export_package(INSTALL) generated temp files in the wrong directory")
 endif()
-

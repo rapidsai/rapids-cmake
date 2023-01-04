@@ -54,5 +54,3 @@ add_custom_target(verify_target_file ALL
   COMMAND ${CMAKE_COMMAND} -E rm -rf "${CMAKE_BINARY_DIR}/verify/build"
   COMMAND ${CMAKE_COMMAND} -S="${CMAKE_BINARY_DIR}/verify" -B="${CMAKE_BINARY_DIR}/verify/build"
   )
-
-

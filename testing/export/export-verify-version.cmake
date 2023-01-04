@@ -45,5 +45,3 @@ endif()
 if(NOT "${TEST_VERSION_MAJOR}.${TEST_VERSION_MINOR}" VERSION_EQUAL 3.1)
   message(FATAL_ERROR "rapids_export failed to export version major/minor information")
 endif()
-
-

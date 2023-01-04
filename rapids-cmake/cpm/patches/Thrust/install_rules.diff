@@ -3,7 +3,7 @@ index 93084c1..bf6c195 100644
 --- a/cmake/ThrustInstallRules.cmake
 +++ b/cmake/ThrustInstallRules.cmake
 @@ -13,7 +13,7 @@ install(DIRECTORY "${Thrust_SOURCE_DIR}/thrust"
- 
+
  install(DIRECTORY "${Thrust_SOURCE_DIR}/thrust/cmake/"
    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/thrust"
 -  PATTERN thrust-header-search EXCLUDE

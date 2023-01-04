@@ -36,4 +36,3 @@ endif()
 if(NOT TARGET MOCK_CUCXX)
   message(FATAL_ERROR "cucxx targets should be generated")
 endif()
-
