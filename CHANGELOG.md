@@ -132,7 +132,7 @@ Please see https://github.com/rapidsai/rapids-cmake/releases/tag/v23.02.00a for 
 
 - nvcomp install rules need to match the pre-built layout (#194) @robertmaynard
 - Use target name variable. (#187) @bdice
-- Remove uneeded message from rapids_export_package (#183) @robertmaynard
+- Remove unneeded message from rapids_export_package (#183) @robertmaynard
 - rapids_cpm_thrust: Correctly find version 1.15.0 (#181) @robertmaynard
 - rapids_cpm_thrust: Correctly find version 1.15.0 (#180) @robertmaynard
 
@@ -241,7 +241,7 @@ Please see https://github.com/rapidsai/rapids-cmake/releases/tag/v23.02.00a for 
 - Introduce rapids_cpm_libcudacxx (#111) @robertmaynard
 - Record formatting rules for rapids_cpm_find DOWNLOAD_ONLY option (#94) @robertmaynard
 - rapids_cmake_install_lib_dir now aware of GNUInstallDirs improvements in CMake 3.22 (#85) @robertmaynard
-- rapids-cmake defaults to always download overriden packages (#83) @robertmaynard
+- rapids-cmake defaults to always download overridden packages (#83) @robertmaynard
 
 ## 🛠️ Improvements
 

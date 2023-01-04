@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021, NVIDIA CORPORATION.
+# Copyright (c) 2021-2023, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -132,7 +132,7 @@ function(rapids_cpm_nvcomp)
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
   rapids_cpm_display_patch_status(nvcomp)
 
-  # provice consistent targets between a found nvcomp and one building from source
+  # provide consistent targets between a found nvcomp and one building from source
   if(NOT TARGET nvcomp::nvcomp AND TARGET nvcomp)
     add_library(nvcomp::nvcomp ALIAS nvcomp)
   endif()

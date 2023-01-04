@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021, NVIDIA CORPORATION.
+# Copyright (c) 2021-2023, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ rapids_export_write_dependencies
 
 .. code-block:: cmake
 
-Creates a self-containted file that searches for all dependencies for a given
+Creates a self-contained file that searches for all dependencies for a given
 export set.
 
   rapids_export_write_dependencies( (BUILD|INSTALL) <export_set> <file_path> )

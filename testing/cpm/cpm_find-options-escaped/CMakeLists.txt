@@ -47,5 +47,5 @@ set(to_match_string [=["NAME;RapidsTest;VERSION;20.09.00;DOWNLOAD_COMMAND;ls;OPT
 file(READ "${CMAKE_BINARY_DIR}/rapids-test-project-dependencies.cmake" contents)
 string(FIND "${contents}" "${to_match_string}" is_found)
 if(is_found EQUAL -1)
-  message(FATAL_ERROR "rapids_cpm_find(BUILD) failed to perserve quotes around CPM arguments")
+  message(FATAL_ERROR "rapids_cpm_find(BUILD) failed to preserve quotes around CPM arguments")
 endif()
