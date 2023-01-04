@@ -44,7 +44,7 @@ across all RAPIDS projects.
 
 .. note::
   If an override entry exists for the nvcomp package it MUST have a proprietary_binary entry for this to
-  flag to do anything. Any override without this entry is considered to invalidate the existin proprietary
+  flag to do anything. Any override without this entry is considered to invalidate the existing proprietary
   binary entry.
 
 .. |PKG_NAME| replace:: nvcomp
