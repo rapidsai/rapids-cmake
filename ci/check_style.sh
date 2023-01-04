@@ -13,7 +13,7 @@ rapids-dependency-file-generator \
 
 rapids-mamba-retry env create --force -f env.yaml -n checks
 
-set +eu
+set +u
 conda activate checks
 set -u
 
