@@ -29,4 +29,4 @@ if(CMAKE_CUDA_ARCHITECTURES STREQUAL "ALL")
 endif()
 
 
-include("${rapids-cmake-testing-dir}/cuda/validate-cuda-all.cmake")
+include("${rapids-cmake-testing-dir}/cuda/validate-cuda-rapids.cmake")
