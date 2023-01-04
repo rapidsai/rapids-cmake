@@ -49,8 +49,7 @@ elif [[ $1 == "cmake-lint" ]]; then
   # Since the pre-commit hook is verbose, we have to be careful to only
   # present cmake-lint's output (which is quite verbose) if we actually
   # observe a failure.
-  OUTPUT=$(cmake-lint --config-files cpp/cmake/config.json ${RAPIDS_CMAKE_FORMAT_FILE} -- ${@:2})
-           cmake-lint --config-files ${RAPIDS_CMAKE_FORMAT_FILE} ${RAPIDS_CMAKE_ROOT}/ci/checks/cmake_config_format.json ${RAPIDS_CMAKE_ROOT}/ci/checks/cmake_config_lint.json -- ${@:2}
+  OUTPUT=$(cmake-lint --config-files ${RAPIDS_CMAKE_FORMAT_FILE} ${RAPIDS_CMAKE_ROOT}/ci/checks/cmake_config_format.json ${RAPIDS_CMAKE_ROOT}/ci/checks/cmake_config_lint.json -- ${@:2})
   status=$?
 
   if ! [ ${status} -eq 0 ]; then
