@@ -1,0 +1,63 @@
+# Copyright (c) 2019-2022, NVIDIA CORPORATION.
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.3.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: |
+          (?x)^(
+            ^python/cudf/cudf/tests/data/subword_tokenizer_data/.*
+          )
+      - id: end-of-file-fixer
+        exclude: |
+          (?x)^(
+            ^python/cudf/cudf/tests/data/subword_tokenizer_data/.*
+          )
+  - repo: https://github.com/pre-commit/mirrors-clang-format
+    rev: v11.1.0
+    hooks:
+      - id: clang-format
+        types_or: [c, c++, cuda]
+        args: ["-fallback-style=none", "-style=file", "-i"]
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.1.0
+    hooks:
+      - id: codespell
+        exclude: |
+          (?x)^(
+            ^CHANGELOG.md$
+          )
+  - repo: local
+    hooks:
+      - id: cmake-format
+        name: cmake-format
+        entry: ./cpp/scripts/run-cmake-format.sh cmake-format
+        language: python
+        types: [cmake]
+        # Note that pre-commit autoupdate does not update the versions
+        # of dependencies, so we'll have to update this manually.
+        additional_dependencies:
+          - cmakelang==0.6.13
+        verbose: true
+        require_serial: true
+      - id: cmake-lint
+        name: cmake-lint
+        entry: ./cpp/scripts/run-cmake-format.sh cmake-lint
+        language: python
+        types: [cmake]
+        # Note that pre-commit autoupdate does not update the versions
+        # of dependencies, so we'll have to update this manually.
+        additional_dependencies:
+          - cmakelang==0.6.13
+        verbose: true
+        require_serial: true
+      - id: copyright-check
+        name: copyright-check
+        entry: python ./ci/checks/copyright.py --git-modified-only --update-current-year
+        language: python
+        pass_filenames: false
+        additional_dependencies: [gitpython]
+
+default_language_version:
+  python: python3
