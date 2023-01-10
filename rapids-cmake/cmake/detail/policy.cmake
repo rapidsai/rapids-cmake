@@ -28,7 +28,6 @@ Prints rapids-cmake deprecated warnings
   rapids_cmake_policy( DEPRECATED_IN <version> REMOVED_IN <version> MESSAGE <content>)
 
 #]=======================================================================]
-
 function(rapids_cmake_policy)
   set(options "")
   set(one_value DEPRECATED_IN REMOVED_IN MESSAGE)
@@ -37,10 +36,14 @@ function(rapids_cmake_policy)
 
   set(_RAPIDS_POLICY_CALLERS_VERSION ${rapids-cmake-version})
 
-  set(policy_context_text "rapids-cmake policy [deprecated=${_RAPIDS_POLICY_DEPRECATED_IN} removed=${_RAPIDS_POLICY_REMOVED_IN}]:")
+  set(policy_context_text
+      "rapids-cmake policy [deprecated=${_RAPIDS_POLICY_DEPRECATED_IN} removed=${_RAPIDS_POLICY_REMOVED_IN}]:"
+  )
   set(policy_upgrade_text "")
   if(_RAPIDS_POLICY_CALLERS_VERSION VERSION_LESS ${_RAPIDS_POLICY_DEPRECATED_IN})
-    set(policy_upgrade_text "You are currently requesting rapids-cmake ${_RAPIDS_POLICY_CALLERS_VERSION} please upgrade to ${_RAPIDS_POLICY_DEPRECATED_IN}.")
+    set(policy_upgrade_text
+        "You are currently requesting rapids-cmake ${_RAPIDS_POLICY_CALLERS_VERSION} please upgrade to ${_RAPIDS_POLICY_DEPRECATED_IN}."
+    )
   endif()
   message(DEPRECATION "${policy_context_text} ${_RAPIDS_POLICY_MESSAGE} ${policy_upgrade_text}")
 

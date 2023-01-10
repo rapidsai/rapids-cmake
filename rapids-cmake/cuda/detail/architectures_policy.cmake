@@ -39,11 +39,15 @@ function(rapids_cuda_architectures_policy called_from mode_variable)
   if(value STREQUAL "ALL")
     set(new_value "RAPIDS")
     if(called_from STREQUAL "FROM_INIT")
-      rapids_cmake_policy(DEPRECATED_IN 23.02 REMOVED_IN 23.06 MESSAGE
-        "Usage of `ALL` as value for `CMAKE_CUDA_ARCHITECTURES` or the env variable `CUDAARCHS` has been deprecated, use `RAPIDS` instead.")
+      rapids_cmake_policy(DEPRECATED_IN 23.02
+                          REMOVED_IN 23.06
+                          MESSAGE "Usage of `ALL` as value for `CMAKE_CUDA_ARCHITECTURES` or the env variable `CUDAARCHS` has been deprecated, use `RAPIDS` instead."
+      )
     elseif(called_from STREQUAL "FROM_SET")
-      rapids_cmake_policy(DEPRECATED_IN 23.02 REMOVED_IN 23.06 MESSAGE
-        "Usage of `ALL` as value passed to `rapids_cuda_set_architectures` has been deprecated, use `RAPIDS` instead.")
+      rapids_cmake_policy(DEPRECATED_IN 23.02
+                          REMOVED_IN 23.06
+                          MESSAGE "Usage of `ALL` as value passed to `rapids_cuda_set_architectures` has been deprecated, use `RAPIDS` instead."
+      )
     endif()
   endif()
 
