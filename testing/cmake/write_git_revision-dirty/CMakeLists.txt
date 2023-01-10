@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021, NVIDIA CORPORATION.
+# Copyright (c) 2021-2023, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -36,4 +36,3 @@ target_compile_features(is_dirty PRIVATE cxx_std_14)
 if(RAPIDS_WRITE_VERSION MATCHES "dirty")
   target_compile_definitions(is_dirty PRIVATE "-DIS_DIRTY")
 endif()
-
