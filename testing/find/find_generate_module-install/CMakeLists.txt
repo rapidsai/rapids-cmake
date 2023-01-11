@@ -44,6 +44,7 @@ endif()
 get_target_property(include_dir RapidsTest::RapidsTest INTERFACE_INCLUDE_DIRECTORIES)
 get_target_property(release_lib RapidsTest::RapidsTest IMPORTED_LOCATION_RELEASE)
 get_target_property(debug_lib RapidsTest::RapidsTest IMPORTED_LOCATION_DEBUG)
+get_target_property(is_global RapidsTest::RapidsTest GLOBAL)
 
 if(NOT IS_DIRECTORY "${include_dir}")
   message(FATAL_ERROR "rapids_find_generate_module failed to generate correct include dir search logic")
@@ -57,6 +58,9 @@ if(debug_lib)
   message(FATAL_ERROR "rapids_find_generate_module incorrectly found a debug library")
 endif()
 
+if(NOT is_global)
+  message(FATAL_ERROR "rapids_find_generate_module created a target that is not global")
+endif()
 
 # verify header only lib
 rapids_find_generate_module( RapidsTestHeaderOnly
