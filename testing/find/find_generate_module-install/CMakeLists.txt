@@ -44,7 +44,7 @@ endif()
 get_target_property(include_dir RapidsTest::RapidsTest INTERFACE_INCLUDE_DIRECTORIES)
 get_target_property(release_lib RapidsTest::RapidsTest IMPORTED_LOCATION_RELEASE)
 get_target_property(debug_lib RapidsTest::RapidsTest IMPORTED_LOCATION_DEBUG)
-get_target_property(is_global RapidsTest::RapidsTest GLOBAL)
+get_target_property(is_global RapidsTest::RapidsTest IMPORTED_GLOBAL)
 
 if(NOT IS_DIRECTORY "${include_dir}")
   message(FATAL_ERROR "rapids_find_generate_module failed to generate correct include dir search logic")
