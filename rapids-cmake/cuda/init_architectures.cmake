@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021, NVIDIA CORPORATION.
+# Copyright (c) 2021-2023, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ rapids_cuda_init_architectures
 .. versionadded:: v21.06.00
 
 Extends :cmake:variable:`CMAKE_CUDA_ARCHITECTURES <cmake:variable:CMAKE_CUDA_ARCHITECTURES>`
-to include support for `ALL` and `NATIVE` to make CUDA architecture compilation easier.
+to include support for `RAPIDS` and `NATIVE` to make CUDA architecture compilation easier.
 
   .. code-block:: cmake
 
@@ -68,16 +68,20 @@ Example on how to properly use :cmake:command:`rapids_cuda_init_architectures`:
 # cmake-lint: disable=W0105
 function(rapids_cuda_init_architectures project_name)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cuda.init_architectures")
+
+  include(${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/architectures_policy.cmake)
   # If `CMAKE_CUDA_ARCHITECTURES` is not defined, build for all supported architectures. If
   # `CMAKE_CUDA_ARCHITECTURES` is set to an empty string (""), build for only the current
   # architecture. If `CMAKE_CUDA_ARCHITECTURES` is specified by the user, use user setting.
   if(DEFINED ENV{CUDAARCHS} AND ("$ENV{CUDAARCHS}" STREQUAL "RAPIDS" OR "$ENV{CUDAARCHS}" STREQUAL
                                                                         "ALL"))
-    set(cuda_arch_mode "RAPIDS")
+    set(cuda_arch_mode "$ENV{CUDAARCHS}")
+    rapids_cuda_architectures_policy(FROM_INIT cuda_arch_mode)
   elseif(DEFINED ENV{CUDAARCHS} AND "$ENV{CUDAARCHS}" STREQUAL "NATIVE")
     set(cuda_arch_mode "NATIVE")
   elseif(CMAKE_CUDA_ARCHITECTURES STREQUAL "RAPIDS" OR CMAKE_CUDA_ARCHITECTURES STREQUAL "ALL")
-    set(cuda_arch_mode "RAPIDS")
+    set(cuda_arch_mode "${CMAKE_CUDA_ARCHITECTURES}")
+    rapids_cuda_architectures_policy(FROM_INIT cuda_arch_mode)
   elseif(CMAKE_CUDA_ARCHITECTURES STREQUAL "" OR CMAKE_CUDA_ARCHITECTURES STREQUAL "NATIVE")
     set(cuda_arch_mode "NATIVE")
   elseif(NOT (DEFINED ENV{CUDAARCHS} OR DEFINED CMAKE_CUDA_ARCHITECTURES))

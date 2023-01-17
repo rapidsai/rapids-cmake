@@ -23,6 +23,16 @@
           "nargs": 3
         }
       },
+      "rapids_cmake_policy": {
+        "pargs": {
+          "nargs": 0
+        },
+        "kwargs": {
+          "DEPRECATED_IN": 1,
+          "REMOVED_IN": 1,
+          "MESSAGE": 1
+        }
+      },
       "rapids_cmake_support_conda_env": {
         "pargs": {
           "nargs": 1,
