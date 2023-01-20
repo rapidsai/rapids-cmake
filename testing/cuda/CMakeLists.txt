@@ -45,3 +45,6 @@ set(deprecated_message "rapids-cmake policy [deprecated=23.02 removed=23.06]: Us
 add_cmake_config_test( init_arch-all-via-env-deprecated.cmake SHOULD_FAIL "${deprecated_message}")
 add_cmake_config_test( init_arch-all-deprecated.cmake SHOULD_FAIL "${deprecated_message}")
 add_cmake_config_test( set_arch-all-deprecated.cmake SHOULD_FAIL "${deprecated_message}")
+
+set(deprecated_message "rapids-cmake policy [deprecated=23.02 removed=23.06]: Usage of `""`")
+add_cmake_config_test( init_arch-native-via-empty-str-deprecated SHOULD_FAIL "${deprecated_message}")

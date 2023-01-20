@@ -50,6 +50,13 @@ function(rapids_cuda_architectures_policy called_from mode_variable)
       )
     endif()
   endif()
+  if(value STREQUAL "")
+    set(new_value "NATIVE")
+    rapids_cmake_policy(DEPRECATED_IN 23.02
+                        REMOVED_IN 23.06
+                        MESSAGE "Usage of `""` as value for `CMAKE_CUDA_ARCHITECTURES` has been deprecated, use `NATIVE` instead."
+    )
+  endif()
 
   set(${mode_variable} ${new_value} PARENT_SCOPE)
 endfunction()
