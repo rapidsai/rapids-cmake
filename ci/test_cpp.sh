@@ -1,5 +1,5 @@
 #!/bin/bash
-
+# Copyright (c) 2023, NVIDIA CORPORATION.
 set -euo pipefail
 
 rapids-logger "Create test conda environment"
@@ -8,7 +8,7 @@ rapids-logger "Create test conda environment"
 rapids-dependency-file-generator \
   --output conda \
   --file_key test \
-  --matrix "cuda=${RAPIDS_CUDA_VERSION%.*}" | tee env.yaml
+  --matrix "cuda=${RAPIDS_CUDA_VERSION%.*};arch=$(arch)" | tee env.yaml
 
 rapids-mamba-retry env create --force -f env.yaml -n test
 set +eu
