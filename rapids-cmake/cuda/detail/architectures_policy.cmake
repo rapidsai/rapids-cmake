@@ -50,7 +50,7 @@ function(rapids_cuda_architectures_policy called_from mode_variable)
       )
     endif()
   endif()
-  if(value STREQUAL "")
+  if(value STREQUAL "EMPTY_STR")
     set(new_value "NATIVE")
     rapids_cmake_policy(DEPRECATED_IN 23.02
                         REMOVED_IN 23.06
