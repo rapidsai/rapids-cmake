@@ -18,13 +18,7 @@ pip install -r requirements.txt
 rapids-print-env
 
 rapids-logger "Downloading artifacts from previous jobs"
-CPP_CHANNEL=$(rapids-download-conda-from-s3 cpp)
 VERSION_NUMBER=$(rapids-get-rapids-version-from-git)
-
-rapids-mamba-retry install \
-  --channel "${CPP_CHANNEL}" \
-  rapids_core_dependencies
-
 
 # Build CPP docs
 gpuci_logger "Build CPP docs"
