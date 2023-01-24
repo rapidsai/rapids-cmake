@@ -34,5 +34,5 @@ popd
 
 
 if [[ ${RAPIDS_BUILD_TYPE} == "branch" ]]; then
-  aws s3 sync --delete doxygen/html "s3://rapidsai-docs/rapids-cmake/${VERSION_NUMBER}/_build"
+  aws s3 sync --delete docs/html "s3://rapidsai-docs/rapids-cmake/${VERSION_NUMBER}/html"
 fi
