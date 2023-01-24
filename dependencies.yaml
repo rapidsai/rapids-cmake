@@ -64,6 +64,7 @@ dependencies:
           - sphinx
           - sphinx_rtd_theme
           - sphinx_copybutton
+          - sphinxcontrib-moderncmakedomain
   test:
     common:
       - output_types: [conda, requirements]
