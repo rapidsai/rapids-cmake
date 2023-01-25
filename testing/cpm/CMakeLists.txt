@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2022, NVIDIA CORPORATION.
+# Copyright (c) 2021-2023, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -34,6 +34,7 @@ add_cmake_config_test( cpm_package_override-bad-path.cmake SHOULD_FAIL "rapids_c
 add_cmake_config_test( cpm_package_override-before-init.cmake )
 add_cmake_config_test( cpm_package_override-empty.cmake )
 add_cmake_config_test( cpm_package_override-multiple.cmake )
+add_cmake_config_test( cpm_package_override-patches.cmake )
 add_cmake_config_test( cpm_package_override-simple.cmake )
 
 
