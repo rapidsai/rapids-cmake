@@ -15,7 +15,7 @@ import os
 # -- Project information -----------------------------------------------------
 
 project = "rapids-cmake"
-copyright = "2021, NVIDIA"
+copyright = "2023, NVIDIA"
 author = "NVIDIA"
 
 # The version info for the project you're documenting, acts as replacement for
