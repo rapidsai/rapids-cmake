@@ -59,12 +59,14 @@ dependencies:
               - cudatoolkit=11.8
   docs_build:
     common:
-      - output_types: [requirements]
+      - output_types: [conda]
         packages:
+          - pip
+          - pip:
+            - sphinxcontrib-moderncmakedomain
           - sphinx
+          - sphinx-copybutton
           - sphinx_rtd_theme
-          - sphinx_copybutton
-          - sphinxcontrib-moderncmakedomain
   test:
     common:
       - output_types: [conda, requirements]
