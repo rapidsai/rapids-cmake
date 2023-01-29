@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2022-2023, NVIDIA CORPORATION.
+# Copyright (c) 2023, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,16 +15,19 @@
 #=============================================================================
 include(${rapids-cmake-dir}/cuda/init_architectures.cmake)
 
+cmake_minimum_required(VERSION 3.23.1)
+
+set(CMAKE_CUDA_ARCHITECTURES "")
 set(CMAKE_ERROR_DEPRECATED ON)
-set(ENV{CUDAARCHS} "NATIVE")
+
 rapids_cuda_init_architectures(rapids-project)
 project(rapids-project LANGUAGES CUDA)
 
 if(NOT DEFINED CMAKE_CUDA_ARCHITECTURES)
-  message(FATAL_ERROR "CMAKE_CUDA_ARCHITECTURES should exist after calling rapids_cuda_init_architectures()")
+  message(FATAL_ERROR "rapids_cuda_init_architectures didn't init CUDA_ARCHITECTURES")
 endif()
 
-if(CMAKE_CUDA_ARCHITECTURES STREQUAL "NATIVE")
+if(CMAKE_CUDA_ARCHITECTURES STREQUAL "")
   message(FATAL_ERROR "rapids_cuda_init_architectures didn't init CUDA_ARCHITECTURES")
 endif()
 
