@@ -16,7 +16,6 @@ conda activate docs
 
 rapids-print-env
 
-rapids-logger "Downloading artifacts from previous jobs"
 VERSION_NUMBER=$(rapids-get-rapids-version-from-git)
 
 rapids-logger "Build Sphinx docs"
