@@ -1,4 +1,8 @@
-# Copyright (c) 2023, NVIDIA CORPORATION.
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+#
+# Copyright (c) 2018, NVIDIA CORPORATION.
+#
 # Configuration file for the Sphinx documentation builder.
 #
 # This file only contains a selection of the most common options. For a full
@@ -16,7 +20,7 @@ import os
 # -- Project information -----------------------------------------------------
 
 project = "rapids-cmake"
-copyright = "2023, NVIDIA"
+copyright = "2019-2023, NVIDIA"
 author = "NVIDIA"
 
 # The version info for the project you're documenting, acts as replacement for
@@ -65,7 +69,7 @@ master_doc = "index"
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = en
+language = "en-US"
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
