@@ -114,11 +114,14 @@ calls to :cmake:command:`find_dependency`, or :cmake:command:`CPMFindPackage`.
   Optional value to specify what namespace all targets from the
   EXPORT_SET will be placed into. When provided must match the pattern
   of `<name>::`.
-  If not provided all targets will be placed in the `<project_name>::`
-  namespace
+  A recommended namespace could be `<project_name>::`.
+  If not provided, no namespace is used.
 
-  Note: When exporting with `BUILD` type, only `GLOBAL_TARGETS` will
-  be placed in the namespace.
+  Note:
+  - When exporting with `BUILD` type, only `GLOBAL_TARGETS` will be placed
+  in the namespace.
+  - The namespace can be configured on a per-target basis instead using the
+  EXPORT_NAME property.
 
 ``DOCUMENTATION``
   Optional value of the variable that holds the documentation
@@ -220,9 +223,10 @@ function(rapids_export type project_name)
     rapids_export_parse_version(${_RAPIDS_VERSION} rapids_orig rapids_project_version)
   endif()
 
-  set(_RAPIDS_PROJECT_NAMESPACE "${project_name}::")
-  if(DEFINED _RAPIDS_NAMESPACE)
-    set(_RAPIDS_PROJECT_NAMESPACE ${_RAPIDS_NAMESPACE})
+  if(NOT DEFINED _RAPIDS_NAMESPACE)
+    message(VERBOSE
+            "rapids-cmake EXPORT: no NAMESPACE was provided. `${project_name}::` is recommended \
+if EXPORT_NAME isn't set for the export targets.")
   endif()
 
   if(_RAPIDS_COMPONENTS AND NOT _RAPIDS_COMPONENTS_EXPORT_SET)
@@ -284,11 +288,18 @@ function(rapids_export type project_name)
         COMPATIBILITY ${rapids_project_version_compat})
     endif()
 
-    install(EXPORT ${_RAPIDS_EXPORT_SET}
+    if(DEFINED _RAPIDS_NAMESPACE)
+        install(EXPORT ${_RAPIDS_EXPORT_SET}
             FILE ${project_name}-targets.cmake
-            NAMESPACE ${_RAPIDS_PROJECT_NAMESPACE}
+            NAMESPACE ${_RAPIDS_NAMESPACE}
             DESTINATION "${install_location}"
             COMPONENT ${project_name})
+    else()
+        install(EXPORT ${_RAPIDS_EXPORT_SET}
+            FILE ${project_name}-targets.cmake
+            DESTINATION "${install_location}"
+            COMPONENT ${project_name})
+    endif()
 
     if(TARGET rapids_export_install_${_RAPIDS_EXPORT_SET})
       include("${rapids-cmake-dir}/export/write_dependencies.cmake")
@@ -319,8 +330,12 @@ function(rapids_export type project_name)
         COMPATIBILITY ${rapids_project_version_compat})
     endif()
 
-    export(EXPORT ${_RAPIDS_EXPORT_SET} NAMESPACE ${_RAPIDS_PROJECT_NAMESPACE}
-           FILE "${install_location}/${project_name}-targets.cmake")
+    if(DEFINED _RAPIDS_NAMESPACE)
+      export(EXPORT ${_RAPIDS_EXPORT_SET} NAMESPACE ${_RAPIDS_NAMESPACE}
+             FILE "${install_location}/${project_name}-targets.cmake")
+    else()
+      export(EXPORT ${_RAPIDS_EXPORT_SET} FILE "${install_location}/${project_name}-targets.cmake")
+    endif()
 
     if(TARGET rapids_export_build_${_RAPIDS_EXPORT_SET})
       include("${rapids-cmake-dir}/export/write_dependencies.cmake")
