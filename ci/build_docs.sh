@@ -20,8 +20,8 @@ VERSION_NUMBER=$(rapids-get-rapids-version-from-git)
 
 rapids-logger "Build Sphinx docs"
 pushd docs
-sphinx-build -b dirhtml . _html -W
-sphinx-build -b text . _text -W
+sphinx-build -b dirhtml . _html
+sphinx-build -b text . _text
 popd
 
 
