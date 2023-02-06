@@ -30,8 +30,8 @@ across all RAPIDS projects.
 .. code-block:: cmake
 
   rapids_cpm_fmt( [BUILD_EXPORT_SET <export-name>]
-                     [INSTALL_EXPORT_SET <export-name>]
-                     [<CPM_ARGS> ...])
+                  [INSTALL_EXPORT_SET <export-name>]
+                  [<CPM_ARGS> ...])
 
 .. |PKG_NAME| replace:: fmt
 .. include:: common_package_args.txt
