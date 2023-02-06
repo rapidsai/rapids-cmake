@@ -38,7 +38,7 @@ across all RAPIDS projects.
 
 Result Targets
 ^^^^^^^^^^^^^^
-  fmt::fmt, fmt::fmt_header_only targets will be created
+  fmt::fmt, fmt::fmt-header-only targets will be created
 
 Result Variables
 ^^^^^^^^^^^^^^^^
