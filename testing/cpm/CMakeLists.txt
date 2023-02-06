@@ -69,6 +69,9 @@ add_cmake_config_test( cpm_rmm-simple.cmake )
 add_cmake_config_test( cpm_spdlog-export.cmake )
 add_cmake_config_test( cpm_spdlog-simple.cmake )
 
+add_cmake_config_test( cpm_fmt-export.cmake )
+add_cmake_config_test( cpm_fmt-simple.cmake )
+
 add_cmake_config_test( cpm_thrust-export.cmake )
 add_cmake_config_test( cpm_thrust-simple.cmake )
 
