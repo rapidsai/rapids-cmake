@@ -97,6 +97,15 @@
           "INSTALL_EXPORT_SET": 1
         }
       },
+      "rapids_cpm_fmt": {
+        "pargs": {
+          "nargs": 0
+        },
+        "kwargs": {
+          "BUILD_EXPORT_SET": 1,
+          "INSTALL_EXPORT_SET": 1
+        }
+      },
       "rapids_cpm_gbench": {
         "pargs": {
           "nargs": 0

@@ -7,6 +7,11 @@
       "git_url" : "https://github.com/NVIDIA/cuCollections.git",
       "git_tag" : "31e1d5df6869ef6cb60f36a614b30a244cf3bd78"
     },
+    "fmt" : {
+      "version" : "9.1.0",
+      "git_url" : "https://github.com/fmtlib/fmt.git",
+      "git_tag" : "${version}"
+    },
     "GBench" : {
       "version" : "1.5.3",
       "git_url" : "https://github.com/google/benchmark.git",

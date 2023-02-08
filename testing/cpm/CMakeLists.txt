@@ -46,6 +46,9 @@ add_cmake_config_test( cpm_cuco-simple.cmake )
 add_cmake_config_test( cpm_cuco-export.cmake )
 add_cmake_config_test( cpm_cuco-libcudacxx-no-install-export.cmake )
 
+add_cmake_config_test( cpm_fmt-export.cmake )
+add_cmake_config_test( cpm_fmt-simple.cmake )
+
 add_cmake_config_test( cpm_gbench-export.cmake )
 add_cmake_config_test( cpm_gbench-simple.cmake )
 
