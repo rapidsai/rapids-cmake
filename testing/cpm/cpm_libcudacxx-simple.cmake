@@ -19,7 +19,7 @@ include(${rapids-cmake-dir}/cpm/libcudacxx.cmake)
 rapids_cpm_init()
 
 if(TARGET libcudacxx::libcudacxx)
-  message(FATAL_ERROR "Expected libcudacxx::libcudacxx expected to not exist")
+  message(FATAL_ERROR "Expected libcudacxx::libcudacxx not to exist")
 endif()
 
 rapids_cpm_libcudacxx()

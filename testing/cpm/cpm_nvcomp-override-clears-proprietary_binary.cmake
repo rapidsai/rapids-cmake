@@ -21,7 +21,7 @@ include(${rapids-cmake-dir}/cpm/package_override.cmake)
 rapids_cpm_init()
 
 if(TARGET nvcomp::nvcomp)
-  message(FATAL_ERROR "Expected nvcomp::nvcomp expected to not exist")
+  message(FATAL_ERROR "Expected nvcomp::nvcomp not to exist")
 endif()
 
 # Need to write out an nvcomp override file

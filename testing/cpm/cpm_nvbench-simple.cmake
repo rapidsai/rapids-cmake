@@ -19,7 +19,7 @@ include(${rapids-cmake-dir}/cpm/nvbench.cmake)
 rapids_cpm_init()
 
 if(TARGET nvbench::nvbench)
-  message(FATAL_ERROR "Expected nvbench::nvbench expected to not exist")
+  message(FATAL_ERROR "Expected nvbench::nvbench not to exist")
 endif()
 
 rapids_cpm_nvbench()

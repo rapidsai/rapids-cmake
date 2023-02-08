@@ -19,7 +19,7 @@ include(${rapids-cmake-dir}/cpm/spdlog.cmake)
 rapids_cpm_init()
 
 if(TARGET spdlog::spdlog_header_only)
-  message(FATAL_ERROR "Expected spdlog::spdlog_header_only expected to not exist")
+  message(FATAL_ERROR "Expected spdlog::spdlog_header_only not to exist")
 endif()
 
 rapids_cpm_spdlog()

@@ -20,7 +20,7 @@ rapids_cpm_init()
 
 
 if(TARGET GTest::gtest)
-  message(FATAL_ERROR "Expected GTest::gtest expected to not exist")
+  message(FATAL_ERROR "Expected GTest::gtest not to exist")
 endif()
 
 rapids_cpm_gtest()

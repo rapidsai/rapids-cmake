@@ -19,7 +19,7 @@ include(${rapids-cmake-dir}/cpm/rmm.cmake)
 rapids_cpm_init()
 
 if(TARGET rmm::rmm)
-  message(FATAL_ERROR "Expected rmm::rmm expected to not exist")
+  message(FATAL_ERROR "Expected rmm::rmm not to exist")
 endif()
 
 rapids_cpm_rmm()
