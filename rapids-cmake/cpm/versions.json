@@ -18,12 +18,12 @@
       "git_tag" : "12d13bdc5e74801645eba3e46a64081b9b020dca"
     },
     "nvcomp" : {
-      "version" : "2.4.1",
+      "version" : "2.6.1",
       "git_url" : "https://github.com/NVIDIA/nvcomp.git",
       "git_tag" : "v2.2.0",
       "proprietary_binary" : {
-        "x86_64-linux" : "https://developer.download.nvidia.com/compute/nvcomp/${version}/local_installers/nvcomp_${version}_x86_64_11.x.tgz",
-        "aarch64-linux" : "https://developer.download.nvidia.com/compute/nvcomp/${version}/local_installers/nvcomp_${version}_sbsa_11.x.tgz"
+        "x86_64-linux" :  "https://developer.download.nvidia.com/compute/nvcomp/${version}/local_installers/nvcomp_${version}_x86_64_11.x.tgz",
+        "aarch64-linux" : "https://developer.download.nvidia.com/compute/nvcomp/${version}/local_installers/nvcomp_${version}_SBSA_11.x.tgz"
       }
     },
     "rmm" : {
@@ -54,15 +54,15 @@
       ]
     },
     "libcudacxx" : {
-      "version" : "1.8.1",
+      "version" : "1.9.1",
       "git_url" : "https://github.com/NVIDIA/libcudacxx.git",
-      "git_tag" : "${version}"
+      "git_tag" : "branch/${version}"
     },
     "cuco" : {
       "version" : "0.0.1",
       "git_shallow" : false,
       "git_url" : "https://github.com/NVIDIA/cuCollections.git",
-      "git_tag" : "2a194c9831324904120113bc18135e7933369ee8"
+      "git_tag" : "31e1d5df6869ef6cb60f36a614b30a244cf3bd78"
     }
   }
 }
