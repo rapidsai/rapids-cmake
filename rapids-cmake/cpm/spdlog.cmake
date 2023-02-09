@@ -36,7 +36,7 @@ across all RAPIDS projects.
 
 ``FMT_OPTION``
   Spdlog depends on the fmt library and offers multiple ways of handling this dependency when spdlog is built. This
-  option only controls the behavior when spdlog is fetched and built, NOT when and installed spdlog is found on the
+  option only controls the behavior when spdlog is fetched and built, NOT when an installed spdlog is found on the
   system.
 
   This option can be set to one of three values: `BUNDLED`, `EXTERNAL_FMT`, or `EXTERNAL_FMT_HO`. If set to
