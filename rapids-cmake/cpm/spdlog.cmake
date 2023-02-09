@@ -39,10 +39,11 @@ across all RAPIDS projects.
   option only controls the behavior when spdlog is fetched and built, NOT when an installed spdlog is found on the
   system.
 
-  This option can be set to one of three values: `BUNDLED`, `EXTERNAL_FMT`, or `EXTERNAL_FMT_HO`. If set to
+  This option can be set to: `BUNDLED`, `EXTERNAL_FMT`, `EXTERNAL_FMT_HO`, or `STD_FORMAT`. If set to
   `BUNDLED`, then spdlog will use its own bundled version of fmt. If set to `EXTERNAL_FMT` then spdlog will use the
   `fmt::fmt` target and be linked with the fmt library. If set to `EXTERNAL_FMT_HO` then spdlog will use the
-  `fmt::fmt-header-only` target and be linked with a header only fmt library.
+  `fmt::fmt-header-only` target and be linked with a header only fmt library. If set to `STD_FORMAT` then spdlog
+  will use `std::format` instead of the fmt library.
 
   Defaults to `EXTERNAL_FMT_HO`.
 
@@ -94,23 +95,26 @@ function(rapids_cpm_spdlog)
     set(_RAPIDS_FMT_OPTION "EXTERNAL_FMT_HO")
   endif()
 
-  if("${_RAPIDS_FMT_OPTION}" STREQUAL "BUNDLED")
+  if(_RAPIDS_FMT_OPTION STREQUAL "BUNDLED")
     set(spdlog_fmt_option "")
-  elseif("${_RAPIDS_FMT_OPTION}" STREQUAL "EXTERNAL_FMT" OR "${_RAPIDS_FMT_OPTION}" STREQUAL
-                                                            "EXTERNAL_FMT_HO")
+  elseif(_RAPIDS_FMT_OPTION STREQUAL "EXTERNAL_FMT" OR _RAPIDS_FMT_OPTION STREQUAL
+                                                       "EXTERNAL_FMT_HO")
     include("${rapids-cmake-dir}/cpm/fmt.cmake")
 
     # Using `spdlog_ROOT` needs to cause any internal find calls in `spdlog-config.cmake` to first
     # search beside it before looking globally.
     list(APPEND fmt_ROOT ${spdlog_ROOT})
 
-    rapids_cpm_fmt(BUILD_EXPORT_SET spdlog INSTALL_EXPORT_SET spdlog)
-    set(spdlog_fmt_option "SPDLOG_${fmt_target_name} ON")
-    if("${_RAPIDS_FMT_OPTION}" STREQUAL "EXTERNAL_FMT")
+    rapids_cpm_fmt(BUILD_EXPORT_SET ${_RAPIDS_BUILD_EXPORT_SET}
+                   INSTALL_EXPORT_SET ${_RAPIDS_INSTALL_EXPORT_SET})
+    set(spdlog_fmt_option "SPDLOG_${_RAPIDS_FMT_OPTION} ON")
+    if(_RAPIDS_FMT_OPTION STREQUAL "EXTERNAL_FMT")
       set(spdlog_fmt_target fmt::fmt)
-    elseif("${_RAPIDS_FMT_OPTION}" STREQUAL "EXTERNAL_FMT_HO")
+    elseif(_RAPIDS_FMT_OPTION STREQUAL "EXTERNAL_FMT_HO")
       set(spdlog_fmt_target fmt::fmt-header-only)
     endif()
+  elseif(_RAPIDS_FMT_OPTION STREQUAL "STD_FORMAT")
+    set(spdlog_fmt_option "SPDLOG_USE_${_RAPIDS_FMT_OPTION} ON")
   else()
     message(FATAL_ERROR "Invalid option used for FMT_OPTION, got: ${_RAPIDS_FMT_OPTION}, expected one of: 'BUNDLED', 'EXTERNAL_FMT', 'EXTERNAL_FMT_HO'"
     )
