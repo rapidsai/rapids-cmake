@@ -62,6 +62,10 @@ function(rapids_cpm_spdlog)
   include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
   rapids_cpm_generate_patch_command(spdlog ${version} patch_command)
 
+  # Add fmt in the case where we need to fetch spdlog from source
+  include("${rapids-cmake-dir}/cpm/fmt.cmake")
+  rapids_cpm_fmt(BUILD_EXPORT_SET spdlog INSTALL_EXPORT_SET spdlog)
+
   include("${rapids-cmake-dir}/cpm/find.cmake")
   rapids_cpm_find(spdlog ${version} ${ARGN}
                   GLOBAL_TARGETS spdlog::spdlog spdlog::spdlog_header_only
@@ -71,7 +75,7 @@ function(rapids_cpm_spdlog)
                   GIT_SHALLOW ${shallow}
                   PATCH_COMMAND ${patch_command}
                   EXCLUDE_FROM_ALL ${exclude}
-                  OPTIONS "SPDLOG_INSTALL ${to_install}")
+                  OPTIONS "SPDLOG_INSTALL ${to_install}" "SPDLOG_FMT_EXTERNAL_HO ON")
 
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
   rapids_cpm_display_patch_status(spdlog)
