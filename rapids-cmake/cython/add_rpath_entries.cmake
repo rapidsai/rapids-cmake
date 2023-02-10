@@ -15,27 +15,27 @@
 include_guard(GLOBAL)
 
 #[=======================================================================[.rst:
+
 rapids_cython_add_rpath_entries
 -------------------------------
-
 .. versionadded:: v22.12.00
 
 Set the RPATH entries for all targets associated with a provided associated target.
 
 .. code-block:: cmake
 
-rapids_cython_add_rpath_entries(
-    TARGET <associated_target>
-    PATHS <path1> <path2> ...
-    [ROOT_DIRECTORY <root-dir>]
-)
+  rapids_cython_add_rpath_entries(
+      TARGET <associated_target>
+      PATHS <path1> <path2> ...
+      [ROOT_DIRECTORY <root-dir>]
+  )
 
 This function will affect all targets created up to the point of this call. It
 will have no effect on targets created afterwards.
 
 ``TARGET``
   The associated target for which we are setting RPATH entries. Any target
-  created using :code:command:`rapids_cython_create_modules` with the argument
+  created using :code:`rapids_cython_create_modules` with the argument
   `ASSOCIATED_TARGET associated_target` will have its RPATH entries updated.
 
 ``PATHS``
@@ -50,6 +50,7 @@ will have no effect on targets created afterwards.
   `rapids_cython_add_rpath_entries` is called.
 
 #]=======================================================================]
+
 function(rapids_cython_add_rpath_entries)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cython.add_rpath_entries")
 
