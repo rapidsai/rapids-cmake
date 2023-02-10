@@ -23,11 +23,15 @@ rapids-print-env
 rapids-logger "Check GPU usage"
 nvidia-smi
 
+EXITCODE=0
+trap "EXITCODE=1" ERR
+set +e
+
 rapids-logger "Begin cpp tests"
 cmake -S testing -B build
 
 cd build
 ctest --schedule-random --output-on-failure
-exitcode=$?
 
-exit ${exitcode}
+rapids-logger "Test script exiting with value: $EXITCODE"
+exit ${EXITCODE}
