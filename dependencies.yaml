@@ -6,7 +6,7 @@ files:
       - build
       - cudatoolkit
       - test
-      - docs_build
+      - docs
   checks:
     output: none
     includes:
@@ -16,7 +16,7 @@ files:
     output: none
     includes:
       - cudatoolkit
-      - docs_build
+      - docs
 channels:
   - rapidsai
   - conda-forge
@@ -57,7 +57,7 @@ dependencies:
               cuda: "11.8"
             packages:
               - cudatoolkit=11.8
-  docs_build:
+  docs:
     common:
       - output_types: [conda]
         packages:
