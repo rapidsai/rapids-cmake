@@ -119,7 +119,7 @@ function(rapids_cpm_spdlog)
   elseif(_RAPIDS_FMT_OPTION STREQUAL "STD_FORMAT")
     set(spdlog_fmt_option "SPDLOG_USE_${_RAPIDS_FMT_OPTION} ON")
   else()
-    message(FATAL_ERROR "Invalid option used for FMT_OPTION, got: ${_RAPIDS_FMT_OPTION}, expected one of: 'BUNDLED', 'EXTERNAL_FMT', 'EXTERNAL_FMT_HO'"
+    message(FATAL_ERROR "Invalid option used for FMT_OPTION, got: ${_RAPIDS_FMT_OPTION}, expected one of: 'BUNDLED', 'EXTERNAL_FMT', 'EXTERNAL_FMT_HO', 'STD_FORMAT'"
     )
   endif()
 
