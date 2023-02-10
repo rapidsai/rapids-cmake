@@ -1,6 +1,43 @@
-# rapids-cmake 23.02.00 (Date TBD)
+# rapids-cmake 23.02.00 (9 Feb 2023)
 
-Please see https://github.com/rapidsai/rapids-cmake/releases/tag/v23.02.00a for the latest changes to this development branch.
+## 🐛 Bug Fixes
+
+- Remove incorrect deprecation for CMAKE_CUDA_ARCHITECTURES=&quot;NATIVE&quot; ([#355](https://github.com/rapidsai/rapids-cmake/pull/355)) [@robertmaynard](https://github.com/robertmaynard)
+- cpm: `always_download` now considers `patches` json entry ([#353](https://github.com/rapidsai/rapids-cmake/pull/353)) [@robertmaynard](https://github.com/robertmaynard)
+- Use string literals for policy test messages so no escaping needed ([#351](https://github.com/rapidsai/rapids-cmake/pull/351)) [@robertmaynard](https://github.com/robertmaynard)
+- Revert &quot;Update spdlog to 1.11 ( latest version ) ([#342)&quot; (#346](https://github.com/rapidsai/rapids-cmake/pull/342)&quot; (#346)) [@bdice](https://github.com/bdice)
+- Revert update of libcudacxx 1.9 ([#337](https://github.com/rapidsai/rapids-cmake/pull/337)) [@robertmaynard](https://github.com/robertmaynard)
+- rapids_cuda_patch_toolkit: Better handle non-standard toolkits ([#324](https://github.com/rapidsai/rapids-cmake/pull/324)) [@robertmaynard](https://github.com/robertmaynard)
+- Revert &quot;Upgrade spdlog to 1.10.0 ([#312)&quot; (#323](https://github.com/rapidsai/rapids-cmake/pull/312)&quot; (#323)) [@bdice](https://github.com/bdice)
+- rapids_cuda_init_architectures now supports CUDAARCHS env variable ([#322](https://github.com/rapidsai/rapids-cmake/pull/322)) [@robertmaynard](https://github.com/robertmaynard)
+- Remove usage of FetchContent from tests to improve perf ([#303](https://github.com/rapidsai/rapids-cmake/pull/303)) [@robertmaynard](https://github.com/robertmaynard)
+
+## 🚀 New Features
+
+- Update nvCOMP version to 2.6.1 ([#360](https://github.com/rapidsai/rapids-cmake/pull/360)) [@vuule](https://github.com/vuule)
+- cpm: Rework `always_download` rules to be smarter ([#348](https://github.com/rapidsai/rapids-cmake/pull/348)) [@robertmaynard](https://github.com/robertmaynard)
+- Add deprecation notice to passing &quot;&quot; to CMAKE_CUDA_ARCHITECTURES ([#345](https://github.com/rapidsai/rapids-cmake/pull/345)) [@robertmaynard](https://github.com/robertmaynard)
+- Update to libcudacxx 1.9.1 to have a version &gt;= CUDA Toolkit 12 ([#343](https://github.com/rapidsai/rapids-cmake/pull/343)) [@robertmaynard](https://github.com/robertmaynard)
+- Update spdlog to 1.11 ( latest version ) ([#342](https://github.com/rapidsai/rapids-cmake/pull/342)) [@robertmaynard](https://github.com/robertmaynard)
+- Update to nvcomp 2.6 ([#341](https://github.com/rapidsai/rapids-cmake/pull/341)) [@robertmaynard](https://github.com/robertmaynard)
+- Add deprecation warnings for usage of `ALL` ([#339](https://github.com/rapidsai/rapids-cmake/pull/339)) [@robertmaynard](https://github.com/robertmaynard)
+- rapids-cmake now errors out when CPM can&#39;t be downloaded ([#335](https://github.com/rapidsai/rapids-cmake/pull/335)) [@robertmaynard](https://github.com/robertmaynard)
+- Update to nvcomp 2.5 ([#333](https://github.com/rapidsai/rapids-cmake/pull/333)) [@robertmaynard](https://github.com/robertmaynard)
+- Update to libcudacxx 1.9 to match version found in CUDA Toolkit 12 ([#332](https://github.com/rapidsai/rapids-cmake/pull/332)) [@robertmaynard](https://github.com/robertmaynard)
+- Update cuco git tag to fetch bug fixes and cleanups ([#329](https://github.com/rapidsai/rapids-cmake/pull/329)) [@PointKernel](https://github.com/PointKernel)
+- Fea/support cmake cuda architectures rapids value ([#327](https://github.com/rapidsai/rapids-cmake/pull/327)) [@robertmaynard](https://github.com/robertmaynard)
+- Upgrade spdlog to 1.10.0 ([#312](https://github.com/rapidsai/rapids-cmake/pull/312)) [@kkraus14](https://github.com/kkraus14)
+
+## 🛠️ Improvements
+
+- Update shared workflow branches ([#361](https://github.com/rapidsai/rapids-cmake/pull/361)) [@ajschmidt8](https://github.com/ajschmidt8)
+- Build against CUDA `11.8` ([#344](https://github.com/rapidsai/rapids-cmake/pull/344)) [@ajschmidt8](https://github.com/ajschmidt8)
+- Make generated find module targets global ([#340](https://github.com/rapidsai/rapids-cmake/pull/340)) [@vyasr](https://github.com/vyasr)
+- Add codespell and whitespace linters to pre-commit hooks. ([#338](https://github.com/rapidsai/rapids-cmake/pull/338)) [@bdice](https://github.com/bdice)
+- Use pre-commit for style checks ([#336](https://github.com/rapidsai/rapids-cmake/pull/336)) [@bdice](https://github.com/bdice)
+- Branch 23.02 merge 22.12 ([#331](https://github.com/rapidsai/rapids-cmake/pull/331)) [@vyasr](https://github.com/vyasr)
+- Update conda recipes. ([#330](https://github.com/rapidsai/rapids-cmake/pull/330)) [@bdice](https://github.com/bdice)
+- Fix typo. ([#311](https://github.com/rapidsai/rapids-cmake/pull/311)) [@vyasr](https://github.com/vyasr)
 
 # rapids-cmake 22.12.00 (8 Dec 2022)
 

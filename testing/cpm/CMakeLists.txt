@@ -42,6 +42,12 @@ add_cmake_config_test( cpm_generate_patch_command-invalid.cmake )
 add_cmake_config_test( cpm_generate_patch_command-override.cmake )
 add_cmake_config_test( cpm_generate_patch_command-current_json_dir.cmake )
 
+add_cmake_config_test( cpm_cuco-simple.cmake )
+add_cmake_config_test( cpm_cuco-export.cmake )
+add_cmake_config_test( cpm_cuco-libcudacxx-no-install-export.cmake )
+
+add_cmake_config_test( cpm_fmt-export.cmake )
+add_cmake_config_test( cpm_fmt-simple.cmake )
 
 add_cmake_config_test( cpm_gbench-export.cmake )
 add_cmake_config_test( cpm_gbench-simple.cmake )
@@ -71,7 +77,3 @@ add_cmake_config_test( cpm_spdlog-simple.cmake )
 
 add_cmake_config_test( cpm_thrust-export.cmake )
 add_cmake_config_test( cpm_thrust-simple.cmake )
-
-add_cmake_config_test( cpm_cuco-simple.cmake )
-add_cmake_config_test( cpm_cuco-export.cmake )
-add_cmake_config_test( cpm_cuco-libcudacxx-no-install-export.cmake )

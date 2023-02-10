@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2023, NVIDIA CORPORATION.
+# Copyright (c) 2023, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,23 +14,24 @@
 # limitations under the License.
 #=============================================================================
 include(${rapids-cmake-dir}/cpm/init.cmake)
-include(${rapids-cmake-dir}/cpm/nvbench.cmake)
+include(${rapids-cmake-dir}/cpm/fmt.cmake)
 
 rapids_cpm_init()
 
-if(TARGET nvbench::nvbench)
-  message(FATAL_ERROR "Expected nvbench::nvbench not to exist")
+rapids_cpm_fmt(BUILD_EXPORT_SET frank INSTALL_EXPORT_SET test)
+rapids_cpm_fmt(INSTALL_EXPORT_SET test2)
+
+get_target_property(packages rapids_export_install_test PACKAGE_NAMES)
+if(NOT fmt IN_LIST packages)
+  message(FATAL_ERROR "rapids_cpm_fmt failed to record fmt needs to be exported")
 endif()
 
-rapids_cpm_nvbench()
+get_target_property(packages rapids_export_install_test2 PACKAGE_NAMES)
+if(NOT fmt IN_LIST packages)
+  message(FATAL_ERROR "rapids_cpm_fmt failed to record fmt needs to be exported")
+endif()
 
-set(targets_made nvbench::nvbench nvbench::main)
-
-foreach(t IN LISTS targets_made)
-  if(NOT TARGET ${t})
-    message(FATAL_ERROR "Expected ${t} target to exist")
-  endif()
-endforeach()
-
-# Make sure we can be called multiple times
-rapids_cpm_nvbench()
+get_target_property(packages rapids_export_build_frank PACKAGE_NAMES)
+if(NOT fmt IN_LIST packages)
+  message(FATAL_ERROR "rapids_cpm_fmt failed to record fmt needs to be exported")
+endif()

@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2023, NVIDIA CORPORATION.
+# Copyright (c) 2023, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,23 +14,26 @@
 # limitations under the License.
 #=============================================================================
 include(${rapids-cmake-dir}/cpm/init.cmake)
-include(${rapids-cmake-dir}/cpm/nvbench.cmake)
+include(${rapids-cmake-dir}/cpm/fmt.cmake)
 
 rapids_cpm_init()
 
-if(TARGET nvbench::nvbench)
-  message(FATAL_ERROR "Expected nvbench::nvbench not to exist")
+if(TARGET fmt::fmt-header-only)
+  message(FATAL_ERROR "Expected fmt::fmt-header-only expected to not exist")
 endif()
 
-rapids_cpm_nvbench()
+if(TARGET fmt::fmt)
+  message(FATAL_ERROR "Expected fmt::fmt expected to not exist")
+endif()
 
-set(targets_made nvbench::nvbench nvbench::main)
+rapids_cpm_fmt()
 
-foreach(t IN LISTS targets_made)
-  if(NOT TARGET ${t})
-    message(FATAL_ERROR "Expected ${t} target to exist")
-  endif()
-endforeach()
+if(NOT TARGET fmt::fmt-header-only)
+  message(FATAL_ERROR "Expected fmt::fmt-header-only target to exist")
+endif()
 
-# Make sure we can be called multiple times
-rapids_cpm_nvbench()
+if(NOT TARGET fmt::fmt)
+  message(FATAL_ERROR "Expected fmt::fmt target to exist")
+endif()
+
+rapids_cpm_fmt()
