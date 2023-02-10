@@ -35,6 +35,8 @@ across all RAPIDS projects.
                      [<CPM_ARGS> ...])
 
 ``FMT_OPTION``
+.. versionadded:: v23.04.00
+
   Spdlog depends on the fmt library and offers multiple ways of handling this dependency when spdlog is built. This
   option only controls the behavior when spdlog is fetched and built, NOT when an installed spdlog is found on the
   system.
@@ -71,7 +73,8 @@ function(rapids_cpm_spdlog)
   set(multi_value)
   cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
-  # Fix up _RAPIDS_UNPARSED_ARGUMENTS to have EXPORT_SETS as this is need for rapids_cpm_find
+  # Fix up _RAPIDS_UNPARSED_ARGUMENTS to have EXPORT_SETS as this is need for rapids_cpm_find. Also
+  # propagate the user provided build and install export sets.
   if(_RAPIDS_INSTALL_EXPORT_SET)
     list(APPEND _RAPIDS_UNPARSED_ARGUMENTS INSTALL_EXPORT_SET ${_RAPIDS_INSTALL_EXPORT_SET})
   endif()
@@ -105,8 +108,8 @@ function(rapids_cpm_spdlog)
     # search beside it before looking globally.
     list(APPEND fmt_ROOT ${spdlog_ROOT})
 
-    rapids_cpm_fmt(BUILD_EXPORT_SET ${_RAPIDS_BUILD_EXPORT_SET}
-                   INSTALL_EXPORT_SET ${_RAPIDS_INSTALL_EXPORT_SET})
+    rapids_cpm_fmt(${_RAPIDS_UNPARSED_ARGUMENTS})
+
     set(spdlog_fmt_option "SPDLOG_${_RAPIDS_FMT_OPTION} ON")
     if(_RAPIDS_FMT_OPTION STREQUAL "EXTERNAL_FMT")
       set(spdlog_fmt_target fmt::fmt)
