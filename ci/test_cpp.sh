@@ -31,6 +31,7 @@ cd build
 EXITCODE=0
 trap "EXITCODE=1" ERR
 set +e
+
 ctest --schedule-random --output-on-failure
 
 rapids-logger "Test script exiting with value: $EXITCODE"
