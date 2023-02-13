@@ -166,6 +166,7 @@
         },
         "kwargs": {
           "BUILD_EXPORT_SET": 1,
+          "FMT_OPTION": 1,
           "INSTALL_EXPORT_SET": 1
         }
       },
