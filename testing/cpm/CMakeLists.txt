@@ -50,7 +50,6 @@ add_cmake_config_test( cpm_fmt-export.cmake )
 add_cmake_config_test( cpm_fmt-simple.cmake )
 add_cmake_build_test( cpm_fmt-static-lib.cmake )
 
-
 add_cmake_config_test( cpm_gbench-export.cmake )
 add_cmake_config_test( cpm_gbench-simple.cmake )
 
