@@ -5,8 +5,8 @@ files:
     includes:
       - build
       - cudatoolkit
-      - test
       - docs
+      - test
   checks:
     output: none
     includes:
