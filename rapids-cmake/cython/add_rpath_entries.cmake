@@ -35,7 +35,7 @@ will have no effect on targets created afterwards.
 
 ``TARGET``
   The associated target for which we are setting RPATH entries. Any target
-  created using :code:`rapids_cython_create_modules` with the argument
+  created using :cmake:command:`rapids_cython_create_modules` with the argument
   `ASSOCIATED_TARGET associated_target` will have its RPATH entries updated.
 
 ``PATHS``
