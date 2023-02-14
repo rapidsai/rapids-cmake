@@ -62,7 +62,7 @@ $ORIGIN.
   function. The target<-->associated target mapping is stored and may be
   leveraged by the following functions:
 
-  - :code:`rapids_cython_add_rpath_entries` accepts a path for an
+  - :cmake:command:`rapids_cython_add_rpath_entries` accepts a path for an
     associated target and updates the RPATH of each target with which that
     associated target is associated.
 
