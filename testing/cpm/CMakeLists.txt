@@ -62,6 +62,7 @@ add_cmake_config_test( cpm_libcudacxx-simple.cmake )
 
 add_cmake_config_test( cpm_nvbench-export.cmake )
 add_cmake_config_test( cpm_nvbench-simple.cmake )
+add_cmake_config_test( cpm_nvbench-already-found-fmt.cmake )
 
 add_cmake_config_test( cpm_nvcomp-export.cmake )
 add_cmake_config_test( cpm_nvcomp-proprietary-off.cmake )
