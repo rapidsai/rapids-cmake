@@ -132,7 +132,7 @@ function(rapids_cpm_spdlog)
                   GIT_SHALLOW ${shallow}
                   PATCH_COMMAND ${patch_command}
                   EXCLUDE_FROM_ALL ${exclude}
-                  OPTIONS "SPDLOG_INSTALL ${to_install}" ${spdlog_fmt_option})
+                  OPTIONS "SPDLOG_INSTALL ${to_install}" "${spdlog_fmt_option}")
 
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
   rapids_cpm_display_patch_status(spdlog)
