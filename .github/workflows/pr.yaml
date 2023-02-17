@@ -39,7 +39,7 @@ jobs:
     uses: rapidsai/shared-action-workflows/.github/workflows/custom-job.yaml@branch-23.04
     with:
       build_type: pull-request
-      node_type: "gpu-latest-1"
+      node_type: "cpu4"
       arch: "amd64"
       container_image: "rapidsai/ci:latest"
       run_script: "ci/build_docs.sh"
