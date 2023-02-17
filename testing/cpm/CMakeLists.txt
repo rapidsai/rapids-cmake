@@ -74,6 +74,7 @@ add_cmake_config_test( cpm_nvcomp-override-clears-proprietary_binary.cmake )
 add_cmake_config_test( cpm_rmm-export.cmake )
 add_cmake_config_test( cpm_rmm-simple.cmake )
 
+add_cmake_build_test( cpm_spdlog-external-fmt.cmake )
 add_cmake_config_test( cpm_spdlog-export.cmake )
 add_cmake_config_test( cpm_spdlog-simple.cmake )
 

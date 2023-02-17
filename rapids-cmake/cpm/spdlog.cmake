@@ -100,8 +100,20 @@ function(rapids_cpm_spdlog)
 
   if(_RAPIDS_FMT_OPTION STREQUAL "BUNDLED")
     set(spdlog_fmt_option "")
-  elseif(_RAPIDS_FMT_OPTION STREQUAL "EXTERNAL_FMT" OR _RAPIDS_FMT_OPTION STREQUAL
-                                                       "EXTERNAL_FMT_HO")
+  elseif(_RAPIDS_FMT_OPTION STREQUAL "EXTERNAL_FMT")
+    set(spdlog_fmt_option "SPDLOG_FMT_EXTERNAL ON")
+    set(spdlog_fmt_target fmt::fmt)
+  elseif(_RAPIDS_FMT_OPTION STREQUAL "EXTERNAL_FMT_HO")
+    set(spdlog_fmt_option "SPDLOG_FMT_EXTERNAL_HO ON")
+    set(spdlog_fmt_target fmt::fmt-header-only)
+  elseif(_RAPIDS_FMT_OPTION STREQUAL "STD_FORMAT")
+    set(spdlog_fmt_option "SPDLOG_USE_STD_FORMAT ON")
+  else()
+    message(FATAL_ERROR "Invalid option used for FMT_OPTION, got: ${_RAPIDS_FMT_OPTION}, expected one of: 'BUNDLED', 'EXTERNAL_FMT', 'EXTERNAL_FMT_HO', 'STD_FORMAT'"
+    )
+  endif()
+
+  if(_RAPIDS_FMT_OPTION STREQUAL "EXTERNAL_FMT" OR _RAPIDS_FMT_OPTION STREQUAL "EXTERNAL_FMT_HO")
     include("${rapids-cmake-dir}/cpm/fmt.cmake")
 
     # Using `spdlog_ROOT` needs to cause any internal find calls in `spdlog-config.cmake` to first
@@ -109,18 +121,6 @@ function(rapids_cpm_spdlog)
     list(APPEND fmt_ROOT ${spdlog_ROOT})
 
     rapids_cpm_fmt(${_RAPIDS_UNPARSED_ARGUMENTS})
-
-    set(spdlog_fmt_option "SPDLOG_${_RAPIDS_FMT_OPTION} ON")
-    if(_RAPIDS_FMT_OPTION STREQUAL "EXTERNAL_FMT")
-      set(spdlog_fmt_target fmt::fmt)
-    elseif(_RAPIDS_FMT_OPTION STREQUAL "EXTERNAL_FMT_HO")
-      set(spdlog_fmt_target fmt::fmt-header-only)
-    endif()
-  elseif(_RAPIDS_FMT_OPTION STREQUAL "STD_FORMAT")
-    set(spdlog_fmt_option "SPDLOG_USE_${_RAPIDS_FMT_OPTION} ON")
-  else()
-    message(FATAL_ERROR "Invalid option used for FMT_OPTION, got: ${_RAPIDS_FMT_OPTION}, expected one of: 'BUNDLED', 'EXTERNAL_FMT', 'EXTERNAL_FMT_HO', 'STD_FORMAT'"
-    )
   endif()
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
@@ -132,7 +132,7 @@ function(rapids_cpm_spdlog)
                   GIT_SHALLOW ${shallow}
                   PATCH_COMMAND ${patch_command}
                   EXCLUDE_FROM_ALL ${exclude}
-                  OPTIONS "SPDLOG_INSTALL ${to_install}" "${spdlog_fmt_option}")
+                  OPTIONS "SPDLOG_INSTALL ${to_install}" ${spdlog_fmt_option})
 
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
   rapids_cpm_display_patch_status(spdlog)
