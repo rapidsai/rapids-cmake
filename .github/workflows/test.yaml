@@ -1,7 +1,7 @@
 name: nightly
 
 on:
-  workflow_call:
+  workflow_dispatch:
     inputs:
       branch:
         required: true
@@ -17,15 +17,6 @@ jobs:
   cpp-tests:
     secrets: inherit
     uses: rapidsai/shared-action-workflows/.github/workflows/conda-cpp-tests.yaml@branch-23.04
-    with:
-      build_type: nightly
-      repo: rapidsai/rapids-cmake
-      branch: ${{ inputs.branch }}
-      date: ${{ inputs.date }}
-      sha: ${{ inputs.sha }}
-  python-tests:
-    secrets: inherit
-    uses: rapidsai/shared-action-workflows/.github/workflows/conda-python-tests.yaml@branch-23.04
     with:
       build_type: nightly
       repo: rapidsai/rapids-cmake
