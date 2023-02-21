@@ -90,8 +90,12 @@ function(rapids_cpm_nvcomp)
   # first see if we have a proprietary pre-built binary listed in versions.json and it if requested.
   set(nvcomp_proprietary_binary OFF) # will be set to true by rapids_cpm_get_proprietary_binary
   if(_RAPIDS_USE_PROPRIETARY_BINARY)
-    include("${rapids-cmake-dir}/cpm/detail/get_proprietary_binary.cmake")
-    rapids_cpm_get_proprietary_binary(nvcomp ${version})
+    include("${rapids-cmake-dir}/cpm/detail/get_proprietary_binary_url.cmake")
+    include("${rapids-cmake-dir}/cpm/detail/download_proprietary_binary.cmake")
+    rapids_cpm_get_proprietary_binary_url(nvcomp ${version} nvcomp_url)
+    if(nvcomp_url)
+      rapids_cpm_download_proprietary_binary(nvcomp ${nvcomp_url})
+    endif()
 
     # Record the nvcomp_DIR so that if USE_PROPRIETARY_BINARY is disabled we can safely clear the
     # nvcomp_DIR value
