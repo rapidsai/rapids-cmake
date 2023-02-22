@@ -63,19 +63,9 @@ function(rapids_cpm_get_proprietary_binary_url package_name version url_var)
   # Determine the CUDA Toolkit version so that we properly evaluate the placeholders in
   # `proprietary_binary`
   if(proprietary_binary MATCHES "{cuda-toolkit-version")
-    if(CUDAToolkit_VERSION_MAJOR)
-      set(cuda-toolkit-version ${CUDAToolkit_VERSION_MAJOR}.${CUDAToolkit_VERSION_MINOR})
-      set(cuda-toolkit-version-major ${CUDAToolkit_VERSION_MAJOR})
-    elseif(CMAKE_CUDA_COMPILER_ID STREQUAL "NVIDIA" AND CMAKE_CUDA_COMPILER_VERSION MATCHES
-                                                        [=[([0-9]+)\.([0-9]+)\.([0-9]+)]=])
-      # Use if(MATCHES) so we get the MATCH_`N` variables. Use same regex as used by FindCUDAToolkit
-      set(cuda-toolkit-version-major "${CMAKE_MATCH_1}")
-      set(cuda-toolkit-version "${CMAKE_MATCH_1}.${CMAKE_MATCH_2}")
-    else()
-      find_package(CUDAToolkit REQUIRED)
-      set(cuda-toolkit-version ${CUDAToolkit_VERSION_MAJOR}.${CUDAToolkit_VERSION_MINOR})
-      set(cuda-toolkit-version-major ${CUDAToolkit_VERSION_MAJOR})
-    endif()
+    find_package(CUDAToolkit REQUIRED)
+    set(cuda-toolkit-version ${CUDAToolkit_VERSION_MAJOR}.${CUDAToolkit_VERSION_MINOR})
+    set(cuda-toolkit-version-major ${CUDAToolkit_VERSION_MAJOR})
   endif()
 
   # Evaluate any magic placeholders in the proprietary_binary value including the
