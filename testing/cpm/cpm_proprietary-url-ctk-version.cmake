@@ -42,7 +42,6 @@ find_package(CUDAToolkit REQUIRED)
 rapids_cpm_package_details(test_binary version repository tag shallow exclude)
 rapids_cpm_get_proprietary_binary_url(test_binary ${version} url)
 
-find_package(CUDAToolkit)
 set(CTK_VER ${CUDAToolkit_VERSION_MAJOR}.${CUDAToolkit_VERSION_MINOR})
 set(CTK_VER_M ${CUDAToolkit_VERSION_MAJOR})
 set(valid_url "https://fake.url.com/2.6.1/${CTK_VER}/${CMAKE_SYSTEM_PROCESSOR}_${CTK_VER_M}.tgz")
