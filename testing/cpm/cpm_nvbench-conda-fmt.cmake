@@ -45,9 +45,11 @@ NVBENCH_BENCH_TYPES(nvbench_distinct, NVBENCH_TYPE_AXES(data_type))
   .set_name("distinct")
   .set_type_axes_names({"Type"})
   .add_int64_axis("NumRows", {10'000, 100'000, 1'000'000, 10'000'000});
+  
+int main() { return 0; }
 ]=])
 
 
 add_library(uses_fmt SHARED "${CMAKE_CURRENT_BINARY_DIR}/use_fmt.cpp")
-target_link_libraries(uses_fmt PRIVATE rmm::rmm nvbench::nvbench nvbench::main)
+target_link_libraries(uses_fmt PRIVATE rmm::rmm nvbench::nvbench)
 target_compile_features(uses_fmt PRIVATE cxx_std_17)
