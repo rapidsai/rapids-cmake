@@ -37,7 +37,7 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
 ]=])
 rapids_cpm_package_override(${CMAKE_CURRENT_BINARY_DIR}/override.json)
 
-# Verify that the place-holders are evaluated correctly from `enable_language(CUDA)`
+# Verify that the placeholders are evaluated correctly from `enable_language(CUDA)`
 rapids_cpm_package_details(test_binary version repository tag shallow exclude)
 rapids_cpm_get_proprietary_binary_url(test_binary ${version} url)
 
