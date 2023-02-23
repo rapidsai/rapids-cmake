@@ -26,6 +26,7 @@ popd
 
 
 if [[ ${RAPIDS_BUILD_TYPE} == "branch" ]]; then
+  rapids-logger "Upload Docs to S3"
   aws s3 sync --delete docs/_html "s3://rapidsai-docs/rapids-cmake/${VERSION_NUMBER}/html"
   aws s3 sync --delete docs/_text "s3://rapidsai-docs/rapids-cmake/${VERSION_NUMBER}/txt"
 fi
