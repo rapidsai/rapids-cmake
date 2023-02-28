@@ -98,7 +98,7 @@ function(rapids_test_add)
   # for some reason rapids-cmake src has been removed. set(_rapids_run_gpu_test_script
   # "${PROJECT_BINARY_DIR}/rapids-cmake/run_gpu_test.cmake")
   set(_rapids_run_gpu_test_script_dir "${PROJECT_BINARY_DIR}/rapids-cmake/")
-  set(_rapids_run_gpu_test_script_for_install "./run_gpu_test.cmake")
+  set(_rapids_run_gpu_test_script "./run_gpu_test.cmake")
   if(NOT EXISTS "${_rapids_run_gpu_test_script_dir}${_rapids_run_gpu_test_script}")
     file(COPY "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/run_gpu_test.cmake"
          DESTINATION "${_rapids_run_gpu_test_script_dir}")
@@ -106,7 +106,7 @@ function(rapids_test_add)
 
   add_test(NAME ${_RAPIDS_TEST_NAME}
            COMMAND ${CMAKE_COMMAND} "-Dcommand_to_run=${command}" "-Dcommand_args=${args}" -P
-                   "${_rapids_run_gpu_test_script}"
+                   "${_rapids_run_gpu_test_script_dir}${_rapids_run_gpu_test_script}"
            WORKING_DIRECTORY "${_RAPIDS_TEST_WORKING_DIRECTORY}")
 
   include(${CMAKE_CURRENT_FUNCTION_LIST_DIR}/gpu_requirements.cmake)
@@ -138,13 +138,8 @@ function(rapids_test_add)
     endif()
     rapids_test_record_test_component(NAME ${_RAPIDS_TEST_NAME} COMPONENT
                                       ${_RAPIDS_TEST_INSTALL_COMPONENT_SET})
-    rapids_test_record_test_command(NAME
-                                    ${_RAPIDS_TEST_NAME}
-                                    COMMAND
-                                    cmake
+    rapids_test_record_test_command(NAME ${_RAPIDS_TEST_NAME} COMMAND cmake
                                     "-Dcommand_to_run=${command_for_install}"
-                                    "-Dcommand_args=${args}"
-                                    -P
-                                    "${_rapids_run_gpu_test_script_for_install}")
+                                    "-Dcommand_args=${args}" -P "${_rapids_run_gpu_test_script}")
   endif()
 endfunction()
