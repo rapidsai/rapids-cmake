@@ -51,7 +51,8 @@ struct local {
   std::vector<gpu> gpus;
 };
 
-// A hard-coded JSON printer, but it gets the job done
+// A hard-coded JSON printer that generates a ctest resource-specification file:
+// https://cmake.org/cmake/help/latest/manual/ctest.1.html#resource-specification-file
 void to_json(std::ostream& buffer, version const& v)
 {
   buffer << "\"version\": {\"major\": " << v.major << ", \"minor\": " << v.minor << "}";
@@ -73,7 +74,7 @@ void to_json(std::ostream& buffer, local const& l)
   buffer << "}]\n";
 }
 
-int main(int, char**)
+int main()
 {
   version v{1, 0};
   local l;

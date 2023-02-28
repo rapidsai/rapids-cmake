@@ -40,8 +40,8 @@ CTest with high parallel levels will cause multiple tests to run on the
 same GPU and quickly exhaust all memory.
 
 ``COMMAND``
-  Specify the test command-line. If <command> specifies an executable target
-  (created by add_executable()) it will automatically be replaced by the location of the
+  Specify the test command-line including any arguments. If the first argument provided is an executable
+  target (created by add_executable()) it will automatically be replaced by the location of the
   executable created at build time.
 
 ``GPUS``
@@ -95,12 +95,13 @@ function(rapids_test_add)
   endif()
 
   # Provide a copy of the test runner in the binary directory so that tests still can be executed if
-  # for some reason rapids-cmake src has been removed.
-  set(_rapids_run_gpu_test_script "${PROJECT_BINARY_DIR}/rapids-cmake/run_gpu_test.cmake")
+  # for some reason rapids-cmake src has been removed. set(_rapids_run_gpu_test_script
+  # "${PROJECT_BINARY_DIR}/rapids-cmake/run_gpu_test.cmake")
+  set(_rapids_run_gpu_test_script_dir "${PROJECT_BINARY_DIR}/rapids-cmake/")
   set(_rapids_run_gpu_test_script_for_install "./run_gpu_test.cmake")
-  if(NOT EXISTS "${_rapids_run_gpu_test_script}")
+  if(NOT EXISTS "${_rapids_run_gpu_test_script_dir}${_rapids_run_gpu_test_script}")
     file(COPY "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/run_gpu_test.cmake"
-         DESTINATION "${PROJECT_BINARY_DIR}/rapids-cmake/")
+         DESTINATION "${_rapids_run_gpu_test_script_dir}")
   endif()
 
   add_test(NAME ${_RAPIDS_TEST_NAME}
