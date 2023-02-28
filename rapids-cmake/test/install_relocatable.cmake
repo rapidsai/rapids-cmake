@@ -34,7 +34,7 @@ Will install all tests created by :cmake:command:`rapids_test_add` that are
 part of the provided ``INSTALL_COMPONENT_SET``.
 
 The :cmake:command:`rapids_test_install_relocatable` presumes that all
-arguments provided to the tests are machine independent ( no absolute paths ).
+arguments provided to the tests are machine independent (no absolute paths).
 
 ``INSTALL_COMPONENT_SET``
   Record which test component infrastructure to be installed
