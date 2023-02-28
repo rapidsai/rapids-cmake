@@ -114,7 +114,7 @@ The `rapids_test` functions simplify CTest resource allocation, allowing for
 tests to run in parallel without overallocating GPU resources.
 
 The most commonly used functions are:
-- `rapids_test_add(NAME <test_name> GPUS <N>)` State how many GPU resources a single
+- `rapids_test_add(NAME <test_name> GPUS <N> PERCENT <N>)`: State how many GPU resources a single
   test requires
 
 
