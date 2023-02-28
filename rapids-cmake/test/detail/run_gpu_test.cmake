@@ -30,4 +30,5 @@ if(DEFINED ENV{CTEST_RESOURCE_GROUP_COUNT})
     endif()
   endforeach()
 endif()
-execute_process(COMMAND ${command_to_run} ${command_args} COMMAND_ECHO STDOUT)
+execute_process(COMMAND ${command_to_run} ${command_args} COMMAND_ECHO STDOUT
+                        COMMAND_ERROR_IS_FATAL ANY)
