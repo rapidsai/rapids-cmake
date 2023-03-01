@@ -54,11 +54,14 @@ Result Variables
 function(rapids_test_init)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.test.init")
 
+  include(${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/default_names.cmake)
   include(${CMAKE_CURRENT_FUNCTION_LIST_DIR}/generate_resource_spec.cmake)
-  rapids_test_generate_resource_spec(DESTINATION "${PROJECT_BINARY_DIR}/resource_spec.json")
+  set(rapids_test_spec_file "${PROJECT_BINARY_DIR}/${rapids_test_json_file_name}")
+
+  rapids_test_generate_resource_spec(DESTINATION "${rapids_test_spec_file}")
 
   if(NOT CTEST_RESOURCE_SPEC_FILE)
-    set(CTEST_RESOURCE_SPEC_FILE "${PROJECT_BINARY_DIR}/resource_spec.json" PARENT_SCOPE)
+    set(CTEST_RESOURCE_SPEC_FILE "${rapids_test_spec_file}" PARENT_SCOPE)
   endif()
 
 endfunction()

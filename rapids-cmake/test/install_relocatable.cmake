@@ -70,12 +70,13 @@ function(rapids_test_install_relocatable)
   get_target_property(targets_to_install rapids_test_install_${component} TARGETS_TO_INSTALL)
   get_target_property(tests_to_run rapids_test_install_${component} TESTS_TO_RUN)
 
+  include(${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/default_names.cmake)
   set(content
-      [==[
-  set(CTEST_SCRIPT_DIRECTORY ".")
-  set(CTEST_RESOURCE_SPEC_FILE "./resource_spec.json")
-  execute_process(COMMAND ./generate_ctest_json OUTPUT_FILE "${CTEST_RESOURCE_SPEC_FILE}")
-  ]==])
+      "
+  set(CTEST_SCRIPT_DIRECTORY \".\")
+  set(CTEST_RESOURCE_SPEC_FILE \"./${rapids_test_json_file_name}\")
+  execute_process(COMMAND ./${rapids_test_generate_exe_name} OUTPUT_FILE \"${CTEST_RESOURCE_SPEC_FILE}\")
+  ")
 
   foreach(test IN LISTS tests_to_run)
     get_test_property(${test} INSTALL_COMMAND command)
@@ -103,7 +104,7 @@ function(rapids_test_install_relocatable)
 
   # We need to install the rapids-test gpu detector, and the json script we also need to write out /
   # install the new CTestTestfile.cmake
-  install(PROGRAMS "${PROJECT_BINARY_DIR}/rapids-cmake/generate_ctest_json"
+  install(PROGRAMS "${PROJECT_BINARY_DIR}/rapids-cmake/${rapids_test_generate_exe_name}"
           COMPONENT ${_RAPIDS_TEST_INSTALL_COMPONENT_SET} DESTINATION ${_RAPIDS_TEST_DESTINATION}
           ${to_exclude})
   install(FILES "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/run_gpu_test.cmake"

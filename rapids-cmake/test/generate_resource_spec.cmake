@@ -61,8 +61,9 @@ function(rapids_test_generate_resource_spec DESTINATION filepath)
 }
 ]=])
 
+  include(${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/default_names.cmake)
   set(eval_file ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/generate_resource_spec.cpp)
-  set(eval_exe ${PROJECT_BINARY_DIR}/rapids-cmake/generate_ctest_json)
+  set(eval_exe ${PROJECT_BINARY_DIR}/rapids-cmake/${rapids_test_generate_exe_name})
   set(error_file ${PROJECT_BINARY_DIR}/rapids-cmake/detect_gpus.stderr.log)
 
   if(NOT EXISTS "${eval_exe}")
