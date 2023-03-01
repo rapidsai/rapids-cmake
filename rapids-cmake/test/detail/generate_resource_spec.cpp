@@ -33,24 +33,6 @@ struct gpu {
   int slots     = 0;
 };
 
-struct local {
-  local()
-  {
-    int nDevices = 0;
-    cudaGetDeviceCount(&nDevices);
-    if (nDevices == 0) {
-      gpus.emplace_back(0);
-    } else {
-      for (int i = 0; i < nDevices; ++i) {
-        cudaDeviceProp prop;
-        cudaGetDeviceProperties(&prop, i);
-        gpus.emplace_back(i, prop);
-      }
-    }
-  }
-  std::vector<gpu> gpus;
-};
-
 // A hard-coded JSON printer that generates a ctest resource-specification file:
 // https://cmake.org/cmake/help/latest/manual/ctest.1.html#resource-specification-file
 void to_json(std::ostream& buffer, version const& v)
@@ -61,28 +43,35 @@ void to_json(std::ostream& buffer, gpu const& g)
 {
   buffer << "\t\t{\"id\": \"" << g.id << "\", \"slots\": " << g.slots << "}";
 }
-void to_json(std::ostream& buffer, local const& l)
-{
-  buffer << "\"local\": [{\n";
-  buffer << "\t\"gpus\": [\n";
-  for (int i = 0; i < l.gpus.size(); ++i) {
-    to_json(buffer, l.gpus[i]);
-    if (i != (l.gpus.size() - 1)) { buffer << ","; }
-    buffer << "\n";
-  }
-  buffer << "\t]\n";
-  buffer << "}]\n";
-}
 
 int main()
 {
-  version v{1, 0};
-  local l;
+  std::vector<gpu> gpus;
+  int nDevices = 0;
+  cudaGetDeviceCount(&nDevices);
+  if (nDevices == 0) {
+    gpus.emplace_back(0);
+  } else {
+    for (int i = 0; i < nDevices; ++i) {
+      cudaDeviceProp prop;
+      cudaGetDeviceProperties(&prop, i);
+      gpus.emplace_back(i, prop);
+    }
+  }
 
+  version v{1, 0};
   std::cout << "{\n";
   to_json(std::cout, v);
   std::cout << ",\n";
-  to_json(std::cout, l);
+  std::cout << "\"local\": [{\n";
+  std::cout << "\t\"gpus\": [\n";
+  for (int i = 0; i < gpus.size(); ++i) {
+    to_json(std::cout, gpus[i]);
+    if (i != (gpus.size() - 1)) { std::cout << ","; }
+    std::cout << "\n";
+  }
+  std::cout << "\t]\n";
+  std::cout << "}]\n";
   std::cout << "}" << std::endl;
   return 0;
 }
