@@ -95,8 +95,7 @@ function(rapids_test_add)
   endif()
 
   # Provide a copy of the test runner in the binary directory so that tests still can be executed if
-  # for some reason rapids-cmake src has been removed. set(_rapids_run_gpu_test_script
-  # "${PROJECT_BINARY_DIR}/rapids-cmake/run_gpu_test.cmake")
+  # for some reason rapids-cmake src has been removed.
   set(_rapids_run_gpu_test_script_dir "${PROJECT_BINARY_DIR}/rapids-cmake/")
   set(_rapids_run_gpu_test_script "./run_gpu_test.cmake")
   if(NOT EXISTS "${_rapids_run_gpu_test_script_dir}${_rapids_run_gpu_test_script}")
