@@ -66,7 +66,7 @@ The `rapids-cmake` module contains helpful general CMake functionality
 The `rapids-cpm` module contains CPM functionality to allow projects to acquire dependencies consistently.
 For consistentcy All targets brought in via `rapids-cpm` are GLOBAL targets.
 
-- `raipds_cpm_init()` handles initialization of the CPM module.
+- `rapids_cpm_init()` handles initialization of the CPM module.
 - `raipds_cpm_find(<project> name BUILD_EXPORT_SET <name> INSTALL_EXPORT_SET <name>)` Will search for a module and fall back to installing via CPM. Offers support to track dependencies for easy package exporting
 
 ### cuda
