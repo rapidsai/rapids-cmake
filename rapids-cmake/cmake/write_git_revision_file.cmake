@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021, NVIDIA CORPORATION.
+# Copyright (c) 2021-2023, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,9 +28,10 @@ Generate a C++ header file that holds git revision information of the calling pr
   rapids_cmake_write_git_revision_file(<target_name> file_path [PREFIX <prefix>])
 
 Creates a global interface target called `target_name` that holds the includes to
-the generated header with the macros for git branch, sha1, version, and if any uncommited
-changes exist. Users of the header file must use :cmake:command:`target_link_libraries` to
-the target so that the header is generated before it is used.
+the generated header with the macros for git branch, sha1, version, and if any uncommitted
+changes exist. Users of the header file must use
+:cmake:command:`target_link_libraries <cmake:command:target_link_libraries>` to the target
+so that the header is generated before it is used.
 
 ``PREFIX``
     Prefix for all the C++ macros. By default if not explicitly specified it will be equal
@@ -46,18 +47,18 @@ This information will be recorded in the following defines:
     Will store the full SHA1 for the current git commit if one exists.
 
   - <PREFIX>_GIT_IS_DIRTY
-    Will exist if any git tracked file has any modifications that aren't commited ( dirty ).
+    Will exist if any git tracked file has any modifications that aren't committed ( dirty ).
 
   - <PREFIX>_GIT_VERSION
     Will store `<tag>[-<distance>-g<sha1>[-dirty]]` computed from running
     `git describe --tags --dirty --always`. For example "v21.10.00a-18-g7efb04f-dirty" indicates
-    that the lastest commit is "7efb04f" but has uncommitted changes (`-dirty`), and
+    that the latest commit is "7efb04f" but has uncommitted changes (`-dirty`), and
     that we are "18" commits after tag "v21.10.00a".
 
 ``file_path``
     Either an absolute or relative path.
     When a relative path, the absolute location will be computed from
-    :cmake:variable:`CMAKE_CURRENT_BINARY_DIR`
+    :cmake:variable:`CMAKE_CURRENT_BINARY_DIR <cmake:variable:CMAKE_CURRENT_BINARY_DIR>`
 
 .. note::
   If `git` doesn't exist or the project doesn't use `git`, the header
@@ -68,7 +69,8 @@ This information will be recorded in the following defines:
 Result Targets
 ^^^^^^^^^^^^^^^^
   `target_name` target will be created. Consuming libraries/executables
-   of the generated header must use the target via :cmake:command:`target_link_libraries`
+   of the generated header must use the target via
+   :cmake:command:`target_link_libraries <cmake:command:target_link_libraries>`
    for correct builds.
 
 #]=======================================================================]
@@ -78,7 +80,7 @@ function(rapids_cmake_write_git_revision_file target file_path)
   set(options "")
   set(one_value PREFIX)
   set(multi_value "")
-  cmake_parse_arguments(RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
+  cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
   cmake_path(IS_RELATIVE file_path is_relative)
   if(is_relative)
@@ -87,8 +89,8 @@ function(rapids_cmake_write_git_revision_file target file_path)
     set(output_path "${file_path}")
   endif()
 
-  if(NOT RAPIDS_PREFIX)
-    set(RAPIDS_PREFIX "${PROJECT_NAME}")
+  if(NOT _RAPIDS_PREFIX)
+    set(_RAPIDS_PREFIX "${PROJECT_NAME}")
   endif()
 
   # Find Git
@@ -96,9 +98,10 @@ function(rapids_cmake_write_git_revision_file target file_path)
 
   add_custom_target(${target}_compute_git_info ALL
                     BYPRODUCTS "${file_path}"
-                    COMMENT "Generate git revision file for {target}"
+                    COMMENT "Generate git revision file for ${target}"
                     COMMAND ${CMAKE_COMMAND} -DWORKING_DIRECTORY=${CMAKE_CURRENT_SOURCE_DIR}
-                            -DGIT_EXECUTABLE=${GIT_EXECUTABLE} -DRAPIDS_GIT_PREFIX=${RAPIDS_PREFIX}
+                            -DGIT_EXECUTABLE=${GIT_EXECUTABLE}
+                            -D_RAPIDS_GIT_PREFIX=${_RAPIDS_PREFIX}
                             -DTEMPLATE_FILE=${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/git_revision.hpp.in
                             -DFILE_TO_WRITE=${file_path} -P
                             ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/compute_git_info.cmake

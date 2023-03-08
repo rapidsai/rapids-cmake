@@ -30,8 +30,8 @@ are constructed.
 
 
 CMake targets have visibility or scope where they can be referenced by name.
-Any built-in target such as those created by :cmake:command:`add_library` have
-global visibility. Targets created with :cmake:command:`add_library(IMPORTED)` by
+Any built-in target such as those created by :cmake:command:`add_library <cmake:command:add_library>` have
+global visibility. Targets created with :cmake:command:`add_library(IMPORTED) <cmake:command:add_library>` by
 default have directory visibility. This causes problems when trying to reason
 about targets created by `CPM`, as they could be either of the above.
 

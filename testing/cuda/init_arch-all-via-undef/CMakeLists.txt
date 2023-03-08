@@ -15,7 +15,7 @@
 #=============================================================================
 include(${rapids-cmake-dir}/cuda/init_architectures.cmake)
 
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.23.1)
 
 unset(CMAKE_CUDA_ARCHITECTURES )
 
@@ -30,4 +30,4 @@ if(CMAKE_CUDA_ARCHITECTURES STREQUAL "ALL")
   message(FATAL_ERROR "rapids_cuda_init_architectures didn't init CUDA_ARCHITECTURES")
 endif()
 
-include("${rapids-cmake-testing-dir}/cuda/validate-cuda-all.cmake")
+include("${rapids-cmake-testing-dir}/cuda/validate-cuda-rapids.cmake")

@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021, NVIDIA CORPORATION.
+# Copyright (c) 2021-2023, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,25 +30,25 @@ Establish a target that holds the CONDA include and link directories.
 Creates a global interface target called `target_name` that holds
 the CONDA include and link directories, when executed.
 
-Also offers the ability to modify :cmake:variable:`CMAKE_PREFIX_PATH` to
-include the paths in environment variables `BUILD_PREFIX`, `PREFIX`,
-and `CONDA_PREFIX` based on the current CONDA enviornment.
+Also offers the ability to modify :cmake:variable:`CMAKE_PREFIX_PATH <cmake:variable:CMAKE_PREFIX_PATH>` to
+include the paths in environment variables `PREFIX`, `BUILD_PREFIX`,
+and `CONDA_PREFIX` based on the current CONDA environment.
 
 ``MODIFY_PREFIX_PATH``
-    When in a conda build environment the contents of `$ENV{BUILD_PREFIX}` and `$ENV{PREFIX}`
-    will be inserted to the front of :cmake:variable:`CMAKE_PREFIX_PATH`.
+    When in a conda build environment the contents of `$ENV{PREFIX}` and `$ENV{BUILD_PREFIX}`
+    will be inserted to the front of :cmake:variable:`CMAKE_PREFIX_PATH <cmake:variable:CMAKE_PREFIX_PATH>`.
 
     When in a conda environment the contents of `$ENV{CONDA_PREFIX}` will be inserted to
-    the front of :cmake:variable:`CMAKE_PREFIX_PATH`.
+    the front of :cmake:variable:`CMAKE_PREFIX_PATH <cmake:variable:CMAKE_PREFIX_PATH>`.
 
 Result Variables
 ^^^^^^^^^^^^^^^^
-  :cmake:variable:`CMAKE_PREFIX_PATH` will be modifed when `MODIFY_PREFIX_PATH` is provided
+  :cmake:variable:`CMAKE_PREFIX_PATH <cmake:variable:CMAKE_PREFIX_PATH>` will be modified when `MODIFY_PREFIX_PATH` is provided
   and called from a conda environment.
 
 Result Targets
 ^^^^^^^^^^^^^^^^
-  `target_name` target will be created only if called from a conda enviornment.
+  `target_name` target will be created only if called from a conda environment.
 
 #]=======================================================================]
 function(rapids_cmake_support_conda_env target)
@@ -75,12 +75,20 @@ function(rapids_cmake_support_conda_env target)
     set(prefix_paths)
 
     if(in_conda_build)
-      target_include_directories(${target} INTERFACE "$ENV{BUILD_PREFIX}/include"
-                                                     "$ENV{PREFIX}/include")
-      target_link_directories(${target} INTERFACE "$ENV{BUILD_PREFIX}/lib" "$ENV{PREFIX}/lib")
+      target_include_directories(${target} INTERFACE "$ENV{PREFIX}/include"
+                                                     "$ENV{BUILD_PREFIX}/include")
+      target_link_directories(${target} INTERFACE "$ENV{PREFIX}/lib" "$ENV{BUILD_PREFIX}/lib")
+
+      if(DEFINED CMAKE_SHARED_LIBRARY_RPATH_LINK_CUDA_FLAG
+         OR DEFINED CMAKE_SHARED_LIBRARY_RPATH_LINK_CXX_FLAG)
+        target_link_options(${target} INTERFACE
+                            "$<HOST_LINK:SHELL:LINKER:-rpath-link=$ENV{PREFIX}/lib>")
+        target_link_options(${target} INTERFACE
+                            "$<HOST_LINK:SHELL:LINKER:-rpath-link=$ENV{BUILD_PREFIX}/lib>")
+      endif()
 
       if(modify_prefix_path)
-        list(PREPEND CMAKE_PREFIX_PATH "$ENV{BUILD_PREFIX}" "$ENV{PREFIX}")
+        list(PREPEND CMAKE_PREFIX_PATH "$ENV{PREFIX}" "$ENV{BUILD_PREFIX}")
         set(CMAKE_PREFIX_PATH "${CMAKE_PREFIX_PATH}" PARENT_SCOPE)
         message(VERBOSE "Conda build detected, CMAKE_PREFIX_PATH set to: ${CMAKE_PREFIX_PATH}")
       endif()
@@ -88,6 +96,11 @@ function(rapids_cmake_support_conda_env target)
     elseif(in_conda_prefix)
       target_include_directories(${target} INTERFACE "$ENV{CONDA_PREFIX}/include")
       target_link_directories(${target} INTERFACE "$ENV{CONDA_PREFIX}/lib")
+      if(DEFINED CMAKE_SHARED_LIBRARY_RPATH_LINK_CUDA_FLAG
+         OR DEFINED CMAKE_SHARED_LIBRARY_RPATH_LINK_CXX_FLAG)
+        target_link_options(${target} INTERFACE
+                            "$<HOST_LINK:SHELL:LINKER:-rpath-link=$ENV{CONDA_PREFIX}/lib>")
+      endif()
 
       if(modify_prefix_path)
         list(PREPEND CMAKE_PREFIX_PATH "$ENV{CONDA_PREFIX}")

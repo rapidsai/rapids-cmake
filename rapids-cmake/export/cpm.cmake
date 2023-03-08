@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021, NVIDIA CORPORATION.
+# Copyright (c) 2021-2023, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -62,14 +62,14 @@ function(rapids_export_cpm type name export_set)
   set(options "")
   set(one_value EXPORT_SET)
   set(multi_value GLOBAL_TARGETS CPM_ARGS)
-  cmake_parse_arguments(RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
+  cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
   if(type STREQUAL build)
     if(DEFINED ${name}_DIR AND ${name}_DIR)
       # Export out where we found the existing local config module
       set(possible_dir "${${name}_DIR}")
     else()
-      # Export out the build-dir incase it has build directory find-package support
+      # Export out the build-dir in case it has build directory find-package support
       set(possible_dir "${${name}_BINARY_DIR}")
     endif()
   endif()
@@ -87,10 +87,10 @@ function(rapids_export_cpm type name export_set)
   # Need to record the <PackageName> to `rapids_export_${type}_${export_set}`
   set_property(TARGET rapids_export_${type}_${export_set} APPEND PROPERTY "PACKAGE_NAMES" "${name}")
 
-  if(RAPIDS_GLOBAL_TARGETS)
+  if(_RAPIDS_GLOBAL_TARGETS)
     # record our targets that need to be marked as global when imported
     set_property(TARGET rapids_export_${type}_${export_set} APPEND
-                 PROPERTY "GLOBAL_TARGETS" "${RAPIDS_GLOBAL_TARGETS}")
+                 PROPERTY "GLOBAL_TARGETS" "${_RAPIDS_GLOBAL_TARGETS}")
   endif()
 
 endfunction()

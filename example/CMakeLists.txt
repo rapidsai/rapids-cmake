@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021, NVIDIA CORPORATION.
+# Copyright (c) 2021-2023, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,11 +14,13 @@
 # limitations under the License.
 #=============================================================================
 
-cmake_minimum_required(VERSION 3.18 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.23.1 FATAL_ERROR)
 
-file(DOWNLOAD https://raw.githubusercontent.com/rapidsai/rapids-cmake/branch-21.12/RAPIDS.cmake
-    ${CMAKE_BINARY_DIR}/RAPIDS.cmake)
-include(${CMAKE_BINARY_DIR}/RAPIDS.cmake)
+if(NOT EXISTS ${CMAKE_CURRENT_BINARY_DIR}/EXAMPLE_RAPIDS.cmake)
+  file(DOWNLOAD https://raw.githubusercontent.com/rapidsai/rapids-cmake/branch-22.10/RAPIDS.cmake
+       ${CMAKE_CURRENT_BINARY_DIR}/EXAMPLE_RAPIDS.cmake)
+endif()
+include(${CMAKE_CURRENT_BINARY_DIR}/EXAMPLE_RAPIDS.cmake)
 
 include(rapids-cmake)
 include(rapids-cpm)
@@ -48,7 +50,11 @@ rapids_find_package(CUDAToolkit REQUIRED
                     INSTALL_EXPORT_SET example-targets
                     )
 
-# find zlib using a find module we generate
+# Generate a `FindZLIBS` module that will searches for the zlib.h
+# header and `libz` or `libzlib` library.
+# In practise this function should be used to search for packages
+# that don't provide a -config.cmake file or CMake doesn't
+# already package a find module for ( includes ZLIB ).
 rapids_find_generate_module(ZLIBS
     HEADER_NAMES        zlib.h
     LIBRARY_NAMES       z zlib
@@ -56,10 +62,14 @@ rapids_find_generate_module(ZLIBS
     INSTALL_EXPORT_SET  example-targets
     )
 
-#Now use our generated find module and declare it part of
-#our exported interface
+# Since `rapids_find_generate_module` doesn't interact with the export-set
+# like `rapids_find` does, we manually establish this connection.
+# The vast majority of calls should use `rapids_find_package`, and
+# rapids_export_package should only be used in edge cases. The most common
+# edge case being when a package doesn't provide a built directory -config.cmake
+# module
 find_package(ZLIBS REQUIRED)
-rapids_export_package(INSTALL ZLIBS example-targets GLOBAL_TARGETS ZLIB::ZLIB)
+rapids_export_package(INSTALL ZLIBS example-targets GLOBAL_TARGETS ZLIBS::ZLIBS)
 rapids_export_package(BUILD ZLIBS example-targets)
 
 # find Threads (needed by cudftestutil)
@@ -76,7 +86,7 @@ include(${rapids-cmake-dir}/cpm/rmm.cmake)
 rapids_cpm_rmm(BUILD_EXPORT_SET example-targets
                INSTALL_EXPORT_SET example-targets)
 
-# Bring in any abitrary package
+# Bring in any arbitrary package
 rapids_cpm_find(fmt 7.1.3
   GLOBAL_TARGETS fmt::fmt
   CPM_ARGS

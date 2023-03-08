@@ -31,10 +31,10 @@ across all RAPIDS projects.
 
   rapids_cpm_gtest( [BUILD_EXPORT_SET <export-name>]
                     [INSTALL_EXPORT_SET <export-name>]
-                  )
-.. note::
-  Installation of GTest will occur if an INSTALL_EXPORT_SET is provided, and GTest
-  is added to the project via :cmake:command:`add_subdirectory` by CPM.
+                    [<CPM_ARGS> ...])
+
+.. |PKG_NAME| replace:: GTest
+.. include:: common_package_args.txt
 
 Result Targets
 ^^^^^^^^^^^^^^
@@ -43,7 +43,7 @@ Result Targets
 Result Variables
 ^^^^^^^^^^^^^^^^
   :cmake:variable:`GTest_SOURCE_DIR` is set to the path to the source directory of GTest.
-  :cmake:variable:`GTest_BINAR_DIR`  is set to the path to the build directory of  GTest.
+  :cmake:variable:`GTest_BINARY_DIR` is set to the path to the build directory of  GTest.
   :cmake:variable:`GTest_ADDED`      is set to a true value if GTest has not been added before.
   :cmake:variable:`GTest_VERSION`    is set to the version of GTest specified by the versions.json.
 
@@ -59,15 +59,22 @@ function(rapids_cpm_gtest)
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
   rapids_cpm_package_details(GTest version repository tag shallow exclude)
 
+  include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
+  rapids_cpm_generate_patch_command(GTest ${version} patch_command)
+
   include("${rapids-cmake-dir}/cpm/find.cmake")
   rapids_cpm_find(GTest ${version} ${ARGN}
                   GLOBAL_TARGETS GTest::gtest GTest::gmock GTest::gtest_main GTest::gmock_main
-                  CPM_ARGS
+                  CPM_ARGS FIND_PACKAGE_ARGUMENTS "EXACT"
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
                   GIT_SHALLOW ${shallow}
+                  PATCH_COMMAND ${patch_command}
                   EXCLUDE_FROM_ALL ${exclude}
                   OPTIONS "INSTALL_GTEST ${to_install}")
+
+  include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
+  rapids_cpm_display_patch_status(GTest)
 
   # Propagate up variables that CPMFindPackage provide
   set(GTest_SOURCE_DIR "${GTest_SOURCE_DIR}" PARENT_SCOPE)
@@ -75,10 +82,18 @@ function(rapids_cpm_gtest)
   set(GTest_ADDED "${GTest_ADDED}" PARENT_SCOPE)
   set(GTest_VERSION ${version} PARENT_SCOPE)
 
+  if(TARGET GTest::gtest AND NOT TARGET GTest::gmock)
+    message(WARNING "The GTest package found doesn't provide gmock. If you run into 'GTest::gmock target not found' issues you need to use a different version of GTest.The easiest way is to request building GTest from source by adding the following to the cmake invocation:
+  '-DCPM_DOWNLOAD_GTest=ON'")
+  endif()
+
   if(NOT TARGET GTest::gtest AND TARGET gtest)
     add_library(GTest::gtest ALIAS gtest)
-    add_library(GTest::gmock ALIAS gmock)
     add_library(GTest::gtest_main ALIAS gtest_main)
+  endif()
+
+  if(NOT TARGET GTest::gmock AND TARGET gmock)
+    add_library(GTest::gmock ALIAS gmock)
     add_library(GTest::gmock_main ALIAS gmock_main)
   endif()
 endfunction()

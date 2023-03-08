@@ -31,7 +31,7 @@ tracking of these dependencies for correct export support.
    /command/rapids_cpm_init
    /command/rapids_cpm_find
 
-CPM Pre-Configured Pacakges
+CPM Pre-Configured Packages
 ***************************
 
 These `rapids_cpm` functions allow projects to easily find or build common
@@ -44,14 +44,34 @@ package uses :ref:`can be found here. <cpm_versions>`
 .. toctree::
    :titlesonly:
 
+   /packages/rapids_cpm_cuco
+   /packages/rapids_cpm_fmt
+   /packages/rapids_cpm_gbench
    /packages/rapids_cpm_gtest
    /packages/rapids_cpm_libcudacxx
    /packages/rapids_cpm_nvbench
+   /packages/rapids_cpm_nvcomp
    /packages/rapids_cpm_rmm
    /packages/rapids_cpm_spdlog
    /packages/rapids_cpm_thrust
    /command/rapids_cpm_package_override
 
+Cython
+******
+
+The `rapids_cython` functions allow projects to easily build cython modules using
+`scikit-build <https://scikit-build.readthedocs.io/en/latest/>`_.
+
+.. note::
+  Use of the rapids-cython component of rapids-cmake requires scikit-build. The behavior of the functions provided by
+  this component is undefined if they are invoked outside of a build managed by scikit-build.
+
+.. toctree::
+   :titlesonly:
+
+   /command/rapids_cython_init
+   /command/rapids_cython_create_modules
+   /command/rapids_cython_add_rpath_entries
 
 
 Find
@@ -77,6 +97,7 @@ require.
 
     rapids_cuda_init_architectures </command/rapids_cuda_init_architectures>
     rapids_cuda_init_runtime </command/rapids_cuda_init_runtime>
+    rapids_cuda_patch_toolkit </command/rapids_cuda_patch_toolkit>
     rapids_cuda_set_architectures [Advanced] </command/rapids_cuda_set_architectures>
 
 
@@ -113,3 +134,17 @@ correct export generation. These should only be used when :cmake:command:`rapids
    rapids_export_find_package_root [Advanced] </command/rapids_export_find_package_root>
    rapids_export_package [Advanced] </command/rapids_export_package>
 
+Testing
+*******
+
+The `rapids_test` functions simplify CTest resource allocation, allowing for tests to run in parallel without over-allocating GPU resources.
+More information on resource allocation can be found in the rapids-cmake :ref:`Hardware Resources and Testing documentation <rapids_resource_allocation>`.
+
+.. toctree::
+   :titlesonly:
+
+   /command/rapids_test_init
+   /command/rapids_test_add
+   /command/rapids_test_generate_resource_spec
+   /command/rapids_test_gpu_requirements
+   /command/rapids_test_install_relocatable

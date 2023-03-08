@@ -31,19 +31,10 @@ for  consistency across all RAPIDS projects.
 
   rapids_cpm_rmm( [BUILD_EXPORT_SET <export-name>]
                   [INSTALL_EXPORT_SET <export-name>]
-                )
+                  [<CPM_ARGS> ...])
 
-``BUILD_EXPORT_SET``
-  Record that a :cmake:command:`CPMFindPackage(rmm)` call needs to occur as part of
-  our build directory export set.
-
-``INSTALL_EXPORT_SET``
-  Record a :cmake:command:`find_dependency(rmm)` call needs to occur as part of
-  our install directory export set.
-
-.. note::
-  Installation of RMM will always occur when it is built as a subcomponent of the
-  calling project.
+.. |PKG_NAME| replace:: rmm
+.. include:: common_package_args.txt
 
 Result Targets
 ^^^^^^^^^^^^^^
@@ -52,7 +43,7 @@ Result Targets
 Result Variables
 ^^^^^^^^^^^^^^^^
   :cmake:variable:`rmm_SOURCE_DIR` is set to the path to the source directory of RMM.
-  :cmake:variable:`rmm_BINAR_DIR`  is set to the path to the build directory of  RMM.
+  :cmake:variable:`rmm_BINARY_DIR` is set to the path to the build directory of  RMM.
   :cmake:variable:`rmm_ADDED`      is set to a true value if RMM has not been added before.
   :cmake:variable:`rmm_VERSION`    is set to the version of RMM specified by the versions.json.
 
@@ -60,24 +51,39 @@ Result Variables
 function(rapids_cpm_rmm)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.rmm")
 
-  set(to_install FALSE)
-  if(INSTALL_EXPORT_SET IN_LIST ARGN)
-    set(to_install TRUE)
+  set(options)
+  set(one_value INSTALL_EXPORT_SET)
+  set(multi_value)
+  cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
+
+  # Fix up RAPIDS_UNPARSED_ARGUMENTS to have EXPORT_SETS as this is need for rapids_cpm_find
+  if(_RAPIDS_INSTALL_EXPORT_SET)
+    list(APPEND _RAPIDS_UNPARSED_ARGUMENTS INSTALL_EXPORT_SET ${_RAPIDS_INSTALL_EXPORT_SET})
   endif()
 
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
   rapids_cpm_package_details(rmm version repository tag shallow exclude)
+  set(to_exclude OFF)
+  if(NOT _RAPIDS_INSTALL_EXPORT_SET OR exclude)
+    set(to_exclude ON)
+  endif()
+
+  include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
+  rapids_cpm_generate_patch_command(rmm ${version} patch_command)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
-  # Once we can require CMake 3.22 this can use `only_major_minor` for version searches
-  rapids_cpm_find(rmm "${version}.0" ${ARGN}
+  rapids_cpm_find(rmm ${version} ${ARGN} {_RAPIDS_UNPARSED_ARGUMENTS}
                   GLOBAL_TARGETS rmm::rmm
                   CPM_ARGS
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
                   GIT_SHALLOW ${shallow}
-                  EXCLUDE_FROM_ALL ${exclude}
+                  PATCH_COMMAND ${patch_command}
+                  EXCLUDE_FROM_ALL ${to_exclude}
                   OPTIONS "BUILD_TESTS OFF" "BUILD_BENCHMARKS OFF")
+
+  include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
+  rapids_cpm_display_patch_status(rmm)
 
   # Propagate up variables that CPMFindPackage provide
   set(rmm_SOURCE_DIR "${rmm_SOURCE_DIR}" PARENT_SCOPE)

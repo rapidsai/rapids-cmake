@@ -29,11 +29,15 @@ across all RAPIDS projects.
 
 .. code-block:: cmake
 
-  rapids_cpm_nvbench( [BUILD_EXPORT_SET <export-name>] )
+  rapids_cpm_nvbench( [BUILD_EXPORT_SET <export-name>]
+                      [<CPM_ARGS> ...])
 
 ``BUILD_EXPORT_SET``
   Record that a :cmake:command:`CPMFindPackage(nvbench)` call needs to occur as part of
   our build directory export set.
+
+``CPM_ARGS``
+  Any arguments after `CPM_ARGS` will be forwarded to the underlying :cmake:command:`CPMFindPackage(<PackageName> ...)` call
 
 .. note::
 
@@ -49,7 +53,7 @@ Result Targets
 Result Variables
 ^^^^^^^^^^^^^^^^
   :cmake:variable:`nvbench_SOURCE_DIR` is set to the path to the source directory of nvbench.
-  :cmake:variable:`nvbench_BINAR_DIR`  is set to the path to the build directory of  nvbench.
+  :cmake:variable:`nvbench_BINARY_DIR` is set to the path to the build directory of  nvbench.
   :cmake:variable:`nvbench_ADDED`      is set to a true value if nvbench has not been added before.
   :cmake:variable:`nvbench_VERSION`    is set to the version of nvbench specified by the versions.json.
 
@@ -73,6 +77,9 @@ function(rapids_cpm_nvbench)
     set(nvbench_with_nvml "ON")
   endif()
 
+  include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
+  rapids_cpm_generate_patch_command(nvbench ${version} patch_command)
+
   include("${rapids-cmake-dir}/cpm/find.cmake")
   rapids_cpm_find(nvbench ${version} ${ARGN}
                   GLOBAL_TARGETS nvbench::nvbench nvbench::main
@@ -80,9 +87,13 @@ function(rapids_cpm_nvbench)
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
                   GIT_SHALLOW ${shallow}
+                  PATCH_COMMAND ${patch_command}
                   EXCLUDE_FROM_ALL ${exclude}
                   OPTIONS "NVBench_ENABLE_NVML ${nvbench_with_nvml}" "NVBench_ENABLE_EXAMPLES OFF"
                           "NVBench_ENABLE_TESTING OFF")
+
+  include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
+  rapids_cpm_display_patch_status(nvbench)
 
   # Propagate up variables that CPMFindPackage provide
   set(nvbench_SOURCE_DIR "${nvbench_SOURCE_DIR}" PARENT_SCOPE)

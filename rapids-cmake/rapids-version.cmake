@@ -16,4 +16,6 @@
 # can't have an include guard on this file
 # that breaks its usage by cpm/detail/package_details
 
-set(rapids-cmake-version 22.02)
+if(NOT DEFINED rapids-cmake-version)
+  set(rapids-cmake-version 23.04)
+endif()

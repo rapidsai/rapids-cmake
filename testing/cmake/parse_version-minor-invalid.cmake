@@ -30,6 +30,11 @@ if(DEFINED minor_value)
   message(FATAL_ERROR "rapids_cmake_parse_version(MINOR) value parsing failed unexpectedly")
 endif()
 
+rapids_cmake_parse_version(MINOR "." minor_value)
+if(DEFINED minor_value)
+  message(FATAL_ERROR "rapids_cmake_parse_version(MINOR) value parsing failed unexpectedly")
+endif()
+
 rapids_cmake_parse_version(MINOR "100." minor_value)
 if(DEFINED minor_value)
   message(FATAL_ERROR "rapids_cmake_parse_version(MINOR) value parsing failed unexpectedly")

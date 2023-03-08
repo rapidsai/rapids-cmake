@@ -16,7 +16,7 @@
 
 include(CMakeFindDependencyMacro)
 
-@RAPIDS_EXPORT_CONTENTS@
+@_RAPIDS_EXPORT_CONTENTS@
 
 foreach(target IN LISTS rapids_global_targets)
   if(TARGET ${target})

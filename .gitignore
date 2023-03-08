@@ -20,3 +20,6 @@ docs/_build
 
 ## VSCode IDE
 .vscode
+
+# vim
+*.sw[a-z]

@@ -41,6 +41,11 @@ By default when an override for a project is provided no local search
 for that project will occur. This is done to make sure that the requested modified
 version is used.
 
+If a project is listed in multiple override files, the first file values will be used,
+and all later calls for that packaged will be ignored.  This "first to record, wins"
+approach is used to match FetchContent, and allows parent projects to override child
+projects.
+
 .. note::
 
   If the override file doesn't specify a value or package entry the default
@@ -62,13 +67,34 @@ function(rapids_cpm_package_override filepath)
   string(JSON package_count LENGTH "${json_data}" packages)
   math(EXPR package_count "${package_count} - 1")
 
-  # For each project cache the subset of the json for that project in a global property
+  # For each project cache the subset of the json for that project in a global property so that
+  # packasge_details.cmake can fetch that information
   if(package_count GREATER_EQUAL 0)
     # cmake-lint: disable=E1120
     foreach(index RANGE ${package_count})
       string(JSON package_name MEMBER "${json_data}" packages ${index})
       string(JSON data GET "${json_data}" packages "${package_name}")
-      set_property(GLOBAL PROPERTY rapids_cpm_${package_name}_override_json "${data}")
+      get_property(override_exists GLOBAL PROPERTY rapids_cpm_${package_name}_override_json DEFINED)
+      if(NOT override_exists)
+        # only add the first override for a project we encounter
+        set_property(GLOBAL PROPERTY rapids_cpm_${package_name}_override_json "${data}")
+        set_property(GLOBAL PROPERTY rapids_cpm_${package_name}_override_json_file "${filepath}")
+      endif()
     endforeach()
+
+    # establish the fetch content
+    include(FetchContent)
+    include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
+    rapids_cpm_package_details(${package_name} version repository tag shallow exclude)
+
+    include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
+    rapids_cpm_generate_patch_command(${package_name} ${version} patch_command)
+
+    FetchContent_Declare(${package_name}
+                         GIT_REPOSITORY ${repository}
+                         GIT_TAG ${tag}
+                         GIT_SHALLOW ${shallow}
+                         PATCH_COMMAND ${patch_command} EXCLUDE_FROM_ALL ${exclude})
+
   endif()
 endfunction()

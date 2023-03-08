@@ -1,16 +1,58 @@
 
 {
   "packages" : {
+    "cuco" : {
+      "version" : "0.0.1",
+      "git_shallow" : false,
+      "git_url" : "https://github.com/NVIDIA/cuCollections.git",
+      "git_tag" : "31e1d5df6869ef6cb60f36a614b30a244cf3bd78"
+    },
+    "fmt" : {
+      "version" : "9.1.0",
+      "git_url" : "https://github.com/fmtlib/fmt.git",
+      "git_tag" : "${version}"
+    },
+    "GBench" : {
+      "version" : "1.5.3",
+      "git_url" : "https://github.com/google/benchmark.git",
+      "git_tag" : "v1.5.3"
+    },
     "GTest" : {
-      "version" : "1.10",
+      "version" : "1.10.0",
       "git_url" : "https://github.com/google/googletest.git",
-      "git_tag" : "release-${version}.0"
+      "git_tag" : "release-${version}"
+    },
+    "libcudacxx" : {
+      "version" : "1.9.1",
+      "git_url" : "https://github.com/NVIDIA/libcudacxx.git",
+      "git_tag" : "branch/${version}"
     },
     "nvbench" : {
       "version" : "0.0",
       "git_shallow" : false,
       "git_url" : "https://github.com/NVIDIA/nvbench.git",
-      "git_tag" : "fc86d6a524ba2ae0b7d3606ca0027511240b9de5"
+      "git_tag" : "e477bb386289a11ad8d7e358cff6527cfc593974",
+      "patches" : [
+        {
+          "file" : "nvbench/use_existing_fmt.diff",
+          "issue" : "Fix add support for using an existing fmt [https://github.com/NVIDIA/nvbench/pull/125]",
+          "fixed_in" : ""
+        },
+        {
+          "file" : "nvbench/public_fmt_dep_in_conda.diff",
+          "issue" : "Propagate fmt requirement in conda envs [https://github.com/NVIDIA/nvbench/pull/127]",
+          "fixed_in" : ""
+        }
+      ]
+    },
+    "nvcomp" : {
+      "version" : "2.6.1",
+      "git_url" : "https://github.com/NVIDIA/nvcomp.git",
+      "git_tag" : "v2.2.0",
+      "proprietary_binary" : {
+        "x86_64-linux" :  "https://developer.download.nvidia.com/compute/nvcomp/${version}/local_installers/nvcomp_${version}_x86_64_${cuda-toolkit-version-major}.x.tgz",
+        "aarch64-linux" : "https://developer.download.nvidia.com/compute/nvcomp/${version}/local_installers/nvcomp_${version}_SBSA_${cuda-toolkit-version-major}.x.tgz"
+      }
     },
     "rmm" : {
       "version" : "${rapids-cmake-version}",
@@ -18,19 +60,26 @@
       "git_tag" : "branch-${version}"
     },
     "spdlog" : {
-      "version" : "1.8.5",
+      "version" : "1.11.0",
       "git_url" : "https://github.com/gabime/spdlog.git",
       "git_tag" : "v${version}"
     },
     "Thrust" : {
-      "version" : "1.15.0",
+      "version" : "1.17.2",
       "git_url" : "https://github.com/NVIDIA/thrust.git",
-      "git_tag" : "${version}"
-    },
-    "libcudacxx" : {
-      "version" : "1.7.0",
-      "git_url" : "https://github.com/NVIDIA/libcudacxx.git",
-      "git_tag" : "${version}"
+      "git_tag" : "${version}",
+      "patches" : [
+        {
+          "file" : "Thrust/transform_iter_with_reduce_by_key.diff",
+          "issue" : "Support transform iterator with reduce by key [https://github.com/NVIDIA/thrust/pull/1805]",
+          "fixed_in" : "2.1"
+        },
+        {
+          "file" : "Thrust/install_rules.diff",
+          "issue" : "Thrust 1.X installs incorrect files [https://github.com/NVIDIA/thrust/issues/1790]",
+          "fixed_in" : "2.0"
+        }
+      ]
     }
   }
 }
