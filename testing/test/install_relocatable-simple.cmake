@@ -29,6 +29,11 @@ rapids_test_install_relocatable(INSTALL_COMPONENT_SET testing
 set(generated_testfile "${CMAKE_CURRENT_BINARY_DIR}/rapids-cmake/testing/CTestTestfile.cmake.to_install")
 file(READ "${generated_testfile}" contents)
 
+set(execute_process_match_string [===[execute_process(COMMAND ./generate_ctest_json OUTPUT_FILE "${CTEST_RESOURCE_SPEC_FILE}")]===])
+string(FIND "${contents}" ${execute_process_match_string} is_found)
+if(is_found EQUAL -1)
+  message(FATAL_ERROR "Failed to generate a `execute_process` with escaped CTEST_RESOURCE_SPEC_FILE")
+endif()
 
 set(add_test_match_strings [===[add_test([=[verify_]=] cmake;-Dcommand_to_run=ls;-Dcommand_args=;-P;./run_gpu_test.cmake)]===])
 foreach(item IN LISTS add_test_match_strings)

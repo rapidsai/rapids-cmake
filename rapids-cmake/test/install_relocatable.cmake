@@ -75,7 +75,7 @@ function(rapids_test_install_relocatable)
       "
   set(CTEST_SCRIPT_DIRECTORY \".\")
   set(CTEST_RESOURCE_SPEC_FILE \"./${rapids_test_json_file_name}\")
-  execute_process(COMMAND ./${rapids_test_generate_exe_name} OUTPUT_FILE \"${CTEST_RESOURCE_SPEC_FILE}\")
+  execute_process(COMMAND ./${rapids_test_generate_exe_name} OUTPUT_FILE \"\${CTEST_RESOURCE_SPEC_FILE}\")
   ")
 
   foreach(test IN LISTS tests_to_run)
