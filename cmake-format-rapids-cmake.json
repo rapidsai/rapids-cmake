@@ -346,7 +346,7 @@
       "rapids_test_install_relocatable": {
         "pargs": {
           "nargs": "0",
-          "flags": ["EXCLUDE_FROM_ALL"]
+          "flags": ["INCLUDE_IN_ALL"]
         },
         "kwargs": {
           "INSTALL_COMPONENT_SET": "1",

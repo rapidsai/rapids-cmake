@@ -22,5 +22,4 @@ rapids_test_init()
 rapids_test_install_relocatable(INSTALL_COMPONENT_SET wrong_component
                                 DESTINATION bin/testing)
 rapids_test_install_relocatable(INSTALL_COMPONENT_SET another_wrong_component
-                                DESTINATION bin/testing
-                                EXCLUDE_FROM_ALL)
+                                DESTINATION bin/testing)

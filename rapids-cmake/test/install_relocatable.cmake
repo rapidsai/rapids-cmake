@@ -28,7 +28,7 @@ by `ctest` in parallel with GPU awareness.
 
     rapids_test_install_relocatable(INSTALL_COMPONENT_SET <component>
                                     DESTINATION <relative_path>
-                                    [EXCLUDE_FROM_ALL])
+                                    [INCLUDE_IN_ALL])
 
 Will install all tests created by :cmake:command:`rapids_test_add` that are
 part of the provided ``INSTALL_COMPONENT_SET``.
@@ -43,23 +43,22 @@ arguments provided to the tests are machine independent (no absolute paths).
   Relative path from the `CMAKE_INSTALL_PREFIX` to install the infrastructure.
   This needs to be the same directory as the test executables
 
-``EXCLUDE_FROM_ALL``
-  State that these install rules shouldn't be part of the default install set, and
-  instead must be explicitly installed.
-
+``INCLUDE_IN_ALL``
+  State that these install rules should be part of the default install set.
+  By default tests are not part of the default install set.
 
 #]=======================================================================]
 function(rapids_test_install_relocatable)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.test.install_relocatable")
 
-  set(options EXCLUDE_FROM_ALL)
+  set(options INCLUDE_IN_ALL)
   set(one_value INSTALL_COMPONENT_SET DESTINATION)
   set(multi_value)
   cmake_parse_arguments(_RAPIDS_TEST "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
-  set(to_exclude)
-  if(_RAPIDS_TEST_EXCLUDE_FROM_ALL)
-    set(to_exclude EXCLUDE_FROM_ALL)
+  set(to_exclude EXCLUDE_FROM_ALL)
+  if(_RAPIDS_TEST_INCLUDE_IN_ALL)
+    set(to_exclude)
   endif()
 
   set(component ${_RAPIDS_TEST_INSTALL_COMPONENT_SET})
