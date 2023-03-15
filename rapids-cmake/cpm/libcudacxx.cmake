@@ -103,14 +103,18 @@ function(rapids_cpm_libcudacxx)
     # the headers to `include/rapids/libcudacxx`
     include(GNUInstallDirs)
     set(CMAKE_INSTALL_INCLUDEDIR "${CMAKE_INSTALL_INCLUDEDIR}/rapids/libcudacxx")
+    set(CMAKE_INSTALL_LIBDIR "${CMAKE_INSTALL_LIBDIR}/rapids/")
+
+    include("${rapids-cmake-dir}/export/find_package_root.cmake")
+    rapids_export_find_package_root(INSTALL libcudacxx
+                                    [=[${CMAKE_CURRENT_LIST_DIR}/../../rapids/cmake/libcudacxx]=]
+                                    ${_RAPIDS_INSTALL_EXPORT_SET})
 
     # libcudacxx 1.8 has a bug where it doesn't generate proper exclude rules for the
     # `[cub|libcudacxx]-header-search` files, which causes the build tree version to be installed
     # instead of the install version
     if(NOT EXISTS "${libcudacxx_BINARY_DIR}/cmake/libcudacxxInstallRulesForRapids.cmake")
       file(READ "${libcudacxx_SOURCE_DIR}/cmake/libcudacxxInstallRules.cmake" contents)
-      string(REPLACE "PATTERN cub-header-search EXCLUDE" "REGEX cub-header-search.* EXCLUDE"
-                     contents "${contents}")
       string(REPLACE "PATTERN libcudacxx-header-search EXCLUDE"
                      "REGEX libcudacxx-header-search.* EXCLUDE" contents "${contents}")
       file(WRITE "${libcudacxx_BINARY_DIR}/cmake/libcudacxxInstallRulesForRapids.cmake" ${contents})
