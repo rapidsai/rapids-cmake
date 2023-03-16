@@ -218,6 +218,8 @@
           "FINAL_CODE_BLOCK": 1,
           "VERSION": 1,
           "GLOBAL_TARGETS": "+",
+          "COMPONENTS": "+",
+          "COMPONENTS_EXPORT_SET": "+",
           "LANGUAGES": "+"
         }
       },
