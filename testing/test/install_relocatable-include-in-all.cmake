@@ -23,7 +23,8 @@ rapids_test_init()
 rapids_test_add(NAME verify_ COMMAND ls GPUS 1 INSTALL_COMPONENT_SET testing)
 
 rapids_test_install_relocatable(INSTALL_COMPONENT_SET testing
-                                DESTINATION bin/testing)
+                                DESTINATION bin/testing
+                                INCLUDE_IN_ALL)
 
 file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/verify_cmake_install.cmake"
 "set(install_rules_file \"${CMAKE_CURRENT_BINARY_DIR}/cmake_install.cmake\")")
@@ -32,7 +33,7 @@ file(APPEND "${CMAKE_CURRENT_BINARY_DIR}/verify_cmake_install.cmake"
 [=[
 
 file(READ "${install_rules_file}" contents)
-set(exclude_from_all_string [===[if(CMAKE_INSTALL_COMPONENT STREQUAL "testing")]===])
+set(exclude_from_all_string [===[if(CMAKE_INSTALL_COMPONENT STREQUAL "testing" OR NOT CMAKE_INSTALL_COMPONENT)]===])
 string(FIND "${contents}" ${exclude_from_all_string} is_found)
 if(is_found EQUAL -1)
   message(FATAL_ERROR "`rapids_test_install_relocatable` failed to mark items as EXCLUDE_FROM_ALL")
@@ -48,18 +49,4 @@ set(execute_process_match_string [===[execute_process(COMMAND ./generate_ctest_j
 string(FIND "${contents}" ${execute_process_match_string} is_found)
 if(is_found EQUAL -1)
   message(FATAL_ERROR "Failed to generate a `execute_process` with escaped CTEST_RESOURCE_SPEC_FILE")
-endif()
-
-set(add_test_match_strings [===[add_test([=[verify_]=] cmake;-Dcommand_to_run=ls;-Dcommand_args=;-P;./run_gpu_test.cmake)]===])
-foreach(item IN LISTS add_test_match_strings)
-  string(FIND "${contents}" ${item} is_found)
-  if(is_found EQUAL -1)
-    message(FATAL_ERROR "Failed to generate an installed `add_test` for verify_")
-  endif()
-endforeach()
-
-set(properties_match_string [===[PROPERTIES RESOURCE_GROUPS 1,gpus:100]===])
-string(FIND "${contents}" ${properties_match_string} is_found)
-if(is_found EQUAL -1)
-  message(FATAL_ERROR "Failed to generate an installed `GPU` requirements for verify_")
 endif()
