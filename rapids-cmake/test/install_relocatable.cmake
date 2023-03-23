@@ -103,12 +103,16 @@ function(rapids_test_install_relocatable)
 
   # We need to install the rapids-test gpu detector, and the json script we also need to write out /
   # install the new CTestTestfile.cmake
-  install(PROGRAMS "${PROJECT_BINARY_DIR}/rapids-cmake/${rapids_test_generate_exe_name}"
-          COMPONENT ${_RAPIDS_TEST_INSTALL_COMPONENT_SET} DESTINATION ${_RAPIDS_TEST_DESTINATION}
-          ${to_exclude})
-  install(FILES "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/run_gpu_test.cmake"
-          COMPONENT ${_RAPIDS_TEST_INSTALL_COMPONENT_SET} DESTINATION ${_RAPIDS_TEST_DESTINATION}
-          ${to_exclude})
+  if(EXISTS "${PROJECT_BINARY_DIR}/rapids-cmake/${rapids_test_generate_exe_name}")
+    install(PROGRAMS "${PROJECT_BINARY_DIR}/rapids-cmake/${rapids_test_generate_exe_name}"
+            COMPONENT ${_RAPIDS_TEST_INSTALL_COMPONENT_SET} DESTINATION ${_RAPIDS_TEST_DESTINATION}
+            ${to_exclude})
+  endif()
+  if(EXISTS "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/run_gpu_test.cmake")
+    install(FILES "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/run_gpu_test.cmake"
+            COMPONENT ${_RAPIDS_TEST_INSTALL_COMPONENT_SET} DESTINATION ${_RAPIDS_TEST_DESTINATION}
+            ${to_exclude})
+  endif()
   if(targets_to_install)
     install(TARGETS ${targets_to_install} COMPONENT ${_RAPIDS_TEST_INSTALL_COMPONENT_SET}
             DESTINATION ${_RAPIDS_TEST_DESTINATION} ${to_exclude})
