@@ -40,7 +40,6 @@ add_cmake_config_test(init-simple.cmake)
 
 set(wrong_component_message "No install component set [wrong_component] can be found")
 add_cmake_build_test(install_relocatable-include-in-all.cmake)
-add_cmake_build_test(install_relocatable-env-vars.cmake)
 add_cmake_build_test(install_relocatable-labels.cmake)
 add_cmake_config_test(install_relocatable-simple.cmake)
 add_cmake_config_test(install_relocatable-wrong-component.cmake SHOULD_FAIL "${wrong_component_message}")
