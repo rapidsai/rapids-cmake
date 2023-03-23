@@ -79,16 +79,16 @@ function(rapids_test_install_relocatable)
 
   foreach(test IN LISTS tests_to_run)
     get_test_property(${test} INSTALL_COMMAND command)
-    get_test_property(${test} RESOURCE_GROUPS resources)
-    get_test_property(${test} LABELS labels)
     string(APPEND content "add_test([=[${test}]=] ${command})\n")
-    if(resources)
-      string(APPEND content
-             "set_tests_properties([=[${test}]=] PROPERTIES RESOURCE_GROUPS ${resources})\n")
-    endif()
-    if(labels)
-      string(APPEND content "set_tests_properties([=[${test}]=] PROPERTIES LABELS ${labels})\n")
-    endif()
+
+    set(properties_to_record ENVIRONMENT ENVIRONMENT_MODIFICATION RESOURCE_GROUPS LABELS)
+    foreach(prop_name IN LISTS properties_to_record)
+      get_test_property(${test} ${prop_name} prop_value)
+      if(prop_value)
+        string(APPEND content
+               "set_tests_properties([=[${test}]=] PROPERTIES ${prop_name} ${prop_value})\n")
+      endif()
+    endforeach()
   endforeach()
 
   set(test_launcher_file
