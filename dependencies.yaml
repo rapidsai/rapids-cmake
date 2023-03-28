@@ -5,12 +5,18 @@ files:
     includes:
       - build
       - cudatoolkit
+      - docs
       - test
   checks:
     output: none
     includes:
       - build
       - style_checks
+  docs:
+    output: none
+    includes:
+      - cudatoolkit
+      - docs
 channels:
   - rapidsai
   - conda-forge
@@ -35,22 +41,38 @@ dependencies:
             packages:
               - cudatoolkit=11.2
               - gcc<11.0.0
+              - sysroot_linux-64==2.17
           - matrix:
               cuda: "11.4"
             packages:
               - cudatoolkit=11.4
+              - gcc<11.0.0
+              - sysroot_linux-64==2.17
           - matrix:
               cuda: "11.5"
             packages:
               - cudatoolkit=11.5
+              - sysroot_linux-64==2.17
           - matrix:
               cuda: "11.6"
             packages:
               - cudatoolkit=11.6
+              - sysroot_linux-64==2.17
           - matrix:
               cuda: "11.8"
             packages:
               - cudatoolkit=11.8
+              - sysroot_linux-64==2.17
+  docs:
+    common:
+      - output_types: [conda]
+        packages:
+          - pip
+          - pip:
+            - sphinxcontrib-moderncmakedomain
+          - sphinx
+          - sphinx-copybutton
+          - sphinx_rtd_theme
   test:
     common:
       - output_types: [conda, requirements]

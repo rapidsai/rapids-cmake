@@ -1,5 +1,5 @@
 # =============================================================================
-# Copyright (c) 2022, NVIDIA CORPORATION.
+# Copyright (c) 2022-2023, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 # in compliance with the License. You may obtain a copy of the License at
@@ -61,7 +61,8 @@ $ORIGIN.
   A list of targets that are associated with the Cython targets created in this
   function. The target<-->associated target mapping is stored and may be
   leveraged by the following functions:
-  - :code:command:`rapids_cython_add_rpath_entries` accepts a path for an
+
+  - :cmake:command:`rapids_cython_add_rpath_entries` accepts a path for an
     associated target and updates the RPATH of each target with which that
     associated target is associated.
 

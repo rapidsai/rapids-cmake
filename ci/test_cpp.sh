@@ -27,7 +27,12 @@ rapids-logger "Begin cpp tests"
 cmake -S testing -B build
 
 cd build
-ctest --schedule-random --output-on-failure
-exitcode=$?
 
-exit ${exitcode}
+EXITCODE=0
+trap "EXITCODE=1" ERR
+set +e
+
+ctest --schedule-random --output-on-failure
+
+rapids-logger "Test script exiting with value: $EXITCODE"
+exit ${EXITCODE}
