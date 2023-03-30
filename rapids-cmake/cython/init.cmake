@@ -57,9 +57,7 @@ macro(rapids_cython_init)
     include("${rapids-cmake-dir}/cython/detail/skbuild_patches.cmake")
 
     if(NOT CYTHON_FLAGS)
-      set(CYTHON_FLAGS
-          "--directive always_allow_keywords=True,binding=True,embedsignature=True,language_level=3str"
-      )
+      set(CYTHON_FLAGS "--directive binding=True,embedsignature=True,always_allow_keywords=True")
     endif()
 
     # Flag
