@@ -14,5 +14,4 @@
 # limitations under the License.
 #=============================================================================
 include(${rapids-cmake-dir}/cuda/set_architectures.cmake)
-set(CMAKE_ERROR_DEPRECATED ON)
 rapids_cuda_set_architectures(ALL)

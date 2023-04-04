@@ -18,7 +18,6 @@ include(${rapids-cmake-dir}/cuda/init_architectures.cmake)
 cmake_minimum_required(VERSION 3.23.1)
 
 set(CMAKE_CUDA_ARCHITECTURES "")
-set(CMAKE_ERROR_DEPRECATED ON)
 
 rapids_cuda_init_architectures(rapids-project)
 project(rapids-project LANGUAGES CUDA)
