@@ -21,7 +21,11 @@ rapids_cuda_architectures_policy
 
 .. versionadded:: v23.02.00
 
-Errors on deprecated mode values and outputs guidance on how to upgrade
+Maps deprecated mode values to new supported values and outputs rapids-cmake
+deprecation warnings.
+
+.. versionchanged:: v23.06.00
+Now errors on deprecated mode values and outputs guidance on how to upgrade
 
 .. code-block:: cmake
 
