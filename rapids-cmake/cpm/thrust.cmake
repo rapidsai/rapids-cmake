@@ -56,6 +56,9 @@ Result Variables
 function(rapids_cpm_thrust NAMESPACE namespaces_name)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.thrust")
 
+  include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
+  rapids_cpm_package_details(Thrust version repository tag shallow exclude)
+
   set(to_install OFF)
   if(INSTALL_EXPORT_SET IN_LIST ARGN)
     set(to_install ON)
@@ -64,9 +67,6 @@ function(rapids_cpm_thrust NAMESPACE namespaces_name)
     set(CMAKE_INSTALL_INCLUDEDIR "${CMAKE_INSTALL_INCLUDEDIR}/rapids")
     set(CMAKE_INSTALL_LIBDIR "${CMAKE_INSTALL_LIBDIR}/rapids")
   endif()
-
-  include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
-  rapids_cpm_package_details(Thrust version repository tag shallow exclude)
 
   include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
   rapids_cpm_generate_patch_command(Thrust ${version} patch_command)

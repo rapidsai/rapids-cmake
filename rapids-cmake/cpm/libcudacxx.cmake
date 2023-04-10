@@ -54,35 +54,9 @@ function(rapids_cpm_libcudacxx)
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
   rapids_cpm_package_details(libcudacxx version repository tag shallow exclude)
 
-  include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
-  rapids_cpm_generate_patch_command(libcudacxx ${version} patch_command)
-
-  include("${rapids-cmake-dir}/cpm/find.cmake")
-  rapids_cpm_find(libcudacxx ${version} ${ARGN}
-                  GLOBAL_TARGETS libcudacxx::libcudacxx
-                  CPM_ARGS
-                  GIT_REPOSITORY ${repository}
-                  GIT_TAG ${tag}
-                  GIT_SHALLOW ${shallow}
-                  PATCH_COMMAND ${patch_command}
-                  EXCLUDE_FROM_ALL ${exclude})
-
-  include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
-  rapids_cpm_display_patch_status(libcudacxx)
-
-  set(options)
-  set(one_value BUILD_EXPORT_SET INSTALL_EXPORT_SET)
-  set(multi_value)
-  cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
-
-  if(libcudacxx_SOURCE_DIR AND _RAPIDS_BUILD_EXPORT_SET)
-    # Store where CMake can find our custom libcudacxx
-    include("${rapids-cmake-dir}/export/find_package_root.cmake")
-    rapids_export_find_package_root(BUILD libcudacxx "${libcudacxx_SOURCE_DIR}/lib/cmake"
-                                    ${_RAPIDS_BUILD_EXPORT_SET})
-  endif()
-
-  if(libcudacxx_SOURCE_DIR AND _RAPIDS_INSTALL_EXPORT_SET AND NOT exclude)
+  set(to_install OFF)
+  if(INSTALL_EXPORT_SET IN_LIST ARGN AND NOT exclude)
+    set(to_install ON)
     # By default if we allow libcudacxx to install into `CMAKE_INSTALL_INCLUDEDIR` alongside rmm (or
     # other packages) we will get a install tree that looks like this:
 
@@ -104,23 +78,42 @@ function(rapids_cpm_libcudacxx)
     include(GNUInstallDirs)
     set(CMAKE_INSTALL_INCLUDEDIR "${CMAKE_INSTALL_INCLUDEDIR}/rapids/libcudacxx")
     set(CMAKE_INSTALL_LIBDIR "${CMAKE_INSTALL_LIBDIR}/rapids/")
+  endif()
 
+  include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
+  rapids_cpm_generate_patch_command(libcudacxx ${version} patch_command)
+
+  include("${rapids-cmake-dir}/cpm/find.cmake")
+  rapids_cpm_find(libcudacxx ${version} ${ARGN}
+                  GLOBAL_TARGETS libcudacxx::libcudacxx
+                  CPM_ARGS
+                  GIT_REPOSITORY ${repository}
+                  GIT_TAG ${tag}
+                  GIT_SHALLOW ${shallow}
+                  PATCH_COMMAND ${patch_command}
+                  EXCLUDE_FROM_ALL ${exclude}
+                  OPTIONS "libcudacxx_ENABLE_INSTALL_RULES ${to_install}")
+
+  include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
+  rapids_cpm_display_patch_status(libcudacxx)
+
+  set(options)
+  set(one_value BUILD_EXPORT_SET INSTALL_EXPORT_SET)
+  set(multi_value)
+  cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
+
+  if(libcudacxx_SOURCE_DIR AND _RAPIDS_BUILD_EXPORT_SET)
+    # Store where CMake can find our custom libcudacxx
+    include("${rapids-cmake-dir}/export/find_package_root.cmake")
+    rapids_export_find_package_root(BUILD libcudacxx "${libcudacxx_SOURCE_DIR}/lib/cmake"
+                                    ${_RAPIDS_BUILD_EXPORT_SET})
+  endif()
+
+  if(to_install)
     include("${rapids-cmake-dir}/export/find_package_root.cmake")
     rapids_export_find_package_root(INSTALL libcudacxx
                                     [=[${CMAKE_CURRENT_LIST_DIR}/../../rapids/cmake/libcudacxx]=]
                                     ${_RAPIDS_INSTALL_EXPORT_SET})
-
-    # libcudacxx 1.8 has a bug where it doesn't generate proper exclude rules for the
-    # `[cub|libcudacxx]-header-search` files, which causes the build tree version to be installed
-    # instead of the install version
-    if(NOT EXISTS "${libcudacxx_BINARY_DIR}/cmake/libcudacxxInstallRulesForRapids.cmake")
-      file(READ "${libcudacxx_SOURCE_DIR}/cmake/libcudacxxInstallRules.cmake" contents)
-      string(REPLACE "PATTERN libcudacxx-header-search EXCLUDE"
-                     "REGEX libcudacxx-header-search.* EXCLUDE" contents "${contents}")
-      file(WRITE "${libcudacxx_BINARY_DIR}/cmake/libcudacxxInstallRulesForRapids.cmake" ${contents})
-    endif()
-    set(libcudacxx_ENABLE_INSTALL_RULES ON)
-    include("${libcudacxx_BINARY_DIR}/cmake/libcudacxxInstallRulesForRapids.cmake")
   endif()
 
   # Propagate up variables that CPMFindPackage provide
