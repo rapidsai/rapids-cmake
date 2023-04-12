@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2022, NVIDIA CORPORATION.
+# Copyright (c) 2022-2023, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ rapids_cpm_init()
 
 
 if(TARGET benchmark::benchmark)
-  message(FATAL_ERROR "Expected benchmark::benchmark expected to not exist")
+  message(FATAL_ERROR "Expected benchmark::benchmark not to exist")
 endif()
 
 rapids_cpm_gbench()

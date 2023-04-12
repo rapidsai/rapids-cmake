@@ -49,5 +49,5 @@ add_subdirectory(${rapids-cmake_SOURCE_DIR} ${rapids-cmake_BINARY_DIR})
 
 # We need to enable at least one language so that we get properly
 # generated system search paths.
-project(@test_name@ LANGUAGES CXX)
+project(@test_name_stem@ LANGUAGES CXX)
 include("@test_cmake_file@")

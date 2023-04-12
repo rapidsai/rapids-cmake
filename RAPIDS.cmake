@@ -20,7 +20,7 @@
 # Allow users to control which version is used
 if(NOT rapids-cmake-version)
   # Define a default version if the user doesn't set one
-  set(rapids-cmake-version 23.02)
+  set(rapids-cmake-version 23.04)
 endif()
 
 # Allow users to control which GitHub repo is fetched

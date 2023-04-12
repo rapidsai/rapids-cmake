@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2022, NVIDIA CORPORATION.
+# Copyright (c) 2023, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,22 +16,21 @@
 include_guard(GLOBAL)
 
 #[=======================================================================[.rst:
-get_proprietary_binary
+rapids_cpm_get_proprietary_binary_url
 -------------------
 
-.. versionadded:: v22.06.00
+.. versionadded:: v23.04.00
 
-Download the associated proprietary binary for the given project based on
-the current CPU target architecture ( x86_64, aarch64, etc )
+Generated the url for the associated proprietary binary for the given project based
+on the current CPU target architecture ( x86_64, aarch64, etc )
 
  .. note::
   if override => the proprietary entry only in the override will be evaluated
   if no override => the proprietary entry only in the default will be evaluated
 
-
 #]=======================================================================]
-function(rapids_cpm_get_proprietary_binary package_name version)
-  list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.rapids_cpm_get_proprietary_binary")
+function(rapids_cpm_get_proprietary_binary_url package_name version url_var)
+  list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.rapids_cpm_get_proprietary_binary_url")
 
   include("${rapids-cmake-dir}/cpm/detail/get_default_json.cmake")
   include("${rapids-cmake-dir}/cpm/detail/get_override_json.cmake")
@@ -61,25 +60,18 @@ function(rapids_cpm_get_proprietary_binary package_name version)
     include("${rapids-cmake-dir}/rapids-version.cmake")
   endif()
 
+  # Determine the CUDA Toolkit version so that we properly evaluate the placeholders in
+  # `proprietary_binary`
+  if(proprietary_binary MATCHES "{cuda-toolkit-version")
+    find_package(CUDAToolkit REQUIRED)
+    set(cuda-toolkit-version ${CUDAToolkit_VERSION_MAJOR}.${CUDAToolkit_VERSION_MINOR})
+    set(cuda-toolkit-version-major ${CUDAToolkit_VERSION_MAJOR})
+  endif()
+
   # Evaluate any magic placeholders in the proprietary_binary value including the
   # `rapids-cmake-version` value
   cmake_language(EVAL CODE "set(proprietary_binary ${proprietary_binary})")
 
-  if(proprietary_binary)
-    # download and extract the binaries since they don't exist on the machine
-    include(FetchContent)
-    set(pkg_name "${package_name}_proprietary_binary")
-
-    if(POLICY CMP0135)
-      cmake_policy(SET CMP0135 NEW)
-      set(CMAKE_POLICY_DEFAULT_CMP0135 NEW)
-    endif()
-
-    FetchContent_Declare(${pkg_name} URL ${proprietary_binary})
-    FetchContent_MakeAvailable(${pkg_name})
-
-    # Tell the subsequent rapids_cpm_find where to search so that it uses this binary
-    set(${package_name}_ROOT "${${pkg_name}_SOURCE_DIR}" PARENT_SCOPE)
-    set(${package_name}_proprietary_binary ON PARENT_SCOPE)
-  endif()
+  # Tell the caller what the URL will be for this binary
+  set(${url_var} "${proprietary_binary}" PARENT_SCOPE)
 endfunction()

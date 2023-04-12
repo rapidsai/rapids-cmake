@@ -68,7 +68,7 @@ The `rapids-cmake` module contains helpful general CMake functionality
 The `rapids-cpm` module contains CPM functionality to allow projects to acquire dependencies consistently.
 For consistentcy All targets brought in via `rapids-cpm` are GLOBAL targets.
 
-- `raipds_cpm_init()` handles initialization of the CPM module.
+- `rapids_cpm_init()` handles initialization of the CPM module.
 - `raipds_cpm_find(<project> name BUILD_EXPORT_SET <name> INSTALL_EXPORT_SET <name>)` Will search for a module and fall back to installing via CPM. Offers support to track dependencies for easy package exporting
 
 ### cuda
@@ -107,6 +107,16 @@ The most commonly used function are:
 
 - `rapids_find_package(<project_name> BUILD_EXPORT_SET <name> INSTALL_EXPORT_SET <name> )` Combines `find_package` and support to track dependencies for easy package exporting
 - `rapids_generate_module(<PackageName> HEADER_NAMES <paths...> LIBRARY_NAMES <names...> )` Generate a FindModule for the given package. Allows association to export sets so the generated FindModule can be shipped with the project
+
+### test
+
+The `rapids_test` functions simplify CTest resource allocation, allowing for
+tests to run in parallel without overallocating GPU resources.
+
+The most commonly used functions are:
+- `rapids_test_add(NAME <test_name> GPUS <N> PERCENT <N>)`: State how many GPU resources a single
+  test requires
+
 
 ## Overriding RAPIDS.cmake
 

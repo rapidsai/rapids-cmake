@@ -42,6 +42,13 @@ add_cmake_config_test( cpm_generate_patch_command-invalid.cmake )
 add_cmake_config_test( cpm_generate_patch_command-override.cmake )
 add_cmake_config_test( cpm_generate_patch_command-current_json_dir.cmake )
 
+add_cmake_config_test( cpm_cuco-simple.cmake )
+add_cmake_config_test( cpm_cuco-export.cmake )
+add_cmake_config_test( cpm_cuco-libcudacxx-no-install-export.cmake )
+
+add_cmake_config_test( cpm_fmt-export.cmake )
+add_cmake_config_test( cpm_fmt-simple.cmake )
+add_cmake_build_test( cpm_fmt-static-lib.cmake )
 
 add_cmake_config_test( cpm_gbench-export.cmake )
 add_cmake_config_test( cpm_gbench-simple.cmake )
@@ -55,6 +62,8 @@ add_cmake_config_test( cpm_libcudacxx-simple.cmake )
 
 add_cmake_config_test( cpm_nvbench-export.cmake )
 add_cmake_config_test( cpm_nvbench-simple.cmake )
+add_cmake_config_test( cpm_nvbench-already-found-fmt.cmake )
+add_cmake_build_test( cpm_nvbench-conda-fmt.cmake )
 
 add_cmake_config_test( cpm_nvcomp-export.cmake )
 add_cmake_config_test( cpm_nvcomp-proprietary-off.cmake )
@@ -63,15 +72,16 @@ add_cmake_config_test( cpm_nvcomp-simple.cmake )
 add_cmake_config_test( cpm_nvcomp-invalid-arch.cmake )
 add_cmake_config_test( cpm_nvcomp-override-clears-proprietary_binary.cmake )
 
+add_cmake_config_test( cpm_proprietary-url-ctk-version-find-ctk.cmake )
+add_cmake_config_test( cpm_proprietary-url-ctk-version.cmake )
+add_cmake_config_test( cpm_proprietary-url-no-ctk-parsing.cmake )
+
 add_cmake_config_test( cpm_rmm-export.cmake )
 add_cmake_config_test( cpm_rmm-simple.cmake )
 
+add_cmake_build_test( cpm_spdlog-external-fmt.cmake )
 add_cmake_config_test( cpm_spdlog-export.cmake )
 add_cmake_config_test( cpm_spdlog-simple.cmake )
 
 add_cmake_config_test( cpm_thrust-export.cmake )
 add_cmake_config_test( cpm_thrust-simple.cmake )
-
-add_cmake_config_test( cpm_cuco-simple.cmake )
-add_cmake_config_test( cpm_cuco-export.cmake )
-add_cmake_config_test( cpm_cuco-libcudacxx-no-install-export.cmake )
