@@ -121,7 +121,7 @@ calls to :cmake:command:`find_dependency`, or :cmake:command:`CPMFindPackage`.
   - When exporting with `BUILD` type, only `GLOBAL_TARGETS` will be placed
   in the namespace.
   - The namespace can be configured on a per-target basis instead using the
-  EXPORT_NAME property.
+  :cmake:prop_tgt:`EXPORT_NAME <cmake:prop_tgt:EXPORT_NAME>`  property.
 
 ``DOCUMENTATION``
   Optional value of the variable that holds the documentation
