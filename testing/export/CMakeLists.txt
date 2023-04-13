@@ -28,6 +28,7 @@ add_cmake_build_test( export-verify-code-block )
 add_cmake_build_test( export-verify-doc-string )
 add_cmake_build_test( export-verify-global-targets )
 add_cmake_build_test( export-verify-install-components )
+add_cmake_build_test( export-verify-no-namespace )
 
 add_cmake_config_test( export-verify-bad-code-block-var.cmake SHOULD_FAIL "FINAL_CODE_BLOCK variable `var_doesn't_exist` doesn't exist")
 add_cmake_config_test( export-verify-missing-components.cmake SHOULD_FAIL "is missing COMPONENTS as COMPONENTS_EXPORT_SET was provided")
