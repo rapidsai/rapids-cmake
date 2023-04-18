@@ -289,16 +289,14 @@ if EXPORT_NAME isn't set for the export targets.")
     endif()
 
     if(DEFINED _RAPIDS_NAMESPACE)
-        install(EXPORT ${_RAPIDS_EXPORT_SET}
-            FILE ${project_name}-targets.cmake
-            NAMESPACE ${_RAPIDS_NAMESPACE}
-            DESTINATION "${install_location}"
-            COMPONENT ${project_name})
+      install(EXPORT ${_RAPIDS_EXPORT_SET}
+              FILE ${project_name}-targets.cmake
+              NAMESPACE ${_RAPIDS_NAMESPACE}
+              DESTINATION "${install_location}"
+              COMPONENT ${project_name})
     else()
-        install(EXPORT ${_RAPIDS_EXPORT_SET}
-            FILE ${project_name}-targets.cmake
-            DESTINATION "${install_location}"
-            COMPONENT ${project_name})
+      install(EXPORT ${_RAPIDS_EXPORT_SET} FILE ${project_name}-targets.cmake
+              DESTINATION "${install_location}" COMPONENT ${project_name})
     endif()
 
     if(TARGET rapids_export_install_${_RAPIDS_EXPORT_SET})
