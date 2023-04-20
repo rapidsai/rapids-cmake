@@ -16,7 +16,7 @@ conda activate docs
 
 rapids-print-env
 
-VERSION_NUMBER=$(rapids-get-rapids-version-from-git)
+VERSION_NUMBER="23.06"
 
 rapids-logger "Build Sphinx docs"
 pushd docs
