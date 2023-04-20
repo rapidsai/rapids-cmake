@@ -60,16 +60,16 @@ function(rapids_cpm_libcudacxx)
     # By default if we allow libcudacxx to install into `CMAKE_INSTALL_INCLUDEDIR` alongside rmm (or
     # other packages) we will get a install tree that looks like this:
 
-    # install/include/rmm install/include/cub install/include/libcudacxx
+    # include/rmm include/cub include/libcudacxx
 
     # This is a problem for CMake+NVCC due to the rules around import targets, and user/system
     # includes. In this case both rmm and libcudacxx will specify an include path of
-    # `install/include`, while libcudacxx tries to mark it as an user include, since rmm uses
+    # `include`, while libcudacxx tries to mark it as an user include, since rmm uses
     # CMake's default of system include. Compilers when provided the same include as both user and
     # system always goes with system.
 
-    # Now while rmm could also mark `install/include` as system this just pushes the issue to
-    # another dependency which isn't built by RAPIDS and comes by and marks `install/include` as
+    # Now while rmm could also mark `include` as system this just pushes the issue to
+    # another dependency which isn't built by RAPIDS and comes by and marks `include` as
     # system.
 
     # Instead the more reliable option is to make sure that we get libcudacxx to be placed in an
