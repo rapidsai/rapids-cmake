@@ -60,7 +60,7 @@ function(rapids_cpm_thrust NAMESPACE namespaces_name)
   rapids_cpm_package_details(Thrust version repository tag shallow exclude)
 
   set(to_install OFF)
-  if(INSTALL_EXPORT_SET IN_LIST ARGN)
+  if(INSTALL_EXPORT_SET IN_LIST ARGN AND NOT exclude)
     set(to_install ON)
     # Make sure we install thrust into the `include/rapids` subdirectory instead of the default
     include(GNUInstallDirs)
