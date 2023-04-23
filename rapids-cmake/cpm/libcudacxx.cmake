@@ -63,14 +63,13 @@ function(rapids_cpm_libcudacxx)
     # include/rmm include/cub include/libcudacxx
 
     # This is a problem for CMake+NVCC due to the rules around import targets, and user/system
-    # includes. In this case both rmm and libcudacxx will specify an include path of
-    # `include`, while libcudacxx tries to mark it as an user include, since rmm uses
-    # CMake's default of system include. Compilers when provided the same include as both user and
-    # system always goes with system.
-
-    # Now while rmm could also mark `include` as system this just pushes the issue to
-    # another dependency which isn't built by RAPIDS and comes by and marks `include` as
+    # includes. In this case both rmm and libcudacxx will specify an include path of `include`,
+    # while libcudacxx tries to mark it as an user include, since rmm uses CMake's default of system
+    # include. Compilers when provided the same include as both user and system always goes with
     # system.
+
+    # Now while rmm could also mark `include` as system this just pushes the issue to another
+    # dependency which isn't built by RAPIDS and comes by and marks `include` as system.
 
     # Instead the more reliable option is to make sure that we get libcudacxx to be placed in an
     # unique include path that the other project will use. In the case of rapids-cmake we install
