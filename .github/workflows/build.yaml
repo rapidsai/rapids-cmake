@@ -28,7 +28,7 @@ concurrency:
 jobs:
   cpp-build:
     secrets: inherit
-    uses: rapidsai/shared-action-workflows/.github/workflows/conda-cpp-build.yaml@branch-23.06
+    uses: rapidsai/shared-action-workflows/.github/workflows/conda-cpp-build.yaml@py-39
     with:
       build_type: ${{ inputs.build_type || 'branch' }}
       repo: rapidsai/rapids-cmake
@@ -38,7 +38,7 @@ jobs:
   docs-build:
     if: github.ref_type == 'branch' && github.event_name == 'push'
     secrets: inherit
-    uses: rapidsai/shared-action-workflows/.github/workflows/custom-job.yaml@branch-23.06
+    uses: rapidsai/shared-action-workflows/.github/workflows/custom-job.yaml@py-39
     with:
       build_type: branch
       node_type: "cpu4"
