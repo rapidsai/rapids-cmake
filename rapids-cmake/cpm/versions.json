@@ -25,7 +25,7 @@
     "libcudacxx" : {
       "version" : "2.1.0",
       "git_url" : "https://github.com/NVIDIA/libcudacxx.git",
-      "git_tag" : "branch/${version}",
+      "git_tag" : "${version}",
       "patches" : [
         {
           "file" : "libcudacxx/install_rules.diff",
