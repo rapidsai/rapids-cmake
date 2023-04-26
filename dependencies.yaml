@@ -78,7 +78,7 @@ dependencies:
       - output_types: [conda, requirements]
         packages:
           - cython>=0.29,<0.30
-          - python>=3.8,<3.11
+          - python>=3.9,<3.11
           - scikit-build>=0.13.1
           - libpng
           - zlib
