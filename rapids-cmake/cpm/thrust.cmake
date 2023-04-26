@@ -56,6 +56,11 @@ Result Variables
 function(rapids_cpm_thrust NAMESPACE namespaces_name)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.thrust")
 
+  # Add libcudacxx so that Thrust picks up the rapids-cmake version rather than the libcudacxx
+  # submodule bundled with Thrust.
+  include("${rapids-cmake-dir}/cpm/libcudacxx.cmake")
+  rapids_cpm_libcudacxx(${_RAPIDS_UNPARSED_ARGUMENTS})
+
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
   rapids_cpm_package_details(Thrust version repository tag shallow exclude)
 
