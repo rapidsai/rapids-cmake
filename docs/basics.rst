@@ -33,9 +33,11 @@ this `rapids-cmake` comprises the following primary components:
 
 - `cmake <api.html#common>`__
 - `cpm <api.html#cpm>`__
+- `cython <api.html#cython>`__
 - `cuda <api.html#cuda>`__
 - `export <api.html#export>`__
 - `find <api.html#find>`__
+- `testing <api.html#testing>`__
 
 There are two ways projects can use ``rapids-cmake`` functions.
 
