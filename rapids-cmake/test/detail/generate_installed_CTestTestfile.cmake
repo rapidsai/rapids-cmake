@@ -236,7 +236,7 @@ endfunction()
 # =============================================================================
 function(extract_install_info line)
   # We have a problem where we want to split on spaces but only when it is between two UPPER CASE
-  # leters and not in quotes :( We can't use string(REPLACE " ") since that will split paths with
+  # letters and not in quotes :( We can't use string(REPLACE " ") since that will split paths with
   # spaces
 
   # what we can do is split on quotes and make this in a list. At that point we can split all other
