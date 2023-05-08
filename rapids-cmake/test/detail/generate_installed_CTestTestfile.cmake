@@ -24,7 +24,7 @@ The goal of this script is to re-parse the `CTestTestfile`
 and record each test and relevant properties for execution
 once installed.
 
-This is done as part of the install process so that CMakes
+This is done as part of the install process so that CMake's
 generator expressions have been fully evaluated, and therefore
 we can support them in rapids-cmake-test
 
@@ -37,10 +37,10 @@ in the `CTestTestfile` when we include it.
 ]=]
 
 # Use a stack to hold the previous name + command pop the stack on `add_test`,
-# `set_tests_properties` and when parsing is finished. push on the stack just in `add_test`. This
-# works since `CTestTestfile` always groups tests and there properties
+# `set_tests_properties` and when parsing is finished, push on the stack just in `add_test`. This
+# works since `CTestTestfile` always groups tests and their properties.
 #
-# This allows us support:
+# This allows us to support:
 #
 # ~~~
 # cmake
@@ -162,7 +162,7 @@ function(add_test name command)
 
 endfunction()
 
-# Provide an `set_tests_properties` function signature since the built-in version doesn't exist in
+# Provide a `set_tests_properties` function signature since the built-in version doesn't exist in
 # script mode
 function(set_tests_properties name)
   if(NOT name IN_LIST _RAPIDS_TESTS_TO_RUN)
@@ -222,7 +222,7 @@ function(set_tests_properties name)
   set(test_file_content "${test_file_content}" PARENT_SCOPE)
 endfunction()
 
-# Provide an `subdirs` function signature since the built-in version doesn't exist in script mode
+# Provide a `subdirs` function signature since the built-in version doesn't exist in script mode
 function(subdirs name)
   string(APPEND test_file_content "\n")
   if(EXISTS "${name}/CTestTestfile.cmake")
