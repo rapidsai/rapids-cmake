@@ -1,3 +1,45 @@
+# rapids-cmake 23.04.00 (6 Apr 2023)
+
+## 🐛 Bug Fixes
+
+- install_relocatable only installs files that exist ([#392](https://github.com/rapidsai/rapids-cmake/pull/392)) [@robertmaynard](https://github.com/robertmaynard)
+- Revert &quot;install tests environment properties ([#390)&quot; (#391](https://github.com/rapidsai/rapids-cmake/pull/390)&quot; (#391)) [@robertmaynard](https://github.com/robertmaynard)
+- Add `COMPONENT` arguments for rapids_export to formatting file. ([#389](https://github.com/rapidsai/rapids-cmake/pull/389)) [@robertmaynard](https://github.com/robertmaynard)
+- install_relocatable generate correct installed RESOURCE_SPEC_FILE ([#386](https://github.com/rapidsai/rapids-cmake/pull/386)) [@robertmaynard](https://github.com/robertmaynard)
+- support_conda_env only add rpath-link flag to linkers that support it. ([#384](https://github.com/rapidsai/rapids-cmake/pull/384)) [@robertmaynard](https://github.com/robertmaynard)
+- rapids_cpm_nvbench properly specify usage of external fmt library ([#376](https://github.com/rapidsai/rapids-cmake/pull/376)) [@robertmaynard](https://github.com/robertmaynard)
+- rapids_cpm_spdlog properly specify usage of external fmt library ([#375](https://github.com/rapidsai/rapids-cmake/pull/375)) [@robertmaynard](https://github.com/robertmaynard)
+- Patch nvbench to allow usage of external fmt ([#373](https://github.com/rapidsai/rapids-cmake/pull/373)) [@robertmaynard](https://github.com/robertmaynard)
+- Support static builds of fmt ([#372](https://github.com/rapidsai/rapids-cmake/pull/372)) [@robertmaynard](https://github.com/robertmaynard)
+- Update to latest nvbench ([#371](https://github.com/rapidsai/rapids-cmake/pull/371)) [@vyasr](https://github.com/vyasr)
+
+## 📖 Documentation
+
+- Fix misspelling of rapids_cpm_init ([#385](https://github.com/rapidsai/rapids-cmake/pull/385)) [@dagardner-nv](https://github.com/dagardner-nv)
+
+## 🚀 New Features
+
+- rapids_test_install_relocatable tracks tests environment properties ([#390](https://github.com/rapidsai/rapids-cmake/pull/390)) [@robertmaynard](https://github.com/robertmaynard)
+- rapids_test_install_relocatable EXCLUDE_FROM_ALL is now the default ([#388](https://github.com/rapidsai/rapids-cmake/pull/388)) [@robertmaynard](https://github.com/robertmaynard)
+- Support downloading nvcomp CTK 11 or 12 binaries ([#381](https://github.com/rapidsai/rapids-cmake/pull/381)) [@robertmaynard](https://github.com/robertmaynard)
+- Introduce clang-format to rapids-cmake to format C++ code examples ([#378](https://github.com/rapidsai/rapids-cmake/pull/378)) [@robertmaynard](https://github.com/robertmaynard)
+- proprietary_binary now supports cuda toolkit version placeholders ([#377](https://github.com/rapidsai/rapids-cmake/pull/377)) [@robertmaynard](https://github.com/robertmaynard)
+- Add `rapids_test` allowing projects to run gpu tests in parallel ([#328](https://github.com/rapidsai/rapids-cmake/pull/328)) [@robertmaynard](https://github.com/robertmaynard)
+- Extend rapids_export to support the concept of optional COMPONENTS ([#154](https://github.com/rapidsai/rapids-cmake/pull/154)) [@robertmaynard](https://github.com/robertmaynard)
+
+## 🛠️ Improvements
+
+- Update to GCC 11 ([#382](https://github.com/rapidsai/rapids-cmake/pull/382)) [@bdice](https://github.com/bdice)
+- Make docs builds less verbose ([#380](https://github.com/rapidsai/rapids-cmake/pull/380)) [@AyodeAwe](https://github.com/AyodeAwe)
+- Update GHAs Workflows ([#374](https://github.com/rapidsai/rapids-cmake/pull/374)) [@ajschmidt8](https://github.com/ajschmidt8)
+- Use trap to handle errors in test scripts ([#370](https://github.com/rapidsai/rapids-cmake/pull/370)) [@AjayThorve](https://github.com/AjayThorve)
+- Bump spdlog to 1.11, add fmt as dependency for spdlog ([#368](https://github.com/rapidsai/rapids-cmake/pull/368)) [@kkraus14](https://github.com/kkraus14)
+- Clean up and sort CPM packages. ([#366](https://github.com/rapidsai/rapids-cmake/pull/366)) [@bdice](https://github.com/bdice)
+- Update shared workflow branches ([#365](https://github.com/rapidsai/rapids-cmake/pull/365)) [@ajschmidt8](https://github.com/ajschmidt8)
+- Add fmt 9.1.0 ([#364](https://github.com/rapidsai/rapids-cmake/pull/364)) [@kkraus14](https://github.com/kkraus14)
+- Move date to build string in `conda` recipe ([#359](https://github.com/rapidsai/rapids-cmake/pull/359)) [@ajschmidt8](https://github.com/ajschmidt8)
+- Add docs build job ([#347](https://github.com/rapidsai/rapids-cmake/pull/347)) [@AyodeAwe](https://github.com/AyodeAwe)
+
 # rapids-cmake 23.02.00 (9 Feb 2023)
 
 ## 🐛 Bug Fixes
