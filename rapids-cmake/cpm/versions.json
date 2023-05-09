@@ -36,6 +36,11 @@
           "file" : "libcudacxx/reroot_support.diff",
           "issue" : "Support conda-forge usage of CMake rerooting [https://github.com/NVIDIA/libcudacxx/pull/490]",
           "fixed_in" : "2.2"
+        },
+        {
+          "file" : "libcudacxx/proclaim_return_type_nv_exec_check_disable.diff",
+          "issue" : "Use pragma to disable execution checks in cuda::proclaim_return_type. [https://github.com/NVIDIA/libcudacxx/pull/448]",
+          "fixed_in" : ""
         }
       ]
     },
