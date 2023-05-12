@@ -59,6 +59,7 @@ add_cmake_config_test( cpm_gtest-simple.cmake )
 add_cmake_config_test( cpm_libcudacxx-after_cpmfind.cmake )
 add_cmake_config_test( cpm_libcudacxx-export.cmake )
 add_cmake_config_test( cpm_libcudacxx-simple.cmake )
+add_cmake_build_test( cpm_libcudacxx-verify-install-custom-libdir )
 
 add_cmake_config_test( cpm_nvbench-export.cmake )
 add_cmake_config_test( cpm_nvbench-simple.cmake )
