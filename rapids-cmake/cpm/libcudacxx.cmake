@@ -54,6 +54,31 @@ function(rapids_cpm_libcudacxx)
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
   rapids_cpm_package_details(libcudacxx version repository tag shallow exclude)
 
+  set(to_install OFF)
+  if(INSTALL_EXPORT_SET IN_LIST ARGN AND NOT exclude)
+    set(to_install ON)
+    # By default if we allow libcudacxx to install into `CMAKE_INSTALL_INCLUDEDIR` alongside rmm (or
+    # other packages) we will get a install tree that looks like this:
+
+    # include/rmm include/cub include/libcudacxx
+
+    # This is a problem for CMake+NVCC due to the rules around import targets, and user/system
+    # includes. In this case both rmm and libcudacxx will specify an include path of `include`,
+    # while libcudacxx tries to mark it as an user include, since rmm uses CMake's default of system
+    # include. Compilers when provided the same include as both user and system always goes with
+    # system.
+
+    # Now while rmm could also mark `include` as system this just pushes the issue to another
+    # dependency which isn't built by RAPIDS and comes by and marks `include` as system.
+
+    # Instead the more reliable option is to make sure that we get libcudacxx to be placed in an
+    # unique include path that the other project will use. In the case of rapids-cmake we install
+    # the headers to `include/rapids/libcudacxx`
+    include(GNUInstallDirs)
+    set(CMAKE_INSTALL_INCLUDEDIR "${CMAKE_INSTALL_INCLUDEDIR}/rapids/libcudacxx")
+    set(CMAKE_INSTALL_LIBDIR "${CMAKE_INSTALL_LIBDIR}/rapids/")
+  endif()
+
   include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
   rapids_cpm_generate_patch_command(libcudacxx ${version} patch_command)
 
@@ -65,7 +90,8 @@ function(rapids_cpm_libcudacxx)
                   GIT_TAG ${tag}
                   GIT_SHALLOW ${shallow}
                   PATCH_COMMAND ${patch_command}
-                  EXCLUDE_FROM_ALL ${exclude})
+                  EXCLUDE_FROM_ALL ${exclude}
+                  OPTIONS "libcudacxx_ENABLE_INSTALL_RULES ${to_install}")
 
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
   rapids_cpm_display_patch_status(libcudacxx)
@@ -82,41 +108,11 @@ function(rapids_cpm_libcudacxx)
                                     ${_RAPIDS_BUILD_EXPORT_SET})
   endif()
 
-  if(libcudacxx_SOURCE_DIR AND _RAPIDS_INSTALL_EXPORT_SET AND NOT exclude)
-    # By default if we allow libcudacxx to install into `CMAKE_INSTALL_INCLUDEDIR` alongside rmm (or
-    # other packages) we will get a install tree that looks like this:
-
-    # install/include/rmm install/include/cub install/include/libcudacxx
-
-    # This is a problem for CMake+NVCC due to the rules around import targets, and user/system
-    # includes. In this case both rmm and libcudacxx will specify an include path of
-    # `install/include`, while libcudacxx tries to mark it as an user include, since rmm uses
-    # CMake's default of system include. Compilers when provided the same include as both user and
-    # system always goes with system.
-
-    # Now while rmm could also mark `install/include` as system this just pushes the issue to
-    # another dependency which isn't built by RAPIDS and comes by and marks `install/include` as
-    # system.
-
-    # Instead the more reliable option is to make sure that we get libcudacxx to be placed in an
-    # unique include path that the other project will use. In the case of rapids-cmake we install
-    # the headers to `include/rapids/libcudacxx`
-    include(GNUInstallDirs)
-    set(CMAKE_INSTALL_INCLUDEDIR "${CMAKE_INSTALL_INCLUDEDIR}/rapids/libcudacxx")
-
-    # libcudacxx 1.8 has a bug where it doesn't generate proper exclude rules for the
-    # `[cub|libcudacxx]-header-search` files, which causes the build tree version to be installed
-    # instead of the install version
-    if(NOT EXISTS "${libcudacxx_BINARY_DIR}/cmake/libcudacxxInstallRulesForRapids.cmake")
-      file(READ "${libcudacxx_SOURCE_DIR}/cmake/libcudacxxInstallRules.cmake" contents)
-      string(REPLACE "PATTERN cub-header-search EXCLUDE" "REGEX cub-header-search.* EXCLUDE"
-                     contents "${contents}")
-      string(REPLACE "PATTERN libcudacxx-header-search EXCLUDE"
-                     "REGEX libcudacxx-header-search.* EXCLUDE" contents "${contents}")
-      file(WRITE "${libcudacxx_BINARY_DIR}/cmake/libcudacxxInstallRulesForRapids.cmake" ${contents})
-    endif()
-    set(libcudacxx_ENABLE_INSTALL_RULES ON)
-    include("${libcudacxx_BINARY_DIR}/cmake/libcudacxxInstallRulesForRapids.cmake")
+  if(libcudacxx_SOURCE_DIR AND to_install)
+    include("${rapids-cmake-dir}/export/find_package_root.cmake")
+    rapids_export_find_package_root(INSTALL libcudacxx
+                                    [=[${CMAKE_CURRENT_LIST_DIR}/../../rapids/cmake/libcudacxx]=]
+                                    ${_RAPIDS_INSTALL_EXPORT_SET})
   endif()
 
   # Propagate up variables that CPMFindPackage provide

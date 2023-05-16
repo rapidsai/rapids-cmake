@@ -1,6 +1,7 @@
 API Reference
 #############
 
+.. _`common`:
 
 Common
 ******
@@ -18,6 +19,8 @@ require.
    /command/rapids_cmake_support_conda_env
    /command/rapids_cmake_write_git_revision_file
    /command/rapids_cmake_write_version_file
+
+.. _`cpm`:
 
 CPM
 ***
@@ -56,6 +59,8 @@ package uses :ref:`can be found here. <cpm_versions>`
    /packages/rapids_cpm_thrust
    /command/rapids_cpm_package_override
 
+.. _`cython`:
+
 Cython
 ******
 
@@ -74,6 +79,8 @@ The `rapids_cython` functions allow projects to easily build cython modules usin
    /command/rapids_cython_add_rpath_entries
 
 
+.. _`find`:
+
 Find
 ****
 
@@ -85,6 +92,8 @@ tracking of these dependencies for correct export support.
 
    /command/rapids_find_generate_module
    /command/rapids_find_package
+
+.. _`cuda`:
 
 CUDA
 ****
@@ -100,6 +109,8 @@ require.
     rapids_cuda_patch_toolkit </command/rapids_cuda_patch_toolkit>
     rapids_cuda_set_architectures [Advanced] </command/rapids_cuda_set_architectures>
 
+
+.. _`export`:
 
 Export Set Generation
 *********************
@@ -133,6 +144,8 @@ correct export generation. These should only be used when :cmake:command:`rapids
    rapids_export_find_package_file [Advanced] </command/rapids_export_find_package_file>
    rapids_export_find_package_root [Advanced] </command/rapids_export_find_package_root>
    rapids_export_package [Advanced] </command/rapids_export_package>
+
+.. _`testing`:
 
 Testing
 *******
