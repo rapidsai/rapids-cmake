@@ -16,7 +16,7 @@ conda activate docs
 
 rapids-print-env
 
-VERSION_NUMBER="23.06"
+VERSION_NUMBER="23.08"
 
 rapids-logger "Build Sphinx docs"
 pushd docs
