@@ -34,6 +34,8 @@ Generate a Find*.cmake module for the requested package
                   [INCLUDE_SUFFIXES <suffixes...>]
                   [VERSION <version>]
                   [NO_CONFIG]
+                  [INITIAL_CODE_BLOCK <code_block_variable>]
+                  [FINAL_CODE_BLOCK <code_block_variable>]
                   [BUILD_EXPORT_SET <name>]
                   [INSTALL_EXPORT_SET <name>]
                   )
@@ -87,6 +89,20 @@ when installed.
   When provided will stop the generated Find Module from
   first searching for the projects shipped Find Config.
 
+``INITIAL_CODE_BLOCK``
+  Optional value of the variable that holds a string of code that will
+  be executed as the first step of this config file.
+
+  Note: This requires the code block variable instead of the contents
+  so that we can properly insert CMake code
+
+  ``FINAL_CODE_BLOCK``
+  Optional value of the variable that holds a string of code that will
+  be executed as the last step of this config file.
+
+  Note: This requires the code block variable instead of the contents
+  so that we can properly insert CMake code
+
 ``BUILD_EXPORT_SET``
   Record that this custom FindPackage module needs to be part
   of our build directory export set. This means that it will be
@@ -103,12 +119,34 @@ Result Variables
   :cmake:variable:`CMAKE_MODULE_PATH` will be modified to include the
   folder where `Find<PackageName>.cmake` is located.
 
+
+Example on how to properly use :cmake:command:`rapids_generate_module`:
+
+.. code-block:: cmake
+
+  ...
+
+  rapids_find_generate_module(
+    RDKAFKA
+    HEADER_NAMES rdkafkacpp.h
+    LIBRARY_NAMES rdkafka++
+    BUILD_EXPORT_SET consumer-exports
+    INSTALL_EXPORT_SET consumer-exports
+  )
+  rapids_find_package(
+    RDKAFKA REQUIRED
+    BUILD_EXPORT_SET consumer-exports
+    INSTALL_EXPORT_SET consumer-exports
+  )
+
+
 #]=======================================================================]
+# cmake-lint: disable=R0915
 function(rapids_find_generate_module name)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.find.generate_module")
 
   set(options NO_CONFIG)
-  set(one_value VERSION BUILD_EXPORT_SET INSTALL_EXPORT_SET)
+  set(one_value VERSION BUILD_EXPORT_SET INSTALL_EXPORT_SET INITIAL_CODE_BLOCK FINAL_CODE_BLOCK)
   set(multi_value HEADER_NAMES LIBRARY_NAMES INCLUDE_SUFFIXES)
   cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
@@ -145,6 +183,21 @@ function(rapids_find_generate_module name)
                                                                               lib_version2)
       list(PREPEND _RAPIDS_PKG_LIB_DEBUG_NAMES ${lib_version1} ${lib_version2})
     endif()
+  endif()
+
+  if(DEFINED _RAPIDS_INITIAL_CODE_BLOCK)
+    if(NOT DEFINED ${_RAPIDS_INITIAL_CODE_BLOCK})
+      message(FATAL_ERROR "INITIAL_CODE_BLOCK variable `${_RAPIDS_INITIAL_CODE_BLOCK}` doesn't exist"
+      )
+    endif()
+    set(_RAPIDS_FIND_INITIAL_CODE_BLOCK "${${_RAPIDS_INITIAL_CODE_BLOCK}}")
+  endif()
+
+  if(DEFINED _RAPIDS_FINAL_CODE_BLOCK)
+    if(NOT DEFINED ${_RAPIDS_FINAL_CODE_BLOCK})
+      message(FATAL_ERROR "FINAL_CODE_BLOCK variable `${_RAPIDS_FINAL_CODE_BLOCK}` doesn't exist")
+    endif()
+    set(_RAPIDS_FIND_FINAL_CODE_BLOCK "${${_RAPIDS_FINAL_CODE_BLOCK}}")
   endif()
 
   # Need to generate the module

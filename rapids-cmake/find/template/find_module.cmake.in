@@ -45,6 +45,9 @@ This module will set the following variables in your project:
 #]=======================================================================]
 
 # Prefer using a Config module if it exists for this project
+
+@_RAPIDS_FIND_INITIAL_CODE_BLOCK@
+
 set(@_RAPIDS_PKG_NAME@_NO_CONFIG @_RAPIDS_NO_CONFIG@)
 if(NOT @_RAPIDS_PKG_NAME@_NO_CONFIG)
   find_package(@_RAPIDS_PKG_NAME@ CONFIG QUIET)
@@ -112,6 +115,8 @@ if(@_RAPIDS_PKG_NAME@_FOUND)
     endif()
   endif()
 endif()
+
+@_RAPIDS_FIND_FINAL_CODE_BLOCK@
 
 unset(@_RAPIDS_PKG_NAME@_NO_CONFIG)
 unset(@_RAPIDS_PKG_NAME@_IS_HEADER_ONLY)
