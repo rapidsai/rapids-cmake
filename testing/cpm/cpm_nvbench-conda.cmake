@@ -36,6 +36,8 @@ rapids_cpm_nvbench()
 file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/use_fmt.cpp" [=[
 #include <nvbench/nvbench.cuh>
 
+#include <cstdint>
+
 template <typename Type>
 void nvbench_distinct(nvbench::state& state, nvbench::type_list<Type>)
 {
