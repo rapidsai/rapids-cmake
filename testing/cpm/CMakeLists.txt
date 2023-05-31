@@ -64,6 +64,7 @@ add_cmake_build_test( cpm_libcudacxx-verify-install-custom-libdir )
 add_cmake_config_test( cpm_nvbench-export.cmake )
 add_cmake_config_test( cpm_nvbench-simple.cmake )
 add_cmake_config_test( cpm_nvbench-already-found-fmt.cmake )
+add_cmake_build_test( cpm_nvbench-conda.cmake )
 add_cmake_build_test( cpm_nvbench-conda-fmt.cmake )
 
 add_cmake_config_test( cpm_nvcomp-export.cmake )
