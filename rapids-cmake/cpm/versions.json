@@ -38,16 +38,11 @@
       "version" : "0.0",
       "git_shallow" : false,
       "git_url" : "https://github.com/NVIDIA/nvbench.git",
-      "git_tag" : "e477bb386289a11ad8d7e358cff6527cfc593974",
+      "git_tag" : "083fdc2fc130d84805827c0129f84bb7449ec059",
       "patches" : [
         {
           "file" : "nvbench/use_existing_fmt.diff",
           "issue" : "Fix add support for using an existing fmt [https://github.com/NVIDIA/nvbench/pull/125]",
-          "fixed_in" : ""
-        },
-        {
-          "file" : "nvbench/public_fmt_dep_in_conda.diff",
-          "issue" : "Propagate fmt requirement in conda envs [https://github.com/NVIDIA/nvbench/pull/127]",
           "fixed_in" : ""
         }
       ]
