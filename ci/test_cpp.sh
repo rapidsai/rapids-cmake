@@ -1,17 +1,20 @@
 #!/bin/bash
 # Copyright (c) 2023, NVIDIA CORPORATION.
+
 set -euo pipefail
 
-rapids-logger "Create test conda environment"
 . /opt/conda/etc/profile.d/conda.sh
 
+rapids-logger "Generate C++ testing dependencies"
 rapids-dependency-file-generator \
   --output conda \
   --file_key test \
   --matrix "cuda=${RAPIDS_CUDA_VERSION%.*};arch=$(arch)" | tee env.yaml
 
 rapids-mamba-retry env create --force -f env.yaml -n test
-set +eu
+
+# Temporarily allow unbound variables for conda activation.
+set +u
 conda activate test
 set -u
 
