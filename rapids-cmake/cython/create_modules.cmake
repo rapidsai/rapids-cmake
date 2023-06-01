@@ -127,7 +127,12 @@ function(rapids_cython_create_modules)
     install(TARGETS ${cython_module} DESTINATION ${_RAPIDS_CYTHON_INSTALL_DIR})
 
     # Default the INSTALL_RPATH for all modules to $ORIGIN.
-    set_target_properties(${cython_module} PROPERTIES INSTALL_RPATH "\$ORIGIN")
+    if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+      set(platform_rpath_origin "@loader_path")
+    else()
+      set(platform_rpath_origin "$ORIGIN")
+    endif()
+    set_target_properties(${cython_module} PROPERTIES INSTALL_RPATH "${platform_rpath_origin}")
 
     # Store any provided associated targets in a global list
     foreach(associated_target IN LISTS _RAPIDS_CYTHON_ASSOCIATED_TARGETS)

@@ -98,8 +98,8 @@ rapids_cpm_find(fmt 7.1.3
 add_library(example SHARED source.cu)
 
 set_target_properties(example
-    PROPERTIES BUILD_RPATH                         "\$ORIGIN"
-               INSTALL_RPATH                       "\$ORIGIN"
+    PROPERTIES BUILD_RPATH                         "$ORIGIN"
+               INSTALL_RPATH                       "$ORIGIN"
                # set target compile options
                CXX_STANDARD                        17
                CXX_STANDARD_REQUIRED               ON
