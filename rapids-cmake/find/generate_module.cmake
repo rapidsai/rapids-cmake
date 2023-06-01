@@ -120,7 +120,7 @@ Result Variables
   folder where `Find<PackageName>.cmake` is located.
 
 
-Example on how to properly use :cmake:command:`rapids_generate_module`:
+Example on how to properly use :cmake:command:`rapids_find_generate_module`:
 
 .. code-block:: cmake
 
