@@ -251,7 +251,7 @@ if EXPORT_NAME isn't set for the export targets.")
         string(PREPEND nice_export_name "${comp}-")
       endif()
       rapids_export_component(${type} ${project_name} ${comp} ${comp_export_set}
-                              ${nice_export_name} ${_RAPIDS_PROJECT_NAMESPACE})
+                              ${nice_export_name} "${_RAPIDS_PROJECT_NAMESPACE}")
     endforeach()
   endif()
 
