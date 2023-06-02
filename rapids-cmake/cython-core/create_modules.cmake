@@ -87,7 +87,7 @@ function(rapids_cython_create_modules)
   set(_flags "--directive binding=True,embedsignature=True,always_allow_keywords=True")
   set(_ext ".c")
   if(_RAPIDS_CYTHON_CXX)
-    set(_flags "${flags} --cplus")
+    set(_flags "${_flags} --cplus")
     set(_ext ".cxx")
   endif()
 
