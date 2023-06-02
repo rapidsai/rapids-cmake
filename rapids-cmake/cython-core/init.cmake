@@ -50,6 +50,13 @@ macro(rapids_cython_init)
       message(TRACE "Accessing SKBUILD variable ${SKBUILD}")
     endif()
 
+    find_package(
+      Python
+      COMPONENTS Interpreter Development.Module
+      REQUIRED)
+
+    find_program(CYTHON "cython")
+
     # Flag
     set(RAPIDS_CYTHON_INITIALIZED TRUE)
   endif()
