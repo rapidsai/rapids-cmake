@@ -98,7 +98,7 @@ function(rapids_cython_create_modules)
   foreach(cython_filename IN LISTS _RAPIDS_CYTHON_SOURCE_FILES)
     # Generate a reasonable module name.
     cmake_path(GET cython_filename FILENAME cython_module)
-    cmake_path(REPLACE_EXTENSION cython_module OUTPUT_VARIABLE cpp_filename)
+    cmake_path(REPLACE_EXTENSION cython_module ".cxx" OUTPUT_VARIABLE cpp_filename)
     cmake_path(REMOVE_EXTENSION cython_module)
 
     # Save the name of the module without the provided prefix so that we can control the output.
