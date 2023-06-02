@@ -84,10 +84,13 @@ function(rapids_cython_create_modules)
   cmake_parse_arguments(_RAPIDS_CYTHON "${_rapids_cython_options}" "${_rapids_cython_one_value}"
                         "${_rapids_cython_multi_value}" ${ARGN})
 
-  set(language "C")
+  set(_flags "--directive binding=True,embedsignature=True,always_allow_keywords=True")
+  set(_ext ".c")
   if(_RAPIDS_CYTHON_CXX)
-    set(language "CXX")
+    set(_flags "${flags} --cplus")
+    set(_ext ".cxx")
   endif()
+
 
   set(CREATED_TARGETS "")
 
@@ -98,7 +101,7 @@ function(rapids_cython_create_modules)
   foreach(cython_filename IN LISTS _RAPIDS_CYTHON_SOURCE_FILES)
     # Generate a reasonable module name.
     cmake_path(GET cython_filename FILENAME cython_module)
-    cmake_path(REPLACE_EXTENSION cython_module ".cxx" OUTPUT_VARIABLE cpp_filename)
+    cmake_path(REPLACE_EXTENSION cython_module "${_ext}" OUTPUT_VARIABLE cpp_filename)
     cmake_path(REMOVE_EXTENSION cython_module)
 
     # Save the name of the module without the provided prefix so that we can control the output.
@@ -110,7 +113,7 @@ function(rapids_cython_create_modules)
       OUTPUT ${cpp_filename}
       DEPENDS ${cython_filename}
       VERBATIM
-      COMMAND "${CYTHON}" "${CMAKE_CURRENT_SOURCE_DIR}/${cython_filename}" --output-file
+      COMMAND "${CYTHON}" "${_flags}" "${CMAKE_CURRENT_SOURCE_DIR}/${cython_filename}" --output-file
               "${CMAKE_CURRENT_BINARY_DIR}/${cpp_filename}")
 
     python_add_library(${cython_module} MODULE "${CMAKE_CURRENT_BINARY_DIR}/${cpp_filename}")
