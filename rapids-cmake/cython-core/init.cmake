@@ -50,16 +50,6 @@ macro(rapids_cython_init)
       message(TRACE "Accessing SKBUILD variable ${SKBUILD}")
     endif()
 
-    find_package(PythonExtensions REQUIRED)
-    find_package(Cython REQUIRED)
-
-    # Incorporate scikit-build patches.
-    include("${rapids-cmake-dir}/cython/detail/skbuild_patches.cmake")
-
-    if(NOT CYTHON_FLAGS)
-      set(CYTHON_FLAGS "--directive binding=True,embedsignature=True,always_allow_keywords=True")
-    endif()
-
     # Flag
     set(RAPIDS_CYTHON_INITIALIZED TRUE)
   endif()
