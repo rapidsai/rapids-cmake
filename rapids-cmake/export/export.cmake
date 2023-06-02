@@ -250,8 +250,12 @@ if EXPORT_NAME isn't set for the export targets.")
       else()
         string(PREPEND nice_export_name "${comp}-")
       endif()
+      set(_RAPIDS_COMPONENT_NAMESPACE)
+      if(DEFINED _RAPIDS_NAMESPACE)
+        set(_RAPIDS_COMPONENT_NAMESPACE "${_RAPIDS_NAMESPACE}")
+      endif()
       rapids_export_component(${type} ${project_name} ${comp} ${comp_export_set}
-                              ${nice_export_name} "${_RAPIDS_PROJECT_NAMESPACE}")
+                              ${nice_export_name} "${_RAPIDS_COMPONENT_NAMESPACE}")
     endforeach()
   endif()
 
@@ -329,7 +333,7 @@ if EXPORT_NAME isn't set for the export targets.")
     endif()
 
     if(DEFINED _RAPIDS_NAMESPACE)
-      export(EXPORT ${_RAPIDS_EXPORT_SET} NAMESPACE ${_RAPIDS_NAMESPACE}
+      export(EXPORT ${_RAPIDS_EXPORT_SET} NAMESPACE "${_RAPIDS_NAMESPACE}"
              FILE "${install_location}/${project_name}-targets.cmake")
     else()
       export(EXPORT ${_RAPIDS_EXPORT_SET} FILE "${install_location}/${project_name}-targets.cmake")

@@ -51,18 +51,28 @@ function(rapids_export_component type project_name component_name export_set uni
     file(MAKE_DIRECTORY "${deps_destination}")
     install(DIRECTORY "${deps_destination}" DESTINATION "${install_location}"
             COMPONENT ${component_name})
-    install(EXPORT ${export_set}
-            FILE ${project_name}-${unique_name}-targets.cmake
-            NAMESPACE ${namespace}
-            DESTINATION "${install_location}"
-            COMPONENT ${component_name})
+    if(namespace STREQUAL "")
+      install(EXPORT ${export_set}
+              FILE ${project_name}-${unique_name}-targets.cmake
+              NAMESPACE ${namespace}
+              DESTINATION "${install_location}"
+              COMPONENT ${component_name})
+    else()
+      install(EXPORT ${export_set} FILE ${project_name}-${unique_name}-targets.cmake
+              DESTINATION "${install_location}" COMPONENT ${component_name})
+    endif()
 
   else()
     set(install_location "${PROJECT_BINARY_DIR}")
     set(deps_destination "${install_location}/")
 
-    export(EXPORT ${export_set} NAMESPACE ${namespace}
-           FILE "${install_location}/${project_name}-${unique_name}-targets.cmake")
+    if(namespace STREQUAL "")
+      export(EXPORT ${export_set} NAMESPACE ${namespace}
+             FILE "${install_location}/${project_name}-${unique_name}-targets.cmake")
+    else()
+      export(EXPORT ${export_set} NAMESPACE ${namespace}
+             FILE "${install_location}/${project_name}-${unique_name}-targets.cmake")
+    endif()
 
   endif()
 
