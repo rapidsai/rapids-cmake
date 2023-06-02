@@ -120,7 +120,7 @@ function(rapids_cython_create_modules)
 
     # Link the module to the requested libraries
     if(DEFINED _RAPIDS_CYTHON_LINKED_LIBRARIES)
-      target_link_libraries(${cython_module} ${_RAPIDS_CYTHON_LINKED_LIBRARIES})
+      target_link_libraries(${cython_module} PUBLIC ${_RAPIDS_CYTHON_LINKED_LIBRARIES})
     endif()
 
     # Compute the install directory relative to the source and rely on installs being relative to
