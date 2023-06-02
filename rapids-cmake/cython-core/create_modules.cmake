@@ -113,7 +113,7 @@ function(rapids_cython_create_modules)
       COMMAND "${CYTHON}" "${CMAKE_CURRENT_SOURCE_DIR}/${cython_filename}" --output-file
               "${CMAKE_CURRENT_BINARY_DIR}/${cpp_filename}")
 
-    python_add_library(example MODULE "${CMAKE_CURRENT_BINARY_DIR}/${cpp_filename}")
+    python_add_library(${cython_module} MODULE "${CMAKE_CURRENT_BINARY_DIR}/${cpp_filename}")
 
     # The final library name must match the original filename and must ignore the prefix.
     set_target_properties(${cython_module} PROPERTIES LIBRARY_OUTPUT_NAME ${cython_module_filename})
