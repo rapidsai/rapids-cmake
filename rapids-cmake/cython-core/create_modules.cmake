@@ -84,10 +84,11 @@ function(rapids_cython_create_modules)
   cmake_parse_arguments(_RAPIDS_CYTHON "${_rapids_cython_options}" "${_rapids_cython_one_value}"
                         "${_rapids_cython_multi_value}" ${ARGN})
 
-  set(_flags "--directive binding=True,embedsignature=True,always_allow_keywords=True")
+  set(_directives "binding=True,embedsignature=True,always_allow_keywords=True")
   set(_ext ".c")
+  set(_language_flag "")
   if(_RAPIDS_CYTHON_CXX)
-    set(_flags "${_flags} --cplus")
+    set(_language_flag "--cplus")
     set(_ext ".cxx")
   endif()
 
@@ -109,12 +110,11 @@ function(rapids_cython_create_modules)
     string(PREPEND cython_module ${_RAPIDS_CYTHON_MODULE_PREFIX})
 
     # Generate C++ from Cython and create a library for the resulting extension module to compile.
-    separate_arguments(_separated_flags UNIX_COMMAND "${_flags}")
     add_custom_command(
       OUTPUT ${cpp_filename}
       DEPENDS ${cython_filename}
       VERBATIM
-      COMMAND "${CYTHON}" "${_separated_flags}" "${CMAKE_CURRENT_SOURCE_DIR}/${cython_filename}" --output-file
+      COMMAND "${CYTHON}" "${_language_flag}" --directives "${_directives}" "${CMAKE_CURRENT_SOURCE_DIR}/${cython_filename}" --output-file
               "${CMAKE_CURRENT_BINARY_DIR}/${cpp_filename}")
 
     python_add_library(${cython_module} MODULE "${CMAKE_CURRENT_BINARY_DIR}/${cpp_filename}")
