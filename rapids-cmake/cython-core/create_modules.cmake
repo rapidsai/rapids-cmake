@@ -114,7 +114,7 @@ function(rapids_cython_create_modules)
       OUTPUT ${cpp_filename}
       DEPENDS ${cython_filename}
       VERBATIM
-      COMMAND "${CYTHON}" ${_separated_flags} "${CMAKE_CURRENT_SOURCE_DIR}/${cython_filename}" --output-file
+      COMMAND "${CYTHON}" "${_separated_flags}" "${CMAKE_CURRENT_SOURCE_DIR}/${cython_filename}" --output-file
               "${CMAKE_CURRENT_BINARY_DIR}/${cpp_filename}")
 
     python_add_library(${cython_module} MODULE "${CMAKE_CURRENT_BINARY_DIR}/${cpp_filename}")
