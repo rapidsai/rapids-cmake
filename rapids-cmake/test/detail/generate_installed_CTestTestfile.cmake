@@ -36,43 +36,6 @@ in the `CTestTestfile` when we include it.
 
 ]=]
 
-# Use a stack to hold the previous name + command pop the stack on `add_test`,
-# `set_tests_properties` and when parsing is finished, push on the stack just in `add_test`. This
-# works since `CTestTestfile` always groups tests and their properties.
-#
-# This allows us to support:
-#
-# ~~~
-# cmake
-#   add_test()
-#   add_test()
-#   set_tests_properties()
-#   add_test()
-# ~~~
-#
-# Since the true command for the test to run might not be known till `set_tests_properties`.
-set(test_name)
-set(test_command)
-set(test_args)
-
-# =============================================================================
-# ============== Stack Management                          ====================
-# =============================================================================
-# pop the test stack
-macro(pop_test_stack name_var command_var)
-  set(${name_var} "${name}" PARENT_SCOPE)
-  set(${command_var} "${command}" PARENT_SCOPE)
-  unset(test_name PARENT_SCOPE)
-  unset(test_command PARENT_SCOPE)
-  unset(test_args PARENT_SCOPE)
-endmacro()
-# push the test stack
-macro(push_test_stack name command)
-  set(test_name "${name}" PARENT_SCOPE)
-  set(test_command "${command}" PARENT_SCOPE)
-  set(test_args "${ARGN}" PARENT_SCOPE)
-endmacro()
-
 # =============================================================================
 # ============== Helper Function                          ====================
 # =============================================================================
@@ -118,35 +81,6 @@ function(find_and_convert_paths_from_var_list prop_var)
   set(${prop_var} "${transformed_vars_and_values}" PARENT_SCOPE)
 endfunction()
 
-# Write out the previous top of stack
-function(write_previous_test)
-  if(test_name)
-    string(APPEND test_file_content "add_test([=[${test_name}]=]")
-
-    # Transform absolute path to relative install path
-    cmake_path(GET test_command FILENAME name)
-    if(name STREQUAL cmake)
-      # rewrite the abs path to cmake to a relative version so that we don't care where cmake is
-      set(test_command "cmake")
-    else()
-      get_property(install_loc GLOBAL PROPERTY ${name}_install)
-      if(install_loc)
-        get_property(build_loc GLOBAL PROPERTY ${name}_build)
-        string(REPLACE "${build_loc}" "${install_loc}/${name}" test_command "${test_command}")
-      endif()
-    endif()
-
-    # convert paths from test_args to be re-rooted in the install tree
-    find_and_convert_paths_from_var_list(test_args)
-
-    # convert test_args from a list to a single string that is space separated
-    string(JOIN " " test_args ${test_args})
-
-    string(APPEND test_file_content " \"${test_command}\" ${test_args})\n")
-    set(test_file_content "${test_file_content}" PARENT_SCOPE)
-  endif()
-endfunction()
-
 # =============================================================================
 # ============== Function Overrides                       ====================
 # =============================================================================
@@ -157,9 +91,30 @@ function(add_test name command)
     return()
   endif()
 
-  write_previous_test()
-  push_test_stack("${name}" "${command}" "${ARGN}")
+  string(APPEND test_file_content "add_test([=[${name}]=]")
 
+  # Transform absolute path to relative install path
+  cmake_path(GET command FILENAME cname)
+  if(cname STREQUAL cmake)
+    # rewrite the abs path to cmake to a relative version so that we don't care where cmake is
+    set(command "cmake")
+  else()
+    get_property(install_loc GLOBAL PROPERTY ${name}_install)
+    if(install_loc)
+      get_property(build_loc GLOBAL PROPERTY ${name}_build)
+      string(REPLACE "${build_loc}" "${install_loc}/${name}" command "${command}")
+    endif()
+  endif()
+
+  # convert paths from args to be re-rooted in the install tree
+  set(args "${ARGN}")
+  find_and_convert_paths_from_var_list(args)
+
+  # convert args from a list to a single string that is space separated
+  string(JOIN " " args ${args})
+
+  string(APPEND test_file_content " \"${command}\" ${args})\n")
+  set(test_file_content "${test_file_content}" PARENT_SCOPE)
 endfunction()
 
 # Provide a `set_tests_properties` function signature since the built-in version doesn't exist in
@@ -214,9 +169,6 @@ function(set_tests_properties name)
              "set_tests_properties([=[${name}]=] PROPERTIES ${prop} ${prop_value})\n")
     endif()
   endforeach()
-
-  write_previous_test()
-  pop_test_stack(pop_name pop_command)
 
   string(APPEND test_file_content "${test_prop_content}\n")
   set(test_file_content "${test_file_content}" PARENT_SCOPE)
@@ -292,10 +244,6 @@ if(EXISTS "${_RAPIDS_BUILD_DIR}/CTestTestfile.cmake")
   # Support multi-generators by setting the CTest config mode to be equal to the install mode
   set(CTEST_CONFIGURATION_TYPE "${CMAKE_INSTALL_CONFIG_NAME}")
   include("${_RAPIDS_BUILD_DIR}/CTestTestfile.cmake")
-  # Write any last test that we recorded
-  if(test_name)
-    write_previous_test()
-  endif()
 endif()
 
 file(WRITE "${test_launcher_file}" "${test_file_content}")
