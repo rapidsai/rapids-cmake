@@ -226,7 +226,7 @@ determine_install_location_of_all_targets()
 # Setup the install location of `run_gpu_test`
 set_property(GLOBAL PROPERTY run_gpu_test.cmake_install ".")
 set_property(GLOBAL PROPERTY run_gpu_test.cmake_build
-                             "${_RAPIDS_BUILD_DIR}/rapids-cmake/./run_gpu_test.cmake")
+                             "${_RAPIDS_PROJECT_DIR}/rapids-cmake/./run_gpu_test.cmake")
 
 include(${CMAKE_CURRENT_LIST_DIR}/default_names.cmake)
 set(test_file_content
