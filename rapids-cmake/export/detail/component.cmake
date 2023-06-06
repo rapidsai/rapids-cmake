@@ -52,14 +52,14 @@ function(rapids_export_component type project_name component_name export_set uni
     install(DIRECTORY "${deps_destination}" DESTINATION "${install_location}"
             COMPONENT ${component_name})
     if(namespace STREQUAL "")
-      install(EXPORT ${export_set}
-              FILE ${project_name}-${unique_name}-targets.cmake
-              NAMESPACE ${namespace}
-              DESTINATION "${install_location}"
-              COMPONENT ${component_name})
-    else()
       install(EXPORT ${export_set} FILE ${project_name}-${unique_name}-targets.cmake
               DESTINATION "${install_location}" COMPONENT ${component_name})
+    else()
+      install(EXPORT ${export_set}
+              FILE ${project_name}-${unique_name}-targets.cmake
+              DESTINATION "${install_location}"
+              COMPONENT ${component_name}
+              NAMESPACE ${namespace})
     endif()
 
   else()
@@ -67,7 +67,7 @@ function(rapids_export_component type project_name component_name export_set uni
     set(deps_destination "${install_location}/")
 
     if(namespace STREQUAL "")
-      export(EXPORT ${export_set} NAMESPACE ${namespace}
+      export(EXPORT ${export_set}
              FILE "${install_location}/${project_name}-${unique_name}-targets.cmake")
     else()
       export(EXPORT ${export_set} NAMESPACE ${namespace}
