@@ -80,8 +80,8 @@ set(@project_name_uppercase@_VERSION @rapids_orig_version@)
 
 set(rapids_global_targets @_RAPIDS_GLOBAL_TARGETS@)
 set(rapids_namespaced_global_targets @_RAPIDS_GLOBAL_TARGETS@)
-if(rapids_namespaced_global_targets)
-  list(TRANSFORM rapids_namespaced_global_targets PREPEND @_RAPIDS_PROJECT_NAMESPACE@ )
+if((NOT "@_RAPIDS_NAMESPACE@" STREQUAL "") AND rapids_namespaced_global_targets)
+  list(TRANSFORM rapids_namespaced_global_targets PREPEND "@_RAPIDS_NAMESPACE@")
 endif()
 
 foreach(target IN LISTS rapids_namespaced_global_targets)
