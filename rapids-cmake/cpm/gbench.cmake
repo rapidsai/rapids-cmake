@@ -33,7 +33,7 @@ across all RAPIDS projects.
                      [INSTALL_EXPORT_SET <export-name>]
                      [<CPM_ARGS> ...])
 
-.. |PKG_NAME| replace:: Google benchmark
+.. |PKG_NAME| replace:: benchmark
 .. include:: common_package_args.txt
 
 Result Targets
