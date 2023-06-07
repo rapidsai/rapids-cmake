@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2022, NVIDIA CORPORATION.
+# Copyright (c) 2022-2023, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,10 +21,10 @@ rapids_cpm_gbench
 
 .. versionadded:: v22.12.00
 
-Allow projects to find or build `Google Benchmark` via `CPM` with built-in
+Allow projects to find or build Google Benchmark via `CPM` with built-in
 tracking of these dependencies for correct export support.
 
-Uses the version of GBench :ref:`specified in the version file <cpm_versions>` for consistency
+Uses the version of Google benchmark :ref:`specified in the version file <cpm_versions>` for consistency
 across all RAPIDS projects.
 
 .. code-block:: cmake
@@ -33,7 +33,7 @@ across all RAPIDS projects.
                      [INSTALL_EXPORT_SET <export-name>]
                      [<CPM_ARGS> ...])
 
-.. |PKG_NAME| replace:: GBench
+.. |PKG_NAME| replace:: Google benchmark
 .. include:: common_package_args.txt
 
 Result Targets
@@ -50,16 +50,16 @@ function(rapids_cpm_gbench)
   endif()
 
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
-  rapids_cpm_package_details(GBench version repository tag shallow exclude)
+  rapids_cpm_package_details(benchmark version repository tag shallow exclude)
 
   include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
-  rapids_cpm_generate_patch_command(GBench ${version} patch_command)
+  rapids_cpm_generate_patch_command(benchmark ${version} patch_command)
 
   include("${rapids-cmake-dir}/cmake/install_lib_dir.cmake")
   rapids_cmake_install_lib_dir(lib_dir)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
-  rapids_cpm_find(GBench ${version} ${ARGN}
+  rapids_cpm_find(benchmark ${version} ${ARGN}
                   GLOBAL_TARGETS benchmark::benchmark benchmark::benchmark_main
                   CPM_ARGS
                   GIT_REPOSITORY ${repository}
@@ -72,7 +72,7 @@ function(rapids_cpm_gbench)
                           "CMAKE_INSTALL_LIBDIR ${lib_dir}")
 
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
-  rapids_cpm_display_patch_status(GBench)
+  rapids_cpm_display_patch_status(benchmark)
 
   if(NOT TARGET benchmark::benchmark AND TARGET benchmark)
     add_library(benchmark::benchmark ALIAS benchmark)
