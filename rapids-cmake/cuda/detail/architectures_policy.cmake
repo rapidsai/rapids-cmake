@@ -24,6 +24,9 @@ rapids_cuda_architectures_policy
 Maps deprecated mode values to new supported values and outputs rapids-cmake
 deprecation warnings.
 
+.. versionchanged:: v23.06.00
+Now errors on deprecated mode values and outputs guidance on how to upgrade
+
 .. code-block:: cmake
 
   rapids_cuda_architectures_policy( (FROM_INIT|FROM_SET) mode_variable )

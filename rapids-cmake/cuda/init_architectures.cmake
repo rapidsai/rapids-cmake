@@ -31,7 +31,7 @@ to include support for `RAPIDS` and `NATIVE` to make CUDA architecture compilati
 Used before enabling the CUDA language either via :cmake:command:`project() <cmake:command:project>` to establish the
 CUDA architectures to be compiled for. Parses the :cmake:envvar:`ENV{CUDAARCHS} <cmake:envvar:CUDAARCHS>`, and
 :cmake:variable:`CMAKE_CUDA_ARCHITECTURES <cmake:variable:CMAKE_CUDA_ARCHITECTURES>` for special values
-`ALL`, `RAPIDS`, `NATIVE` and `""`.
+`RAPIDS`, and `NATIVE`.
 
 .. note::
   Required to be called before the first :cmake:command:`project() <cmake:command:project>` call.

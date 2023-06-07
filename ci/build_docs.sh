@@ -16,7 +16,7 @@ conda activate docs
 
 rapids-print-env
 
-VERSION_NUMBER=$(rapids-get-rapids-version-from-git)
+VERSION_NUMBER="23.06"
 
 rapids-logger "Build Sphinx docs"
 pushd docs
@@ -25,7 +25,7 @@ sphinx-build -b text . _text -W
 popd
 
 
-if [[ ${RAPIDS_BUILD_TYPE} == "branch" ]]; then
+if [[ ${RAPIDS_BUILD_TYPE} != "pull-request" ]]; then
   rapids-logger "Upload Docs to S3"
   aws s3 sync --no-progress --delete docs/_html "s3://rapidsai-docs/rapids-cmake/${VERSION_NUMBER}/html"
   aws s3 sync --no-progress --delete docs/_text "s3://rapidsai-docs/rapids-cmake/${VERSION_NUMBER}/txt"

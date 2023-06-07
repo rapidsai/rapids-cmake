@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021, NVIDIA CORPORATION.
+# Copyright (c) 2021-2023, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -56,16 +56,17 @@ Result Variables
 function(rapids_cpm_thrust NAMESPACE namespaces_name)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.thrust")
 
+  include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
+  rapids_cpm_package_details(Thrust version repository tag shallow exclude)
+
   set(to_install OFF)
-  if(INSTALL_EXPORT_SET IN_LIST ARGN)
+  if(INSTALL_EXPORT_SET IN_LIST ARGN AND NOT exclude)
     set(to_install ON)
     # Make sure we install thrust into the `include/rapids` subdirectory instead of the default
     include(GNUInstallDirs)
     set(CMAKE_INSTALL_INCLUDEDIR "${CMAKE_INSTALL_INCLUDEDIR}/rapids")
+    set(CMAKE_INSTALL_LIBDIR "${CMAKE_INSTALL_LIBDIR}/rapids")
   endif()
-
-  include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
-  rapids_cpm_package_details(Thrust version repository tag shallow exclude)
 
   include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
   rapids_cpm_generate_patch_command(Thrust ${version} patch_command)
@@ -94,6 +95,13 @@ function(rapids_cpm_thrust NAMESPACE namespaces_name)
     include("${rapids-cmake-dir}/export/find_package_root.cmake")
     rapids_export_find_package_root(BUILD Thrust "${Thrust_SOURCE_DIR}/cmake"
                                     ${_RAPIDS_BUILD_EXPORT_SET})
+  endif()
+
+  if(Thrust_SOURCE_DIR AND _RAPIDS_INSTALL_EXPORT_SET AND to_install)
+    include("${rapids-cmake-dir}/export/find_package_root.cmake")
+    rapids_export_find_package_root(INSTALL Thrust
+                                    [=[${CMAKE_CURRENT_LIST_DIR}/../../rapids/cmake/thrust]=]
+                                    ${_RAPIDS_INSTALL_EXPORT_SET})
   endif()
 
   if(NOT TARGET ${namespaces_name}::Thrust)
