@@ -16,17 +16,16 @@ conda activate docs
 
 rapids-print-env
 
-VERSION_NUMBER="23.08"
+export RAPIDS_VERSION_NUMBER="23.08"
+export RAPIDS_DOCS_DIR="$(mktemp -d)"
 
 rapids-logger "Build Sphinx docs"
 pushd docs
 sphinx-build -b dirhtml . _html -W
 sphinx-build -b text . _text -W
+mkdir -p "${RAPIDS_DOCS_DIR}/rapids-cmake/"{html,txt}
+mv _html/* "${RAPIDS_DOCS_DIR}/rapids-cmake/html"
+mv _text/* "${RAPIDS_DOCS_DIR}/rapids-cmake/txt"
 popd
 
-
-if [[ ${RAPIDS_BUILD_TYPE} != "pull-request" ]]; then
-  rapids-logger "Upload Docs to S3"
-  aws s3 sync --no-progress --delete docs/_html "s3://rapidsai-docs/rapids-cmake/${VERSION_NUMBER}/html"
-  aws s3 sync --no-progress --delete docs/_text "s3://rapidsai-docs/rapids-cmake/${VERSION_NUMBER}/txt"
-fi
+rapids-upload-docs
