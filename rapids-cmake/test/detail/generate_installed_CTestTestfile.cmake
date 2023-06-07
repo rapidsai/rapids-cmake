@@ -157,7 +157,7 @@ function(set_tests_properties name)
       set(prop_value "${_RAPIDS_TEST_${prop}}")
       find_and_convert_paths_from_var_list(prop_value)
       string(APPEND test_prop_content
-             "set_tests_properties([=[${name}]=] PROPERTIES ${prop} ${prop_value})\n")
+             "set_tests_properties([=[${name}]=] PROPERTIES ${prop} \"${prop_value}\")\n")
     endif()
   endforeach()
 
@@ -210,7 +210,7 @@ endfunction()
 #
 # Find all the cmake_install.cmake files in the install directory and parse them for install rules
 function(determine_install_location_of_all_targets)
-  file(GLOB_RECURSE install_rule_files "${_RAPIDS_BUILD_DIR}/cmake_install.cmake")
+  file(GLOB_RECURSE install_rule_files "${_RAPIDS_PROJECT_DIR}/cmake_install.cmake")
   foreach(file IN LISTS install_rule_files)
     file(STRINGS "${file}" contents REGEX "INSTALL DESTINATION")
     foreach(line IN LISTS contents)

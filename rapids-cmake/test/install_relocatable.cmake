@@ -48,6 +48,10 @@ the install directory.
   State that these install rules should be part of the default install set.
   By default tests are not part of the default install set.
 
+.. note::
+  rapids_test_install_relocatable behavior is undefined when used with
+  multi-config generators such as "Visual Studio" and "Ninja Multi-Config"
+
 #]=======================================================================]
 function(rapids_test_install_relocatable)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.test.install_relocatable")
@@ -80,7 +84,7 @@ function(rapids_test_install_relocatable)
     set(_RAPIDS_TEST_DESTINATION \"${_RAPIDS_TEST_DESTINATION}\")
     set(_RAPIDS_INSTALL_PREFIX \"${from_install_prefix}\")
     set(_RAPIDS_BUILD_DIR \"${CMAKE_CURRENT_BINARY_DIR}\")
-    set(_RAPIDS_PROJECT_DIR \"${PROJECT_BINARY_DIR}\")
+    set(_RAPIDS_PROJECT_DIR \"${CMAKE_BINARY_DIR}\")
     set(_RAPIDS_INSTALL_COMPONENT_SET \"${_RAPIDS_TEST_INSTALL_COMPONENT_SET}\")
     set(_RAPIDS_TARGETS_INSTALLED \"${targets_to_install}\")
     set(_RAPIDS_TESTS_TO_RUN \"${tests_to_run}\")
