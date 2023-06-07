@@ -1,3 +1,35 @@
+# rapids-cmake 23.06.00 (7 Jun 2023)
+
+## 🚨 Breaking Changes
+
+- Using deprecated CUDA_ARCHITECTURE values now produces an error. ([#397](https://github.com/rapidsai/rapids-cmake/pull/397)) [@robertmaynard](https://github.com/robertmaynard)
+- rapids_cpm cccl packages cmake files are now relocated to not clash with upstream ([#393](https://github.com/rapidsai/rapids-cmake/pull/393)) [@robertmaynard](https://github.com/robertmaynard)
+
+## 🐛 Bug Fixes
+
+- Revert &quot;Define Cython language_level explicitly. ([#394)&quot; (#396](https://github.com/rapidsai/rapids-cmake/pull/394)&quot; (#396)) [@vyasr](https://github.com/vyasr)
+- rapids_cpm cccl packages cmake files are now relocated to not clash with upstream ([#393](https://github.com/rapidsai/rapids-cmake/pull/393)) [@robertmaynard](https://github.com/robertmaynard)
+
+## 📖 Documentation
+
+- Correct basics to api cross refs ([#405](https://github.com/rapidsai/rapids-cmake/pull/405)) [@robertmaynard](https://github.com/robertmaynard)
+
+## 🚀 New Features
+
+- Update cuco git tag to support `cuco::static_set` ([#407](https://github.com/rapidsai/rapids-cmake/pull/407)) [@PointKernel](https://github.com/PointKernel)
+- Upgrade GTest version to 1.13 ([#401](https://github.com/rapidsai/rapids-cmake/pull/401)) [@robertmaynard](https://github.com/robertmaynard)
+- Using deprecated CUDA_ARCHITECTURE values now produces an error. ([#397](https://github.com/rapidsai/rapids-cmake/pull/397)) [@robertmaynard](https://github.com/robertmaynard)
+
+## 🛠️ Improvements
+
+- run docs nightly too ([#413](https://github.com/rapidsai/rapids-cmake/pull/413)) [@AyodeAwe](https://github.com/AyodeAwe)
+- Update cuco git tag to fetch several bug fixes ([#412](https://github.com/rapidsai/rapids-cmake/pull/412)) [@PointKernel](https://github.com/PointKernel)
+- Revert shared workflows branch ([#406](https://github.com/rapidsai/rapids-cmake/pull/406)) [@ajschmidt8](https://github.com/ajschmidt8)
+- Upgrade to Python 3.9 (drop Python 3.9) ([#404](https://github.com/rapidsai/rapids-cmake/pull/404)) [@shwina](https://github.com/shwina)
+- Remove usage of rapids-get-rapids-version-from-git ([#402](https://github.com/rapidsai/rapids-cmake/pull/402)) [@jjacobelli](https://github.com/jjacobelli)
+- Update clang-format ([#398](https://github.com/rapidsai/rapids-cmake/pull/398)) [@bdice](https://github.com/bdice)
+- Define Cython language_level explicitly. ([#394](https://github.com/rapidsai/rapids-cmake/pull/394)) [@bdice](https://github.com/bdice)
+
 # rapids-cmake 23.04.00 (6 Apr 2023)
 
 ## 🐛 Bug Fixes
