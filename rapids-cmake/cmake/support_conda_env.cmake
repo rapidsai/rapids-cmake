@@ -84,8 +84,8 @@ function(rapids_cmake_support_conda_env target)
     set(prefix_paths)
 
     if(in_conda_build)
-      # For conda-build we add the host requirements prefix to the cmake search paths So that raw
-      # `find_file` or `find_library` calls will find cuda components in the host component
+      # For conda-build we add the host conda environment prefix to the cmake search paths so that
+      # raw `find_file` or `find_library` calls will find CUDA components in the host environment
       set(target_platform $ENV{cross_target_platform}) # when target != cross_target
       if(NOT target_platform)
         set(target_platform $ENV{target_platform})
