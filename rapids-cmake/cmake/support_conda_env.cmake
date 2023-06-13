@@ -31,7 +31,7 @@ Creates a global interface target called `target_name` that holds
 the CONDA include and link directories, when executed.
 
 Also offers the ability to modify :cmake:variable:`CMAKE_PREFIX_PATH <cmake:variable:CMAKE_PREFIX_PATH>` to
-include the following paths based on the current CONDA environment:
+include the following paths based on the current conda environment:
 
   - `PREFIX`
   - `BUILD_PREFIX`
