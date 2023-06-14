@@ -28,12 +28,12 @@ Establish what CUDA runtime library should be used by a single target
     rapids_cuda_set_runtime( target USE_STATIC (TRUE|FALSE) )
 
   Establishes what CUDA runtime will be used for a target, via
-  the :cmake::prop_tgt:`CUDA_RUNTIME_LIBRARY <cmake::prop_tgt:CUDA_RUNTIME_LIBRARY>`
+  the :cmake:prop_tgt:`CUDA_RUNTIME_LIBRARY <cmake:prop_tgt:CUDA_RUNTIME_LIBRARY>`
   and by linking to `CUDA::cudart` or `CUDA::cudart_static`.
 
  .. note::
   If using the deprecated `FindCUDA.cmake` you must use the
-  :cmake:command:`rapids_init_runtime` method to properly establish the default
+  :cmake:command:`rapids_cuda_init_runtime` method to properly establish the default
   mode.
 
   When `USE_STATIC TRUE` is provided the target will link to a
