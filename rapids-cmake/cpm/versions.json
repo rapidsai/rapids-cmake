@@ -31,7 +31,12 @@
           "file" : "libcudacxx/install_rules.diff",
           "issue" : "libcudacxx 1.X installs incorrect files [https://github.com/NVIDIA/libcudacxx/pull/428]",
           "fixed_in" : "2.2"
-        }
+        },
+        {
+          "file" : "libcudacxx/reroot_support.diff",
+          "issue" : "Support conda-forge usage of CMake rerooting [https://github.com/NVIDIA/libcudacxx/pull/490]",
+          "fixed_in" : "2.2"
+        },
       ]
     },
     "nvbench" : {
@@ -71,6 +76,11 @@
       "git_url" : "https://github.com/NVIDIA/thrust.git",
       "git_tag" : "${version}",
       "patches" : [
+        {
+          "file" : "Thrust/reroot_support.diff",
+          "issue" : "Support conda-forge usage of CMake rerooting [https://github.com/NVIDIA/thrust/pull/1969]",
+          "fixed_in" : "2.2"
+        },
         {
           "file" : "Thrust/transform_iter_with_reduce_by_key.diff",
           "issue" : "Support transform iterator with reduce by key [https://github.com/NVIDIA/thrust/pull/1805]",
