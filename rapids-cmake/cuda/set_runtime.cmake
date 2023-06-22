@@ -29,7 +29,8 @@ Establish what CUDA runtime library should be used by a single target
 
   Establishes what CUDA runtime will be used for a target, via
   the :cmake:prop_tgt:`CUDA_RUNTIME_LIBRARY <cmake:prop_tgt:CUDA_RUNTIME_LIBRARY>`
-  and by linking to `CUDA::cudart` or `CUDA::cudart_static`.
+  and by linking to `CUDA::cudart` or `CUDA::cudart_static` if the :cmake:module:`find_package(CUDAToolkit)
+  <cmake:module:FindCUDAToolkit>` has been called.
 
  .. note::
   If using the deprecated `FindCUDA.cmake` you must use the
