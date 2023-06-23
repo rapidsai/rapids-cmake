@@ -32,6 +32,11 @@ Establish what CUDA runtime library should be used by a single target
   and by linking to `CUDA::cudart` or `CUDA::cudart_static` if the :cmake:module:`find_package(CUDAToolkit)
   <cmake:module:FindCUDAToolkit>` has been called.
 
+  The linking to the `CUDA::cudart` or `CUDA::cudart_static` will have the following
+  usage behavior:
+    - For `INTERFACE` targets the linking will be `INTERFACE`
+    - For all other targets the linking will be `PRIVATE`
+
  .. note::
   If using the deprecated `FindCUDA.cmake` you must use the
   :cmake:command:`rapids_cuda_init_runtime` method to properly establish the default
@@ -52,7 +57,7 @@ function(rapids_cuda_set_runtime target use_static value)
   if(type STREQUAL "INTERFACE_LIBRARY")
     set(mode INTERFACE)
   else()
-    set(mode PUBLIC)
+    set(mode PRIVATE)
   endif()
 
   if(${value})
