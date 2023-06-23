@@ -106,8 +106,15 @@ as needed.
 
 ``proprietary_binary``
 
-    An optional dictionary of cpu architecture and operating system keys to url values that represents a download for a pre-built proprietary version of the library.
-    If a matching key exists the binary will be used instead of the specified git url and tag.
+    An optional dictionary of cpu architecture and operating system keys to url values that represents a download for a pre-built proprietary version of the library. This creates a new entry in the search
+    logic for a project:
+
+        - Search for a local version matching the `version` key
+            - disabled by `always_download`
+        - Download proprietary version if a valid OS + CPU Arch exists
+            - disabled by `USE_PROPRIETARY_BLOB` being off
+        - Fallback to using git url and tag
+
     To determine the correct key, CMake will query for a key that matches the lower case value of `<arch>-<os>` where `arch` maps to
     :cmake:variable:`CMAKE_SYSTEM_PROCESSOR <cmake:variable:CMAKE_SYSTEM_PROCESSOR>` and `os` maps to :cmake:variable:`CMAKE_SYSTEM_NAME <cmake:variable:CMAKE_SYSTEM_NAME>`.
 
