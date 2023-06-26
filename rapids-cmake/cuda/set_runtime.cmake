@@ -34,6 +34,7 @@ Establish what CUDA runtime library should be used by a single target
 
   The linking to the `CUDA::cudart` or `CUDA::cudart_static` will have the following
   usage behavior:
+
     - For `INTERFACE` targets the linking will be `INTERFACE`
     - For all other targets the linking will be `PRIVATE`
 
