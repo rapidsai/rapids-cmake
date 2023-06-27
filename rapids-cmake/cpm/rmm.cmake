@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021, NVIDIA CORPORATION.
+# Copyright (c) 2021-2023, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -72,7 +72,7 @@ function(rapids_cpm_rmm)
   rapids_cpm_generate_patch_command(rmm ${version} patch_command)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
-  rapids_cpm_find(rmm ${version} ${ARGN} {_RAPIDS_UNPARSED_ARGUMENTS}
+  rapids_cpm_find(rmm ${version} ${ARGN} ${_RAPIDS_UNPARSED_ARGUMENTS}
                   GLOBAL_TARGETS rmm::rmm
                   CPM_ARGS
                   GIT_REPOSITORY ${repository}

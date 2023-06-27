@@ -104,7 +104,8 @@ function(rapids_cpm_thrust NAMESPACE namespaces_name)
                                     ${_RAPIDS_INSTALL_EXPORT_SET})
   endif()
 
-  if(NOT TARGET ${namespaces_name}::Thrust)
+  # Check for the existence of thrust_create_target so we support fetching Thrust with DOWNLOAD_ONLY
+  if(NOT TARGET ${namespaces_name}::Thrust AND COMMAND thrust_create_target)
     thrust_create_target(${namespaces_name}::Thrust FROM_OPTIONS)
     set_target_properties(${namespaces_name}::Thrust PROPERTIES IMPORTED_NO_SYSTEM ON)
     if(TARGET _Thrust_Thrust)
