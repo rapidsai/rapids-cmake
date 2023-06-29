@@ -20,6 +20,10 @@ add_cmake_config_test( init_runtime-multiple.cmake )
 add_cmake_config_test( init_runtime-shared.cmake )
 add_cmake_config_test( init_runtime-static.cmake )
 
+add_cmake_config_test( set_runtime-shared.cmake )
+add_cmake_config_test( set_runtime-static.cmake )
+add_cmake_config_test( set_runtime-on-interface-target.cmake )
+
 add_cmake_config_test( init_arch-all-via-undef )
 add_cmake_config_test( init_arch-existing-project-flags.cmake )
 add_cmake_config_test( init_arch-native.cmake )

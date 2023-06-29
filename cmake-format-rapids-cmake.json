@@ -195,6 +195,11 @@
           "nargs": 1
         }
       },
+      "rapids_cuda_set_runtime": {
+        "pargs": {
+          "nargs": 3
+        }
+      },
 
       "rapids_export_cpm": {
         "pargs": {
