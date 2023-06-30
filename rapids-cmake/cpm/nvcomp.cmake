@@ -93,6 +93,10 @@ function(rapids_cpm_nvcomp)
     include("${rapids-cmake-dir}/find/package.cmake")
     rapids_find_package(nvcomp ${version} GLOBAL_TARGETS nvcomp::nvcomp ${_RAPIDS_EXPORT_ARGUMENTS}
                         FIND_ARGS QUIET)
+    if(nvcomp_FOUND)
+      # report where nvcomp was found
+      message(STATUS "Found nvcomp: ${nvcomp_DIR} (found version ${nvcomp_VERSION})")
+    endif()
   endif()
 
   # second see if we have a proprietary pre-built binary listed in versions.json and it if
