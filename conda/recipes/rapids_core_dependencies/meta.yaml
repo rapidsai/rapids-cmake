@@ -35,7 +35,7 @@ requirements:
     - sysroot_{{ target_platform }} {{ sysroot_version }}
   host:
     - cuda-version ={{ cuda_version }}
-    run:
+  run:
     - {{ pin_compatible('cuda-version', max_pin='x', min_pin='x') }}
 
 about:
