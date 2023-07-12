@@ -9,7 +9,7 @@ rapids-logger "Create checks conda environment"
 rapids-dependency-file-generator \
   --output conda \
   --file_key checks \
-  --matrix "" | tee env.yaml
+  --matrix "cuda=${RAPIDS_CUDA_VERSION%.*};arch=$(arch)" | tee env.yaml
 
 rapids-mamba-retry env create --force -f env.yaml -n checks
 
