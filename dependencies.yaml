@@ -32,6 +32,44 @@ dependencies:
           - c-compiler
           - cxx-compiler
           - make
+    specific:
+      - output_types: conda
+        matrices:
+          - matrix:
+              arch: x86_64
+              cuda: "11.2"
+            packages:
+              - nvcc_linux-64=11.2
+          - matrix:
+              arch: aarch64
+              cuda: "11.2"
+            packages:
+              - nvcc_linux-aarch64=11.2
+          - matrix:
+              arch: x86_64
+              cuda: "11.4"
+            packages:
+              - nvcc_linux-64=11.4
+          - matrix:
+              arch: aarch64
+              cuda: "11.4"
+            packages:
+              - nvcc_linux-aarch64=11.4
+          - matrix:
+              arch: x86_64
+              cuda: "11.8"
+            packages:
+              - nvcc_linux-64=11.8
+          - matrix:
+              arch: aarch64
+              cuda: "11.8"
+            packages:
+              - nvcc_linux-aarch64=11.8
+          - matrix:
+              cuda: "12.0"
+            packages:
+              - cuda-version=12.0
+              - cuda-nvcc
   cudatoolkit:
     specific:
       - output_types: conda
@@ -39,29 +77,44 @@ dependencies:
           - matrix:
               cuda: "11.2"
             packages:
-              - cudatoolkit=11.2
+              - cuda-version=11.2
+              - cudatoolkit
               - gcc<11.0.0
               - sysroot_linux-64==2.17
           - matrix:
               cuda: "11.4"
             packages:
-              - cudatoolkit=11.4
+              - cuda-version=11.4
+              - cudatoolkit
               - gcc<11.0.0
               - sysroot_linux-64==2.17
           - matrix:
               cuda: "11.5"
             packages:
-              - cudatoolkit=11.5
+              - cuda-version=11.5
+              - cudatoolkit
+              - gcc<12.0.0
               - sysroot_linux-64==2.17
           - matrix:
               cuda: "11.6"
             packages:
-              - cudatoolkit=11.6
+              - cuda-version=11.6
+              - cudatoolkit
+              - gcc<12.0.0
               - sysroot_linux-64==2.17
           - matrix:
               cuda: "11.8"
             packages:
-              - cudatoolkit=11.8
+              - cuda-version=11.8
+              - cudatoolkit
+              - gcc<12.0.0
+              - sysroot_linux-64==2.17
+          - matrix:
+              cuda: "12.0"
+            packages:
+              - cuda-version=12.0
+              - cuda-cupti-dev
+              - gcc<13.0.0
               - sysroot_linux-64==2.17
   docs:
     common:
