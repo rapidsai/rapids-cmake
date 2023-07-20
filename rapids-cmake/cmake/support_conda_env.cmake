@@ -77,25 +77,25 @@ function(rapids_cmake_support_conda_env target)
   if(in_conda_build OR in_conda_prefix)
 
     macro(modify_cmake_prefix_path_global)
-      cmake_parse_arguments("" "" "" "PATHS" ${ARGN})
+      cmake_parse_arguments(_RAPIDS "" "" "PATHS" ${ARGN})
 
       if(NOT ("$ENV{CMAKE_PREFIX_PATH}" STREQUAL ""))
         # If both CMAKE_PREFIX_PATH cmake and environment variables are populated, ensure the
         # environment variable's paths are preserved in the cmake variable
         cmake_path(CONVERT "$ENV{CMAKE_PREFIX_PATH}" TO_CMAKE_PATH_LIST _paths NORMALIZE)
-        list(PREPEND _PATHS ${_paths})
+        list(PREPEND _RAPIDS_PATHS ${_paths})
       endif()
 
-      list(APPEND CMAKE_PREFIX_PATH ${_PATHS})
+      list(APPEND CMAKE_PREFIX_PATH ${_RAPIDS_PATHS})
       list(REMOVE_DUPLICATES CMAKE_PREFIX_PATH)
       set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} PARENT_SCOPE)
       message(VERBOSE "CMAKE_PREFIX_PATH set to: ${CMAKE_PREFIX_PATH}")
     endmacro()
 
     macro(modify_cmake_prefix_path_envvar)
-      cmake_parse_arguments("" "" "" "PATHS" ${ARGN})
+      cmake_parse_arguments(_RAPIDS "" "" "PATHS" ${ARGN})
       cmake_path(CONVERT "$ENV{CMAKE_PREFIX_PATH}" TO_CMAKE_PATH_LIST _paths NORMALIZE)
-      list(APPEND _paths ${_PATHS})
+      list(APPEND _paths ${_RAPIDS_PATHS})
       list(REMOVE_DUPLICATES _paths)
       cmake_path(CONVERT "${_paths}" TO_NATIVE_PATH_LIST _paths NORMALIZE)
       set(ENV{CMAKE_PREFIX_PATH} ${_paths})
