@@ -59,7 +59,7 @@ Result Targets
   `target_name` target will be created only if called from a conda environment.
 
 #]=======================================================================]
-# cmake-lint: disable=R0912,R0915
+# cmake-lint: disable=R0912,R0915,W0106
 function(rapids_cmake_support_conda_env target)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cmake.support_conda_env")
 
@@ -77,11 +77,9 @@ function(rapids_cmake_support_conda_env target)
   if(in_conda_build OR in_conda_prefix)
 
     #
-    # cmake-lint: disable=W0106
     macro(modify_cmake_prefix_path_global)
       cmake_parse_arguments(_RAPIDS "" "" "PATHS" ${ARGN})
 
-      # cmake-lint: disable=W0106
       if(DEFINED ENV{CMAKE_PREFIX_PATH})
         # If both CMAKE_PREFIX_PATH cmake and environment variables are populated, ensure the
         # environment variable's paths are preserved in the cmake variable
@@ -96,7 +94,6 @@ function(rapids_cmake_support_conda_env target)
     endmacro()
 
     #
-    # cmake-lint: disable=W0106
     macro(modify_cmake_prefix_path_envvar)
       cmake_parse_arguments(_RAPIDS "" "" "PATHS" ${ARGN})
       cmake_path(CONVERT "$ENV{CMAKE_PREFIX_PATH}" TO_CMAKE_PATH_LIST _paths NORMALIZE)
