@@ -80,7 +80,7 @@ function(rapids_cmake_support_conda_env target)
     macro(modify_cmake_prefix_path_global)
       cmake_parse_arguments(_RAPIDS "" "" "PATHS" ${ARGN})
 
-      if(NOT ("$ENV{CMAKE_PREFIX_PATH}" STREQUAL ""))
+      if(DEFINED ENV{CMAKE_PREFIX_PATH})
         # If both CMAKE_PREFIX_PATH cmake and environment variables are populated, ensure the
         # environment variable's paths are preserved in the cmake variable
         cmake_path(CONVERT "$ENV{CMAKE_PREFIX_PATH}" TO_CMAKE_PATH_LIST _paths NORMALIZE)
@@ -107,7 +107,7 @@ function(rapids_cmake_support_conda_env target)
 
     #
     macro(modify_cmake_prefix_path)
-      if(NOT ("${CMAKE_PREFIX_PATH}" STREQUAL ""))
+      if(DEFINED CMAKE_PREFIX_PATH)
         modify_cmake_prefix_path_global(${ARGN})
       else()
         modify_cmake_prefix_path_envvar(${ARGN})
