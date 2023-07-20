@@ -80,8 +80,8 @@ function(rapids_cmake_support_conda_env target)
       cmake_parse_arguments("" "" "" "PATHS" ${ARGN})
 
       if(NOT ("$ENV{CMAKE_PREFIX_PATH}" STREQUAL ""))
-        # If the local and environment CMAKE_PREFIX_PATH variables are
-        # populated, ensure the environment paths are in the local var
+        # If both CMAKE_PREFIX_PATH cmake and environment variables are populated, ensure the
+        # environment variable's paths are preserved in the cmake variable
         cmake_path(CONVERT "$ENV{CMAKE_PREFIX_PATH}" TO_CMAKE_PATH_LIST _paths NORMALIZE)
         list(PREPEND _PATHS ${_paths})
       endif()
