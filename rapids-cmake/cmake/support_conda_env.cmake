@@ -59,7 +59,7 @@ Result Targets
   `target_name` target will be created only if called from a conda environment.
 
 #]=======================================================================]
-# cmake-lint: disable=R0912,R0915
+# cmake-lint: disable=R0912,R0915,W0106
 function(rapids_cmake_support_conda_env target)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cmake.support_conda_env")
 
@@ -76,12 +76,50 @@ function(rapids_cmake_support_conda_env target)
 
   if(in_conda_build OR in_conda_prefix)
 
+    # comment needed here due to cmake-lint bug
+    macro(modify_cmake_prefix_path_global)
+      cmake_parse_arguments(_RAPIDS "" "" "PATHS" ${ARGN})
+
+      if(DEFINED ENV{CMAKE_PREFIX_PATH})
+        # If both CMAKE_PREFIX_PATH cmake and environment variables are populated, ensure the
+        # environment variable's paths are preserved in the cmake variable
+        cmake_path(CONVERT "$ENV{CMAKE_PREFIX_PATH}" TO_CMAKE_PATH_LIST _paths NORMALIZE)
+        list(PREPEND _RAPIDS_PATHS ${_paths})
+      endif()
+
+      list(APPEND CMAKE_PREFIX_PATH ${_RAPIDS_PATHS})
+      list(REMOVE_DUPLICATES CMAKE_PREFIX_PATH)
+      set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} PARENT_SCOPE)
+      message(VERBOSE "CMAKE_PREFIX_PATH set to: ${CMAKE_PREFIX_PATH}")
+    endmacro()
+
+    # comment needed here due to cmake-lint bug
+    macro(modify_cmake_prefix_path_envvar)
+      cmake_parse_arguments(_RAPIDS "" "" "PATHS" ${ARGN})
+      cmake_path(CONVERT "$ENV{CMAKE_PREFIX_PATH}" TO_CMAKE_PATH_LIST _paths NORMALIZE)
+      list(APPEND _paths ${_RAPIDS_PATHS})
+      list(REMOVE_DUPLICATES _paths)
+      cmake_path(CONVERT "${_paths}" TO_NATIVE_PATH_LIST _paths NORMALIZE)
+      # cmake-lint: disable=W0106
+      set(ENV{CMAKE_PREFIX_PATH} ${_paths})
+      # cmake-lint: disable=W0106
+      message(VERBOSE "ENV{CMAKE_PREFIX_PATH} set to: $ENV{CMAKE_PREFIX_PATH}")
+    endmacro()
+
+    # comment needed here due to cmake-lint bug
+    macro(modify_cmake_prefix_path)
+      if(DEFINED CMAKE_PREFIX_PATH)
+        modify_cmake_prefix_path_global(${ARGN})
+      else()
+        modify_cmake_prefix_path_envvar(${ARGN})
+      endif()
+    endmacro()
+
     if(ARGV1 STREQUAL "MODIFY_PREFIX_PATH")
       set(modify_prefix_path TRUE)
     endif()
 
     add_library(${target} INTERFACE)
-    set(prefix_paths)
 
     if(in_conda_build)
       # For conda-build we add the host conda environment prefix to the cmake search paths so that
@@ -116,12 +154,12 @@ function(rapids_cmake_support_conda_env target)
       endif()
 
       if(modify_prefix_path)
-        list(PREPEND CMAKE_PREFIX_PATH "$ENV{PREFIX}" "$ENV{BUILD_PREFIX}")
+        message(VERBOSE "Conda build detected")
+        set(prefix_paths "$ENV{PREFIX}" "$ENV{BUILD_PREFIX}")
         if(DEFINED targetsDir)
-          list(PREPEND CMAKE_PREFIX_PATH "$ENV{PREFIX}/${targetsDir}")
+          list(PREPEND prefix_paths "$ENV{PREFIX}/${targetsDir}")
         endif()
-        set(CMAKE_PREFIX_PATH "${CMAKE_PREFIX_PATH}" PARENT_SCOPE)
-        message(VERBOSE "Conda build detected, CMAKE_PREFIX_PATH set to: ${CMAKE_PREFIX_PATH}")
+        modify_cmake_prefix_path(PATHS ${prefix_paths})
       endif()
 
     elseif(in_conda_prefix)
@@ -134,10 +172,8 @@ function(rapids_cmake_support_conda_env target)
       endif()
 
       if(modify_prefix_path)
-        list(PREPEND CMAKE_PREFIX_PATH "$ENV{CONDA_PREFIX}")
-        set(CMAKE_PREFIX_PATH "${CMAKE_PREFIX_PATH}" PARENT_SCOPE)
-        message(VERBOSE
-                "Conda environment detected, CMAKE_PREFIX_PATH set to: ${CMAKE_PREFIX_PATH}")
+        message(VERBOSE "Conda environment detected")
+        modify_cmake_prefix_path(PATHS "$ENV{CONDA_PREFIX}")
       endif()
     endif()
   endif()

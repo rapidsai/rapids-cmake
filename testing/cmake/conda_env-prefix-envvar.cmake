@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2023, NVIDIA CORPORATION.
+# Copyright (c) 2023, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -55,24 +55,23 @@ if( NOT "$<HOST_LINK:SHELL:LINKER:-rpath-link=$ENV{CONDA_PREFIX}/lib>" IN_LIST l
   message(FATAL_ERROR "Expected for rpath-link=env{CONDA_PREFIX} to be in the link options of `conda_env`")
 endif()
 
-set(CMAKE_PREFIX_PATH "placeholder" )
-set(ENV{CMAKE_PREFIX_PATH} "env_1:env_2" )
+set(ENV{CMAKE_PREFIX_PATH} "placeholder" )
 rapids_cmake_support_conda_env(conda_env_modify MODIFY_PREFIX_PATH)
 if(NOT TARGET conda_env_modify)
   message(FATAL_ERROR "Expected target conda_env_modify to exist")
 endif()
 
-list(LENGTH CMAKE_PREFIX_PATH len)
-if( len GREATER 4)
-  message(FATAL_ERROR "CMAKE_PREFIX_PATH length is wrong after MODIFY_PREFIX_PATH")
+cmake_path(CONVERT "$ENV{CMAKE_PREFIX_PATH}" TO_CMAKE_PATH_LIST env_cmake_prefix_path NORMALIZE)
+
+list(LENGTH env_cmake_prefix_path len)
+if( len GREATER 2)
+  message(FATAL_ERROR "ENV{CMAKE_PREFIX_PATH} length is wrong after MODIFY_PREFIX_PATH")
 endif()
 
-list(GET CMAKE_PREFIX_PATH 0 first_value)
-list(GET CMAKE_PREFIX_PATH 1 second_value)
-list(GET CMAKE_PREFIX_PATH 2 third_value)
-list(GET CMAKE_PREFIX_PATH 3 fourth_value)
-set(correct_list "placeholder" "env_1" "env_2" "$ENV{CONDA_PREFIX}")
-set(actual_list "${first_value}" "${second_value}" "${third_value}" "${fourth_value}")
+list(GET env_cmake_prefix_path 0 first_value)
+list(GET env_cmake_prefix_path 1 second_value)
+set(correct_list "placeholder" "$ENV{CONDA_PREFIX}")
+set(actual_list "${first_value}" "${second_value}")
 
 foreach(correct actual IN ZIP_LISTS correct_list actual_list)
   if(NOT correct STREQUAL actual)
