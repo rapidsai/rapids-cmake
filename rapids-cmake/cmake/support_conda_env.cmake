@@ -77,6 +77,7 @@ function(rapids_cmake_support_conda_env target)
   if(in_conda_build OR in_conda_prefix)
 
     #
+    # cmake-lint: disable=W0106
     macro(modify_cmake_prefix_path_global)
       cmake_parse_arguments(_RAPIDS "" "" "PATHS" ${ARGN})
 
