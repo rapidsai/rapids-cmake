@@ -81,6 +81,7 @@ function(rapids_cmake_support_conda_env target)
     macro(modify_cmake_prefix_path_global)
       cmake_parse_arguments(_RAPIDS "" "" "PATHS" ${ARGN})
 
+      # cmake-lint: disable=W0106
       if(DEFINED ENV{CMAKE_PREFIX_PATH})
         # If both CMAKE_PREFIX_PATH cmake and environment variables are populated, ensure the
         # environment variable's paths are preserved in the cmake variable
@@ -102,7 +103,9 @@ function(rapids_cmake_support_conda_env target)
       list(APPEND _paths ${_RAPIDS_PATHS})
       list(REMOVE_DUPLICATES _paths)
       cmake_path(CONVERT "${_paths}" TO_NATIVE_PATH_LIST _paths NORMALIZE)
+      # cmake-lint: disable=W0106
       set(ENV{CMAKE_PREFIX_PATH} ${_paths})
+      # cmake-lint: disable=W0106
       message(VERBOSE "ENV{CMAKE_PREFIX_PATH} set to: $ENV{CMAKE_PREFIX_PATH}")
     endmacro()
 
