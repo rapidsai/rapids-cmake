@@ -76,6 +76,7 @@ function(rapids_cmake_support_conda_env target)
 
   if(in_conda_build OR in_conda_prefix)
 
+    #
     macro(modify_cmake_prefix_path_global)
       cmake_parse_arguments(_RAPIDS "" "" "PATHS" ${ARGN})
 
@@ -92,16 +93,20 @@ function(rapids_cmake_support_conda_env target)
       message(VERBOSE "CMAKE_PREFIX_PATH set to: ${CMAKE_PREFIX_PATH}")
     endmacro()
 
+    #
     macro(modify_cmake_prefix_path_envvar)
       cmake_parse_arguments(_RAPIDS "" "" "PATHS" ${ARGN})
       cmake_path(CONVERT "$ENV{CMAKE_PREFIX_PATH}" TO_CMAKE_PATH_LIST _paths NORMALIZE)
       list(APPEND _paths ${_RAPIDS_PATHS})
       list(REMOVE_DUPLICATES _paths)
       cmake_path(CONVERT "${_paths}" TO_NATIVE_PATH_LIST _paths NORMALIZE)
+      # cmake-lint: disable=W0106
       set(ENV{CMAKE_PREFIX_PATH} ${_paths})
+      # cmake-lint: disable=W0106
       message(VERBOSE "ENV{CMAKE_PREFIX_PATH} set to: $ENV{CMAKE_PREFIX_PATH}")
     endmacro()
 
+    #
     macro(modify_cmake_prefix_path)
       if(NOT ("${CMAKE_PREFIX_PATH}" STREQUAL ""))
         modify_cmake_prefix_path_global(${ARGN})
