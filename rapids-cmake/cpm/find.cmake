@@ -132,7 +132,7 @@ Overriding
 ^^^^^^^^^^
 
 The :cmake:command:`rapids_cpm_package_override` command provides a way
-for projects to override the default values for any :cmake:command:`rapids_cpm_find`, `rapids_cpm_*` <api.html#cpm>`__,
+for projects to override the default values for any :cmake:command:`rapids_cpm_find`, `rapids_cpm_* <../api.html#cpm-pre-configured-packages>`__,
 `CPM <https://github.com/cpm-cmake/CPM.cmake>`_, and :cmake:module:`FetchContent() <cmake:module:FetchContent>` package.
 
 By default when an override for a project is provided no local search

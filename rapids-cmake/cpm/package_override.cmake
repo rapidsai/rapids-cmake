@@ -21,7 +21,7 @@ rapids_cpm_package_override
 
 .. versionadded:: v21.10.00
 
-Overrides the :cmake:command:`rapids_cpm_find`, `rapids_cpm_*` <api.html#cpm>`__,
+Overrides the :cmake:command:`rapids_cpm_find`, `rapids_cpm_* <../api.html#cpm-pre-configured-packages>`__,
 `CPM <https://github.com/cpm-cmake/CPM.cmake>`_, and :cmake:module:`FetchContent() <cmake:module:FetchContent>` package information for the project.
 
 .. code-block:: cmake
@@ -29,7 +29,7 @@ Overrides the :cmake:command:`rapids_cpm_find`, `rapids_cpm_*` <api.html#cpm>`__
   rapids_cpm_package_override(<json_file_path>)
 
 Allows projects to override the default values for any :cmake:command:`rapids_cpm_find`,
-`rapids_cpm_*` <api.html#cpm>`__, `CPM <https://github.com/cpm-cmake/CPM.cmake>`_, and :cmake:module:`FetchContent() <cmake:module:FetchContent>` package.
+`rapids_cpm_* <../api.html#cpm-pre-configured-packages>`__, `CPM <https://github.com/cpm-cmake/CPM.cmake>`_, and :cmake:module:`FetchContent() <cmake:module:FetchContent>` package.
 
 The user provided json file must follow the `versions.json` format,
 which is :ref:`documented here<cpm_version_format>`  and shown in the below
