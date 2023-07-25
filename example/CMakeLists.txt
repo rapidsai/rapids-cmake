@@ -80,6 +80,10 @@ rapids_find_package(Threads REQUIRED
 
 rapids_cpm_init()
 
+# Add an explicit rmm source dir
+
+# Add an override
+
 # Use one of rapids-cmake pre-configured packages
 # And mark rmm as part of our export interface
 include(${rapids-cmake-dir}/cpm/rmm.cmake)

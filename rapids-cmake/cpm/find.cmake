@@ -128,7 +128,16 @@ Example on how to use :cmake:command:`rapids_cpm_find` to include common project
                         "BENCHMARK_ENABLE_INSTALL OFF"
   )
 
+Overriding
+^^^^^^^^^^
 
+The :cmake:command:`rapids_cpm_package_override` command provides a way
+for projects to override the default values for any :cmake:command:`rapids_cpm_find`, `rapids_cpm_*` <api.html#cpm>`__,
+`CPM <https://github.com/cpm-cmake/CPM.cmake>`_, and :cmake:module:`FetchContent() <cmake:module:FetchContent>` package.
+
+By default when an override for a project is provided no local search
+for that project will occur. This is done to make sure that the requested
+modified version is used.
 
 #]=======================================================================]
 # cmake-lint: disable=R0912,R0915

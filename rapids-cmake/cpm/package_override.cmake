@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021, NVIDIA CORPORATION.
+# Copyright (c) 2021-2023, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,14 +21,15 @@ rapids_cpm_package_override
 
 .. versionadded:: v21.10.00
 
-Override `CPM` preset package information for the project.
+Overrides the :cmake:command:`rapids_cpm_find`, `rapids_cpm_*` <api.html#cpm>`__,
+`CPM <https://github.com/cpm-cmake/CPM.cmake>`_, and :cmake:module:`FetchContent() <cmake:module:FetchContent>` package information for the project.
 
 .. code-block:: cmake
 
   rapids_cpm_package_override(<json_file_path>)
 
-Allows projects to override the default values for any rapids-cmake
-pre-configured cpm package.
+Allows projects to override the default values for any :cmake:command:`rapids_cpm_find`,
+`rapids_cpm_*` <api.html#cpm>`__, `CPM <https://github.com/cpm-cmake/CPM.cmake>`_, and :cmake:module:`FetchContent() <cmake:module:FetchContent>` package.
 
 The user provided json file must follow the `versions.json` format,
 which is :ref:`documented here<cpm_version_format>`  and shown in the below
