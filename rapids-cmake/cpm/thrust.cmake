@@ -59,7 +59,7 @@ function(rapids_cpm_thrust NAMESPACE namespaces_name)
   # Add libcudacxx so that Thrust picks up the rapids-cmake version rather than the libcudacxx
   # submodule bundled with Thrust.
   include("${rapids-cmake-dir}/cpm/libcudacxx.cmake")
-  rapids_cpm_libcudacxx(${_RAPIDS_UNPARSED_ARGUMENTS})
+  rapids_cpm_libcudacxx(${ARGN})
 
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
   rapids_cpm_package_details(Thrust version repository tag shallow exclude)
@@ -85,7 +85,8 @@ function(rapids_cpm_thrust NAMESPACE namespaces_name)
                   GIT_SHALLOW ${shallow}
                   PATCH_COMMAND ${patch_command}
                   EXCLUDE_FROM_ALL ${exclude}
-                  OPTIONS "THRUST_ENABLE_INSTALL_RULES ${to_install}")
+                  OPTIONS "THRUST_ENABLE_INSTALL_RULES ${to_install}"
+                          "THRUST_INSTALL_LIBCUDACXX_HEADERS OFF")
 
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
   rapids_cpm_display_patch_status(Thrust)
