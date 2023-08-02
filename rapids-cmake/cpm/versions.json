@@ -29,7 +29,7 @@
       "patches" : [
         {
           "file" : "libcudacxx/install_rules.diff",
-          "issue" : "libcudacxx 1.X installs incorrect files [https://github.com/NVIDIA/libcudacxx/pull/428]",
+          "issue" : "libcudacxx installs incorrect files [https://github.com/NVIDIA/libcudacxx/pull/428]",
           "fixed_in" : "2.2"
         },
         {
