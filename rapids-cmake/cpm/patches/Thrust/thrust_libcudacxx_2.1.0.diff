@@ -1,0 +1,26 @@
+diff --git a/thrust/cmake/thrust-config.cmake b/thrust/cmake/thrust-config.cmake
+index fe88a961..cc37befa 100644
+--- a/thrust/cmake/thrust-config.cmake
++++ b/thrust/cmake/thrust-config.cmake
+@@ -78,7 +78,7 @@
+ cmake_minimum_required(VERSION 3.15)
+ 
+ # Minimum supported libcudacxx version:
+-set(thrust_libcudacxx_version 1.8.0)
++set(thrust_libcudacxx_version 2.1.0)
+ 
+ ################################################################################
+ # User variables and APIs. Users can rely on these:
+diff --git a/dependencies/cub/cub/cmake/cub-config.cmake b/dependencies/cub/cub/cmake/cub-config.cmake
+index ebe40efc..2935d10d 100644
+--- a/dependencies/cub/cub/cmake/cub-config.cmake
++++ b/dependencies/cub/cub/cmake/cub-config.cmake
+@@ -9,7 +9,7 @@ if (TARGET CUB::CUB)
+ endif()
+ 
+ # Minimum supported libcudacxx version:
+-set(cub_libcudacxx_version 1.8.0)
++set(cub_libcudacxx_version 2.1.0)
+ 
+ function(_cub_declare_interface_alias alias_name ugly_name)
+   # 1) Only IMPORTED and ALIAS targets can be placed in a namespace.
