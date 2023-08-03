@@ -11,6 +11,40 @@ index fe88a961..cc37befa 100644
  
  ################################################################################
  # User variables and APIs. Users can rely on these:
+@@ -693,8 +693,12 @@ endif()
+ if (NOT TARGET Thrust::libcudacxx)
+   thrust_debug("Searching for libcudacxx REQUIRED" internal)
+
+-  # First do a non-required search for any co-packaged versions.
+-  # These are preferred.
++  # Allow externally packaged to be used and fails if
++  # no suitable package exists.
++  find_package(libcudacxx ${thrust_libcudacxx_version} CONFIG
++    ${_THRUST_QUIET_FLAG}
++  )
++  # Fall back to a co-packaged versions.
+   find_package(libcudacxx ${thrust_libcudacxx_version} CONFIG
+     ${_THRUST_QUIET_FLAG}
+     NO_DEFAULT_PATH # Only check the explicit HINTS below:
+@@ -703,14 +707,11 @@ if (NOT TARGET Thrust::libcudacxx)
+       "${_THRUST_INCLUDE_DIR}/../libcudacxx"           # Source layout (Perforce)
+       "${_THRUST_CMAKE_DIR}/.."                        # Install layout
+   )
+-
+-  # A second required search allows externally packaged to be used and fails if
+-  # no suitable package exists.
+-  find_package(libcudacxx ${thrust_libcudacxx_version} CONFIG
+-    REQUIRED
+-    ${_THRUST_QUIET_FLAG}
++  # Try for any version of libcudacxx as a last resort
++  find_package(libcudacxx REQUIRED ${_THRUST_QUIET_FLAG}
+   )
+
++
+   if (TARGET libcudacxx::libcudacxx)
+     _thrust_set_libcudacxx_target(libcudacxx::libcudacxx)
+   else()
+
 diff --git a/dependencies/cub/cub/cmake/cub-config.cmake b/dependencies/cub/cub/cmake/cub-config.cmake
 index ebe40efc..2935d10d 100644
 --- a/dependencies/cub/cub/cmake/cub-config.cmake
