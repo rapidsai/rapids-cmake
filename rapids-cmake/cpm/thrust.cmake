@@ -60,6 +60,13 @@ function(rapids_cpm_thrust NAMESPACE namespaces_name)
   # submodule bundled with Thrust.
   include("${rapids-cmake-dir}/cpm/libcudacxx.cmake")
   rapids_cpm_libcudacxx(${ARGN})
+  set(libcudacxx_SOURCE_DIR "${libcudacxx_SOURCE_DIR}" PARENT_SCOPE)
+  set(libcudacxx_BINARY_DIR "${libcudacxx_BINARY_DIR}" PARENT_SCOPE)
+  set(libcudacxx_ADDED "${libcudacxx_ADDED}" PARENT_SCOPE)
+  set(libcudacxx_VERSION ${version} PARENT_SCOPE)
+  if(libcudacxx_ADDED)
+    list(APPEND libcudacxx_ROOT "${libcudacxx_SOURCE_DIR}")
+  endif()
 
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
   rapids_cpm_package_details(Thrust version repository tag shallow exclude)
