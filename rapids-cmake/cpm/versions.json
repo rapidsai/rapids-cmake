@@ -1,21 +1,21 @@
 
 {
   "packages" : {
+    "benchmark" : {
+      "version" : "1.8.0",
+      "git_url" : "https://github.com/google/benchmark.git",
+      "git_tag" : "v${version}"
+    },
     "cuco" : {
       "version" : "0.0.1",
       "git_shallow" : false,
       "git_url" : "https://github.com/NVIDIA/cuCollections.git",
-      "git_tag" : "546ca606a17f480fa9d58d1752cce2aad6575bc4"
+      "git_tag" : "303f134573afa315cf14fca3f7a0b730438497c3"
     },
     "fmt" : {
       "version" : "9.1.0",
       "git_url" : "https://github.com/fmtlib/fmt.git",
       "git_tag" : "${version}"
-    },
-    "GBench" : {
-      "version" : "1.5.3",
-      "git_url" : "https://github.com/google/benchmark.git",
-      "git_tag" : "v1.5.3"
     },
     "GTest" : {
       "version" : "1.13.0",
@@ -31,6 +31,11 @@
           "file" : "libcudacxx/install_rules.diff",
           "issue" : "libcudacxx 1.X installs incorrect files [https://github.com/NVIDIA/libcudacxx/pull/428]",
           "fixed_in" : "2.2"
+        },
+        {
+          "file" : "libcudacxx/reroot_support.diff",
+          "issue" : "Support conda-forge usage of CMake rerooting [https://github.com/NVIDIA/libcudacxx/pull/490]",
+          "fixed_in" : "2.2"
         }
       ]
     },
@@ -38,16 +43,11 @@
       "version" : "0.0",
       "git_shallow" : false,
       "git_url" : "https://github.com/NVIDIA/nvbench.git",
-      "git_tag" : "e477bb386289a11ad8d7e358cff6527cfc593974",
+      "git_tag" : "083fdc2fc130d84805827c0129f84bb7449ec059",
       "patches" : [
         {
           "file" : "nvbench/use_existing_fmt.diff",
           "issue" : "Fix add support for using an existing fmt [https://github.com/NVIDIA/nvbench/pull/125]",
-          "fixed_in" : ""
-        },
-        {
-          "file" : "nvbench/public_fmt_dep_in_conda.diff",
-          "issue" : "Propagate fmt requirement in conda envs [https://github.com/NVIDIA/nvbench/pull/127]",
           "fixed_in" : ""
         }
       ]
@@ -76,6 +76,11 @@
       "git_url" : "https://github.com/NVIDIA/thrust.git",
       "git_tag" : "${version}",
       "patches" : [
+        {
+          "file" : "Thrust/reroot_support.diff",
+          "issue" : "Support conda-forge usage of CMake rerooting [https://github.com/NVIDIA/thrust/pull/1969]",
+          "fixed_in" : "2.2"
+        },
         {
           "file" : "Thrust/transform_iter_with_reduce_by_key.diff",
           "issue" : "Support transform iterator with reduce by key [https://github.com/NVIDIA/thrust/pull/1805]",

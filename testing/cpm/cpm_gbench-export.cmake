@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2022, NVIDIA CORPORATION.
+# Copyright (c) 2022-2023, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,11 +22,11 @@ rapids_cpm_gbench(BUILD_EXPORT_SET bench)
 rapids_cpm_gbench(BUILD_EXPORT_SET bench2)
 
 get_target_property(packages rapids_export_build_bench PACKAGE_NAMES)
-if(NOT GBench IN_LIST packages)
-  message(FATAL_ERROR "rapids_cpm_gbench failed to record gbench needs to be exported")
+if(NOT benchmark IN_LIST packages)
+  message(FATAL_ERROR "rapids_cpm_gbench failed to record benchmark needs to be exported")
 endif()
 
 get_target_property(packages rapids_export_build_bench2 PACKAGE_NAMES)
-if(NOT GBench IN_LIST packages)
-  message(FATAL_ERROR "rapids_cpm_gbench failed to record gbench needs to be exported")
+if(NOT benchmark IN_LIST packages)
+  message(FATAL_ERROR "rapids_cpm_gbench failed to record benchmark needs to be exported")
 endif()

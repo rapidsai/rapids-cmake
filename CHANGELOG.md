@@ -1,3 +1,39 @@
+# rapids-cmake 23.08.00 (9 Aug 2023)
+
+## 🐛 Bug Fixes
+
+- Use &lt; gcc-11 with cuda 11.5 to avoid nvbench compile failures ([#448](https://github.com/rapidsai/rapids-cmake/pull/448)) [@robertmaynard](https://github.com/robertmaynard)
+- Ensure tests the modify same git repo don&#39;t execute at the same time ([#446](https://github.com/rapidsai/rapids-cmake/pull/446)) [@robertmaynard](https://github.com/robertmaynard)
+- Fix CUDA 11.5 tests by adding dependencies entries. ([#443](https://github.com/rapidsai/rapids-cmake/pull/443)) [@bdice](https://github.com/bdice)
+- Remove trailing comma and add pre-commit hook for JSON validation. ([#440](https://github.com/rapidsai/rapids-cmake/pull/440)) [@bdice](https://github.com/bdice)
+- When nvcomp is found locally print where it is on disk ([#434](https://github.com/rapidsai/rapids-cmake/pull/434)) [@robertmaynard](https://github.com/robertmaynard)
+- Correct two issues found when testing CMake 3.27 rc2 ([#432](https://github.com/rapidsai/rapids-cmake/pull/432)) [@robertmaynard](https://github.com/robertmaynard)
+- Correct re-root controls from conda-forge with thrust/cub/etc ([#431](https://github.com/rapidsai/rapids-cmake/pull/431)) [@robertmaynard](https://github.com/robertmaynard)
+- Bug/proprietary binary obeys `always_download` ([#430](https://github.com/rapidsai/rapids-cmake/pull/430)) [@robertmaynard](https://github.com/robertmaynard)
+- Correct install_relocatable issues found by libcudf ([#423](https://github.com/rapidsai/rapids-cmake/pull/423)) [@robertmaynard](https://github.com/robertmaynard)
+- test_install_relocatable correct run_gpu_test.cmake location ([#420](https://github.com/rapidsai/rapids-cmake/pull/420)) [@robertmaynard](https://github.com/robertmaynard)
+- Fea/move to latest nvbench ([#417](https://github.com/rapidsai/rapids-cmake/pull/417)) [@robertmaynard](https://github.com/robertmaynard)
+- Use [@loader_path instead of $ORIGIN on MacOS ([#403](https://github.com/rapidsai/rapids-cmake/pull/403)) @manopapad](https://github.com/loader_path instead of $ORIGIN on MacOS ([#403](https://github.com/rapidsai/rapids-cmake/pull/403)) @manopapad)
+- Make NAMESPACE property truly optional in rapids_export ([#358](https://github.com/rapidsai/rapids-cmake/pull/358)) [@agirault](https://github.com/agirault)
+
+## 🚀 New Features
+
+- Update rapids-cmake ci to support conda-forge CUDA 12 ([#437](https://github.com/rapidsai/rapids-cmake/pull/437)) [@robertmaynard](https://github.com/robertmaynard)
+- Bump cuco version ([#435](https://github.com/rapidsai/rapids-cmake/pull/435)) [@PointKernel](https://github.com/PointKernel)
+- Add rapids_cuda_set_runtime ([#429](https://github.com/rapidsai/rapids-cmake/pull/429)) [@robertmaynard](https://github.com/robertmaynard)
+- support_conda_env support host and build CTK 12 locations ([#428](https://github.com/rapidsai/rapids-cmake/pull/428)) [@robertmaynard](https://github.com/robertmaynard)
+- rapids_find_generate_module Support user code blocks ([#415](https://github.com/rapidsai/rapids-cmake/pull/415)) [@robertmaynard](https://github.com/robertmaynard)
+- Rewrite of rapids_test_install_relocatable to support genex expressions ([#410](https://github.com/rapidsai/rapids-cmake/pull/410)) [@robertmaynard](https://github.com/robertmaynard)
+
+## 🛠️ Improvements
+
+- Conditionally modify envvar vs. global CMAKE_PREFIX_PATH in `rapids_cmake_support_conda_env` ([#439](https://github.com/rapidsai/rapids-cmake/pull/439)) [@trxcllnt](https://github.com/trxcllnt)
+- Migrate to updated shared-action-workflows name for CUDA 12 CI ([#438](https://github.com/rapidsai/rapids-cmake/pull/438)) [@bdice](https://github.com/bdice)
+- Fix google benchmark name and update version ([#425](https://github.com/rapidsai/rapids-cmake/pull/425)) [@vyasr](https://github.com/vyasr)
+- use rapids-upload-docs script ([#419](https://github.com/rapidsai/rapids-cmake/pull/419)) [@AyodeAwe](https://github.com/AyodeAwe)
+- Remove documentation build scripts for Jenkins ([#418](https://github.com/rapidsai/rapids-cmake/pull/418)) [@ajschmidt8](https://github.com/ajschmidt8)
+- Upload conda packages for rapids_core_dependencies. ([#414](https://github.com/rapidsai/rapids-cmake/pull/414)) [@bdice](https://github.com/bdice)
+
 # rapids-cmake 23.06.00 (7 Jun 2023)
 
 ## 🚨 Breaking Changes

@@ -29,8 +29,13 @@ rapids_cpm_package_details
                              <exclude_from_all_variable>
                              )
 
+Result Variables
+^^^^^^^^^^^^^^^^
+  :cmake:variable:`rapids_cmake_always_download` will contain the value of the `always_download` entry if it exists.
+  :cmake:variable:`CPM_DOWNLOAD_ALL` will contain the value of the `always_download` entry if it exists.
+
 #]=======================================================================]
-# cmake-lint: disable=R0913
+# cmake-lint: disable=R0913,R0915
 function(rapids_cpm_package_details package_name version_var url_var tag_var shallow_var
          exclude_from_all_var)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.rapids_cpm_package_details")
@@ -99,6 +104,7 @@ function(rapids_cpm_package_details package_name version_var url_var tag_var sha
   set(${shallow_var} ${git_shallow} PARENT_SCOPE)
   set(${exclude_from_all_var} ${exclude_from_all} PARENT_SCOPE)
   if(DEFINED always_download)
+    set(rapids_cmake_always_download ${always_download} PARENT_SCOPE)
     set(CPM_DOWNLOAD_ALL ${always_download} PARENT_SCOPE)
   endif()
 

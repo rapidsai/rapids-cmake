@@ -18,18 +18,18 @@ include(${rapids-cmake-dir}/test/add.cmake)
 include(${rapids-cmake-dir}/test/install_relocatable.cmake)
 
 enable_language(CUDA)
-rapids_test_init()
+enable_testing()
 
+rapids_test_init()
 rapids_test_add(NAME verify_ COMMAND ls GPUS 1 INSTALL_COMPONENT_SET testing)
 
 rapids_test_install_relocatable(INSTALL_COMPONENT_SET testing
                                 DESTINATION bin/testing
                                 INCLUDE_IN_ALL)
 
-file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/verify_cmake_install.cmake"
+file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/verify_cmake_install_rules.cmake"
 "set(install_rules_file \"${CMAKE_CURRENT_BINARY_DIR}/cmake_install.cmake\")")
-
-file(APPEND "${CMAKE_CURRENT_BINARY_DIR}/verify_cmake_install.cmake"
+file(APPEND "${CMAKE_CURRENT_BINARY_DIR}/verify_cmake_install_rules.cmake"
 [=[
 
 file(READ "${install_rules_file}" contents)
@@ -39,14 +39,25 @@ if(is_found EQUAL -1)
   message(FATAL_ERROR "`rapids_test_install_relocatable` failed to mark items as EXCLUDE_FROM_ALL")
 endif()
 ]=])
+
 add_custom_target(verify_install_rule ALL
-  COMMAND ${CMAKE_COMMAND} -P "${CMAKE_CURRENT_BINARY_DIR}/verify_cmake_install.cmake")
+  COMMAND ${CMAKE_COMMAND} -P "${CMAKE_CURRENT_BINARY_DIR}/verify_cmake_install_rules.cmake")
 
-set(generated_testfile "${CMAKE_CURRENT_BINARY_DIR}/rapids-cmake/testing/CTestTestfile.cmake.to_install")
-file(READ "${generated_testfile}" contents)
 
+file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/verify_installed_CTestTestfile.cmake"
+  "set(installed_test_file \"${CMAKE_CURRENT_BINARY_DIR}/install/bin/testing/CTestTestfile.cmake\")")
+file(APPEND "${CMAKE_CURRENT_BINARY_DIR}/verify_installed_CTestTestfile.cmake"
+[=[
+
+file(READ "${installed_test_file}" contents)
 set(execute_process_match_string [===[execute_process(COMMAND ./generate_ctest_json OUTPUT_FILE "${CTEST_RESOURCE_SPEC_FILE}")]===])
 string(FIND "${contents}" ${execute_process_match_string} is_found)
 if(is_found EQUAL -1)
   message(FATAL_ERROR "Failed to generate a `execute_process` with escaped CTEST_RESOURCE_SPEC_FILE")
 endif()
+]=])
+
+add_custom_target(install_testing_component ALL
+  COMMAND ${CMAKE_COMMAND} --install "${CMAKE_CURRENT_BINARY_DIR}" --component testing --prefix install/
+  COMMAND ${CMAKE_COMMAND} -P "${CMAKE_CURRENT_BINARY_DIR}/verify_installed_CTestTestfile.cmake"
+  )

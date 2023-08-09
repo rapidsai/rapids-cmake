@@ -33,8 +33,9 @@ by `ctest` in parallel with GPU awareness.
 Will install all tests created by :cmake:command:`rapids_test_add` that are
 part of the provided ``INSTALL_COMPONENT_SET``.
 
-The :cmake:command:`rapids_test_install_relocatable` presumes that all
-arguments provided to the tests are machine independent (no absolute paths).
+The :cmake:command:`rapids_test_install_relocatable` will transform all
+test arguments or properties on install tests that reference the build directory to reference
+the install directory.
 
 ``INSTALL_COMPONENT_SET``
   Record which test component infrastructure to be installed
@@ -46,6 +47,10 @@ arguments provided to the tests are machine independent (no absolute paths).
 ``INCLUDE_IN_ALL``
   State that these install rules should be part of the default install set.
   By default tests are not part of the default install set.
+
+.. note::
+  rapids_test_install_relocatable behavior is undefined when used with
+  multi-config generators such as "Visual Studio" and "Ninja Multi-Config"
 
 #]=======================================================================]
 function(rapids_test_install_relocatable)
@@ -69,40 +74,36 @@ function(rapids_test_install_relocatable)
   get_target_property(targets_to_install rapids_test_install_${component} TARGETS_TO_INSTALL)
   get_target_property(tests_to_run rapids_test_install_${component} TESTS_TO_RUN)
 
-  include(${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/default_names.cmake)
-  set(content
-      "
-  set(CTEST_SCRIPT_DIRECTORY \".\")
-  set(CTEST_RESOURCE_SPEC_FILE \"./${rapids_test_json_file_name}\")
-  execute_process(COMMAND ./${rapids_test_generate_exe_name} OUTPUT_FILE \"\${CTEST_RESOURCE_SPEC_FILE}\")
-  ")
+  string(REGEX REPLACE "/" ";" from_install_prefix "${_RAPIDS_TEST_DESTINATION}")
+  list(TRANSFORM from_install_prefix REPLACE ".+" "../")
+  list(JOIN from_install_prefix "" from_install_prefix)
 
-  foreach(test IN LISTS tests_to_run)
-    get_test_property(${test} INSTALL_COMMAND command)
-    get_test_property(${test} RESOURCE_GROUPS resources)
-    get_test_property(${test} LABELS labels)
-    string(APPEND content "add_test([=[${test}]=] ${command})\n")
-    if(resources)
-      string(APPEND content
-             "set_tests_properties([=[${test}]=] PROPERTIES RESOURCE_GROUPS ${resources})\n")
-    endif()
-    if(labels)
-      string(APPEND content "set_tests_properties([=[${test}]=] PROPERTIES LABELS ${labels})\n")
-    endif()
-  endforeach()
+  # cmake-lint: disable=W0106
+  install(CODE "
+    # set variables needed by `generate_installed_CTestTestfile.cmake`
+    set(_RAPIDS_TEST_DESTINATION \"${_RAPIDS_TEST_DESTINATION}\")
+    set(_RAPIDS_INSTALL_PREFIX \"${from_install_prefix}\")
+    set(_RAPIDS_BUILD_DIR \"${CMAKE_CURRENT_BINARY_DIR}\")
+    set(_RAPIDS_PROJECT_DIR \"${CMAKE_BINARY_DIR}\")
+    set(_RAPIDS_INSTALL_COMPONENT_SET \"${_RAPIDS_TEST_INSTALL_COMPONENT_SET}\")
+    set(_RAPIDS_TARGETS_INSTALLED \"${targets_to_install}\")
+    set(_RAPIDS_TESTS_TO_RUN \"${tests_to_run}\")
+    set(test_launcher_file \"${CMAKE_CURRENT_BINARY_DIR}/rapids-cmake/testing/CTestTestfile.cmake.to_install\")
 
-  set(test_launcher_file
-      "${CMAKE_CURRENT_BINARY_DIR}/rapids-cmake/${_RAPIDS_TEST_INSTALL_COMPONENT_SET}/CTestTestfile.cmake.to_install"
-  )
-  file(WRITE "${test_launcher_file}" "${content}")
-  install(FILES "${test_launcher_file}"
+    # parse the CTestTestfile and store installable version in `test_launcher_file`
+    message(STATUS \"Generating install version of CTestTestfile.cmake\")
+    cmake_policy(SET CMP0011 NEW) # PUSH/POP for `include`
+    include(\"${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/generate_installed_CTestTestfile.cmake\")
+
+    # install `test_launcher_file`
+    file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${_RAPIDS_TEST_DESTINATION}\" TYPE FILE RENAME \"CTestTestfile.cmake\" FILES \"\${test_launcher_file}\")
+    "
           COMPONENT ${_RAPIDS_TEST_INSTALL_COMPONENT_SET}
-          DESTINATION ${_RAPIDS_TEST_DESTINATION}
-          RENAME "CTestTestfile.cmake"
           ${to_exclude})
 
   # We need to install the rapids-test gpu detector, and the json script we also need to write out /
   # install the new CTestTestfile.cmake
+  include(${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/default_names.cmake)
   if(EXISTS "${PROJECT_BINARY_DIR}/rapids-cmake/${rapids_test_generate_exe_name}")
     install(PROGRAMS "${PROJECT_BINARY_DIR}/rapids-cmake/${rapids_test_generate_exe_name}"
             COMPONENT ${_RAPIDS_TEST_INSTALL_COMPONENT_SET} DESTINATION ${_RAPIDS_TEST_DESTINATION}

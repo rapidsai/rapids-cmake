@@ -63,7 +63,7 @@ Result Variables
   :cmake:variable:`nvcomp_proprietary_binary` is set to ON if the proprietary binary is being used
 
 #]=======================================================================]
-# cmake-lint: disable=R0915
+# cmake-lint: disable=R0915,R0912
 function(rapids_cpm_nvcomp)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.nvcomp")
 
@@ -74,11 +74,12 @@ function(rapids_cpm_nvcomp)
 
   # Fix up _RAPIDS_UNPARSED_ARGUMENTS to have EXPORT_SETS as this is need for rapids_cpm_find
   if(_RAPIDS_INSTALL_EXPORT_SET)
-    list(APPEND _RAPIDS_UNPARSED_ARGUMENTS INSTALL_EXPORT_SET ${_RAPIDS_INSTALL_EXPORT_SET})
+    list(APPEND _RAPIDS_EXPORT_ARGUMENTS INSTALL_EXPORT_SET ${_RAPIDS_INSTALL_EXPORT_SET})
   endif()
   if(_RAPIDS_BUILD_EXPORT_SET)
-    list(APPEND _RAPIDS_UNPARSED_ARGUMENTS BUILD_EXPORT_SET ${_RAPIDS_BUILD_EXPORT_SET})
+    list(APPEND _RAPIDS_EXPORT_ARGUMENTS BUILD_EXPORT_SET ${_RAPIDS_BUILD_EXPORT_SET})
   endif()
+  set(_RAPIDS_UNPARSED_ARGUMENTS ${_RAPIDS_EXPORT_ARGUMENTS})
 
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
   rapids_cpm_package_details(nvcomp version repository tag shallow exclude)
@@ -87,9 +88,21 @@ function(rapids_cpm_nvcomp)
     set(to_exclude ON)
   endif()
 
-  # first see if we have a proprietary pre-built binary listed in versions.json and it if requested.
+  # first search locally if `rapids_cmake_always_download` is false
+  if(NOT rapids_cmake_always_download)
+    include("${rapids-cmake-dir}/find/package.cmake")
+    rapids_find_package(nvcomp ${version} GLOBAL_TARGETS nvcomp::nvcomp ${_RAPIDS_EXPORT_ARGUMENTS}
+                        FIND_ARGS QUIET)
+    if(nvcomp_FOUND)
+      # report where nvcomp was found
+      message(STATUS "Found nvcomp: ${nvcomp_DIR} (found version ${nvcomp_VERSION})")
+    endif()
+  endif()
+
+  # second see if we have a proprietary pre-built binary listed in versions.json and it if
+  # requested.
   set(nvcomp_proprietary_binary OFF) # will be set to true by rapids_cpm_get_proprietary_binary
-  if(_RAPIDS_USE_PROPRIETARY_BINARY)
+  if(_RAPIDS_USE_PROPRIETARY_BINARY AND NOT nvcomp_FOUND)
     include("${rapids-cmake-dir}/cpm/detail/get_proprietary_binary_url.cmake")
     include("${rapids-cmake-dir}/cpm/detail/download_proprietary_binary.cmake")
     rapids_cpm_get_proprietary_binary_url(nvcomp ${version} nvcomp_url)

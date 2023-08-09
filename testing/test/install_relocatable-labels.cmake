@@ -18,6 +18,7 @@ include(${rapids-cmake-dir}/test/add.cmake)
 include(${rapids-cmake-dir}/test/install_relocatable.cmake)
 
 enable_language(CUDA)
+enable_testing()
 rapids_test_init()
 
 rapids_test_add(NAME verify_labels COMMAND ls GPUS 1 INSTALL_COMPONENT_SET testing)
@@ -26,11 +27,20 @@ set_tests_properties(verify_labels PROPERTIES LABELS "has_label")
 rapids_test_install_relocatable(INSTALL_COMPONENT_SET testing
                                 DESTINATION bin/testing)
 
-set(generated_testfile "${CMAKE_CURRENT_BINARY_DIR}/rapids-cmake/testing/CTestTestfile.cmake.to_install")
-file(READ "${generated_testfile}" contents)
+file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/verify_installed_CTestTestfile.cmake"
+  "set(installed_test_file \"${CMAKE_CURRENT_BINARY_DIR}/install/bin/testing/CTestTestfile.cmake\")")
+file(APPEND "${CMAKE_CURRENT_BINARY_DIR}/verify_installed_CTestTestfile.cmake"
+[==[
 
+file(READ "${installed_test_file}" contents)
 set(labels_match_string [===[PROPERTIES LABELS has_label]===])
 string(FIND "${contents}" "${labels_match_string}" is_found)
 if(is_found EQUAL -1)
   message(FATAL_ERROR "Failed to record the LABELS property")
 endif()
+]==])
+
+add_custom_target(install_testing_component ALL
+  COMMAND ${CMAKE_COMMAND} --install "${CMAKE_CURRENT_BINARY_DIR}" --component testing --prefix install/
+  COMMAND ${CMAKE_COMMAND} -P "${CMAKE_CURRENT_BINARY_DIR}/verify_installed_CTestTestfile.cmake"
+  )

@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021, NVIDIA CORPORATION.
+# Copyright (c) 2021-2023, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -69,21 +69,24 @@ endif()
 
 # New target being used, so this should modify CMAKE_PREFIX_PATH
 set(CMAKE_PREFIX_PATH "placeholder" )
+set(ENV{CMAKE_PREFIX_PATH} "env_1:env_2" )
 rapids_cmake_support_conda_env(conda_env_modify MODIFY_PREFIX_PATH)
 if(NOT TARGET conda_env_modify)
   message(FATAL_ERROR "Expected target conda_env_modify to exist")
 endif()
 
 list(LENGTH CMAKE_PREFIX_PATH len)
-if( len GREATER 3)
+if( len GREATER 5)
   message(FATAL_ERROR "CMAKE_PREFIX_PATH length is wrong after MODIFY_PREFIX_PATH")
 endif()
 
 list(GET CMAKE_PREFIX_PATH 0 first_value)
 list(GET CMAKE_PREFIX_PATH 1 second_value)
 list(GET CMAKE_PREFIX_PATH 2 third_value)
-set(correct_list "$ENV{PREFIX}" "$ENV{BUILD_PREFIX}" "placeholder")
-set(actual_list "${first_value}" "${second_value}" "${third_value}")
+list(GET CMAKE_PREFIX_PATH 3 fourth_value)
+list(GET CMAKE_PREFIX_PATH 4 fifth_value)
+set(correct_list "placeholder" "env_1" "env_2" "$ENV{PREFIX}" "$ENV{BUILD_PREFIX}")
+set(actual_list "${first_value}" "${second_value}" "${third_value}" "${fourth_value}" "${fifth_value}")
 
 foreach(correct actual IN ZIP_LISTS correct_list actual_list)
   if(NOT correct STREQUAL actual)

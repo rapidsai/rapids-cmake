@@ -37,9 +37,3 @@ get_target_property(names rapids_test_install_testing TARGETS_TO_INSTALL)
 if(NOT "verify_alloc" IN_LIST names)
   message(FATAL_ERROR "Failed to record `verify_alloc` as a target to be installed in the testing component")
 endif()
-
-# Verify we recorded some install command for `simple_test`
-get_test_property(simple_test INSTALL_COMMAND install_command)
-if(NOT install_command)
-  message(FATAL_ERROR "Failed to record the command to run `simple_test` after installing it")
-endif()

@@ -14,6 +14,7 @@ repos:
           (?x)^(
             ^rapids-cmake/cpm/patches/.*
           )
+      - id: check-json
   - repo: https://github.com/pre-commit/mirrors-clang-format
     rev: v16.0.1
     hooks:
