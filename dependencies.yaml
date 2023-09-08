@@ -132,7 +132,7 @@ dependencies:
         packages:
           - pip
           - pip:
-            - sphinxcontrib-moderncmakedomain
+              - sphinxcontrib-moderncmakedomain
           - sphinx
           - sphinx-copybutton
           - sphinx_rtd_theme
@@ -145,6 +145,9 @@ dependencies:
           - scikit-build>=0.13.1
           - libpng
           - zlib
+      - output_types: [conda]
+        packages:
+          - fmt==9.1.0
   style_checks:
     common:
       - output_types: [conda, requirements]
