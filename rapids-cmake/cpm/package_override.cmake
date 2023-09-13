@@ -49,11 +49,14 @@ projects.
 
 .. note::
 
+  .. versionadded:: v23.10.00
+    When the variable `CPM_<package_name>_SOURCE` exists, any override entries
+    for `package_name` will be ignored.
+
   If the override file doesn't specify a value or package entry the default
   version will be used.
 
   Must be called before any invocation of :cmake:command:`rapids_cpm_find`.
-
 
 #]=======================================================================]
 function(rapids_cpm_package_override filepath)
@@ -74,10 +77,10 @@ function(rapids_cpm_package_override filepath)
     # cmake-lint: disable=E1120
     foreach(index RANGE ${package_count})
       string(JSON package_name MEMBER "${json_data}" packages ${index})
-      string(JSON data GET "${json_data}" packages "${package_name}")
       get_property(override_exists GLOBAL PROPERTY rapids_cpm_${package_name}_override_json DEFINED)
-      if(NOT override_exists)
+      if(NOT (override_exists OR DEFINED CPM_${package_name}_SOURCE))
         # only add the first override for a project we encounter
+        string(JSON data GET "${json_data}" packages "${package_name}")
         set_property(GLOBAL PROPERTY rapids_cpm_${package_name}_override_json "${data}")
         set_property(GLOBAL PROPERTY rapids_cpm_${package_name}_override_json_file "${filepath}")
       endif()
