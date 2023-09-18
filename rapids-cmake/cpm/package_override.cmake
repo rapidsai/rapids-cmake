@@ -50,9 +50,12 @@ projects.
 .. note::
 
   .. versionadded:: v23.10.00
+
     When the variable `CPM_<package_name>_SOURCE` exists, any override entries
     for `package_name` will be ignored.
 
+
+.. note::
   If the override file doesn't specify a value or package entry the default
   version will be used.
 
