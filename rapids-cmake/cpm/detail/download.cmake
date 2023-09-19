@@ -43,7 +43,7 @@ function(rapids_cpm_download)
 
   # When changing version verify no new variables needs to be propagated
   set(CPM_DOWNLOAD_VERSION 0.38.5)
-  set(CPM_DOWNLOAD_MD5_HASH d6d5d0d5abca0b9ffe253353f75befc704e81bec)
+  set(CPM_DOWNLOAD_MD5_HASH c98d14a13dfd1952e115979c095f6794)
 
   if(CPM_SOURCE_CACHE)
     # Expand relative path. This is important if the provided path contains a tilde (~)
