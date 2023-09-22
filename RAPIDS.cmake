@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2023, NVIDIA CORPORATION.
+# Copyright (c) 2021, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -26,13 +26,13 @@ endif()
 # Allow users to control which GitHub repo is fetched
 if(NOT rapids-cmake-repo)
   # Define a default repo if the user doesn't set one
-  set(rapids-cmake-repo bdice/rapids-cmake)
+  set(rapids-cmake-repo rapidsai/rapids-cmake)
 endif()
 
 # Allow users to control which branch is fetched
 if(NOT rapids-cmake-branch)
   # Define a default branch if the user doesn't set one
-  set(rapids-cmake-branch "cccl-update-2.1.0")
+  set(rapids-cmake-branch "branch-${rapids-cmake-version}")
 endif()
 
 # Allow users to control the exact URL passed to FetchContent
