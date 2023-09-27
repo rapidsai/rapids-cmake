@@ -90,18 +90,27 @@ function(rapids_cpm_thrust NAMESPACE namespaces_name)
   set(multi_value)
   cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
+  set(post_find_code "if(NOT TARGET ${namespaces_name}::Thrust)"
+                     "  thrust_create_target(${namespaces_name}::Thrust FROM_OPTIONS)" "endif()")
+
   if(Thrust_SOURCE_DIR AND _RAPIDS_BUILD_EXPORT_SET)
     # Store where CMake can find the Thrust-config.cmake that comes part of Thrust source code
     include("${rapids-cmake-dir}/export/find_package_root.cmake")
+    include("${rapids-cmake-dir}/export/detail/post_find_package_code.cmake")
     rapids_export_find_package_root(BUILD Thrust "${Thrust_SOURCE_DIR}/cmake"
                                     ${_RAPIDS_BUILD_EXPORT_SET})
+    rapids_export_post_find_package_code(BUILD Thrust "${post_find_code}"
+                                         ${_RAPIDS_BUILD_EXPORT_SET})
   endif()
 
   if(Thrust_SOURCE_DIR AND _RAPIDS_INSTALL_EXPORT_SET AND to_install)
     include("${rapids-cmake-dir}/export/find_package_root.cmake")
+    include("${rapids-cmake-dir}/export/detail/post_find_package_code.cmake")
     rapids_export_find_package_root(INSTALL Thrust
                                     [=[${CMAKE_CURRENT_LIST_DIR}/../../rapids/cmake/thrust]=]
                                     ${_RAPIDS_INSTALL_EXPORT_SET})
+    rapids_export_post_find_package_code(INSTALL Thrust "${post_find_code}"
+                                         ${_RAPIDS_INSTALL_EXPORT_SET})
   endif()
 
   # Check for the existence of thrust_create_target so we support fetching Thrust with DOWNLOAD_ONLY
@@ -111,26 +120,6 @@ function(rapids_cpm_thrust NAMESPACE namespaces_name)
     if(TARGET _Thrust_Thrust)
       set_target_properties(_Thrust_Thrust PROPERTIES IMPORTED_NO_SYSTEM ON)
     endif()
-  endif()
-
-  # Since `GLOBAL_TARGET ${namespaces_name}::Thrust` will list the target to be promoted to global
-  # by `rapids_export` this will break consumers as the target doesn't exist when generating the
-  # dependencies.cmake file, but requires a call to `thrust_create_target`
-  #
-  # So determine what `BUILD_EXPORT_SET` and `INSTALL_EXPORT_SET` this was added to and remove
-  # ${namespaces_name}::Thrust
-  if(_RAPIDS_BUILD_EXPORT_SET)
-    set(target_name rapids_export_build_${_RAPIDS_BUILD_EXPORT_SET})
-    get_target_property(global_targets ${target_name} GLOBAL_TARGETS)
-    list(REMOVE_ITEM global_targets "${namespaces_name}::Thrust")
-    set_target_properties(${target_name} PROPERTIES GLOBAL_TARGETS "${global_targets}")
-  endif()
-
-  if(_RAPIDS_INSTALL_EXPORT_SET)
-    set(target_name rapids_export_install_${_RAPIDS_INSTALL_EXPORT_SET})
-    get_target_property(global_targets ${target_name} GLOBAL_TARGETS)
-    list(REMOVE_ITEM global_targets "${namespaces_name}::Thrust")
-    set_target_properties(${target_name} PROPERTIES GLOBAL_TARGETS "${global_targets}")
   endif()
 
   # Propagate up variables that CPMFindPackage provide

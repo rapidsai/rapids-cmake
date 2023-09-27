@@ -42,6 +42,7 @@ a given export_set for the requested mode.
   CMake config module.
 
 #]=======================================================================]
+# cmake-lint: disable=R0915
 function(rapids_export_write_dependencies type export_set file_path)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.export.write_dependencies")
 
@@ -116,6 +117,12 @@ endif()\n")
       file(READ "${dep_dir}/package_${dep}.cmake" dep_content)
     endif()
     string(APPEND _RAPIDS_EXPORT_CONTENTS "${dep_content}\n")
+
+    get_property(post_find_code TARGET rapids_export_${type}_${export_set}
+                 PROPERTY "${dep}_POST_FIND_CODE")
+    if(post_find_code)
+      string(APPEND _RAPIDS_EXPORT_CONTENTS "if(${dep}_FOUND)\n${post_find_code}\nendif()\n")
+    endif()
   endforeach()
   string(APPEND _RAPIDS_EXPORT_CONTENTS "\n")
 
