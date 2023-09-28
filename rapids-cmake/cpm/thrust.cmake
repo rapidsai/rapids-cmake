@@ -40,6 +40,13 @@ across all RAPIDS projects.
 .. |PKG_NAME| replace:: Thrust
 .. include:: common_package_args.txt
 
+.. versionadded:: v23.12.00
+  When `BUILD_EXPORT_SET` is specified the generated build export set dependency
+  file will automatically call `thrust_create_target(<namespace>::Thrust FROM_OPTIONS)`.
+
+  When `INSTALL_EXPORT_SET` is specified the generated install export set dependency
+  file will automatically call `thrust_create_target(<namespace>::Thrust FROM_OPTIONS)`.
+
 Result Targets
 ^^^^^^^^^^^^^^
   <namespace>::Thrust target will be created
