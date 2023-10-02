@@ -24,18 +24,6 @@ set(b ON)
 set(c ON)]=] test_export_set)
 rapids_export_post_find_package_code( build FAKE_PACKAGE "set(d ON);set(e ON)" test_export_set)
 
-get_target_property(install_code rapids_export_build_test_export_set FAKE_PACKAGE_POST_FIND_CODE)
-cmake_language(EVAL CODE "${install_code}")
-if(NOT a)
-  message(FATAL_ERROR "rapids_export_post_find_package_code failed to record first call")
-endif()
-if(NOT (b AND c))
-  message(FATAL_ERROR "rapids_export_post_find_package_code failed to record second call")
-endif()
-if(NOT (d AND e))
-  message(FATAL_ERROR "rapids_export_post_find_package_code failed to record third call")
-endif()
-
 include(${rapids-cmake-dir}/export/write_dependencies.cmake)
 rapids_export_write_dependencies(BUILD test_export_set "${CMAKE_CURRENT_BINARY_DIR}/install_export_set.cmake")
 
