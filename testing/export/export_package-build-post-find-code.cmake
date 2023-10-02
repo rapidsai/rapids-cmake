@@ -22,7 +22,7 @@ rapids_export_post_find_package_code( bUILd FAKE_PACKAGE
 [=[
 set(b ON)
 set(c ON)]=] test_export_set)
-rapids_export_post_find_package_code( build FAKE_PACKAGE "set(d ON);set(e ON)" test_export_set)
+rapids_export_post_find_package_code(build FAKE_PACKAGE "set(d ON);set(e ON)" test_export_set)
 
 include(${rapids-cmake-dir}/export/write_dependencies.cmake)
 rapids_export_write_dependencies(BUILD test_export_set "${CMAKE_CURRENT_BINARY_DIR}/install_export_set.cmake")
