@@ -29,7 +29,7 @@ has been found successfully.
   rapids_export_post_find_package_code((BUILD|INSTALL)
                                        <PackageName>
                                        <code>
-                                       (<ExportSetName> | EXPORT_SET [ExportSetName])
+                                       EXPORT_SET [ExportSetName]
                                        [CONDITION <variableName>]
                                        )
 
@@ -64,10 +64,6 @@ function(rapids_export_post_find_package_code type name code)
   set(one_value EXPORT_SET CONDITION)
   set(multi_value "")
   cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
-  # handle when we are given just an export set name and not `EXPORT_SET <name>`
-  if(_RAPIDS_UNPARSED_ARGUMENTS AND NOT _RAPIDS_COMPONENTS_EXPORT_SET)
-    set(_RAPIDS_EXPORT_SET ${_RAPIDS_UNPARSED_ARGUMENTS})
-  endif()
   # Early terminate conditions
   if(NOT _RAPIDS_EXPORT_SET OR NOT ${_RAPIDS_CONDITION})
     return()

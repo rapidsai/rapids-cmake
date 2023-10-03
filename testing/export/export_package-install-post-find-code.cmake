@@ -17,7 +17,7 @@ include(${rapids-cmake-dir}/export/package.cmake)
 include(${rapids-cmake-dir}/export/detail/post_find_package_code.cmake)
 
 rapids_export_package(INSTALL FAKE_PACKAGE test_export_set VERSION 22.08)
-rapids_export_post_find_package_code(INSTALL FAKE_PACKAGE "set(a ON)" test_export_set)
+rapids_export_post_find_package_code(INSTALL FAKE_PACKAGE "set(a ON)" EXPORT_SET  test_export_set)
 
 get_target_property(install_code rapids_export_install_test_export_set FAKE_PACKAGE_POST_FIND_CODE)
 cmake_language(EVAL CODE "${install_code}")
