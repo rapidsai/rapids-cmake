@@ -236,8 +236,12 @@
       },
       "rapids_export_find_package_root": {
         "pargs": {
-          "nargs": 4,
+          "nargs": "3+",
           "flags": ["INSTALL", "BUILD"]
+        },
+        "kwargs": {
+          "EXPORT_SET": 1,
+          "CONDITION": 1
         }
       },
       "rapids_export_package": {
