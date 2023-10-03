@@ -22,7 +22,7 @@ rapids_export_post_find_package_code
 .. versionadded:: v23.12.00
 
 Record for <PackageName> a set of CMake instructions to be executed after the package
-has ben found successfully.
+has been found successfully.
 
 .. code-block:: cmake
 
