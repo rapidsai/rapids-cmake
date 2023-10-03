@@ -16,7 +16,7 @@ on:
 jobs:
   cpp-tests:
     secrets: inherit
-    uses: rapidsai/shared-action-workflows/.github/workflows/conda-cpp-tests.yaml@branch-23.12
+    uses: rapidsai/shared-action-workflows/.github/workflows/conda-cpp-tests.yaml@cuda-120-arm
     with:
       build_type: nightly
       branch: ${{ inputs.branch }}
