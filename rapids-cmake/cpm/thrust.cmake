@@ -100,24 +100,20 @@ function(rapids_cpm_thrust NAMESPACE namespaces_name)
   set(post_find_code "if(NOT TARGET ${namespaces_name}::Thrust)"
                      "  thrust_create_target(${namespaces_name}::Thrust FROM_OPTIONS)" "endif()")
 
-  if(Thrust_SOURCE_DIR AND _RAPIDS_BUILD_EXPORT_SET)
+  if(Thrust_SOURCE_DIR)
     # Store where CMake can find the Thrust-config.cmake that comes part of Thrust source code
     include("${rapids-cmake-dir}/export/find_package_root.cmake")
     include("${rapids-cmake-dir}/export/detail/post_find_package_code.cmake")
-    rapids_export_find_package_root(BUILD Thrust "${Thrust_SOURCE_DIR}/cmake"
+    rapids_export_find_package_root(BUILD Thrust "${Thrust_SOURCE_DIR}/cmake" EXPORT_SET
                                     ${_RAPIDS_BUILD_EXPORT_SET})
-    rapids_export_post_find_package_code(BUILD Thrust "${post_find_code}"
+    rapids_export_post_find_package_code(BUILD Thrust "${post_find_code}" EXPORT_SET
                                          ${_RAPIDS_BUILD_EXPORT_SET})
-  endif()
 
-  if(Thrust_SOURCE_DIR AND _RAPIDS_INSTALL_EXPORT_SET AND to_install)
-    include("${rapids-cmake-dir}/export/find_package_root.cmake")
-    include("${rapids-cmake-dir}/export/detail/post_find_package_code.cmake")
     rapids_export_find_package_root(INSTALL Thrust
                                     [=[${CMAKE_CURRENT_LIST_DIR}/../../rapids/cmake/thrust]=]
-                                    ${_RAPIDS_INSTALL_EXPORT_SET})
-    rapids_export_post_find_package_code(INSTALL Thrust "${post_find_code}"
-                                         ${_RAPIDS_INSTALL_EXPORT_SET})
+                                    EXPORT_SET ${_RAPIDS_INSTALL_EXPORT_SET} CONDITION to_install)
+    rapids_export_post_find_package_code(INSTALL Thrust "${post_find_code}" EXPORT_SET
+                                         ${_RAPIDS_INSTALL_EXPORT_SET} CONDITION to_install)
   endif()
 
   # Check for the existence of thrust_create_target so we support fetching Thrust with DOWNLOAD_ONLY

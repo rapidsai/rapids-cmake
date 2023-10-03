@@ -29,8 +29,9 @@ has ben found successfully.
   rapids_export_post_find_package_code((BUILD|INSTALL)
                                        <PackageName>
                                        <code>
-                                       <ExportSet>
-                                        )
+                                       (<ExportSetName> | EXPORT_SET [ExportSetName])
+                                       [CONDITION <variableName>]
+                                       )
 
 When using complicated find modules like `Thrust` you might need to run some code after
 execution. Multiple calls to :cmake:command:`rapids_export_post_find_package_code` will append the
@@ -47,11 +48,33 @@ instructions to execute in call order.
   Record code to be executed immediately after `PackageName` has been found
   for our our install directory export set.
 
+``EXPORT_SET``
+  List the export set name that this code should be attached too. If
+  no name is given the associated call will be ignored.
+
+``CONDITION``
+  A boolean variable name, that when evaluates to undefined or a false value
+  will cause the associated call to be ignored.
+
 #]=======================================================================]
-function(rapids_export_post_find_package_code type name code export_set)
+function(rapids_export_post_find_package_code type name code)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.export.post_find_package_code")
 
+  set(options "")
+  set(one_value EXPORT_SET CONDITION)
+  set(multi_value "")
+  cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
+  # handle when we are given just an export set name and not `EXPORT_SET <name>`
+  if(_RAPIDS_UNPARSED_ARGUMENTS AND NOT _RAPIDS_COMPONENTS_EXPORT_SET)
+    set(_RAPIDS_EXPORT_SET ${_RAPIDS_UNPARSED_ARGUMENTS})
+  endif()
+  # Early terminate conditions
+  if(NOT _RAPIDS_EXPORT_SET OR NOT ${_RAPIDS_CONDITION})
+    return()
+  endif()
+
   string(TOLOWER ${type} type)
+  set(export_set ${_RAPIDS_EXPORT_SET})
 
   if(NOT TARGET rapids_export_${type}_${export_set})
     add_library(rapids_export_${type}_${export_set} INTERFACE)
