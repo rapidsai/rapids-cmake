@@ -174,7 +174,8 @@ function(rapids_cpm_nvcomp)
   endif()
 
   # point our consumers to where they can find the pre-built version
-  rapids_export_find_package_root(BUILD nvcomp "${nvcomp_ROOT}" EXPORT_SET
-                                  ${_RAPIDS_BUILD_EXPORT_SET} CONDITION nvcomp_proprietary_binary)
+  rapids_export_find_package_root(BUILD nvcomp "${nvcomp_ROOT}"
+                                  EXPORT_SET ${_RAPIDS_BUILD_EXPORT_SET}
+                                  CONDITION nvcomp_proprietary_binary)
 
 endfunction()

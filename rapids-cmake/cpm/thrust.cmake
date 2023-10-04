@@ -104,8 +104,8 @@ function(rapids_cpm_thrust NAMESPACE namespaces_name)
     # Store where CMake can find the Thrust-config.cmake that comes part of Thrust source code
     include("${rapids-cmake-dir}/export/find_package_root.cmake")
     include("${rapids-cmake-dir}/export/detail/post_find_package_code.cmake")
-    rapids_export_find_package_root(BUILD Thrust "${Thrust_SOURCE_DIR}/cmake" EXPORT_SET
-                                    ${_RAPIDS_BUILD_EXPORT_SET})
+    rapids_export_find_package_root(BUILD Thrust "${Thrust_SOURCE_DIR}/cmake"
+                                    EXPORT_SET ${_RAPIDS_BUILD_EXPORT_SET})
     rapids_export_post_find_package_code(BUILD Thrust "${post_find_code}" EXPORT_SET
                                          ${_RAPIDS_BUILD_EXPORT_SET})
 

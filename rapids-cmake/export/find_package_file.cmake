@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021, NVIDIA CORPORATION.
+# Copyright (c) 2021-2023, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -60,7 +60,7 @@ rapids-cmake to ensure it is installed correct and added to
   will cause the associated call to be ignored.
 
 #]=======================================================================]
-function(rapids_export_find_package_file type file_path )
+function(rapids_export_find_package_file type file_path)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.export.find_package_file")
   include("${rapids-cmake-dir}/cmake/detail/policy.cmake")
 
