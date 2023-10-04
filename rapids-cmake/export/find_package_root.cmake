@@ -49,7 +49,7 @@ will find the packaged dependency.
   export set.
 
 ``EXPORT_SET``
-  List the export set name that this code should be attached too. If
+  List the export set name that the `directory_path` should be attached too. If
   no name is given the associated call will be ignored.
 
 ``CONDITION``
@@ -59,6 +59,8 @@ will find the packaged dependency.
 #]=======================================================================]
 function(rapids_export_find_package_root type name dir_path)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.export.find_package_root_dir")
+    include("${rapids-cmake-dir}/cmake/detail/policy.cmake")
+
 
   set(options "")
   set(one_value EXPORT_SET CONDITION)
@@ -66,6 +68,10 @@ function(rapids_export_find_package_root type name dir_path)
   cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
   # handle when we are given just an export set name and not `EXPORT_SET <name>`
   if(_RAPIDS_UNPARSED_ARGUMENTS AND NOT _RAPIDS_COMPONENTS_EXPORT_SET)
+    rapids_cmake_policy(DEPRECATED_IN 23.12
+                        REMOVED_IN 24.02
+                        MESSAGE [=[Usage of `rapids_export_find_package_root` without an explicit `EXPORT_SET` key has been deprecated.]=]
+    )
     set(_RAPIDS_EXPORT_SET ${_RAPIDS_UNPARSED_ARGUMENTS})
   endif()
   # Early terminate conditions
