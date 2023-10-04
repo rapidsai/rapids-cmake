@@ -6,12 +6,14 @@ files:
       - build
       - cudatoolkit
       - docs
+      - py_version
       - test
   checks:
     output: none
     includes:
       - build
       - style_checks
+      - py_version
   docs:
     output: none
     includes:
@@ -141,13 +143,27 @@ dependencies:
       - output_types: [conda, requirements]
         packages:
           - cython>=0.29,<0.30
-          - python>=3.9,<3.11
           - scikit-build>=0.13.1
           - libpng
           - zlib
       - output_types: [conda]
         packages:
           - fmt==9.1.0
+  py_version:
+    specific:
+      - output_types: conda
+        matrices:
+          - matrix:
+              py: "3.9"
+            packages:
+              - python=3.9
+          - matrix:
+              py: "3.10"
+            packages:
+              - python=3.10
+          - matrix:
+            packages:
+              - python>=3.9,<3.11
   style_checks:
     common:
       - output_types: [conda, requirements]
