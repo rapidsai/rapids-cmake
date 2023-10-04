@@ -61,7 +61,6 @@ function(rapids_export_find_package_root type name dir_path)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.export.find_package_root_dir")
   include("${rapids-cmake-dir}/cmake/detail/policy.cmake")
 
-
   set(options "")
   set(one_value EXPORT_SET CONDITION)
   set(multi_value "")
