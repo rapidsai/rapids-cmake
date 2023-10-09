@@ -101,18 +101,14 @@ function(rapids_cpm_libcudacxx)
   set(multi_value)
   cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
-  if(libcudacxx_SOURCE_DIR AND _RAPIDS_BUILD_EXPORT_SET)
+  if(libcudacxx_SOURCE_DIR)
     # Store where CMake can find our custom libcudacxx
     include("${rapids-cmake-dir}/export/find_package_root.cmake")
-    rapids_export_find_package_root(BUILD libcudacxx "${libcudacxx_SOURCE_DIR}/lib/cmake"
-                                    ${_RAPIDS_BUILD_EXPORT_SET})
-  endif()
-
-  if(libcudacxx_SOURCE_DIR AND to_install)
-    include("${rapids-cmake-dir}/export/find_package_root.cmake")
+    rapids_export_find_package_root(BUILD libcudacxx "${libcudacxx_SOURCE_DIR}/lib/cmake" FOR
+                                    EXPORT_SET ${_RAPIDS_BUILD_EXPORT_SET})
     rapids_export_find_package_root(INSTALL libcudacxx
                                     [=[${CMAKE_CURRENT_LIST_DIR}/../../rapids/cmake/libcudacxx]=]
-                                    ${_RAPIDS_INSTALL_EXPORT_SET})
+                                    EXPORT_SET ${_RAPIDS_INSTALL_EXPORT_SET} CONDITION to_install)
   endif()
 
   # Propagate up variables that CPMFindPackage provide
