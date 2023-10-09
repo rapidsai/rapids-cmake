@@ -173,9 +173,9 @@ function(rapids_cpm_nvcomp)
     install(FILES "${nvcomp_ROOT}/LICENSE" DESTINATION info/ RENAME NVCOMP_LICENSE)
   endif()
 
-  if(_RAPIDS_BUILD_EXPORT_SET AND nvcomp_proprietary_binary)
-    # point our consumers to where they can find the pre-built version
-    rapids_export_find_package_root(BUILD nvcomp "${nvcomp_ROOT}" ${_RAPIDS_BUILD_EXPORT_SET})
-  endif()
+  # point our consumers to where they can find the pre-built version
+  rapids_export_find_package_root(BUILD nvcomp "${nvcomp_ROOT}"
+                                  EXPORT_SET ${_RAPIDS_BUILD_EXPORT_SET}
+                                  CONDITION nvcomp_proprietary_binary)
 
 endfunction()
