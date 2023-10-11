@@ -68,7 +68,7 @@ function(rapids_cpm_run_git_patch file issue)
   set(msg_state ${msg_state} PARENT_SCOPE)
 endfunction()
 
-set(files @patch_files_to_run@)
+set(files "@patch_files_to_run@")
 set(issues "@patch_issues_to_ref@")
 set(output_file "@log_file@")
 foreach(file issue IN ZIP_LISTS files issues)

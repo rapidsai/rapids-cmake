@@ -10,12 +10,19 @@
       "version" : "0.0.1",
       "git_shallow" : false,
       "git_url" : "https://github.com/NVIDIA/cuCollections.git",
-      "git_tag" : "303f134573afa315cf14fca3f7a0b730438497c3"
+      "git_tag" : "5186b39522e13a3681c0eb591db4eaacbf969485"
     },
     "fmt" : {
       "version" : "9.1.0",
       "git_url" : "https://github.com/fmtlib/fmt.git",
-      "git_tag" : "${version}"
+      "git_tag" : "${version}",
+      "patches" : [
+        {
+          "file" : "fmt/no_debug_warnings.diff",
+          "issue" : "No warnings during debug builds [https://github.com/fmtlib/fmt/issues/3351]",
+          "fixed_in" : "10.0"
+        }
+      ]
     },
     "GTest" : {
       "version" : "1.13.0",
