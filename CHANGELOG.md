@@ -1,3 +1,28 @@
+# rapids-cmake 23.10.00 (11 Oct 2023)
+
+## 🐛 Bug Fixes
+
+- Quote the list of patch files in case they have spaces in their paths ([#463](https://github.com/rapidsai/rapids-cmake/pull/463)) [@ericniebler](https://github.com/ericniebler)
+- cpm overrides don&#39;t occur when `CPM_&lt;pkg&gt;_SOURCE` exists ([#458](https://github.com/rapidsai/rapids-cmake/pull/458)) [@robertmaynard](https://github.com/robertmaynard)
+- Use `conda mambabuild` not `mamba mambabuild` ([#457](https://github.com/rapidsai/rapids-cmake/pull/457)) [@bdice](https://github.com/bdice)
+- Support fmt use in debug builds ([#456](https://github.com/rapidsai/rapids-cmake/pull/456)) [@robertmaynard](https://github.com/robertmaynard)
+
+## 📖 Documentation
+
+- Move rapids_cpm_package_override to CPM section of docs ([#462](https://github.com/rapidsai/rapids-cmake/pull/462)) [@robertmaynard](https://github.com/robertmaynard)
+- Improve docs around fetch content and rapids-cmake overrides ([#444](https://github.com/rapidsai/rapids-cmake/pull/444)) [@robertmaynard](https://github.com/robertmaynard)
+
+## 🚀 New Features
+
+- Bump cuco version ([#452](https://github.com/rapidsai/rapids-cmake/pull/452)) [@PointKernel](https://github.com/PointKernel)
+
+## 🛠️ Improvements
+
+- Update image names ([#461](https://github.com/rapidsai/rapids-cmake/pull/461)) [@AyodeAwe](https://github.com/AyodeAwe)
+- Update to CPM v0.38.5 ([#460](https://github.com/rapidsai/rapids-cmake/pull/460)) [@trxcllnt](https://github.com/trxcllnt)
+- Update to clang 16.0.6. ([#459](https://github.com/rapidsai/rapids-cmake/pull/459)) [@bdice](https://github.com/bdice)
+- Use `copy-pr-bot` ([#455](https://github.com/rapidsai/rapids-cmake/pull/455)) [@ajschmidt8](https://github.com/ajschmidt8)
+
 # rapids-cmake 23.08.00 (9 Aug 2023)
 
 ## 🐛 Bug Fixes

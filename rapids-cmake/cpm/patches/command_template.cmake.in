@@ -68,7 +68,6 @@ function(rapids_cpm_run_git_patch file issue)
   set(msg_state ${msg_state} PARENT_SCOPE)
 endfunction()
 
-
 # We want to ensure that any patched files have a timestamp
 # that is at least 1 second newer compared to the git checkout
 # This ensures that all of CMake up-to-date install logic
@@ -79,7 +78,7 @@ endfunction()
 # with the same destination ( and our patch is listed last ).
 execute_process(COMMAND ${CMAKE_COMMAND} -E sleep 1)
 
-set(files @patch_files_to_run@)
+set(files "@patch_files_to_run@")
 set(issues "@patch_issues_to_ref@")
 set(output_file "@log_file@")
 foreach(file issue IN ZIP_LISTS files issues)

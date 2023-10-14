@@ -88,3 +88,4 @@ add_cmake_config_test( cpm_spdlog-simple.cmake )
 
 add_cmake_config_test( cpm_thrust-export.cmake )
 add_cmake_config_test( cpm_thrust-simple.cmake )
+add_cmake_build_test( cpm_thrust-verify-post-find-code )
