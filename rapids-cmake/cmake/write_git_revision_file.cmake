@@ -113,6 +113,6 @@ function(rapids_cmake_write_git_revision_file target file_path)
   add_dependencies(${target} ${target}_compute_git_info)
 
   cmake_path(GET file_path PARENT_PATH file_path_dir)
-  target_include_directories(${target} INTERFACE ${file_path_dir})
+  target_include_directories(${target} INTERFACE "$<BUILD_INTERFACE:${file_path_dir}>")
 
 endfunction()
