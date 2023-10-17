@@ -11,6 +11,6 @@ rapids-print-env
 
 rapids-logger "Begin cpp build"
 
-rapids-mamba-retry mambabuild conda/recipes/rapids_core_dependencies
+rapids-conda-retry mambabuild conda/recipes/rapids_core_dependencies
 
 rapids-upload-conda-to-s3 cpp

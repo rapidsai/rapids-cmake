@@ -1,4 +1,3 @@
-
 {
   "packages" : {
     "benchmark" : {
@@ -15,7 +14,14 @@
     "fmt" : {
       "version" : "9.1.0",
       "git_url" : "https://github.com/fmtlib/fmt.git",
-      "git_tag" : "${version}"
+      "git_tag" : "${version}",
+      "patches" : [
+        {
+          "file" : "fmt/no_debug_warnings.diff",
+          "issue" : "No warnings during debug builds [https://github.com/fmtlib/fmt/issues/3351]",
+          "fixed_in" : "10.0"
+        }
+      ]
     },
     "GTest" : {
       "version" : "1.13.0",
@@ -23,18 +29,28 @@
       "git_tag" : "v${version}"
     },
     "libcudacxx" : {
-      "version" : "1.9.1",
+      "version" : "2.1.0",
       "git_url" : "https://github.com/NVIDIA/libcudacxx.git",
-      "git_tag" : "branch/${version}",
+      "git_tag" : "${version}",
       "patches" : [
         {
           "file" : "libcudacxx/install_rules.diff",
-          "issue" : "libcudacxx 1.X installs incorrect files [https://github.com/NVIDIA/libcudacxx/pull/428]",
+          "issue" : "libcudacxx installs incorrect files [https://github.com/NVIDIA/libcudacxx/pull/428]",
           "fixed_in" : "2.2"
         },
         {
           "file" : "libcudacxx/reroot_support.diff",
-          "issue" : "Support conda-forge usage of CMake rerooting [https://github.com/NVIDIA/libcudacxx/pull/490]",
+          "issue" : "Support conda-forge usage of CMake rerooting [https://github.com/NVIDIA/libcudacxx/pull/490], requires libcudacxx/install_rules.diff.",
+          "fixed_in" : "2.2"
+        },
+        {
+          "file" : "libcudacxx/proclaim_return_type_nv_exec_check_disable.diff",
+          "issue" : "Use pragma to disable execution checks in cuda::proclaim_return_type. [https://github.com/NVIDIA/libcudacxx/pull/448]",
+          "fixed_in" : "2.2"
+        },
+        {
+          "file" : "libcudacxx/memory_resource.diff",
+          "issue" : "Allow {async_}resource_ref to be constructible from a pointer. [https://github.com/NVIDIA/libcudacxx/pull/439]",
           "fixed_in" : "2.2"
         }
       ]
