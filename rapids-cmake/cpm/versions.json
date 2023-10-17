@@ -47,6 +47,11 @@
           "file" : "libcudacxx/proclaim_return_type_nv_exec_check_disable.diff",
           "issue" : "Use pragma to disable execution checks in cuda::proclaim_return_type. [https://github.com/NVIDIA/libcudacxx/pull/448]",
           "fixed_in" : "2.2"
+        },
+        {
+          "file" : "libcudacxx/memory_resource.diff",
+          "issue" : "Allow {async_}resource_ref to be constructible from a pointer. [https://github.com/NVIDIA/libcudacxx/pull/439]",
+          "fixed_in" : "2.2"
         }
       ]
     },
