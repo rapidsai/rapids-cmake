@@ -108,7 +108,8 @@
       },
       "rapids_cpm_gbench": {
         "pargs": {
-          "nargs": 0
+          "nargs": 0,
+          "flags": ["BUILD_STATIC"]
         },
         "kwargs": {
           "BUILD_EXPORT_SET": 1,
@@ -135,10 +136,12 @@
       },
       "rapids_cpm_nvbench": {
         "pargs": {
-          "nargs": 0
+          "nargs": 0,
+          "flags": ["BUILD_STATIC"]
         },
         "kwargs": {
-          "BUILD_EXPORT_SET": 1
+          "BUILD_EXPORT_SET": 1,
+          "INSTALL_EXPORT_SET": 1
         }
       },
       "rapids_cpm_nvcomp": {

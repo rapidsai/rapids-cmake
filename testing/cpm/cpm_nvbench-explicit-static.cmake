@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2023, NVIDIA CORPORATION.
+# Copyright (c) 2023, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,21 +17,9 @@ include(${rapids-cmake-dir}/cpm/init.cmake)
 include(${rapids-cmake-dir}/cpm/nvbench.cmake)
 
 rapids_cpm_init()
-set(CMAKE_CUDA_ARCHITECTURES OFF)
-rapids_cpm_nvbench(BUILD_EXPORT_SET test)
-rapids_cpm_nvbench(BUILD_EXPORT_SET test2 INSTALL_EXPORT_SET test2)
+rapids_cpm_nvbench(BUILD_STATIC)
 
-get_target_property(packages rapids_export_build_test PACKAGE_NAMES)
-if(NOT nvbench IN_LIST packages)
-  message(FATAL_ERROR "rapids_cpm_nvbench failed to record nvbench needs to be exported")
-endif()
-
-get_target_property(packages rapids_export_build_test2 PACKAGE_NAMES)
-if(NOT nvbench IN_LIST packages)
-  message(FATAL_ERROR "rapids_cpm_nvbench failed to record nvbench needs to be exported")
-endif()
-
-get_target_property(packages rapids_export_install_test2 PACKAGE_NAMES)
-if(NOT nvbench IN_LIST packages)
-  message(FATAL_ERROR "rapids_cpm_nvbench failed to record nvbench needs to be exported")
+get_target_property(type nvbench TYPE)
+if(NOT type STREQUAL STATIC_LIBRARY)
+  message(FATAL_ERROR "rapids_cpm_nvbench failed to get a static version of nvbench")
 endif()
