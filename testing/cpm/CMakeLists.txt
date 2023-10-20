@@ -56,6 +56,7 @@ add_cmake_config_test( cpm_gbench-simple.cmake )
 
 add_cmake_config_test( cpm_gtest-export.cmake )
 add_cmake_config_test( cpm_gtest-simple.cmake )
+add_cmake_config_test( cpm_gtest-static.cmake )
 
 add_cmake_config_test( cpm_libcudacxx-after_cpmfind.cmake SERIAL)
 add_cmake_config_test( cpm_libcudacxx-export.cmake )
