@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
+#ifdef HAVE_CUDA
 #include <cuda_runtime_api.h>
+#endif
 
 #include <iostream>
 #include <string>
@@ -27,7 +29,7 @@ struct version {
 
 struct gpu {
   gpu(int i) : id{i} {};
-  gpu(int i, const cudaDeviceProp& prop) : id{i}, memory{prop.totalGlobalMem}, slots{100} {}
+  gpu(int i, size_t mem) : id{i}, memory{mem}, slots{100} {}
   int id        = 0;
   size_t memory = 0;
   int slots     = 0;
@@ -48,6 +50,8 @@ int main()
 {
   std::vector<gpu> gpus;
   int nDevices = 0;
+
+#ifdef HAVE_CUDA
   cudaGetDeviceCount(&nDevices);
   if (nDevices == 0) {
     gpus.emplace_back(0);
@@ -55,9 +59,12 @@ int main()
     for (int i = 0; i < nDevices; ++i) {
       cudaDeviceProp prop;
       cudaGetDeviceProperties(&prop, i);
-      gpus.emplace_back(i, prop);
+      gpus.emplace_back(i, prop.totalGlobalMem);
     }
   }
+#else
+  gpus.emplace_back(0);
+#endif()
 
   version v{1, 0};
   std::cout << "{\n";
