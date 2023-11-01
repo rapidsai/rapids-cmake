@@ -67,7 +67,7 @@ function(rapids_test_generate_resource_spec DESTINATION filepath)
   set(error_file ${PROJECT_BINARY_DIR}/rapids-cmake/detect_gpus.stderr.log)
 
   if(NOT EXISTS "${eval_exe}")
-    find_package(CUDAToolkit)
+    find_package(CUDAToolkit QUIET)
     file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/rapids-cmake/")
 
     if(CUDAToolkit_FOUND)

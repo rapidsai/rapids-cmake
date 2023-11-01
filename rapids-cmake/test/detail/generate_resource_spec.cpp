@@ -23,16 +23,17 @@
 #include <vector>
 
 struct version {
-  int major = 1;
-  int minor = 0;
+  version() : major(1), minor(0) {}
+  int major;
+  int minor;
 };
 
 struct gpu {
-  gpu(int i) : id{i} {};
-  gpu(int i, size_t mem) : id{i}, memory{mem}, slots{100} {}
-  int id        = 0;
-  size_t memory = 0;
-  int slots     = 0;
+  gpu(int i) : id(i), memory(0), slots(0){};
+  gpu(int i, size_t mem) : id(i), memory(mem), slots(100) {}
+  int id;
+  size_t memory;
+  int slots;
 };
 
 // A hard-coded JSON printer that generates a ctest resource-specification file:
@@ -54,19 +55,19 @@ int main()
 #ifdef HAVE_CUDA
   cudaGetDeviceCount(&nDevices);
   if (nDevices == 0) {
-    gpus.emplace_back(0);
+    gpus.push_back(gpu(0));
   } else {
     for (int i = 0; i < nDevices; ++i) {
       cudaDeviceProp prop;
       cudaGetDeviceProperties(&prop, i);
-      gpus.emplace_back(i, prop.totalGlobalMem);
+      gpus.push_back(gpu(i, prop.totalGlobalMem));
     }
   }
 #else
-  gpus.emplace_back(0);
-#endif()
+  gpus.push_back(gpu(0));
+#endif
 
-  version v{1, 0};
+  version v;
   std::cout << "{\n";
   to_json(std::cout, v);
   std::cout << ",\n";
