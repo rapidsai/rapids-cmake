@@ -81,13 +81,13 @@ function(rapids_test_generate_resource_spec DESTINATION filepath)
 
     execute_process(COMMAND "${compiler}" "${eval_file}" ${compile_options} ${link_options} -o
                             "${eval_exe}" OUTPUT_VARIABLE compile_output
-                    ERROR_VARIABLE compile_output COMMAND_ECHO STDOUT)
+                    ERROR_VARIABLE compile_output)
   endif()
 
   if(NOT EXISTS "${eval_exe}")
     message(STATUS "rapids_test_generate_resource_spec failed to build detection executable, presuming no GPUs."
     )
-    message(STATUS "rapids_test_generate_resource_spec compile failure details are ${compile_output}"
+    message(STATUS "rapids_test_generate_resource_spec compile[${compiler} ${compile_options} ${link_options}] failure details are ${compile_output}"
     )
     file(WRITE "${filepath}" "${gpu_json_contents}")
   else()
