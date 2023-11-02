@@ -23,9 +23,9 @@
 #include <vector>
 
 struct version {
-  version() : major(1), minor(0) {}
-  int major;
-  int minor;
+  version() : json_major(1), json_minor(0) {}
+  int json_major;
+  int json_minor;
 };
 
 struct gpu {
