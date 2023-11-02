@@ -40,7 +40,7 @@ struct gpu {
 // https://cmake.org/cmake/help/latest/manual/ctest.1.html#resource-specification-file
 void to_json(std::ostream& buffer, version const& v)
 {
-  buffer << "\"version\": {\"major\": " << v.major << ", \"minor\": " << v.minor << "}";
+  buffer << "\"version\": {\"major\": " << v.json_major << ", \"minor\": " << v.json_minor << "}";
 }
 void to_json(std::ostream& buffer, gpu const& g)
 {
