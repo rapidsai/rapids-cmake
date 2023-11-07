@@ -38,6 +38,7 @@ across all RAPIDS projects.
 .. include:: common_package_args.txt
 
 .. versionadded:: v23.12.00
+
 ``BUILD_STATIC``
   Will build Google Benchmark statically. No local searching for a previously
   built version will occur.
