@@ -211,19 +211,11 @@ function(rapids_find_generate_module name)
   endif()
 
   # Record what export sets this module is part of
-  if(_RAPIDS_BUILD_EXPORT_SET)
-    include("${rapids-cmake-dir}/export/find_package_file.cmake")
-    rapids_export_find_package_file(BUILD
-                                    "${CMAKE_BINARY_DIR}/cmake/find_modules/Find${name}.cmake"
-                                    ${_RAPIDS_BUILD_EXPORT_SET})
-  endif()
-
-  if(_RAPIDS_INSTALL_EXPORT_SET)
-    include("${rapids-cmake-dir}/export/find_package_file.cmake")
-    rapids_export_find_package_file(INSTALL
-                                    "${CMAKE_BINARY_DIR}/cmake/find_modules/Find${name}.cmake"
-                                    ${_RAPIDS_INSTALL_EXPORT_SET})
-  endif()
+  include("${rapids-cmake-dir}/export/find_package_file.cmake")
+  rapids_export_find_package_file(BUILD "${CMAKE_BINARY_DIR}/cmake/find_modules/Find${name}.cmake"
+                                  EXPORT_SET ${_RAPIDS_BUILD_EXPORT_SET})
+  rapids_export_find_package_file(INSTALL "${CMAKE_BINARY_DIR}/cmake/find_modules/Find${name}.cmake"
+                                  EXPORT_SET ${_RAPIDS_INSTALL_EXPORT_SET})
 endfunction()
 
 cmake_policy(POP)
