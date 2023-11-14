@@ -59,7 +59,14 @@
       "version" : "0.0",
       "git_shallow" : false,
       "git_url" : "https://github.com/NVIDIA/nvbench.git",
-      "git_tag" : "b8f0f6b5832dd632006492fd2434c81fdef0f2de"
+      "git_tag" : "b8f0f6b5832dd632006492fd2434c81fdef0f2de",
+      "patches" : [
+        {
+          "file" : "nvbench/nvml_with_static_builds.diff",
+          "issue" : "Add support for nvml with static nvbench [https://github.com/NVIDIA/nvbench/pull/148]",
+          "fixed_in" : ""
+        }
+      ]
     },
     "nvcomp" : {
       "version" : "3.0.4",
