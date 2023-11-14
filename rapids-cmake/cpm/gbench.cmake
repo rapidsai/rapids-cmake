@@ -31,10 +31,17 @@ across all RAPIDS projects.
 
   rapids_cpm_gbench( [BUILD_EXPORT_SET <export-name>]
                      [INSTALL_EXPORT_SET <export-name>]
+                     [BUILD_STATIC]
                      [<CPM_ARGS> ...])
 
 .. |PKG_NAME| replace:: benchmark
 .. include:: common_package_args.txt
+
+.. versionadded:: v23.12.00
+
+``BUILD_STATIC``
+  Will build Google Benchmark statically. No local searching for a previously
+  built version will occur.
 
 Result Targets
 ^^^^^^^^^^^^^^
@@ -47,6 +54,12 @@ function(rapids_cpm_gbench)
   set(to_install OFF)
   if(INSTALL_EXPORT_SET IN_LIST ARGN)
     set(to_install ON)
+  endif()
+
+  set(build_shared ON)
+  if(BUILD_STATIC IN_LIST ARGN)
+    set(build_shared OFF)
+    set(CPM_DOWNLOAD_benchmark ON) # Since we need static we build from source
   endif()
 
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
@@ -69,7 +82,7 @@ function(rapids_cpm_gbench)
                   EXCLUDE_FROM_ALL ${exclude}
                   OPTIONS "BENCHMARK_ENABLE_GTEST_TESTS OFF" "BENCHMARK_ENABLE_TESTING OFF"
                           "BENCHMARK_ENABLE_INSTALL ${to_install}"
-                          "CMAKE_INSTALL_LIBDIR ${lib_dir}")
+                          "CMAKE_INSTALL_LIBDIR ${lib_dir}" "BUILD_SHARED_LIBS ${build_shared}")
 
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
   rapids_cpm_display_patch_status(benchmark)

@@ -59,17 +59,10 @@
       "version" : "0.0",
       "git_shallow" : false,
       "git_url" : "https://github.com/NVIDIA/nvbench.git",
-      "git_tag" : "083fdc2fc130d84805827c0129f84bb7449ec059",
-      "patches" : [
-        {
-          "file" : "nvbench/use_existing_fmt.diff",
-          "issue" : "Fix add support for using an existing fmt [https://github.com/NVIDIA/nvbench/pull/125]",
-          "fixed_in" : ""
-        }
-      ]
+      "git_tag" : "b8f0f6b5832dd632006492fd2434c81fdef0f2de"
     },
     "nvcomp" : {
-      "version" : "2.6.1",
+      "version" : "3.0.4",
       "git_url" : "https://github.com/NVIDIA/nvcomp.git",
       "git_tag" : "v2.2.0",
       "proprietary_binary" : {
