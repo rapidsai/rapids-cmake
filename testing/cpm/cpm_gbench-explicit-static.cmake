@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2023, NVIDIA CORPORATION.
+# Copyright (c) 2023, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,9 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-# can't have an include guard on this file
-# that breaks its usage by cpm/detail/package_details
+include(${rapids-cmake-dir}/cpm/init.cmake)
+include(${rapids-cmake-dir}/cpm/gbench.cmake)
 
-if(NOT DEFINED rapids-cmake-version)
-  set(rapids-cmake-version 24.02)
+rapids_cpm_init()
+rapids_cpm_gbench(BUILD_STATIC)
+
+get_target_property(type benchmark TYPE)
+if(NOT type STREQUAL STATIC_LIBRARY)
+  message(FATAL_ERROR "rapids_cpm_gbench failed to get a static version of gbench")
 endif()

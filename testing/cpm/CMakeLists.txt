@@ -53,20 +53,23 @@ add_cmake_build_test( cpm_fmt-static-lib.cmake )
 
 add_cmake_config_test( cpm_gbench-export.cmake )
 add_cmake_config_test( cpm_gbench-simple.cmake )
+add_cmake_config_test( cpm_gbench-explicit-static.cmake)
 
 add_cmake_config_test( cpm_gtest-export.cmake )
 add_cmake_config_test( cpm_gtest-simple.cmake )
+add_cmake_config_test( cpm_gtest-static.cmake )
 
 add_cmake_config_test( cpm_libcudacxx-after_cpmfind.cmake SERIAL)
 add_cmake_config_test( cpm_libcudacxx-export.cmake )
 add_cmake_config_test( cpm_libcudacxx-simple.cmake )
 add_cmake_build_test( cpm_libcudacxx-verify-install-custom-libdir )
 
-add_cmake_config_test( cpm_nvbench-export.cmake SERIAL )
+add_cmake_config_test( cpm_nvbench-export.cmake SERIAL)
 add_cmake_config_test( cpm_nvbench-simple.cmake SERIAL)
 add_cmake_config_test( cpm_nvbench-already-found-fmt.cmake SERIAL)
 add_cmake_build_test( cpm_nvbench-conda.cmake SERIAL)
 add_cmake_build_test( cpm_nvbench-conda-fmt.cmake SERIAL)
+add_cmake_config_test( cpm_nvbench-explicit-static.cmake SERIAL)
 
 add_cmake_config_test( cpm_nvcomp-export.cmake )
 add_cmake_config_test( cpm_nvcomp-proprietary-off.cmake )
