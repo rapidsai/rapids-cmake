@@ -12,16 +12,9 @@
       "git_tag" : "7c76a124df0c2cd3fd66e3e080b9470a3b4707c6"
     },
     "fmt" : {
-      "version" : "9.1.0",
+      "version" : "10.1.1",
       "git_url" : "https://github.com/fmtlib/fmt.git",
-      "git_tag" : "${version}",
-      "patches" : [
-        {
-          "file" : "fmt/no_debug_warnings.diff",
-          "issue" : "No warnings during debug builds [https://github.com/fmtlib/fmt/issues/3351]",
-          "fixed_in" : "10.0"
-        }
-      ]
+      "git_tag" : "${version}"
     },
     "GTest" : {
       "version" : "1.13.0",
@@ -76,9 +69,16 @@
       "git_tag" : "branch-${version}"
     },
     "spdlog" : {
-      "version" : "1.11.0",
+      "version" : "1.12.0",
       "git_url" : "https://github.com/gabime/spdlog.git",
-      "git_tag" : "v${version}"
+      "git_tag" : "v${version}",
+      "patches" : [
+	{
+	  "file" : "spdlog/nvcc_constexpr_fix.diff",
+	  "issue" : "Fix constexpr mismatch between spdlog and fmt [https://github.com/gabime/spdlog/issues/2856]",
+          "fixed_in" : "1.13"
+	}
+      ]
     },
     "Thrust" : {
       "version" : "1.17.2",
