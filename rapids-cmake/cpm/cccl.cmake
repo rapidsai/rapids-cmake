@@ -77,8 +77,6 @@ function(rapids_cpm_cccl NAMESPACE namespaces_name)
   endif()
 
   include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
-  include(CMakePrintHelpers)
-  cmake_print_variables(version)
   rapids_cpm_generate_patch_command(CCCL ${version} patch_command)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
@@ -100,28 +98,34 @@ function(rapids_cpm_cccl NAMESPACE namespaces_name)
   set(multi_value)
   cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
-  # TODO how to update this for CCCL? set(post_find_code "if(NOT TARGET ${namespaces_name}::Thrust)"
-  # "  thrust_create_target(${namespaces_name}::Thrust FROM_OPTIONS)" "endif()")
+  # TODO how to update this for CCCL?
+  set(post_find_code "if(NOT TARGET ${namespaces_name}::Thrust)"
+                     "  thrust_create_target(${namespaces_name}::Thrust FROM_OPTIONS)" "endif()")
 
-  # if(Thrust_SOURCE_DIR) # Store where CMake can find the Thrust-config.cmake that comes part of
-  # Thrust source code include("${rapids-cmake-dir}/export/find_package_root.cmake")
-  # include("${rapids-cmake-dir}/export/detail/post_find_package_code.cmake")
-  # rapids_export_find_package_root(BUILD Thrust "${Thrust_SOURCE_DIR}/cmake" EXPORT_SET
-  # ${_RAPIDS_BUILD_EXPORT_SET}) rapids_export_post_find_package_code(BUILD Thrust
-  # "${post_find_code}" EXPORT_SET ${_RAPIDS_BUILD_EXPORT_SET})
+  if(Thrust_SOURCE_DIR)
+    # Store where CMake can find the Thrust-config.cmake that comes part of Thrust source code
+    include("${rapids-cmake-dir}/export/find_package_root.cmake")
+    include("${rapids-cmake-dir}/export/detail/post_find_package_code.cmake")
+    rapids_export_find_package_root(BUILD Thrust "${Thrust_SOURCE_DIR}/cmake"
+                                    EXPORT_SET ${_RAPIDS_BUILD_EXPORT_SET})
+    rapids_export_post_find_package_code(BUILD Thrust "${post_find_code}" EXPORT_SET
+                                         ${_RAPIDS_BUILD_EXPORT_SET})
 
-  # rapids_export_find_package_root(INSTALL Thrust
-  # [=[${CMAKE_CURRENT_LIST_DIR}/../../rapids/cmake/thrust]=]
-  # EXPORT_SET ${_RAPIDS_INSTALL_EXPORT_SET} CONDITION to_install)
-  # rapids_export_post_find_package_code(INSTALL Thrust "${post_find_code}" EXPORT_SET
-  # ${_RAPIDS_INSTALL_EXPORT_SET} CONDITION to_install) endif()
+    rapids_export_find_package_root(INSTALL Thrust
+                                    [=[${CMAKE_CURRENT_LIST_DIR}/../../rapids/cmake/thrust]=]
+                                    EXPORT_SET ${_RAPIDS_INSTALL_EXPORT_SET} CONDITION to_install)
+    rapids_export_post_find_package_code(INSTALL Thrust "${post_find_code}" EXPORT_SET
+                                         ${_RAPIDS_INSTALL_EXPORT_SET} CONDITION to_install)
+  endif()
 
   # Check for the existence of thrust_create_target so we support fetching Thrust with DOWNLOAD_ONLY
-  # if(NOT TARGET ${namespaces_name}::Thrust AND COMMAND thrust_create_target)
-  # thrust_create_target(${namespaces_name}::Thrust FROM_OPTIONS)
-  # set_target_properties(${namespaces_name}::Thrust PROPERTIES IMPORTED_NO_SYSTEM ON) if(TARGET
-  # _Thrust_Thrust) set_target_properties(_Thrust_Thrust PROPERTIES IMPORTED_NO_SYSTEM ON) endif()
-  # endif()
+  if(NOT TARGET ${namespaces_name}::Thrust AND COMMAND thrust_create_target)
+    thrust_create_target(${namespaces_name}::Thrust FROM_OPTIONS)
+    set_target_properties(${namespaces_name}::Thrust PROPERTIES IMPORTED_NO_SYSTEM ON)
+    if(TARGET _Thrust_Thrust)
+      set_target_properties(_Thrust_Thrust PROPERTIES IMPORTED_NO_SYSTEM ON)
+    endif()
+  endif()
 
   # Propagate up variables that CPMFindPackage provides
   set(CCCL_SOURCE_DIR "${CCCL_SOURCE_DIR}" PARENT_SCOPE)
