@@ -100,7 +100,7 @@ function(rapids_cpm_package_override filepath)
                              GIT_TAG ${tag}
                              GIT_SHALLOW ${shallow}
                              PATCH_COMMAND ${patch_command} EXCLUDE_FROM_ALL ${exclude})
-        endif()
+      endif()
     endforeach()
   endif()
 endfunction()
