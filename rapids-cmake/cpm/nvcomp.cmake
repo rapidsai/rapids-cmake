@@ -91,8 +91,9 @@ function(rapids_cpm_nvcomp)
   # first search locally if `rapids_cmake_always_download` is false
   if(NOT rapids_cmake_always_download)
     include("${rapids-cmake-dir}/find/package.cmake")
-    rapids_find_package(nvcomp ${version} GLOBAL_TARGETS nvcomp::nvcomp ${_RAPIDS_EXPORT_ARGUMENTS}
-                        FIND_ARGS QUIET)
+    rapids_find_package(nvcomp ${version}
+                        GLOBAL_TARGETS nvcomp::nvcomp nvcomp::nvcomp_gdeflate nvcomp::nvcomp_bitcomp
+                                       ${_RAPIDS_EXPORT_ARGUMENTS} FIND_ARGS QUIET)
     if(nvcomp_FOUND)
       # report where nvcomp was found
       message(STATUS "Found nvcomp: ${nvcomp_DIR} (found version ${nvcomp_VERSION})")
