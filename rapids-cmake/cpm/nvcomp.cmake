@@ -137,7 +137,7 @@ function(rapids_cpm_nvcomp)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
   rapids_cpm_find(nvcomp ${version} ${_RAPIDS_UNPARSED_ARGUMENTS}
-                  GLOBAL_TARGETS nvcomp::nvcomp
+                  GLOBAL_TARGETS nvcomp::nvcomp nvcomp::nvcomp_gdeflate nvcomp::nvcomp_bitcomp
                   CPM_ARGS
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
@@ -153,6 +153,8 @@ function(rapids_cpm_nvcomp)
   # provide consistent targets between a found nvcomp and one building from source
   if(NOT TARGET nvcomp::nvcomp AND TARGET nvcomp)
     add_library(nvcomp::nvcomp ALIAS nvcomp)
+    add_library(nvcomp::nvcomp_gdeflate ALIAS nvcomp_gdeflate)
+    add_library(nvcomp::nvcomp_bitcomp ALIAS nvcomp_bitcomp)
   endif()
 
   # Propagate up variables that CPMFindPackage provide
