@@ -53,6 +53,8 @@ across all RAPIDS projects.
 Result Targets
 ^^^^^^^^^^^^^^
   nvcomp::nvcomp target will be created
+  nvcomp::nvcomp_gdeflate target will be created
+  nvcomp::nvcomp_bitcomp target will be created
 
 Result Variables
 ^^^^^^^^^^^^^^^^
