@@ -155,7 +155,11 @@ function(rapids_cpm_nvcomp)
   # provide consistent targets between a found nvcomp and one building from source
   if(NOT TARGET nvcomp::nvcomp AND TARGET nvcomp)
     add_library(nvcomp::nvcomp ALIAS nvcomp)
+  endif()
+  if(NOT TARGET nvcomp::nvcomp_gdeflate AND TARGET nvcomp_gdeflate)
     add_library(nvcomp::nvcomp_gdeflate ALIAS nvcomp_gdeflate)
+  endif()
+  if(NOT TARGET nvcomp::nvcomp_bitcomp AND TARGET nvcomp_bitcomp)
     add_library(nvcomp::nvcomp_bitcomp ALIAS nvcomp_bitcomp)
   endif()
 
