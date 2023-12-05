@@ -27,6 +27,12 @@ tracking of these dependencies for correct export support.
 Uses the version of CCCL :ref:`specified in the version file <cpm_versions>` for consistency
 across all RAPIDS projects.
 
+When `BUILD_EXPORT_SET` is specified the generated build export set dependency
+file will automatically call `thrust_create_target(<namespace>::Thrust FROM_OPTIONS)`.
+
+When `INSTALL_EXPORT_SET` is specified the generated install export set dependency
+file will automatically call `thrust_create_target(<namespace>::Thrust FROM_OPTIONS)`.
+
 .. code-block:: cmake
 
   rapids_cpm_cccl( NAMESPACE <namespace>
@@ -40,22 +46,15 @@ across all RAPIDS projects.
 .. |PKG_NAME| replace:: CCCL
 .. include:: common_package_args.txt
 
-# TODO How should this be updated for CCCL?
-.. versionadded:: v23.12.00
-  When `BUILD_EXPORT_SET` is specified the generated build export set dependency
-  file will automatically call `thrust_create_target(<namespace>::Thrust FROM_OPTIONS)`.
-
-  When `INSTALL_EXPORT_SET` is specified the generated install export set dependency
-  file will automatically call `thrust_create_target(<namespace>::Thrust FROM_OPTIONS)`.
-
 Result Targets
 ^^^^^^^^^^^^^^
   <namespace>::CCCL target will be created
+  libcudacxx::libcudacxx target will be created
 
 Result Variables
 ^^^^^^^^^^^^^^^^
   :cmake:variable:`CCCL_SOURCE_DIR` is set to the path to the source directory of CCCL.
-  :cmake:variable:`CCCL_BINARY_DIR` is set to the path to the build directory of  CCCL.
+  :cmake:variable:`CCCL_BINARY_DIR` is set to the path to the build directory of CCCL.
   :cmake:variable:`CCCL_ADDED`      is set to a true value if CCCL has not been added before.
   :cmake:variable:`CCCL_VERSION`    is set to the version of CCCL specified by the versions.json.
 
