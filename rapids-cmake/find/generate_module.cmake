@@ -96,7 +96,7 @@ when installed.
   Note: This requires the code block variable instead of the contents
   so that we can properly insert CMake code
 
-  ``FINAL_CODE_BLOCK``
+``FINAL_CODE_BLOCK``
   Optional value of the variable that holds a string of code that will
   be executed as the last step of this config file.
 
