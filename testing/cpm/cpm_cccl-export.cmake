@@ -18,8 +18,8 @@ include(${rapids-cmake-dir}/cpm/cccl.cmake)
 
 rapids_cpm_init()
 
-rapids_cpm_cccl(NAMESPACE A BUILD_EXPORT_SET test)
-rapids_cpm_cccl(NAMESPACE B INSTALL_EXPORT_SET test2)
+rapids_cpm_cccl(BUILD_EXPORT_SET test)
+rapids_cpm_cccl(INSTALL_EXPORT_SET test2)
 
 get_target_property(packages rapids_export_build_test PACKAGE_NAMES)
 if(NOT CCCL IN_LIST packages)

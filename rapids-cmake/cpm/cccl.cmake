@@ -28,27 +28,23 @@ Uses the version of CCCL :ref:`specified in the version file <cpm_versions>` for
 across all RAPIDS projects.
 
 When `BUILD_EXPORT_SET` is specified the generated build export set dependency
-file will automatically call `thrust_create_target(<namespace>::Thrust FROM_OPTIONS)`.
+file will automatically call `thrust_create_target(CCCL::Thrust FROM_OPTIONS)`.
 
 When `INSTALL_EXPORT_SET` is specified the generated install export set dependency
-file will automatically call `thrust_create_target(<namespace>::Thrust FROM_OPTIONS)`.
+file will automatically call `thrust_create_target(CCCL::Thrust FROM_OPTIONS)`.
 
 .. code-block:: cmake
 
-  rapids_cpm_cccl( NAMESPACE <namespace>
-                   [BUILD_EXPORT_SET <export-name>]
+  rapids_cpm_cccl( [BUILD_EXPORT_SET <export-name>]
                    [INSTALL_EXPORT_SET <export-name>]
                    [<CPM_ARGS> ...])
-
-``NAMESPACE``
-  The namespace that the CCCL target will be constructed into.
 
 .. |PKG_NAME| replace:: CCCL
 .. include:: common_package_args.txt
 
 Result Targets
 ^^^^^^^^^^^^^^
-  <namespace>::CCCL target will be created
+  CCCL::Thrust target will be created
   libcudacxx::libcudacxx target will be created
 
 Result Variables
@@ -60,7 +56,7 @@ Result Variables
 
 #]=======================================================================]
 # cmake-lint: disable=R0915
-function(rapids_cpm_cccl NAMESPACE namespaces_name)
+function(rapids_cpm_cccl)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.cccl")
 
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
@@ -80,7 +76,7 @@ function(rapids_cpm_cccl NAMESPACE namespaces_name)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
   rapids_cpm_find(CCCL ${version} ${ARGN}
-                  GLOBAL_TARGETS ${namespaces_name}::CCCL
+                  GLOBAL_TARGETS CCCL
                   CPM_ARGS FIND_PACKAGE_ARGUMENTS EXACT
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
@@ -98,8 +94,8 @@ function(rapids_cpm_cccl NAMESPACE namespaces_name)
   cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
   # TODO how to update this for CCCL?
-  set(post_find_code "if(NOT TARGET ${namespaces_name}::Thrust)"
-                     "  thrust_create_target(${namespaces_name}::Thrust FROM_OPTIONS)" "endif()")
+  set(post_find_code "if(NOT TARGET CCCL::Thrust)"
+                     "  thrust_create_target(CCCL::Thrust FROM_OPTIONS)" "endif()")
 
   if(Thrust_SOURCE_DIR)
     # Store where CMake can find the Thrust-config.cmake that comes part of Thrust source code
@@ -118,9 +114,9 @@ function(rapids_cpm_cccl NAMESPACE namespaces_name)
   endif()
 
   # Check for the existence of thrust_create_target so we support fetching Thrust with DOWNLOAD_ONLY
-  if(NOT TARGET ${namespaces_name}::Thrust AND COMMAND thrust_create_target)
-    thrust_create_target(${namespaces_name}::Thrust FROM_OPTIONS)
-    set_target_properties(${namespaces_name}::Thrust PROPERTIES IMPORTED_NO_SYSTEM ON)
+  if(NOT TARGET CCCL::Thrust AND COMMAND thrust_create_target)
+    thrust_create_target(CCCL::Thrust FROM_OPTIONS)
+    set_target_properties(CCCL::Thrust PROPERTIES IMPORTED_NO_SYSTEM ON)
     if(TARGET _Thrust_Thrust)
       set_target_properties(_Thrust_Thrust PROPERTIES IMPORTED_NO_SYSTEM ON)
     endif()

@@ -90,7 +90,7 @@
 
       "rapids_cpm_cccl": {
         "pargs": {
-          "nargs": 2
+          "nargs": 0
         },
         "kwargs": {
           "BUILD_EXPORT_SET": 1,
