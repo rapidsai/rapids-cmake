@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2023, NVIDIA CORPORATION.
+# Copyright (c) 2023, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,20 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-include(${rapids-cmake-dir}/cuda/init_architectures.cmake)
+cmake_minimum_required(VERSION 3.20)
+project(rapids-test-project LANGUAGES CXX)
 
+include(${rapids-cmake-dir}/rapids-test.cmake)
 
-set(CMAKE_CUDA_ARCHITECTURES "RAPIDS")
-rapids_cuda_init_architectures(rapids-project)
-project(rapids-project LANGUAGES CUDA)
+#Disable searching for the CUDA Toolkit so we emulate
+#support for CPU only rapids-cmake-testing support
+set(CMAKE_DISABLE_FIND_PACKAGE_CUDAToolkit True)
 
-if(NOT DEFINED CMAKE_CUDA_ARCHITECTURES)
-  message(FATAL_ERROR "CMAKE_CUDA_ARCHITECTURES should exist after calling rapids_cuda_init_architectures()")
-endif()
+rapids_test_init()
 
-if(CMAKE_CUDA_ARCHITECTURES STREQUAL "RAPIDS")
-  message(FATAL_ERROR "rapids_cuda_init_architectures didn't init CUDA_ARCHITECTURES")
-endif()
-
-
-include("${rapids-cmake-testing-dir}/cuda/validate-cuda-rapids.cmake")
+add_executable(verify_alloc main.cpp)
+enable_testing()
+rapids_test_add(NAME simple_test COMMAND verify_alloc)

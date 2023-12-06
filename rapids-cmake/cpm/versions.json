@@ -1,4 +1,3 @@
-
 {
   "packages" : {
     "benchmark" : {
@@ -10,7 +9,7 @@
       "version" : "0.0.1",
       "git_shallow" : false,
       "git_url" : "https://github.com/NVIDIA/cuCollections.git",
-      "git_tag" : "5186b39522e13a3681c0eb591db4eaacbf969485"
+      "git_tag" : "7c76a124df0c2cd3fd66e3e080b9470a3b4707c6"
     },
     "fmt" : {
       "version" : "9.1.0",
@@ -30,18 +29,28 @@
       "git_tag" : "v${version}"
     },
     "libcudacxx" : {
-      "version" : "1.9.1",
+      "version" : "2.1.0",
       "git_url" : "https://github.com/NVIDIA/libcudacxx.git",
-      "git_tag" : "branch/${version}",
+      "git_tag" : "${version}",
       "patches" : [
         {
           "file" : "libcudacxx/install_rules.diff",
-          "issue" : "libcudacxx 1.X installs incorrect files [https://github.com/NVIDIA/libcudacxx/pull/428]",
+          "issue" : "libcudacxx installs incorrect files [https://github.com/NVIDIA/libcudacxx/pull/428]",
           "fixed_in" : "2.2"
         },
         {
           "file" : "libcudacxx/reroot_support.diff",
-          "issue" : "Support conda-forge usage of CMake rerooting [https://github.com/NVIDIA/libcudacxx/pull/490]",
+          "issue" : "Support conda-forge usage of CMake rerooting [https://github.com/NVIDIA/libcudacxx/pull/490], requires libcudacxx/install_rules.diff.",
+          "fixed_in" : "2.2"
+        },
+        {
+          "file" : "libcudacxx/proclaim_return_type_nv_exec_check_disable.diff",
+          "issue" : "Use pragma to disable execution checks in cuda::proclaim_return_type. [https://github.com/NVIDIA/libcudacxx/pull/448]",
+          "fixed_in" : "2.2"
+        },
+        {
+          "file" : "libcudacxx/memory_resource.diff",
+          "issue" : "Allow {async_}resource_ref to be constructible from a pointer. [https://github.com/NVIDIA/libcudacxx/pull/439]",
           "fixed_in" : "2.2"
         }
       ]
@@ -50,17 +59,17 @@
       "version" : "0.0",
       "git_shallow" : false,
       "git_url" : "https://github.com/NVIDIA/nvbench.git",
-      "git_tag" : "083fdc2fc130d84805827c0129f84bb7449ec059",
+      "git_tag" : "b8f0f6b5832dd632006492fd2434c81fdef0f2de",
       "patches" : [
         {
-          "file" : "nvbench/use_existing_fmt.diff",
-          "issue" : "Fix add support for using an existing fmt [https://github.com/NVIDIA/nvbench/pull/125]",
+          "file" : "nvbench/nvml_with_static_builds.diff",
+          "issue" : "Add support for nvml with static nvbench [https://github.com/NVIDIA/nvbench/pull/148]",
           "fixed_in" : ""
         }
       ]
     },
     "nvcomp" : {
-      "version" : "2.6.1",
+      "version" : "3.0.4",
       "git_url" : "https://github.com/NVIDIA/nvcomp.git",
       "git_tag" : "v2.2.0",
       "proprietary_binary" : {

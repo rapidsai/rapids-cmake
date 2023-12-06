@@ -14,30 +14,33 @@
  * limitations under the License.
  */
 
+#ifdef HAVE_CUDA
 #include <cuda_runtime_api.h>
+#endif
 
 #include <iostream>
 #include <string>
 #include <vector>
 
 struct version {
-  int major = 1;
-  int minor = 0;
+  version() : json_major(1), json_minor(0) {}
+  int json_major;
+  int json_minor;
 };
 
 struct gpu {
-  gpu(int i) : id{i} {};
-  gpu(int i, const cudaDeviceProp& prop) : id{i}, memory{prop.totalGlobalMem}, slots{100} {}
-  int id        = 0;
-  size_t memory = 0;
-  int slots     = 0;
+  gpu(int i) : id(i), memory(0), slots(0){};
+  gpu(int i, size_t mem) : id(i), memory(mem), slots(100) {}
+  int id;
+  size_t memory;
+  int slots;
 };
 
 // A hard-coded JSON printer that generates a ctest resource-specification file:
 // https://cmake.org/cmake/help/latest/manual/ctest.1.html#resource-specification-file
 void to_json(std::ostream& buffer, version const& v)
 {
-  buffer << "\"version\": {\"major\": " << v.major << ", \"minor\": " << v.minor << "}";
+  buffer << "\"version\": {\"major\": " << v.json_major << ", \"minor\": " << v.json_minor << "}";
 }
 void to_json(std::ostream& buffer, gpu const& g)
 {
@@ -48,18 +51,23 @@ int main()
 {
   std::vector<gpu> gpus;
   int nDevices = 0;
+
+#ifdef HAVE_CUDA
   cudaGetDeviceCount(&nDevices);
   if (nDevices == 0) {
-    gpus.emplace_back(0);
+    gpus.push_back(gpu(0));
   } else {
     for (int i = 0; i < nDevices; ++i) {
       cudaDeviceProp prop;
       cudaGetDeviceProperties(&prop, i);
-      gpus.emplace_back(i, prop);
+      gpus.push_back(gpu(i, prop.totalGlobalMem));
     }
   }
+#else
+  gpus.push_back(gpu(0));
+#endif
 
-  version v{1, 0};
+  version v;
   std::cout << "{\n";
   to_json(std::cout, v);
   std::cout << ",\n";

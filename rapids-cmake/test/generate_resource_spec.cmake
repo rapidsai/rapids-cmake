@@ -56,7 +56,7 @@ function(rapids_test_generate_resource_spec DESTINATION filepath)
 {
 "version": {"major": 1, "minor": 0},
 "local": [{
-  "gpus": [{"id":"0", "slots": 100}]
+  "gpus": [{"id":"0", "slots": 0}]
 }]
 }
 ]=])
@@ -67,10 +67,12 @@ function(rapids_test_generate_resource_spec DESTINATION filepath)
   set(error_file ${PROJECT_BINARY_DIR}/rapids-cmake/detect_gpus.stderr.log)
 
   if(NOT EXISTS "${eval_exe}")
-    find_package(CUDAToolkit REQUIRED)
+    find_package(CUDAToolkit QUIET)
     file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/rapids-cmake/")
 
-    set(compile_options "-I${CUDAToolkit_INCLUDE_DIRS}")
+    if(CUDAToolkit_FOUND)
+      set(compile_options "-I${CUDAToolkit_INCLUDE_DIRS}" "-DHAVE_CUDA")
+    endif()
     set(link_options ${CUDA_cudart_LIBRARY})
     set(compiler "${CMAKE_CXX_COMPILER}")
     if(NOT DEFINED CMAKE_CXX_COMPILER)
@@ -79,13 +81,13 @@ function(rapids_test_generate_resource_spec DESTINATION filepath)
 
     execute_process(COMMAND "${compiler}" "${eval_file}" ${compile_options} ${link_options} -o
                             "${eval_exe}" OUTPUT_VARIABLE compile_output
-                    ERROR_VARIABLE compile_output COMMAND_ECHO STDOUT)
+                    ERROR_VARIABLE compile_output)
   endif()
 
   if(NOT EXISTS "${eval_exe}")
-    message(STATUS "rapids_test_generate_resource_spec failed to build detection executable, presuming 1 GPU."
+    message(STATUS "rapids_test_generate_resource_spec failed to build detection executable, presuming no GPUs."
     )
-    message(STATUS "rapids_test_generate_resource_spec compile failure details are ${compile_output}"
+    message(STATUS "rapids_test_generate_resource_spec compile[${compiler} ${compile_options} ${link_options}] failure details are ${compile_output}"
     )
     file(WRITE "${filepath}" "${gpu_json_contents}")
   else()

@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2023, NVIDIA CORPORATION.
+# Copyright (c) 2023, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,20 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-include(${rapids-cmake-dir}/cuda/init_architectures.cmake)
+include(${rapids-cmake-dir}/cpm/init.cmake)
+include(${rapids-cmake-dir}/cpm/gbench.cmake)
 
+rapids_cpm_init()
+rapids_cpm_gbench(BUILD_STATIC)
 
-set(CMAKE_CUDA_ARCHITECTURES "RAPIDS")
-rapids_cuda_init_architectures(rapids-project)
-project(rapids-project LANGUAGES CUDA)
-
-if(NOT DEFINED CMAKE_CUDA_ARCHITECTURES)
-  message(FATAL_ERROR "CMAKE_CUDA_ARCHITECTURES should exist after calling rapids_cuda_init_architectures()")
+get_target_property(type benchmark TYPE)
+if(NOT type STREQUAL STATIC_LIBRARY)
+  message(FATAL_ERROR "rapids_cpm_gbench failed to get a static version of gbench")
 endif()
-
-if(CMAKE_CUDA_ARCHITECTURES STREQUAL "RAPIDS")
-  message(FATAL_ERROR "rapids_cuda_init_architectures didn't init CUDA_ARCHITECTURES")
-endif()
-
-
-include("${rapids-cmake-testing-dir}/cuda/validate-cuda-rapids.cmake")

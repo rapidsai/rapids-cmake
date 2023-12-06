@@ -49,6 +49,8 @@ add_cmake_config_test(install_relocatable-wrong-component.cmake SHOULD_FAIL "${w
 add_cmake_ctest_test(add-impossible-allocation SHOULD_FAIL "Insufficient resources for test")
 add_cmake_config_test(add-with-install-component.cmake)
 add_cmake_config_test(add-with-no-gpus.cmake)
+
+add_cmake_ctest_test(add-no-cuda-toolkit)
 if(RAPIDS_CMAKE_TESTING_GPU_COUNT GREATER 0)
   add_cmake_ctest_test(add-allocation-simple)
   add_cmake_ctest_test(add-allocation-throws-runtime-error)

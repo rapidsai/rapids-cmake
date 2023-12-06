@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2023, NVIDIA CORPORATION.
+# Copyright (c) 2023, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,20 +13,30 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-include(${rapids-cmake-dir}/cuda/init_architectures.cmake)
+include(${rapids-cmake-dir}/cpm/init.cmake)
+include(${rapids-cmake-dir}/cpm/gtest.cmake)
 
+rapids_cpm_init()
 
-set(CMAKE_CUDA_ARCHITECTURES "RAPIDS")
-rapids_cuda_init_architectures(rapids-project)
-project(rapids-project LANGUAGES CUDA)
-
-if(NOT DEFINED CMAKE_CUDA_ARCHITECTURES)
-  message(FATAL_ERROR "CMAKE_CUDA_ARCHITECTURES should exist after calling rapids_cuda_init_architectures()")
+if(TARGET GTest::gtest)
+  message(FATAL_ERROR "Expected GTest::gtest not to exist")
 endif()
 
-if(CMAKE_CUDA_ARCHITECTURES STREQUAL "RAPIDS")
-  message(FATAL_ERROR "rapids_cuda_init_architectures didn't init CUDA_ARCHITECTURES")
-endif()
+set(BUILD_SHARED_LIBS OFF)
+rapids_cpm_gtest()
 
+file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/use_gtest.cpp" [=[
+#include <gtest/gtest.h>
 
-include("${rapids-cmake-testing-dir}/cuda/validate-cuda-rapids.cmake")
+// The fixture for testing class Foo.
+class FooTest : public testing::Test {
+
+  FooTest() {}
+  ~FooTest() override { }
+
+  void SetUp() override {}
+  void TearDown() override {}
+};
+]=])
+add_library(uses_gtest SHARED ${CMAKE_CURRENT_BINARY_DIR}/use_gtest.cpp)
+target_link_libraries(uses_gtest PRIVATE GTest::gtest)
