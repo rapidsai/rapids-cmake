@@ -17,7 +17,7 @@ include_guard(GLOBAL)
 #[=======================================================================[.rst:
 rapids_cython_add_rpath_entries
 -------------------------------
-.. versionadded:: v22.12.00
+.. versionadded:: v24.02.00
 
 Set the RPATH entries for all targets associated with a provided associated target.
 

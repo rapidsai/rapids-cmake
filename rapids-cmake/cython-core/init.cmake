@@ -18,7 +18,7 @@ include_guard(GLOBAL)
 rapids_cython_init
 ------------------
 
-.. versionadded:: v22.06.00
+.. versionadded:: v24.02.00
 
 Perform standard initialization of any CMake build using scikit-build to create Python extension modules with Cython.
 

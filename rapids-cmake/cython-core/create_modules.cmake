@@ -18,7 +18,7 @@ include_guard(GLOBAL)
 rapids_cython_create_modules
 ----------------------------
 
-.. versionadded:: v22.06.00
+.. versionadded:: v24.02.00
 
 Generate C(++) from Cython and create Python modules.
 

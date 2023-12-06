@@ -18,7 +18,7 @@ include_guard(GLOBAL)
 rapids_cython_verify_init
 -------------------------
 
-.. versionadded:: v22.06.00
+.. versionadded:: v24.02.00
 
 Simple helper function for rapids-cython components to verify that rapids_cython_init has been called before they proceed.
 
