@@ -52,15 +52,7 @@ macro(rapids_cython_init)
 
     find_package(Python COMPONENTS Interpreter Development.Module REQUIRED)
 
-    # TODO: Once we're happy with how this is behaving, start vendoring the file instead to decouple
-    # from my repo until it's moved upstream to scikit-build.
-    if(NOT EXISTS ${CMAKE_CURRENT_BINARY_DIR}/CYTHON_CMAKE.cmake)
-      file(DOWNLOAD https://raw.githubusercontent.com/vyasr/cython-cmake/main/CYTHON_CMAKE.cmake
-           ${CMAKE_CURRENT_BINARY_DIR}/CYTHON_CMAKE.cmake)
-    endif()
-    include(${CMAKE_CURRENT_BINARY_DIR}/CYTHON_CMAKE.cmake)
-
-    find_package(cython REQUIRED)
+    find_program(CYTHON "cython")
 
     # Flag
     set(RAPIDS_CYTHON_INITIALIZED TRUE)
