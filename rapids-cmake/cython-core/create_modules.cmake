@@ -84,7 +84,6 @@ function(rapids_cython_create_modules)
   cmake_parse_arguments(_RAPIDS_CYTHON "${_rapids_cython_options}" "${_rapids_cython_one_value}"
                         "${_rapids_cython_multi_value}" ${ARGN})
 
-  set(_directives "binding=True,embedsignature=True,always_allow_keywords=True")
   set(_ext ".c")
   set(_language_flag "")
   if(_RAPIDS_CYTHON_CXX)
@@ -113,7 +112,7 @@ function(rapids_cython_create_modules)
     add_custom_command(OUTPUT ${cpp_filename}
                        DEPENDS ${cython_filename}
                        VERBATIM
-                       COMMAND "${CYTHON}" "${_language_flag}" -3 --directive "${_directives}"
+                       COMMAND "${CYTHON}" "${_language_flag}" -3 ${CYTHON_FLAGS}
                                "${CMAKE_CURRENT_SOURCE_DIR}/${cython_filename}" --output-file
                                "${CMAKE_CURRENT_BINARY_DIR}/${cpp_filename}"
                        COMMENT "Transpiling ${cython_filename} to ${cpp_filename}")
