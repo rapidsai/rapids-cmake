@@ -86,12 +86,11 @@ function(rapids_cython_create_modules)
 
   set(_directives "binding=True,embedsignature=True,always_allow_keywords=True")
   set(_ext ".c")
-  set(_language_flag "")
+  set(_language_flag "C")
   if(_RAPIDS_CYTHON_CXX)
-    set(_language_flag "--cplus")
+    set(_language_flag "CXX")
     set(_ext ".cxx")
   endif()
-
 
   set(CREATED_TARGETS "")
 
@@ -110,13 +109,9 @@ function(rapids_cython_create_modules)
     string(PREPEND cython_module ${_RAPIDS_CYTHON_MODULE_PREFIX})
 
     # Generate C++ from Cython and create a library for the resulting extension module to compile.
-    # TODO: Probably want to generalize this to a helper function for invoking Cython.
-    add_custom_command(
-      OUTPUT ${cpp_filename}
-      DEPENDS ${cython_filename}
-      VERBATIM
-      COMMAND "${CYTHON}" "${_language_flag}" -3 --directive "${_directives}" "${CMAKE_CURRENT_SOURCE_DIR}/${cython_filename}" --output-file
-              "${CMAKE_CURRENT_BINARY_DIR}/${cpp_filename}")
+    cython(SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/${cython_filename}" TARGET_LANGUAGE
+           ${_language_flag} LANGUAGE_LEVEL 3 CYTHON_ARGS
+           "--directive ${_directives} --output-file ${CMAKE_CURRENT_BINARY_DIR}/${cpp_filename}")
 
     python_add_library(${cython_module} MODULE "${CMAKE_CURRENT_BINARY_DIR}/${cpp_filename}")
 
