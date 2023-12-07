@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2022-2023, NVIDIA CORPORATION.
+# Copyright (c) 2023, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,16 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-cmake_minimum_required(VERSION 3.23.1)
-
-project(rapids-dependencies LANGUAGES CXX)
-
-set(rapids-cmake-dir "${PROJECT_SOURCE_DIR}/../../../rapids-cmake/")
-
 include(${rapids-cmake-dir}/cpm/init.cmake)
+include(${rapids-cmake-dir}/cpm/cccl.cmake)
+
 rapids_cpm_init()
 
-# Download all source packages
-include(${rapids-cmake-dir}/cpm/cccl.cmake)
-set(CPM_DOWNLOAD_ALL "ON")
-rapids_cpm_cccl(NAMESPACE temp INSTALL_EXPORT_SET rapids-dependencies)
+rapids_cpm_cccl(BUILD_EXPORT_SET test)
+rapids_cpm_cccl(INSTALL_EXPORT_SET test2)
+
+get_target_property(packages rapids_export_build_test PACKAGE_NAMES)
+if(NOT CCCL IN_LIST packages)
+  message(FATAL_ERROR "rapids_cpm_cccl failed to record CCCL needs to be exported")
+endif()
+
+get_target_property(packages rapids_export_install_test2 PACKAGE_NAMES)
+if(NOT CCCL IN_LIST packages)
+  message(FATAL_ERROR "rapids_cpm_cccl failed to record CCCL needs to be exported")
+endif()
