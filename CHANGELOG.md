@@ -1,3 +1,33 @@
+# rapids-cmake 23.12.00 (6 Dec 2023)
+
+## 🚨 Breaking Changes
+
+- Upgrade nvCOMP to 3.0.4 ([#451](https://github.com/rapidsai/rapids-cmake/pull/451)) [@vuule](https://github.com/vuule)
+
+## 🐛 Bug Fixes
+
+- Ensure nvbench initializes nvml context when built statically ([#486](https://github.com/rapidsai/rapids-cmake/pull/486)) [@robertmaynard](https://github.com/robertmaynard)
+- Remove invalid argument to find_package_root ([#483](https://github.com/rapidsai/rapids-cmake/pull/483)) [@robertmaynard](https://github.com/robertmaynard)
+- target from write_git_revision now works with export sets ([#474](https://github.com/rapidsai/rapids-cmake/pull/474)) [@robertmaynard](https://github.com/robertmaynard)
+
+## 🚀 New Features
+
+- Support static builds of gbench and nvbench. ([#481](https://github.com/rapidsai/rapids-cmake/pull/481)) [@robertmaynard](https://github.com/robertmaynard)
+- Allow rapids_test to be used without CUDAToolkit ([#480](https://github.com/rapidsai/rapids-cmake/pull/480)) [@robertmaynard](https://github.com/robertmaynard)
+- Update cuco git tag ([#479](https://github.com/rapidsai/rapids-cmake/pull/479)) [@sleeepyjack](https://github.com/sleeepyjack)
+- GTest will always be PIC enabled when built ([#477](https://github.com/rapidsai/rapids-cmake/pull/477)) [@robertmaynard](https://github.com/robertmaynard)
+- Thrust when exported now automatically calls `thrust_create_target` ([#467](https://github.com/rapidsai/rapids-cmake/pull/467)) [@robertmaynard](https://github.com/robertmaynard)
+- Upgrade nvCOMP to 3.0.4 ([#451](https://github.com/rapidsai/rapids-cmake/pull/451)) [@vuule](https://github.com/vuule)
+
+## 🛠️ Improvements
+
+- Build concurrency for nightly and merge triggers ([#490](https://github.com/rapidsai/rapids-cmake/pull/490)) [@bdice](https://github.com/bdice)
+- Add patch for libcudacxx memory resource. ([#476](https://github.com/rapidsai/rapids-cmake/pull/476)) [@bdice](https://github.com/bdice)
+- Use branch-23.12 workflows. ([#472](https://github.com/rapidsai/rapids-cmake/pull/472)) [@bdice](https://github.com/bdice)
+- Express Python version in dependencies.yaml. ([#470](https://github.com/rapidsai/rapids-cmake/pull/470)) [@bdice](https://github.com/bdice)
+- Build CUDA 12.0 ARM conda packages. ([#468](https://github.com/rapidsai/rapids-cmake/pull/468)) [@bdice](https://github.com/bdice)
+- Update libcudacxx to 2.1.0 ([#464](https://github.com/rapidsai/rapids-cmake/pull/464)) [@bdice](https://github.com/bdice)
+
 # rapids-cmake 23.10.00 (11 Oct 2023)
 
 ## 🐛 Bug Fixes
