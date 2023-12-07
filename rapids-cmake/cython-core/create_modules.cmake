@@ -109,10 +109,11 @@ function(rapids_cython_create_modules)
 
     # Generate C++ from Cython and create a library for the resulting extension module to compile.
     # TODO: Probably want to generalize this to a helper function for invoking Cython.
+    string(REPLACE " " ";" CYTHON_FLAGS_LIST "${CYTHON_FLAGS}")
     add_custom_command(OUTPUT ${cpp_filename}
                        DEPENDS ${cython_filename}
                        VERBATIM
-                       COMMAND "${CYTHON}" "${_language_flag}" -3 ${CYTHON_FLAGS}
+                       COMMAND "${CYTHON}" ARGS "${_language_flag}" -3 ${CYTHON_FLAGS_LIST}
                                "${CMAKE_CURRENT_SOURCE_DIR}/${cython_filename}" --output-file
                                "${CMAKE_CURRENT_BINARY_DIR}/${cpp_filename}"
                        COMMENT "Transpiling ${cython_filename} to ${cpp_filename}")
