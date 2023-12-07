@@ -14,7 +14,7 @@
       "version" : "0.0.1",
       "git_shallow" : false,
       "git_url" : "https://github.com/bdice/cuCollections.git",
-      "git_tag" : "2c3a1ac6950d105683d839dd8ba0cdb1d67b0b2f"
+      "git_tag" : "cccl-2.2.0"
     },
     "fmt" : {
       "version" : "10.1.1",
