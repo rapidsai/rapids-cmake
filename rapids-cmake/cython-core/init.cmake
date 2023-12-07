@@ -20,15 +20,15 @@ rapids_cython_init
 
 .. versionadded:: v24.02.00
 
-Perform standard initialization of any CMake build using scikit-build to create Python extension modules with Cython.
+Perform standard initialization of any CMake build using scikit-build-core to create Python extension modules with Cython.
 
 .. code-block:: cmake
 
   rapids_cython_init()
 
 .. note::
-  Use of the rapids-cython component of rapids-cmake requires scikit-build. The behavior of the functions provided by
-  this component is undefined if they are invoked outside of a build managed by scikit-build.
+  Use of the rapids-cython component of rapids-cmake requires scikit-build-core. The behavior of the functions provided by
+  this component is undefined if they are invoked outside of a build managed by scikit-build-core.
 
 Result Variables
 ^^^^^^^^^^^^^^^^
@@ -42,8 +42,8 @@ macro(rapids_cython_init)
   if(NOT DEFINED RAPIDS_CYTHON_INITIALIZED)
     # Verify that we are using scikit-build.
     if(NOT DEFINED SKBUILD)
-      message(WARNING "rapids-cython expects scikit-build to be active before being used. \
-          The SKBUILD variable is not currently set, indicating that scikit-build \
+      message(WARNING "rapids-cython expects scikit-build-core to be active before being used. \
+          The SKBUILD variable is not currently set, indicating that scikit-build-core \
           is not active, so builds may behave unexpectedly.")
     else()
       # Access the variable to avoid unused variable warnings."
