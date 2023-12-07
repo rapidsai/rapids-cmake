@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2022, NVIDIA CORPORATION.
+# Copyright (c) 2022-2023, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,9 +31,14 @@ LIST(APPEND CMAKE_MODULE_PATH "${skbuild_resource_dir}")
 
 rapids_cython_init()
 
-# Test that we can specify a (fake) library.
-add_library(rapids_cython_test_library test)
+# Test that an empty invocation works.
+rapids_cython_create_modules()
+
+# Test that a basic invocation with a single file works.
 rapids_cython_create_modules(
     SOURCE_FILES test.pyx
-    LINKED_LIBRARIES rapids_cython_test_library
     )
+
+if(NOT TARGET test)
+  message(FATAL_ERROR "rapids_cython_create_modules didn't create the target `test`")
+endif()
