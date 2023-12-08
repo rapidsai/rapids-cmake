@@ -83,7 +83,7 @@ function(rapids_cpm_cccl)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
   rapids_cpm_find(CCCL ${version} ${ARGN}
-                  GLOBAL_TARGETS CCCL CCCL::CCCL CCCL::Thrust CCCL::CUB CCCL::libcudacxx
+                  GLOBAL_TARGETS CCCL CCCL::CCCL CCCL::CUB CCCL::libcudacxx
                   CPM_ARGS FIND_PACKAGE_ARGUMENTS EXACT
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
