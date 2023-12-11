@@ -36,13 +36,13 @@ rapids_export(INSTALL fake
   NAMESPACE test::
   )
 
-# Install our project so we can verify `libcudacxx` can be found
+# Install our project so we can verify CCCL can be found
 # from a custom install location
 add_custom_target(install_project ALL
   COMMAND ${CMAKE_COMMAND} --install "${CMAKE_BINARY_DIR}" --prefix install/fake/
   )
 
-# Add a custom command that verifies that the expect files have
+# Add a custom command that verifies that the expected files have
 # been installed for each component
 file(WRITE "${CMAKE_BINARY_DIR}/install/CMakeLists.txt" [=[
 cmake_minimum_required(VERSION 3.20)
