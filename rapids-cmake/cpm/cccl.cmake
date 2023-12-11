@@ -90,7 +90,8 @@ function(rapids_cpm_cccl)
                   GIT_SHALLOW ${shallow}
                   PATCH_COMMAND ${patch_command}
                   EXCLUDE_FROM_ALL ${exclude}
-                  OPTIONS "CCCL_ENABLE_INSTALL_RULES ${to_install}")
+                  OPTIONS "CCCL_TOPLEVEL_PROJECT ON" "CCCL_ENABLE_TESTING OFF"
+                          "CCCL_ENABLE_INSTALL_RULES ${to_install}")
 
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
   rapids_cpm_display_patch_status(CCCL)
