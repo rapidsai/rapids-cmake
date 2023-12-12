@@ -24,7 +24,11 @@ Generate C(++) from Cython and create Python modules.
 
 .. code-block:: cmake
 
-  rapids_cython_create_modules([CXX] [SOURCE_FILES <src1> <src2> ...] [LINKED_LIBRARIES <lib1> <lib2> ... ]  [INSTALL_DIR <install_path>] [MODULE_PREFIX <module_prefix>] )
+  rapids_cython_create_modules([CXX]
+                               [SOURCE_FILES <src1> <src2> ...]
+                               [LINKED_LIBRARIES <lib1> <lib2> ... ]
+                               [INSTALL_DIR <install_path>]
+                               [MODULE_PREFIX <module_prefix>])
 
 Creates a Cython target for each provided source file, then adds a
 corresponding Python extension module. Each built library has its RPATH set to
@@ -38,7 +42,7 @@ $ORIGIN.
 
 ``SOURCE_FILES``
   The list of Cython source files to be built into Python extension modules.
-  Note that this function assumes that Cython source files have a one-one
+  Note that this function assumes that Cython source files have a one-to-one
   correspondence with extension modules to build, i.e. for every `<Name>.pyx`
   in SOURCE_FILES we assume that `<Name>.pyx` is a Cython source file for which
   an extension module `<Name>` should be built.
@@ -59,7 +63,7 @@ $ORIGIN.
 
 ``ASSOCIATED_TARGETS``
   A list of targets that are associated with the Cython targets created in this
-  function. The target<-->associated target mapping is stored and may be
+  function. The target to associated target mapping is stored and may be
   leveraged by the following functions:
 
   - :cmake:command:`rapids_cython_add_rpath_entries` accepts a path for an
