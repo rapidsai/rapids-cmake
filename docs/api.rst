@@ -78,7 +78,7 @@ The `rapids-cython-core` module allows projects to easily build cython modules u
    /command/rapids_cython_core_create_modules
    /command/rapids_cython_core_add_rpath_entries
 
-.. _`cython`:
+.. _`cython_legacy`:
 
 Cython (legacy)
 ***************
