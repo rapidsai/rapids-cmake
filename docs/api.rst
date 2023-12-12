@@ -64,6 +64,28 @@ package uses :ref:`can be found here. <cpm_versions>`
 Cython
 ******
 
+The `rapids-cython-core` module allows projects to easily build cython modules using
+`scikit-build-core <https://scikit-build-core.readthedocs.io/en/latest/>`_.
+
+.. note::
+  Use of rapids-cython-core requires scikit-build-core. The behavior of the functions provided by
+  this component is undefined if they are invoked outside of a build managed by scikit-build-core.
+
+.. toctree::
+   :titlesonly:
+
+   /command/rapids_cython_core_init
+   /command/rapids_cython_core_create_modules
+   /command/rapids_cython_core_add_rpath_entries
+
+.. _`cython`:
+
+Cython (legacy)
+***************
+
+.. note::
+  `rapids-cython` is deprecated. Please switch to `rapids-cython-core`.
+
 The `rapids_cython` functions allow projects to easily build cython modules using
 `scikit-build <https://scikit-build.readthedocs.io/en/latest/>`_.
 
