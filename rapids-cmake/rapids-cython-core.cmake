@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2022-2023, NVIDIA CORPORATION.
+# Copyright (c) 2023, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,14 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
+include_guard(GLOBAL)
 
-add_cmake_config_test(rapids-cython.cmake)
-
-add_cmake_config_test(cython_init.cmake)
-add_cmake_config_test(cython_create_modules_errors.cmake SHOULD_FAIL "You must call rapids_cython_init before calling this function")
-
-add_cmake_config_test(cython_create_modules)
-add_cmake_config_test(cython_create_modules_with_library)
-add_cmake_config_test(cython_create_modules_with_prefix)
-
-add_cmake_config_test(cython_add_rpath_entries)
+include(${CMAKE_CURRENT_LIST_DIR}/cython-core/init.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/cython-core/create_modules.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/cython-core/add_rpath_entries.cmake)

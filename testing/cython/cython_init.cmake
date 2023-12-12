@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2022, NVIDIA CORPORATION.
+# Copyright (c) 2022-2023, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,13 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-
-cmake_minimum_required(VERSION 3.20)
-
-include(${rapids-cmake-dir}/cython/create_modules.cmake)
 include(${rapids-cmake-dir}/cython/init.cmake)
-
-project(rapids_cython-create_modules LANGUAGES C CXX)
 
 # Silence warning about running without scikit-build.
 set(SKBUILD ON)
@@ -29,16 +23,31 @@ set(SKBUILD ON)
 file(GLOB skbuild_resource_dir LIST_DIRECTORIES ON "${CPM_SOURCE_CACHE}/skbuild/*/skbuild/resources/cmake")
 LIST(APPEND CMAKE_MODULE_PATH "${skbuild_resource_dir}")
 
+# Test that rapids_cython_init initializes the expected variables.
 rapids_cython_init()
-
-# Test that an empty invocation works.
-rapids_cython_create_modules()
-
-# Test that a basic invocation with a single file works.
-rapids_cython_create_modules(
-    SOURCE_FILES test.pyx
-    )
-
-if(NOT TARGET test)
-  message(FATAL_ERROR "rapids_cython_create_modules didn't create the target `test`")
+if(NOT DEFINED RAPIDS_CYTHON_INITIALIZED)
+  message(FATAL_ERROR "rapids_cython_init didn't correctly set RAPIDS_CYTHON_INITIALIZED")
 endif()
+
+string(REGEX MATCHALL ".*--directive.*" matches "${CYTHON_FLAGS}")
+list(LENGTH matches num_directives)
+
+if(NOT CYTHON_FLAGS OR NOT num_directives EQUAL 1)
+  message(FATAL_ERROR "rapids_cython_init didn't correctly set CYTHON_FLAGS")
+endif()
+
+if(NOT COMMAND _set_python_extension_symbol_visibility)
+  message(FATAL_ERROR "rapids_cython_init didn't create the _set_python_extension_symbol_visibility command")
+endif()
+
+# Test that rapids_cython_init is idempotent.
+rapids_cython_init()
+string(REGEX MATCHALL ".*--directive.*" matches "${CYTHON_FLAGS}")
+list(LENGTH matches num_directives)
+
+if(NOT num_directives EQUAL 1)
+  message(FATAL_ERROR "rapids_cython_init is not idempotent, num_directives = ${num_directives}")
+endif()
+
+# Unset the cached CYTHON_FLAGS variable for future runs of the test to behave as expected.
+unset(CYTHON_FLAGS CACHE)

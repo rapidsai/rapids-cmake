@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2022-2023, NVIDIA CORPORATION.
+# Copyright (c) 2023, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,13 +14,23 @@
 # limitations under the License.
 #=============================================================================
 
-add_cmake_config_test(rapids-cython.cmake)
+cmake_minimum_required(VERSION 3.20)
 
-add_cmake_config_test(cython_init.cmake)
-add_cmake_config_test(cython_create_modules_errors.cmake SHOULD_FAIL "You must call rapids_cython_init before calling this function")
+include(${rapids-cmake-dir}/cython-core/create_modules.cmake)
+include(${rapids-cmake-dir}/cython-core/init.cmake)
 
-add_cmake_config_test(cython_create_modules)
-add_cmake_config_test(cython_create_modules_with_library)
-add_cmake_config_test(cython_create_modules_with_prefix)
+project(rapids_cython-create_modules LANGUAGES C CXX)
 
-add_cmake_config_test(cython_add_rpath_entries)
+rapids_cython_init()
+
+# Test that an empty invocation works.
+rapids_cython_create_modules()
+
+# Test that a basic invocation with a single file works.
+rapids_cython_create_modules(
+    SOURCE_FILES test.pyx
+    )
+
+if(NOT TARGET test)
+  message(FATAL_ERROR "rapids_cython_create_modules didn't create the target `test`")
+endif()
