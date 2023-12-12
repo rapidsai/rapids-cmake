@@ -38,6 +38,10 @@ Result Variables
 #]=======================================================================]
 macro(rapids_cython_init)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cython.init")
+  rapids_cmake_policy(DEPRECATED_IN 24.02
+                      REMOVED_IN 24.08
+                      MESSAGE [=[Usage of `rapids-cython` is deprecated, use rapids-cython-core instead.]=]
+  )
   # Only initialize once.
   if(NOT DEFINED RAPIDS_CYTHON_INITIALIZED)
     # Verify that we are using scikit-build.
