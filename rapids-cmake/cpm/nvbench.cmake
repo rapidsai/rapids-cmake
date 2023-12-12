@@ -93,8 +93,11 @@ function(rapids_cpm_nvbench)
                   GIT_SHALLOW ${shallow}
                   PATCH_COMMAND ${patch_command}
                   EXCLUDE_FROM_ALL ${exclude}
-                  OPTIONS "NVBench_ENABLE_NVML ${nvbench_with_nvml}" "NVBench_ENABLE_EXAMPLES OFF"
-                          "NVBench_ENABLE_TESTING OFF" "NVBench_ENABLE_INSTALL_RULES ${to_install}"
+                  OPTIONS "NVBench_ENABLE_NVML ${nvbench_with_nvml}"
+                          "NVBench_ENABLE_CUPTI OFF"
+                          "NVBench_ENABLE_EXAMPLES OFF"
+                          "NVBench_ENABLE_TESTING OFF"
+                          "NVBench_ENABLE_INSTALL_RULES ${to_install}"
                           "BUILD_SHARED_LIBS ${build_shared}")
 
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
