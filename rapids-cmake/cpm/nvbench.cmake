@@ -43,6 +43,10 @@ across all RAPIDS projects.
   Will build nvbench statically. No local searching for a previously
   built version will occur.
 
+.. versionchanged:: v24.02.00
+
+NVBench_ENABLE_CUPTI is set to OFF by default.
+
 Result Targets
 ^^^^^^^^^^^^^^
   nvbench::nvbench target will be created
