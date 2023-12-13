@@ -106,11 +106,15 @@ function(rapids_cpm_cccl)
     set(CUB_BINARY_DIR "${CCCL_BINARY_DIR}")
     set(libcudacxx_BINARY_DIR "${CCCL_BINARY_DIR}")
 
-    # Only libcudacxx's install rules specifically require this to be set at present
-    set(libcudacxx_ENABLE_INSTALL_RULES ON)
     include("${Thrust_SOURCE_DIR}/cmake/ThrustInstallRules.cmake")
     include("${CUB_SOURCE_DIR}/cmake/CubInstallRules.cmake")
+
+    # libcudacxx's install rules require extra settings
+    set(libcudacxx_ENABLE_INSTALL_RULES ON)
+    set(OLD_INSTALL_INCLUDEDIR "${CMAKE_INSTALL_INCLUDEDIR}")
+    set(CMAKE_INSTALL_INCLUDEDIR "${CMAKE_INSTALL_INCLUDEDIR}/libcudacxx")
     include("${libcudacxx_SOURCE_DIR}/cmake/libcudacxxInstallRules.cmake")
+    set(CMAKE_INSTALL_INCLUDEDIR "${OLD_INSTALL_INCLUDEDIR}")
   endif()
 
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
