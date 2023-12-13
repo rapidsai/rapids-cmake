@@ -99,11 +99,15 @@ function(rapids_cpm_cccl)
     set(Thrust_SOURCE_DIR "${CCCL_SOURCE_DIR}/thrust")
     set(CUB_SOURCE_DIR "${CCCL_SOURCE_DIR}/cub")
     set(libcudacxx_SOURCE_DIR "${CCCL_SOURCE_DIR}/libcudacxx")
+
     # TODO: Do we still want these to install at the top-level, or do we want them to be nested
     # inside a rapids/cccl directory in the future?
     set(Thrust_BINARY_DIR "${CCCL_BINARY_DIR}")
     set(CUB_BINARY_DIR "${CCCL_BINARY_DIR}")
     set(libcudacxx_BINARY_DIR "${CCCL_BINARY_DIR}")
+
+    # Only libcudacxx's install rules specifically require this to be set at present
+    set(libcudacxx_ENABLE_INSTALL_RULES ON)
     include("${Thrust_SOURCE_DIR}/cmake/ThrustInstallRules.cmake")
     include("${CUB_SOURCE_DIR}/cmake/CubInstallRules.cmake")
     include("${libcudacxx_SOURCE_DIR}/cmake/libcudacxxInstallRules.cmake")
