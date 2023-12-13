@@ -8,7 +8,14 @@
     "CCCL" : {
       "version" : "2.2.0",
       "git_url" : "https://github.com/NVIDIA/cccl.git",
-      "git_tag" : "v${version}"
+      "git_tag" : "v${version}",
+      "patches" : [
+        {
+          "file" : "cccl/install_rules.diff",
+          "issue" : "CCCL installs header-search.cmake files in nondeterministic order",
+          "fixed_in" : "2.3"
+        }
+      ]
     },
     "cuco" : {
       "version" : "0.0.1",
