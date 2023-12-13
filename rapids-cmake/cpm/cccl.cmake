@@ -92,6 +92,23 @@ function(rapids_cpm_cccl)
                   EXCLUDE_FROM_ALL ${exclude}
                   OPTIONS "CCCL_ENABLE_INSTALL_RULES ${to_install}")
 
+  if(to_install)
+    # CCCL does not currently correctly support installation of cub/thrust/libcudacxx. The only
+    # option that makes this work is to manually invoke the install rules until CCCL's CMake is
+    # fixed.
+    set(Thrust_SOURCE_DIR "${CCCL_SOURCE_DIR}/thrust")
+    set(CUB_SOURCE_DIR "${CCCL_SOURCE_DIR}/cub")
+    set(libcudacxx_SOURCE_DIR "${CCCL_SOURCE_DIR}/libcudacxx")
+    # TODO: Do we still want these to install at the top-level, or do we want them to be nested
+    # inside a rapids/cccl directory in the future?
+    set(Thrust_BINARY_DIR "${CCCL_BINARY_DIR}")
+    set(CUB_BINARY_DIR "${CCCL_BINARY_DIR}")
+    set(libcudacxx_BINARY_DIR "${CCCL_BINARY_DIR}")
+    include("${Thrust_SOURCE_DIR}/cmake/ThrustInstallRules.cmake")
+    include("${CUB_SOURCE_DIR}/cmake/CubInstallRules.cmake")
+    include("${libcudacxx_SOURCE_DIR}/cmake/libcudacxxInstallRules.cmake")
+  endif()
+
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
   rapids_cpm_display_patch_status(CCCL)
 
