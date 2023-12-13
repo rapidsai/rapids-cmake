@@ -100,21 +100,20 @@ function(rapids_cpm_cccl)
     set(CUB_SOURCE_DIR "${CCCL_SOURCE_DIR}/cub")
     set(libcudacxx_SOURCE_DIR "${CCCL_SOURCE_DIR}/libcudacxx")
 
-    # TODO: Do we still want these to install at the top-level, or do we want them to be nested
-    # inside a rapids/cccl directory in the future?
     set(Thrust_BINARY_DIR "${CCCL_BINARY_DIR}")
     set(CUB_BINARY_DIR "${CCCL_BINARY_DIR}")
     set(libcudacxx_BINARY_DIR "${CCCL_BINARY_DIR}")
 
+    set(Thrust_ENABLE_INSTALL_RULES ON)
+    set(CUB_ENABLE_INSTALL_RULES ON)
+    set(libcudacxx_ENABLE_INSTALL_RULES ON)
+
     include("${Thrust_SOURCE_DIR}/cmake/ThrustInstallRules.cmake")
     include("${CUB_SOURCE_DIR}/cmake/CubInstallRules.cmake")
 
-    # libcudacxx's install rules require extra settings
-    set(libcudacxx_ENABLE_INSTALL_RULES ON)
-    set(OLD_INSTALL_INCLUDEDIR "${CMAKE_INSTALL_INCLUDEDIR}")
+    # libcudacxx's install rules require inserting an extra level of nesting for the include dir.
     set(CMAKE_INSTALL_INCLUDEDIR "${CMAKE_INSTALL_INCLUDEDIR}/libcudacxx")
     include("${libcudacxx_SOURCE_DIR}/cmake/libcudacxxInstallRules.cmake")
-    set(CMAKE_INSTALL_INCLUDEDIR "${OLD_INSTALL_INCLUDEDIR}")
   endif()
 
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
