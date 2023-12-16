@@ -92,7 +92,7 @@ function(rapids_cpm_cccl)
                   EXCLUDE_FROM_ALL ${exclude}
                   OPTIONS "CCCL_ENABLE_INSTALL_RULES ${to_install}")
 
-  if(to_install)
+  if(CCCL_SOURCE_DIR AND to_install)
     # CCCL does not currently correctly support installation of cub/thrust/libcudacxx. The only
     # option that makes this work is to manually invoke the install rules until CCCL's CMake is
     # fixed.
