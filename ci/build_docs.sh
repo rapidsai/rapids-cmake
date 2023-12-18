@@ -21,7 +21,7 @@ export RAPIDS_DOCS_DIR="$(mktemp -d)"
 
 rapids-logger "Build Sphinx docs"
 pushd docs
-sphinx-build -b dirhtml . _html -W
+sphinx-build -b html . _html -W
 sphinx-build -b text . _text -W
 mkdir -p "${RAPIDS_DOCS_DIR}/rapids-cmake/"{html,txt}
 mv _html/* "${RAPIDS_DOCS_DIR}/rapids-cmake/html"
