@@ -29,7 +29,9 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
       "exclude_from_all" : "ON"
     },
     "not_in_base" : {
+      "version" : "1.0",
       "git_url" : "new_rmm_url",
+      "git_tag" : "main",
       "git_shallow" : "OFF",
       "exclude_from_all" : "ON"
     }

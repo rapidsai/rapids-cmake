@@ -86,22 +86,21 @@ function(rapids_cpm_package_override filepath)
         string(JSON data GET "${json_data}" packages "${package_name}")
         set_property(GLOBAL PROPERTY rapids_cpm_${package_name}_override_json "${data}")
         set_property(GLOBAL PROPERTY rapids_cpm_${package_name}_override_json_file "${filepath}")
+
+        # establish the fetch content
+        include(FetchContent)
+        include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
+        rapids_cpm_package_details(${package_name} version repository tag shallow exclude)
+
+        include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
+        rapids_cpm_generate_patch_command(${package_name} ${version} patch_command)
+
+        FetchContent_Declare(${package_name}
+                             GIT_REPOSITORY ${repository}
+                             GIT_TAG ${tag}
+                             GIT_SHALLOW ${shallow}
+                             PATCH_COMMAND ${patch_command} EXCLUDE_FROM_ALL ${exclude})
       endif()
     endforeach()
-
-    # establish the fetch content
-    include(FetchContent)
-    include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
-    rapids_cpm_package_details(${package_name} version repository tag shallow exclude)
-
-    include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
-    rapids_cpm_generate_patch_command(${package_name} ${version} patch_command)
-
-    FetchContent_Declare(${package_name}
-                         GIT_REPOSITORY ${repository}
-                         GIT_TAG ${tag}
-                         GIT_SHALLOW ${shallow}
-                         PATCH_COMMAND ${patch_command} EXCLUDE_FROM_ALL ${exclude})
-
   endif()
 endfunction()
