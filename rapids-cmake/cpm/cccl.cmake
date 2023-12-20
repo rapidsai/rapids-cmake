@@ -92,7 +92,7 @@ function(rapids_cpm_cccl)
                   EXCLUDE_FROM_ALL ${exclude}
                   OPTIONS "CCCL_ENABLE_INSTALL_RULES ${to_install}")
 
-  # rapids_cpm_ccl can be called multiple times from the same scope such as from cudf/CMakeLists.txt
+  # rapids_cpm_cccl can be called multiple times from the same scope such as from cudf/CMakeLists.txt
   # and cudf's call to find_package(rmm). In these situations, subsequent invocations will still have
   # `CCCL_SOURCE_DIR` set due to how `rapids_cpm_find` early termination sets up variables
   #
