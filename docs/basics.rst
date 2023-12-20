@@ -31,13 +31,13 @@ Usage
 ``rapids-cmake`` is designed for projects to use only the subset of features that they need. To enable
 this `rapids-cmake` comprises the following primary components:
 
-- `cmake <api.html#common>`__
-- `cpm <api.html#cpm>`__
-- `cython <api.html#cython>`__
-- `cuda <api.html#cuda>`__
-- `export <api.html#export>`__
-- `find <api.html#find>`__
-- `testing <api.html#testing>`__
+- :ref:`cmake <common>`
+- :ref:`cpm <cpm>`
+- :ref:`cython <cython>`
+- :ref:`cuda <cuda>`
+- :ref:`export <export>`
+- :ref:`find <find>`
+- :ref:`testing <testing>`
 
 There are two ways projects can use ``rapids-cmake`` functions.
 

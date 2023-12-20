@@ -14,6 +14,11 @@
           "file" : "cccl/bug_fixes.diff",
           "issue" : "CCCL installs header-search.cmake files in nondeterministic order and has a typo in checking target creation that leads to duplicates",
           "fixed_in" : "2.3"
+        },
+        {
+          "file" : "cccl/revert_pr_211.diff",
+          "issue" : "thrust::copy introduced a change in behavior that causes failures with cudaErrorInvalidValue.",
+          "fixed_in" : ""
         }
       ]
     },
@@ -21,7 +26,7 @@
       "version" : "0.0.1",
       "git_shallow" : false,
       "git_url" : "https://github.com/NVIDIA/cuCollections.git",
-      "git_tag" : "7c76a124df0c2cd3fd66e3e080b9470a3b4707c6"
+      "git_tag" : "f823d30d6b08a60383266db25821074dbdbe5822"
     },
     "fmt" : {
       "version" : "10.1.1",
