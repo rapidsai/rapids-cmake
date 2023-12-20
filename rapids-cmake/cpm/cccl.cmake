@@ -92,10 +92,20 @@ function(rapids_cpm_cccl)
                   EXCLUDE_FROM_ALL ${exclude}
                   OPTIONS "CCCL_ENABLE_INSTALL_RULES ${to_install}")
 
-  if(CCCL_SOURCE_DIR AND to_install)
+  # rapids_cpm_cccl can be called multiple times from the same scope such as from
+  # cudf/CMakeLists.txt and cudf's call to find_package(rmm). In these situations, subsequent
+  # invocations will still have `CCCL_SOURCE_DIR` set due to how `rapids_cpm_find` early termination
+  # sets up variables
+  #
+  # So to properly preserve any custom install location values from the first invocation we need a
+  # global property that we use to track that the cccl install rules have been called
+  get_property(rapids_cccl_install_rules_already_called GLOBAL
+               PROPERTY rapids_cmake_cccl_install_rules SET)
+  if(CCCL_SOURCE_DIR AND to_install AND NOT rapids_cccl_install_rules_already_called)
     # CCCL does not currently correctly support installation of cub/thrust/libcudacxx. The only
     # option that makes this work is to manually invoke the install rules until CCCL's CMake is
     # fixed.
+    set_property(GLOBAL PROPERTY rapids_cmake_cccl_install_rules ON)
     set(Thrust_SOURCE_DIR "${CCCL_SOURCE_DIR}/thrust")
     set(CUB_SOURCE_DIR "${CCCL_SOURCE_DIR}/cub")
     set(libcudacxx_SOURCE_DIR "${CCCL_SOURCE_DIR}/libcudacxx")
