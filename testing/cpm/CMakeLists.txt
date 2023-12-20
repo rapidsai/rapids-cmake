@@ -45,6 +45,7 @@ add_cmake_config_test( cpm_generate_patch_command-current_json_dir.cmake )
 
 add_cmake_config_test( cpm_cccl-simple.cmake )
 add_cmake_config_test( cpm_cccl-export.cmake )
+add_cmake_build_test( cpm_cccl-preserve-custom-install-loc )
 
 add_cmake_config_test( cpm_cuco-simple.cmake )
 add_cmake_config_test( cpm_cuco-export.cmake )
