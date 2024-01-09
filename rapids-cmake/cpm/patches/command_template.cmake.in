@@ -37,7 +37,7 @@ function(rapids_cpm_run_git_patch file issue)
   set(result 1)
   if(ext STREQUAL "diff")
     execute_process(
-      COMMAND ${git_command} apply ${file}
+      COMMAND ${git_command} apply --whitespace=fix ${file}
       RESULT_VARIABLE result
       ERROR_VARIABLE repo_error_info
     )
