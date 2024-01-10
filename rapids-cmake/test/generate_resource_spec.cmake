@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2022-2023, NVIDIA CORPORATION.
+# Copyright (c) 2022-2024, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -73,7 +73,7 @@ function(rapids_test_generate_resource_spec DESTINATION filepath)
     if(CUDAToolkit_FOUND)
       set(compile_options "-I${CUDAToolkit_INCLUDE_DIRS}" "-DHAVE_CUDA")
     endif()
-    set(link_options ${CUDA_cudart_LIBRARY})
+    set(link_options ${CUDA_cudart_LIBRARY} -lpthread -lrt -ldl)
     set(compiler "${CMAKE_CXX_COMPILER}")
     if(NOT DEFINED CMAKE_CXX_COMPILER)
       set(compiler "${CMAKE_CUDA_COMPILER}")
