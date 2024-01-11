@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2023, NVIDIA CORPORATION.
+# Copyright (c) 2023-2024, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -81,6 +81,9 @@ function(rapids_cpm_cccl)
   # https://github.com/NVIDIA/cccl/pull/1182
   set(CMAKE_FIND_PACKAGE_TARGETS_GLOBAL ON)
 
+  # Always download CCCL to avoid getting a CCCL 2.2.0 from the CUDA Toolkit (12.2). A local package
+  # will not have the CMake patches that we need.
+  set(CPM_DOWNLOAD_CCCL ON)
   include("${rapids-cmake-dir}/cpm/find.cmake")
   rapids_cpm_find(CCCL ${version} ${ARGN}
                   GLOBAL_TARGETS CCCL CCCL::CCCL CCCL::CUB CCCL::libcudacxx
