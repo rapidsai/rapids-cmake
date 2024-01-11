@@ -35,7 +35,6 @@ dependencies:
           - c-compiler
           - cxx-compiler
           - make
-          - sysroot_linux-64==2.17
     specific:
       - output_types: conda
         matrices:
@@ -51,6 +50,16 @@ dependencies:
               cuda: "12.*"
             packages:
               - gcc<13.0.0
+      - output_types: conda
+        matrices:
+          - matrix:
+              arch: x86_64
+            packages:
+              - sysroot_linux-64==2.17
+          - matrix:
+              arch: aarch64
+            packages:
+              - sysroot_linux-aarch64==2.17
       - output_types: conda
         matrices:
           - matrix:
