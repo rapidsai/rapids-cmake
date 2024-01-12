@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2022, NVIDIA CORPORATION.
+# Copyright (c) 2022-2024, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -100,6 +100,7 @@ function(rapids_cpm_generate_patch_command package_name version patch_command)
   set(patch_script "${CMAKE_BINARY_DIR}/rapids-cmake/patches/${package_name}/patch.cmake")
   set(log_file "${CMAKE_BINARY_DIR}/rapids-cmake/patches/${package_name}/log")
   if(patch_files_to_run)
+    string(TIMESTAMP current_year "%Y" UTC)
     configure_file(${rapids-cmake-dir}/cpm/patches/command_template.cmake.in "${patch_script}"
                    @ONLY)
     set(${patch_command} ${CMAKE_COMMAND} -P ${patch_script} PARENT_SCOPE)
