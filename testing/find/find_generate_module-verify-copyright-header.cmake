@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) @current_year@, NVIDIA CORPORATION.
+# Copyright (c) 2024, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,20 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
+include(${rapids-cmake-dir}/find/generate_module.cmake)
+include(${rapids-cmake-testing-dir}/utils/check_copyright_header.cmake)
 
-include(CMakeFindDependencyMacro)
+rapids_find_generate_module( RapidsTest
+  HEADER_NAMES rapids-cmake-test-header_only.hpp
+  INSTALL_EXPORT_SET test_set
+  )
 
-@_RAPIDS_EXPORT_CONTENTS@
-
-foreach(target IN LISTS rapids_global_targets)
-  if(TARGET ${target})
-    get_target_property(_is_imported ${target} IMPORTED)
-    get_target_property(_already_global ${target} IMPORTED_GLOBAL)
-    if(_is_imported AND NOT _already_global)
-        set_target_properties(${target} PROPERTIES IMPORTED_GLOBAL TRUE)
-    endif()
-  endif()
-endforeach()
-
-unset(rapids_global_targets)
-unset(rapids_clear_cpm_cache)
+check_copyright_header("${CMAKE_BINARY_DIR}/cmake/find_modules/FindRapidsTest.cmake")
