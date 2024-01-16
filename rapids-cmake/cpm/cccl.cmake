@@ -82,7 +82,6 @@ function(rapids_cpm_cccl)
   set(CMAKE_FIND_PACKAGE_TARGETS_GLOBAL ON)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
-  message("The patch command inside is ${patch_command}")
   rapids_cpm_find(CCCL ${version} ${ARGN}
                   GLOBAL_TARGETS CCCL CCCL::CCCL CCCL::CUB CCCL::libcudacxx
                   CPM_ARGS FIND_PACKAGE_ARGUMENTS EXACT

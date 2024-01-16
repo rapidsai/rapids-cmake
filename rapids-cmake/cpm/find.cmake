@@ -175,7 +175,8 @@ function(rapids_cpm_find name version)
   endif()
 
   if(package_needs_to_be_added)
-    if(CPM_${name}_SOURCE OR DEFINED _RAPIDS_PATCH_COMMAND)
+    # Any nonempty patch command should trigger CPMAddPackage.
+    if(CPM_${name}_SOURCE OR _RAPIDS_PATCH_COMMAND)
       CPMAddPackage(NAME ${name} VERSION ${version} ${_RAPIDS_UNPARSED_ARGUMENTS})
     else()
       CPMFindPackage(NAME ${name} VERSION ${version} ${_RAPIDS_UNPARSED_ARGUMENTS})
