@@ -66,7 +66,6 @@ function(rapids_cpm_cccl)
   rapids_cpm_package_details(CCCL version repository tag shallow exclude)
 
   set(to_install OFF)
-  cmake_policy(SET CMP0057 NEW)
   if(INSTALL_EXPORT_SET IN_LIST ARGN AND NOT exclude)
     set(to_install ON)
     # Make sure we install CCCL into the `include/rapids` subdirectory instead of the default
