@@ -1,0 +1,41 @@
+#=============================================================================
+# Copyright (c) 2023, NVIDIA CORPORATION.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#=============================================================================
+include(${rapids-cmake-dir}/cpm/init.cmake)
+include(${rapids-cmake-dir}/cpm/cccl.cmake)
+
+cmake_minimum_required(VERSION 3.23.1)
+project(rapids-cpm_find-patch-command-project LANGUAGES CXX)
+
+find_package(Git)
+set(cccl_parent_dir "${CMAKE_CURRENT_BINARY_DIR}/_cccl_dep")
+
+if(NOT EXISTS "${cccl_parent_dir}")
+file(MAKE_DIRECTORY "${cccl_parent_dir}")
+execute_process(
+	COMMAND ${GIT_EXECUTABLE} clone --depth 1 --branch v2.2.0 https://github.com/NVIDIA/cccl.git
+	WORKING_DIRECTORY "${cccl_parent_dir}")
+endif()
+
+set(cccl_dir "${cccl_parent_dir}/cccl")
+list(APPEND CMAKE_PREFIX_PATH "${cccl_dir}")
+unset(CPM_SOURCE_CACHE)
+unset(CPM_SOURCE_CACHE CACHE)
+rapids_cpm_init()
+rapids_cpm_cccl()
+
+if(NOT "${CCCL_ADDED}")
+    message(FATAL_ERROR "The found CPM was used rather than downloading and patching a new version")
+endif()

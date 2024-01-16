@@ -23,6 +23,7 @@ add_cmake_config_test( cpm_find-existing-target )
 add_cmake_config_test( cpm_find-existing-target-to-export-sets )
 add_cmake_config_test( cpm_find-gtest-no-gmock )
 add_cmake_config_test( cpm_find-options-escaped )
+add_cmake_config_test( cpm_find-patch-command)
 add_cmake_config_test( cpm_find-restore-cpm-vars )
 add_cmake_config_test( cpm_find-version-explicit-install.cmake )
 
