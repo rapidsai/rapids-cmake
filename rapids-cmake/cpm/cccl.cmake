@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2023, NVIDIA CORPORATION.
+# Copyright (c) 2023-2024, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -66,6 +66,7 @@ function(rapids_cpm_cccl)
   rapids_cpm_package_details(CCCL version repository tag shallow exclude)
 
   set(to_install OFF)
+  cmake_policy(SET CMP0057 NEW)
   if(INSTALL_EXPORT_SET IN_LIST ARGN AND NOT exclude)
     set(to_install ON)
     # Make sure we install CCCL into the `include/rapids` subdirectory instead of the default
@@ -82,13 +83,14 @@ function(rapids_cpm_cccl)
   set(CMAKE_FIND_PACKAGE_TARGETS_GLOBAL ON)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
+  message("The patch command inside is ${patch_command}")
   rapids_cpm_find(CCCL ${version} ${ARGN}
                   GLOBAL_TARGETS CCCL CCCL::CCCL CCCL::CUB CCCL::libcudacxx
                   CPM_ARGS FIND_PACKAGE_ARGUMENTS EXACT
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
                   GIT_SHALLOW ${shallow}
-                  PATCH_COMMAND ${patch_command}
+                  PATCH_COMMAND "${patch_command}"
                   EXCLUDE_FROM_ALL ${exclude}
                   OPTIONS "CCCL_ENABLE_INSTALL_RULES ${to_install}")
 

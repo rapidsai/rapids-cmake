@@ -103,7 +103,7 @@ function(rapids_cpm_generate_patch_command package_name version patch_command)
     string(TIMESTAMP current_year "%Y" UTC)
     configure_file(${rapids-cmake-dir}/cpm/patches/command_template.cmake.in "${patch_script}"
                    @ONLY)
-    set(${patch_command} ${CMAKE_COMMAND} -P ${patch_script} PARENT_SCOPE)
+    set(${patch_command} "${CMAKE_COMMAND} -P ${patch_script}" PARENT_SCOPE)
   else()
     # remove any old patch / log files that exist and are no longer needed due to a change in the
     # package version / version.json

@@ -144,8 +144,8 @@ modified version is used.
 function(rapids_cpm_find name version)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.find")
   set(options CPM_ARGS)
-  set(one_value BUILD_EXPORT_SET INSTALL_EXPORT_SET)
-  set(multi_value COMPONENTS GLOBAL_TARGETS PATCH_COMMAND)
+  set(one_value BUILD_EXPORT_SET INSTALL_EXPORT_SET PATCH_COMMAND)
+  set(multi_value COMPONENTS GLOBAL_TARGETS)
   cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
   if(NOT DEFINED _RAPIDS_CPM_ARGS)
