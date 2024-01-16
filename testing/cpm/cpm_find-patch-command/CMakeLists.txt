@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2023, NVIDIA CORPORATION.
+# Copyright (c) 2023-2024, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,16 +20,16 @@ cmake_minimum_required(VERSION 3.23.1)
 project(rapids-cpm_find-patch-command-project LANGUAGES CXX)
 
 find_package(Git)
-set(cccl_parent_dir "${CMAKE_CURRENT_BINARY_DIR}/_cccl_dep")
+set(deps_dir "${CMAKE_CURRENT_BINARY_DIR}/_cccl_dep")
 
-if(NOT EXISTS "${cccl_parent_dir}")
-file(MAKE_DIRECTORY "${cccl_parent_dir}")
+if(NOT EXISTS "${deps_dir}")
+file(MAKE_DIRECTORY "${deps_dir}")
 execute_process(
 	COMMAND ${GIT_EXECUTABLE} clone --depth 1 --branch v2.2.0 https://github.com/NVIDIA/cccl.git
-	WORKING_DIRECTORY "${cccl_parent_dir}")
+	WORKING_DIRECTORY "${deps_dir}")
 endif()
 
-set(cccl_dir "${cccl_parent_dir}/cccl")
+set(cccl_dir "${deps_dir}/cccl")
 list(APPEND CMAKE_PREFIX_PATH "${cccl_dir}")
 unset(CPM_SOURCE_CACHE)
 unset(CPM_SOURCE_CACHE CACHE)
@@ -37,5 +37,14 @@ rapids_cpm_init()
 rapids_cpm_cccl()
 
 if(NOT "${CCCL_ADDED}")
-    message(FATAL_ERROR "The found CPM was used rather than downloading and patching a new version")
+    message(FATAL_ERROR "The found repo was used rather than downloading and patching a new version")
+endif()
+
+execute_process(
+	COMMAND ${GIT_EXECUTABLE} diff-files --quiet
+    RESULT_VARIABLE REPO_IS_DIRTY
+	WORKING_DIRECTORY "${CPM_SOURCE_DIR}")
+
+if(NOT ${REPO_IS_DIRTY})
+    message(FATAL_ERROR "The repo was downloaded but not patched. The value is ${REPO_IS_DIRTY} in ${CPM_SOURCE_DIR}")
 endif()

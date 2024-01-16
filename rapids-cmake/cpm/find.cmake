@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2020-2023, NVIDIA CORPORATION.
+# Copyright (c) 2020-2024, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -145,11 +145,16 @@ function(rapids_cpm_find name version)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.find")
   set(options CPM_ARGS)
   set(one_value BUILD_EXPORT_SET INSTALL_EXPORT_SET)
-  set(multi_value COMPONENTS GLOBAL_TARGETS)
+  set(multi_value COMPONENTS GLOBAL_TARGETS PATCH_COMMAND)
   cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
   if(NOT DEFINED _RAPIDS_CPM_ARGS)
     message(FATAL_ERROR "rapids_cpm_find requires you to specify CPM_ARGS before any CPM arguments")
+  endif()
+
+  # Add the patch command back into the list of commands to forward along.
+  if(DEFINED _RAPIDS_PATCH_COMMAND)
+    list(APPEND _RAPIDS_UNPARSED_ARGUMENTS "PATCH_COMMAND" ${_RAPIDS_PATCH_COMMAND})
   endif()
 
   set(package_needs_to_be_added TRUE)
@@ -170,7 +175,7 @@ function(rapids_cpm_find name version)
   endif()
 
   if(package_needs_to_be_added)
-    if(CPM_${name}_SOURCE)
+    if(CPM_${name}_SOURCE OR DEFINED _RAPIDS_PATCH_COMMAND)
       CPMAddPackage(NAME ${name} VERSION ${version} ${_RAPIDS_UNPARSED_ARGUMENTS})
     else()
       CPMFindPackage(NAME ${name} VERSION ${version} ${_RAPIDS_UNPARSED_ARGUMENTS})
