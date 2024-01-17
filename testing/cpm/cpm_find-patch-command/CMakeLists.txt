@@ -43,8 +43,8 @@ endif()
 execute_process(
 	COMMAND ${GIT_EXECUTABLE} diff-files --quiet
     RESULT_VARIABLE REPO_IS_DIRTY
-	WORKING_DIRECTORY "${CPM_SOURCE_DIR}")
+    WORKING_DIRECTORY "${CCCL_SOURCE_DIR}")
 
 if(NOT ${REPO_IS_DIRTY})
-    message(FATAL_ERROR "The repo was downloaded but not patched. The value is ${REPO_IS_DIRTY} in ${CPM_SOURCE_DIR}")
+    message(FATAL_ERROR "The repo was downloaded to ${CCCL_SOURCE_DIR} but not patched.")
 endif()
