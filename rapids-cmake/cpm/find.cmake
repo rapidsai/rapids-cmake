@@ -80,6 +80,10 @@ consistency. List all targets used by your project in `GLOBAL_TARGET`.
   Required placeholder to be provided before any extra arguments that need to
   be passed down to :cmake:command:`CPMFindPackage`.
 
+  .. note::
+    A ``PATCH_COMMAND`` will always trigger usage of :cmake:command:`CPMAddPackage` instead of :cmake:command:`CPMFindPackage`. *This is true even
+    if the patch command is empty.*
+
 Result Variables
 ^^^^^^^^^^^^^^^^
   :cmake:variable:`<PackageName>_SOURCE_DIR` is set to the path to the source directory of <PackageName>.
@@ -144,7 +148,7 @@ modified version is used.
 function(rapids_cpm_find name version)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.find")
   set(options CPM_ARGS)
-  set(one_value BUILD_EXPORT_SET INSTALL_EXPORT_SET PATCH_COMMAND)
+  set(one_value BUILD_EXPORT_SET INSTALL_EXPORT_SET)
   set(multi_value COMPONENTS GLOBAL_TARGETS)
   cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
@@ -153,9 +157,15 @@ function(rapids_cpm_find name version)
   endif()
 
   # Add the patch command back into the list of commands to forward along.
-  if(DEFINED _RAPIDS_PATCH_COMMAND)
-    list(APPEND _RAPIDS_UNPARSED_ARGUMENTS "PATCH_COMMAND" ${_RAPIDS_PATCH_COMMAND})
-  endif()
+  set(has_patch FALSE)
+  cmake_policy(SET CMP0057 NEW)
+  message("The unparsed args are ${_RAPIDS_UNPARSED_ARGUMENTS}")
+  foreach(unparsed_arg IN LISTS _RAPIDS_UNPARSED_ARGUMENTS)
+    if(unparsed_arg MATCHES "PATCH_COMMAND")
+      set(has_patch TRUE)
+      break()
+    endif()
+  endforeach()
 
   set(package_needs_to_be_added TRUE)
   if(_RAPIDS_GLOBAL_TARGETS)
@@ -176,7 +186,7 @@ function(rapids_cpm_find name version)
 
   if(package_needs_to_be_added)
     # Any nonempty patch command should trigger CPMAddPackage.
-    if(CPM_${name}_SOURCE OR _RAPIDS_PATCH_COMMAND)
+    if(CPM_${name}_SOURCE OR has_patch)
       CPMAddPackage(NAME ${name} VERSION ${version} ${_RAPIDS_UNPARSED_ARGUMENTS})
     else()
       CPMFindPackage(NAME ${name} VERSION ${version} ${_RAPIDS_UNPARSED_ARGUMENTS})

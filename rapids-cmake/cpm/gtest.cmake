@@ -68,8 +68,7 @@ function(rapids_cpm_gtest)
                   CPM_ARGS FIND_PACKAGE_ARGUMENTS "EXACT"
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
-                  GIT_SHALLOW ${shallow}
-                  PATCH_COMMAND "${patch_command}"
+                  GIT_SHALLOW ${shallow} ${patch_command}
                   EXCLUDE_FROM_ALL ${exclude}
                   OPTIONS "INSTALL_GTEST ${to_install}" "CMAKE_POSITION_INDEPENDENT_CODE ON")
 

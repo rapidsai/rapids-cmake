@@ -88,8 +88,7 @@ function(rapids_cpm_libcudacxx)
                   CPM_ARGS
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
-                  GIT_SHALLOW ${shallow}
-                  PATCH_COMMAND "${patch_command}"
+                  GIT_SHALLOW ${shallow} ${patch_command}
                   EXCLUDE_FROM_ALL ${exclude}
                   OPTIONS "libcudacxx_ENABLE_INSTALL_RULES ${to_install}")
 

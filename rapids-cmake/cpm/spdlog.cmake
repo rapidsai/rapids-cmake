@@ -129,8 +129,7 @@ function(rapids_cpm_spdlog)
                   CPM_ARGS
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
-                  GIT_SHALLOW ${shallow}
-                  PATCH_COMMAND "${patch_command}"
+                  GIT_SHALLOW ${shallow} ${patch_command}
                   EXCLUDE_FROM_ALL ${exclude}
                   OPTIONS "SPDLOG_INSTALL ${to_install}" "${spdlog_fmt_option}")
 
