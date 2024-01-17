@@ -159,7 +159,6 @@ function(rapids_cpm_find name version)
   # Add the patch command back into the list of commands to forward along.
   set(has_patch FALSE)
   cmake_policy(SET CMP0057 NEW)
-  message("The unparsed args are ${_RAPIDS_UNPARSED_ARGUMENTS}")
   foreach(unparsed_arg IN LISTS _RAPIDS_UNPARSED_ARGUMENTS)
     if(unparsed_arg MATCHES "PATCH_COMMAND")
       set(has_patch TRUE)
