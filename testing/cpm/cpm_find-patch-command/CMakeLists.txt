@@ -16,12 +16,15 @@
 cmake_minimum_required(VERSION 3.23.1)
 project(rapids-cpm_find-patch-command-project LANGUAGES CXX)
 
+include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
+rapids_cpm_package_details(CCCL version repository tag shallow exclude)
+
 set(deps_dir "${CMAKE_CURRENT_BINARY_DIR}/_cccl_dep")
 if(NOT EXISTS "${deps_dir}")
   file(MAKE_DIRECTORY "${deps_dir}")
   find_package(Git)
   execute_process(
-    COMMAND ${GIT_EXECUTABLE} clone --depth 1 --branch v2.2.0 https://github.com/NVIDIA/cccl.git
+    COMMAND ${GIT_EXECUTABLE} clone --depth 1 --branch "${tag}" "${repository}"
     WORKING_DIRECTORY "${deps_dir}")
 endif()
 
