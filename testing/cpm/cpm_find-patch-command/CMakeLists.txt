@@ -13,26 +13,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-include(${rapids-cmake-dir}/cpm/init.cmake)
-include(${rapids-cmake-dir}/cpm/cccl.cmake)
-
 cmake_minimum_required(VERSION 3.23.1)
 project(rapids-cpm_find-patch-command-project LANGUAGES CXX)
 
-find_package(Git)
 set(deps_dir "${CMAKE_CURRENT_BINARY_DIR}/_cccl_dep")
-
 if(NOT EXISTS "${deps_dir}")
-file(MAKE_DIRECTORY "${deps_dir}")
-execute_process(
-	COMMAND ${GIT_EXECUTABLE} clone --depth 1 --branch v2.2.0 https://github.com/NVIDIA/cccl.git
-	WORKING_DIRECTORY "${deps_dir}")
+  file(MAKE_DIRECTORY "${deps_dir}")
+  find_package(Git)
+  execute_process(
+    COMMAND ${GIT_EXECUTABLE} clone --depth 1 --branch v2.2.0 https://github.com/NVIDIA/cccl.git
+    WORKING_DIRECTORY "${deps_dir}")
 endif()
 
 set(cccl_dir "${deps_dir}/cccl")
 list(APPEND CMAKE_PREFIX_PATH "${cccl_dir}")
 unset(CPM_SOURCE_CACHE)
 unset(CPM_SOURCE_CACHE CACHE)
+
+include(${rapids-cmake-dir}/cpm/init.cmake)
+include(${rapids-cmake-dir}/cpm/cccl.cmake)
 rapids_cpm_init()
 rapids_cpm_cccl()
 
@@ -41,7 +40,7 @@ if(NOT "${CCCL_ADDED}")
 endif()
 
 execute_process(
-	COMMAND ${GIT_EXECUTABLE} diff-files --quiet
+    COMMAND ${GIT_EXECUTABLE} diff-files --quiet
     RESULT_VARIABLE REPO_IS_DIRTY
     WORKING_DIRECTORY "${CCCL_SOURCE_DIR}")
 
