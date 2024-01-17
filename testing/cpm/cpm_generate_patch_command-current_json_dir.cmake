@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2022-2023, NVIDIA CORPORATION.
+# Copyright (c) 2022-2024, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -58,6 +58,7 @@ endif()
 
 set(to_match_string "set(files \"${CMAKE_CURRENT_BINARY_DIR}/example.diff;${CMAKE_CURRENT_BINARY_DIR}/example2.diff\")")
 
+string(REPLACE " " ";" patch_command ${patch_command})
 list(POP_BACK patch_command script_to_run)
 file(READ "${script_to_run}" contents)
 string(FIND "${contents}" "${to_match_string}" is_found)
