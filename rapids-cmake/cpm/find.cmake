@@ -156,9 +156,7 @@ function(rapids_cpm_find name version)
     message(FATAL_ERROR "rapids_cpm_find requires you to specify CPM_ARGS before any CPM arguments")
   endif()
 
-  # Add the patch command back into the list of commands to forward along.
   set(has_patch FALSE)
-  cmake_policy(SET CMP0057 NEW)
   foreach(unparsed_arg IN LISTS _RAPIDS_UNPARSED_ARGUMENTS)
     if(unparsed_arg MATCHES "PATCH_COMMAND")
       set(has_patch TRUE)
@@ -184,7 +182,7 @@ function(rapids_cpm_find name version)
   endif()
 
   if(package_needs_to_be_added)
-    # Any nonempty patch command should trigger CPMAddPackage.
+    # Any patch command triggers CPMAddPackage.
     if(CPM_${name}_SOURCE OR has_patch)
       CPMAddPackage(NAME ${name} VERSION ${version} ${_RAPIDS_UNPARSED_ARGUMENTS})
     else()
