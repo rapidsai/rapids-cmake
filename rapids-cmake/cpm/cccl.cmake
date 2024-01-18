@@ -143,6 +143,21 @@ function(rapids_cpm_cccl)
                                     EXPORT_SET ${_RAPIDS_INSTALL_EXPORT_SET} CONDITION to_install)
   endif()
 
+  # Can be removed once we move to CCCL 2.3
+  #
+  target_compile_definitions(CCCL::CCCL INTERFACE THRUST_DISABLE_ABI_NAMESPACE)
+  target_compile_definitions(CCCL::CCCL INTERFACE THRUST_IGNORE_ABI_NAMESPACE_ERROR)
+  set(post_find_code
+      [=[
+  target_compile_definitions(CCCL::CCCL INTERFACE THRUST_DISABLE_ABI_NAMESPACE)
+  target_compile_definitions(CCCL::CCCL INTERFACE THRUST_IGNORE_ABI_NAMESPACE_ERROR)
+  ]=])
+  include("${rapids-cmake-dir}/export/detail/post_find_package_code.cmake")
+  rapids_export_post_find_package_code(BUILD CCCL "${post_find_code}" EXPORT_SET
+                                       ${_RAPIDS_BUILD_EXPORT_SET})
+  rapids_export_post_find_package_code(INSTALL CCCL "${post_find_code}" EXPORT_SET
+                                       ${_RAPIDS_INSTALL_EXPORT_SET} CONDITION to_install)
+
   # Propagate up variables that CPMFindPackage provides
   set(CCCL_SOURCE_DIR "${CCCL_SOURCE_DIR}" PARENT_SCOPE)
   set(CCCL_BINARY_DIR "${CCCL_BINARY_DIR}" PARENT_SCOPE)

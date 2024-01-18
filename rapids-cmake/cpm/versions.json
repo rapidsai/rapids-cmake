@@ -16,6 +16,11 @@
           "fixed_in" : "2.3"
         },
         {
+          "file" : "cccl/hide_kernels.diff",
+          "issue" : "Mark all cub and thrust kernels with hidden visibility [https://github.com/nvidia/cccl/pulls/443]",
+          "fixed_in" : "2.3"
+        },
+        {
           "file" : "cccl/revert_pr_211.diff",
           "issue" : "thrust::copy introduced a change in behavior that causes failures with cudaErrorInvalidValue.",
           "fixed_in" : ""
@@ -26,7 +31,7 @@
       "version" : "0.0.1",
       "git_shallow" : false,
       "git_url" : "https://github.com/NVIDIA/cuCollections.git",
-      "git_tag" : "f2af32161959d8b9057cb42458d3af263e467128"
+      "git_tag" : "fabd885327dc1662e1a63d9b8870ebf888893c09"
     },
     "fmt" : {
       "version" : "10.1.1",
