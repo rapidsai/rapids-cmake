@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2023, NVIDIA CORPORATION.
+# Copyright (c) 2021-2024, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ add_cmake_config_test( cpm_find-existing-target )
 add_cmake_config_test( cpm_find-existing-target-to-export-sets )
 add_cmake_config_test( cpm_find-gtest-no-gmock )
 add_cmake_config_test( cpm_find-options-escaped )
+add_cmake_config_test( cpm_find-patch-command )
 add_cmake_config_test( cpm_find-restore-cpm-vars )
 add_cmake_config_test( cpm_find-version-explicit-install.cmake )
 
@@ -42,6 +43,7 @@ add_cmake_config_test( cpm_package_override-simple.cmake )
 add_cmake_config_test( cpm_generate_patch_command-invalid.cmake )
 add_cmake_config_test( cpm_generate_patch_command-override.cmake )
 add_cmake_config_test( cpm_generate_patch_command-current_json_dir.cmake )
+add_cmake_config_test( cpm_generate_patch_command-verify-copyright-header.cmake )
 
 add_cmake_config_test( cpm_cccl-simple.cmake )
 add_cmake_config_test( cpm_cccl-export.cmake )

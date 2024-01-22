@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2023, NVIDIA CORPORATION.
+# Copyright (c) 2023-2024, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -87,8 +87,7 @@ function(rapids_cpm_cccl)
                   CPM_ARGS FIND_PACKAGE_ARGUMENTS EXACT
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
-                  GIT_SHALLOW ${shallow}
-                  PATCH_COMMAND ${patch_command}
+                  GIT_SHALLOW ${shallow} ${patch_command}
                   EXCLUDE_FROM_ALL ${exclude}
                   OPTIONS "CCCL_ENABLE_INSTALL_RULES ${to_install}")
 
@@ -143,6 +142,21 @@ function(rapids_cpm_cccl)
                                     [=[${CMAKE_CURRENT_LIST_DIR}/../../rapids/cmake/cccl]=]
                                     EXPORT_SET ${_RAPIDS_INSTALL_EXPORT_SET} CONDITION to_install)
   endif()
+
+  # Can be removed once we move to CCCL 2.3
+  #
+  target_compile_definitions(CCCL::CCCL INTERFACE THRUST_DISABLE_ABI_NAMESPACE)
+  target_compile_definitions(CCCL::CCCL INTERFACE THRUST_IGNORE_ABI_NAMESPACE_ERROR)
+  set(post_find_code
+      [=[
+  target_compile_definitions(CCCL::CCCL INTERFACE THRUST_DISABLE_ABI_NAMESPACE)
+  target_compile_definitions(CCCL::CCCL INTERFACE THRUST_IGNORE_ABI_NAMESPACE_ERROR)
+  ]=])
+  include("${rapids-cmake-dir}/export/detail/post_find_package_code.cmake")
+  rapids_export_post_find_package_code(BUILD CCCL "${post_find_code}" EXPORT_SET
+                                       ${_RAPIDS_BUILD_EXPORT_SET})
+  rapids_export_post_find_package_code(INSTALL CCCL "${post_find_code}" EXPORT_SET
+                                       ${_RAPIDS_INSTALL_EXPORT_SET} CONDITION to_install)
 
   # Propagate up variables that CPMFindPackage provides
   set(CCCL_SOURCE_DIR "${CCCL_SOURCE_DIR}" PARENT_SCOPE)
