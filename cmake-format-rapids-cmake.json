@@ -74,9 +74,18 @@
           "PATCH_COMMAND": "1"
         }
       },
-      "rapids_cpm_init": {
+      "rapids_cpm_generate_pinned_versions": {
         "pargs": {
           "nargs": 0
+        },
+        "kwargs": {
+          "OUTPUT": 1
+        }
+      },
+      "rapids_cpm_init": {
+        "pargs": {
+          "nargs": 0,
+          "flags": ["GENERATE_PINNED_VERSIONS"]
         },
         "kwargs": {
           "OVERRIDE": 1

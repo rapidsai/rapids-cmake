@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2024, NVIDIA CORPORATION.
+# Copyright (c) 2024, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,8 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-include_guard(GLOBAL)
+cmake_minimum_required(VERSION 3.23.1)
+project(rapids-test-project LANGUAGES CXX)
 
-include(${CMAKE_CURRENT_LIST_DIR}/cpm/init.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/cpm/find.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/cpm/generate_pinned_versions.cmake)
+
+include(${rapids-cmake-dir}/cpm/init.cmake)
+include(${rapids-cmake-dir}/cpm/rmm.cmake)
+
+rapids_cpm_init(GENERATE_PINNED_VERSIONS)
+rapids_cpm_rmm()
+add_custom_target(verify_generated_pins ALL
+  COMMAND ${CMAKE_COMMAND} -S="${CMAKE_SOURCE_DIR}/verify/" -B"${CMAKE_BINARY_DIR}/verify_build" -D"rapids-cmake-dir=${rapids-cmake-dir}"
+)
