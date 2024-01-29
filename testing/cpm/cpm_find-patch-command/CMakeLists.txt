@@ -30,8 +30,6 @@ endif()
 
 set(cccl_dir "${deps_dir}/cccl")
 list(APPEND CMAKE_PREFIX_PATH "${cccl_dir}")
-unset(CPM_SOURCE_CACHE)
-unset(CPM_SOURCE_CACHE CACHE)
 
 include(${rapids-cmake-dir}/cpm/init.cmake)
 include(${rapids-cmake-dir}/cpm/cccl.cmake)
