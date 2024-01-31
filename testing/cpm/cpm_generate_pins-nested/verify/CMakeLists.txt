@@ -28,6 +28,10 @@ foreach(proj IN LISTS ${projects})
   rapids_cpm_package_details(${proj} ${proj}_version ${proj}_repository ${proj}_tag ${proj}_shallow ${proj}_exclude)
 endforeach()
 
+
+file(READ "${CMAKE_CURRENT_BINARY_DIR}/../rapids-cmake/pinned_versions.json" json_data)
+message(STATUS "${json_data}")
+
 # Verify that the pinned_versions is valid json by using it
 rapids_cpm_package_override("${CMAKE_CURRENT_BINARY_DIR}/../rapids-cmake/pinned_versions.json")
 
