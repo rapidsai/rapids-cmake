@@ -28,10 +28,10 @@ add_cmake_config_test( cpm_find-restore-cpm-vars )
 add_cmake_config_test( cpm_find-version-explicit-install.cmake )
 
 add_cmake_build_test( cpm_generate_pins-format-patches NO_CPM_CACHE)
-add_cmake_build_test( cpm_generate_pins-nested )
+add_cmake_build_test( cpm_generate_pins-nested NO_CPM_CACHE)
 add_cmake_build_test( cpm_generate_pins-override NO_CPM_CACHE)
 add_cmake_build_test( cpm_generate_pins-pure-cpm )
-add_cmake_build_test( cpm_generate_pins-simple )
+add_cmake_build_test( cpm_generate_pins-simple NO_CPM_CACHE)
 
 add_cmake_config_test( cpm_init-bad-override-path.cmake SHOULD_FAIL "rapids_cpm_package_override can't load")
 add_cmake_config_test( cpm_init-override-multiple.cmake )

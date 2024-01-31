@@ -112,7 +112,7 @@ function(rapids_cpm_gpv_add_json_entry json_var package_name url_var sha_var)
   function(rapids_cpm_gpv_create_and_set_member json_blob_var key value)
 
     # if the first char in value is { or [ we don't need quotes
-    if(NOT value MATCHES "(\\{|\\[)")
+    if(NOT value MATCHES "^(\\{|\\[)")
       set(value "\"${value}\"")
     endif()
     string(CONFIGURE [=[
