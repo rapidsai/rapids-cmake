@@ -49,7 +49,8 @@ Specify a file path to write the pinned versions information to. Can be called m
 times and each unique path will be written too.
 
 The generated json file will have the following entries for each package:
-```json
+
+```
   {
     "version" : "<CPM_PACKAGE_<package_name>_VERSION>",
     "git_url" : <deduced>,
@@ -58,6 +59,7 @@ The generated json file will have the following entries for each package:
     "always_download" : "true"
   }
 ```
+
 If the original package ( or override ) also had any `patches`, or `proprietary_binary`
 fields those will be propagated to the generated entry.
 
