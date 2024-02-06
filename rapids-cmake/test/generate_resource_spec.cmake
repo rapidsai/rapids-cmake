@@ -83,13 +83,13 @@ function(rapids_test_generate_resource_spec DESTINATION filepath)
 
     execute_process(COMMAND "${compiler}" "${eval_file}" ${compile_options} ${link_options} -o
                             "${eval_exe}" OUTPUT_VARIABLE compile_output
-                    ERROR_VARIABLE compile_output COMMAND_ERROR_IS_FATAL ANY)
-  endif()
+                    ERROR_VARIABLE compile_output RESULT_VARIABLE result)
 
-  if(NOT EXISTS "${eval_exe}")
-    string(REPLACE "\n" "\n  " compile_output "${compile_output}")
-    message(FATAL_ERROR "rapids_test_generate_resource_spec failed to build detection executable.\nrapids_test_generate_resource_spec compile[${compiler} ${compile_options} ${link_options}] failure details are:\n  ${compile_output}"
-    )
+    if(NOT result EQUAL 0)
+      string(REPLACE "\n" "\n  " compile_output "${compile_output}")
+      message(FATAL_ERROR "rapids_test_generate_resource_spec failed to build detection executable.\nrapids_test_generate_resource_spec compile[${compiler} ${compile_options} ${link_options}] failure details are:\n  ${compile_output}"
+      )
+    endif()
   endif()
   execute_process(COMMAND ${eval_exe} OUTPUT_FILE "${filepath}" COMMAND_ERROR_IS_FATAL ANY)
 
