@@ -95,12 +95,12 @@ function(rapids_cpm_generate_pinned_versions)
 
   get_property(already_hooked GLOBAL PROPERTY rapids_cpm_generate_pin_hook SET)
   if(NOT already_hooked)
-    # install a hook that writes out the pinned versions at the end of this CMakeLists.cmake
-    # execution so we get all CPM packages added. Plus we can compute the paths once, and write out
-    # `N` times if needed
-    cmake_language(DEFER DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} ID
-                   rapids_cpm_generate_pinned_versions CALL include
-                   "${rapids-cmake-dir}/cpm/detail/gpv_add_subdir_hook.cmake")
+    # install a hook that writes out the pinned versions at the end of the root level
+    # CMakeLists.cmake execution so we get all CPM packages added. Plus we can compute the paths
+    # once, and write out `N` times if needed
+    set(root_dir "${${CMAKE_PROJECT_NAME}_SOURCE_DIR}")
+    cmake_language(DEFER DIRECTORY ${root_dir} ID rapids_cpm_generate_pinned_versions CALL include
+                   "${rapids-cmake-dir}/cpm/detail/gpv_root_dir_hook.cmake")
     set_property(GLOBAL PROPERTY rapids_cpm_generate_pin_hook "ON")
   endif()
 
