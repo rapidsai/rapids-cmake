@@ -38,6 +38,7 @@ By using :cmake:command:`rapids_cpm_package_override` a project can specify a cu
 :cmake:command:`rapids_cpm_generate_pinned_versions` can be used to transform a set of
 rapids-cmake dependencies from branch names to pinned values. This can be used in subsequent
 builds, e.g:
+
   1. Have CI run with `versions.json` which tracks dependency by branch name
   2. Store the generated pinned `versions.json` from the CI builds
   3. If build is good, create the release branch and commit the generated pinned `versions.json`
