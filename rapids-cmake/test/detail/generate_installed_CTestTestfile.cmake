@@ -234,7 +234,7 @@ set(test_file_content
 set(CTEST_SCRIPT_DIRECTORY \".\")
 set(CMAKE_INSTALL_PREFIX \"./${_RAPIDS_INSTALL_PREFIX}\")
 set(CTEST_RESOURCE_SPEC_FILE \"./${rapids_test_json_file_name}\")
-execute_process(COMMAND ./${rapids_test_generate_exe_name} OUTPUT_FILE \"\${CTEST_RESOURCE_SPEC_FILE}\")
+execute_process(COMMAND ./${rapids_test_generate_exe_name} OUTPUT_FILE \"\${CTEST_RESOURCE_SPEC_FILE}\" COMMAND_ERROR_IS_FATAL ANY)
 \n\n
 ")
 
