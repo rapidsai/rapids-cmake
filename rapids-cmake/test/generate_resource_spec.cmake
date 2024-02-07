@@ -80,8 +80,8 @@ function(rapids_test_generate_resource_spec DESTINATION filepath)
                 generate_resource_spec SOURCE_DIR
                 "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/generate_resource_spec"
                 CMAKE_FLAGS "-DCMAKE_${lang}_COMPILER=${compiler}"
-                            "-DCUDAToolkit_ROOT=${CUDAToolkit_ROOT}" "-Doutput_file=${eval_exe}"
-                            "-Dlang=${lang}"
+                            "-DCUDAToolkit_ROOT=${CUDAToolkit_LIBRARY_ROOT}"
+                            "-Doutput_file=${eval_exe}" "-Dlang=${lang}"
                 OUTPUT_VARIABLE compile_output)
 
     if(NOT result)
