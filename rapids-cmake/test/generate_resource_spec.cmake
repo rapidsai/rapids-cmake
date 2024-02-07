@@ -71,7 +71,7 @@ function(rapids_test_generate_resource_spec DESTINATION filepath)
     file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/rapids-cmake/")
 
     if(CUDAToolkit_FOUND)
-      set(cuda_include_options ${CUDATookit_INCLUDE_DIRS})
+      set(cuda_include_options ${CUDAToolkit_INCLUDE_DIRS})
       list(TRANSFORM cuda_include_options PREPEND "-I")
       set(compile_options ${cuda_include_options} "-DHAVE_CUDA")
     endif()
