@@ -14,17 +14,19 @@
 # limitations under the License.
 #=============================================================================
 cmake_minimum_required(VERSION 3.23.1)
-project(generate_resource_spec CXX)
+project(generate_resource_spec ${lang})
+
+set(CMAKE_CUDA_ARCHITECTURES all)
 
 find_package(CUDAToolkit QUIET)
-find_package(Threads REQUIRED)
 
 add_executable(generate_ctest_json generate_resource_spec.cpp)
-target_link_libraries(generate_ctest_json PRIVATE Threads::Threads rt ${CMAKE_DL_LIBS})
+target_link_libraries(generate_ctest_json PRIVATE rt ${CMAKE_DL_LIBS})
 if(CUDAToolkit_FOUND)
   target_link_libraries(generate_ctest_json PRIVATE CUDA::cudart)
   target_compile_definitions(generate_ctest_json PRIVATE HAVE_CUDA)
 endif()
+set_property(SOURCE generate_resource_spec.cpp PROPERTY LANGUAGE ${lang})
 
 add_custom_command(TARGET generate_ctest_json POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:generate_ctest_json>

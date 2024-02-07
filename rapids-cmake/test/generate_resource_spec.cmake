@@ -70,15 +70,18 @@ function(rapids_test_generate_resource_spec DESTINATION filepath)
     file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/rapids-cmake/")
 
     set(compiler "${CMAKE_CXX_COMPILER}")
+    set(lang CXX)
     if(NOT DEFINED CMAKE_CXX_COMPILER)
       set(compiler "${CMAKE_CUDA_COMPILER}")
+      set(lang CUDA)
     endif()
 
     try_compile(result PROJECT
                 generate_resource_spec SOURCE_DIR
                 "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/generate_resource_spec"
-                CMAKE_FLAGS "-DCMAKE_CXX_COMPILER=${compiler}"
+                CMAKE_FLAGS "-DCMAKE_${lang}_COMPILER=${compiler}"
                             "-DCUDAToolkit_ROOT=${CUDAToolkit_ROOT}" "-Doutput_file=${eval_exe}"
+                            "-Dlang=${lang}"
                 OUTPUT_VARIABLE compile_output)
 
     if(NOT result)
