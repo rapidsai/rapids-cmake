@@ -74,14 +74,27 @@ function(rapids_test_generate_resource_spec DESTINATION filepath)
       set(compiler "${CMAKE_CUDA_COMPILER}")
     endif()
 
-    try_compile(result PROJECT
-                generate_resource_spec SOURCE_DIR
-                "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/generate_resource_spec"
-                CMAKE_FLAGS "-DCMAKE_CXX_COMPILER=${compiler}"
+    execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" -S
+                            "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/generate_resource_spec" -B
+                            "${PROJECT_BINARY_DIR}/rapids-cmake/generate_resource_spec-build"
+                            "-DCMAKE_CXX_COMPILER=${compiler}"
                             "-DCUDAToolkit_ROOT=${CUDAToolkit_ROOT}" "-Doutput_file=${eval_exe}"
-                OUTPUT_VARIABLE compile_output)
+                    OUTPUT_VARIABLE compile_output
+                    ERROR_VARIABLE compile_output
+                    RESULT_VARIABLE result)
+    if(NOT result EQUAL 0)
+      string(REPLACE "\n" "\n  " compile_output "${compile_output}")
+      message(FATAL_ERROR "rapids_test_generate_resource_spec failed to build detection executable.\nfailure details are:\n  ${compile_output}"
+      )
+    endif()
 
-    if(NOT result)
+    execute_process(COMMAND ${CMAKE_COMMAND} --build
+                            "${PROJECT_BINARY_DIR}/rapids-cmake/generate_resource_spec-build"
+                            --config Release
+                    OUTPUT_VARIABLE compile_output
+                    ERROR_VARIABLE compile_output
+                    RESULT_VARIABLE result)
+    if(NOT result EQUAL 0)
       string(REPLACE "\n" "\n  " compile_output "${compile_output}")
       message(FATAL_ERROR "rapids_test_generate_resource_spec failed to build detection executable.\nfailure details are:\n  ${compile_output}"
       )
