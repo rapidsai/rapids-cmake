@@ -62,7 +62,6 @@ function(rapids_test_generate_resource_spec DESTINATION filepath)
 ]=])
 
   include(${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/default_names.cmake)
-  set(eval_file ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/generate_resource_spec.cpp)
   set(eval_exe ${PROJECT_BINARY_DIR}/rapids-cmake/${rapids_test_generate_exe_name})
   set(error_file ${PROJECT_BINARY_DIR}/rapids-cmake/detect_gpus.stderr.log)
 
@@ -70,24 +69,21 @@ function(rapids_test_generate_resource_spec DESTINATION filepath)
     find_package(CUDAToolkit QUIET)
     file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/rapids-cmake/")
 
-    if(CUDAToolkit_FOUND)
-      set(cuda_include_options ${CUDAToolkit_INCLUDE_DIRS})
-      list(TRANSFORM cuda_include_options PREPEND "-I")
-      set(compile_options ${cuda_include_options} "-DHAVE_CUDA")
-    endif()
-    set(link_options ${CUDA_cudart_LIBRARY} -lpthread -lrt -ldl)
     set(compiler "${CMAKE_CXX_COMPILER}")
     if(NOT DEFINED CMAKE_CXX_COMPILER)
       set(compiler "${CMAKE_CUDA_COMPILER}")
     endif()
 
-    execute_process(COMMAND "${compiler}" "${eval_file}" ${compile_options} ${link_options} -o
-                            "${eval_exe}" OUTPUT_VARIABLE compile_output
-                    ERROR_VARIABLE compile_output RESULT_VARIABLE result)
+    try_compile(result PROJECT
+                generate_resource_spec SOURCE_DIR
+                "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/generate_resource_spec"
+                CMAKE_FLAGS "-DCMAKE_CXX_COMPILER=${compiler}"
+                            "-DCUDAToolkit_ROOT=${CUDAToolkit_ROOT}" "-Doutput_file=${eval_exe}"
+                OUTPUT_VARIABLE compile_output)
 
-    if(NOT result EQUAL 0)
+    if(NOT result)
       string(REPLACE "\n" "\n  " compile_output "${compile_output}")
-      message(FATAL_ERROR "rapids_test_generate_resource_spec failed to build detection executable.\nrapids_test_generate_resource_spec compile[${compiler} ${compile_options} ${link_options}] failure details are:\n  ${compile_output}"
+      message(FATAL_ERROR "rapids_test_generate_resource_spec failed to build detection executable.\nfailure details are:\n  ${compile_output}"
       )
     endif()
   endif()
