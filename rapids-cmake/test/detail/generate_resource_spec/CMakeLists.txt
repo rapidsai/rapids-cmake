@@ -18,11 +18,10 @@ project(generate_resource_spec ${lang})
 
 set(CMAKE_CUDA_ARCHITECTURES all)
 
-find_package(CUDAToolkit QUIET)
-
 add_executable(generate_ctest_json generate_resource_spec.cpp)
 target_link_libraries(generate_ctest_json PRIVATE rt ${CMAKE_DL_LIBS})
-if(CUDAToolkit_FOUND)
+if(cuda_toolkit)
+  find_package(CUDAToolkit REQUIRED QUIET)
   target_link_libraries(generate_ctest_json PRIVATE CUDA::cudart)
   target_compile_definitions(generate_ctest_json PRIVATE HAVE_CUDA)
 endif()
