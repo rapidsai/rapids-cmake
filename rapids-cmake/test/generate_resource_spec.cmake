@@ -79,9 +79,8 @@ function(rapids_test_generate_resource_spec DESTINATION filepath)
     try_compile(result "${PROJECT_BINARY_DIR}/rapids-cmake/generate_ctest_json-build"
                 "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/generate_resource_spec"
                 generate_resource_spec
-                CMAKE_FLAGS "-DCUDAToolkit_ROOT=${CUDAToolkit_LIBRARY_ROOT}"
-                            "-Doutput_file=${eval_exe}" "-Dlang=${lang}"
-                            "-Dcuda_toolkit=${CUDAToolkit_FOUND}"
+                CMAKE_FLAGS "-DCUDAToolkit_ROOT=${CUDAToolkit_ROOT}" "-Doutput_file=${eval_exe}"
+                            "-Dlang=${lang}" "-Dcuda_toolkit=${CUDAToolkit_FOUND}"
                 OUTPUT_VARIABLE compile_output)
 
     if(NOT result)
