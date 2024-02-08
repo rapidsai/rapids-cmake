@@ -30,6 +30,10 @@ if(cuda_toolkit)
 endif()
 set_property(SOURCE generate_resource_spec.cpp PROPERTY LANGUAGE ${lang})
 
+set_property(TARGET generate_ctest_json PROPERTY C_COMPILER_LAUNCHER)
+set_property(TARGET generate_ctest_json PROPERTY CXX_COMPILER_LAUNCHER)
+set_property(TARGET generate_ctest_json PROPERTY CUDA_COMPILER_LAUNCHER)
+
 add_custom_command(TARGET generate_ctest_json POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:generate_ctest_json>
                            "${output_file}" COMMENT "Copying executable to destination")
