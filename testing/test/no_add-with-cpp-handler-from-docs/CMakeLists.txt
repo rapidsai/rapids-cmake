@@ -31,4 +31,4 @@ enable_testing()
 add_test(NAME simple_test COMMAND verify_docs)
 rapids_test_gpu_requirements(simple_test GPUS 1 PERCENT 25)
 
-add_test(NAME nvidia-smi COMMAND /bin/bash -c "nvidia-smi && false")
+add_test(NAME nvidia-smi COMMAND /bin/bash -c "nvidia-smi && echo $RAPIDS_CMAKE_TESTING_GPU_COUNT && false")
