@@ -31,4 +31,4 @@ enable_testing()
 add_test(NAME simple_test COMMAND verify_docs)
 rapids_test_gpu_requirements(simple_test GPUS 1 PERCENT 25)
 
-add_test(NAME nvidia-smi COMMAND /bin/bash -c "set -x && nvidia-smi && cat resource_spec.json && rapids-cmake/generate_ctest_json && cat rapids-cmake/generate_ctest_json-build/build.ninja && false")
+add_test(NAME nvidia-smi COMMAND /bin/bash -c "set -x && nvidia-smi && cat resource_spec.json && rapids-cmake/generate_ctest_json && cat rapids-cmake/generate_ctest_json-build/build.ninja && cat rapids-cmake/generate_ctest_json-build/CMakeFiles/rules.ninja && false")
