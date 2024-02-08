@@ -16,10 +16,6 @@
 cmake_minimum_required(VERSION 3.20)
 project(rapids-test-project LANGUAGES CXX CUDA)
 
-unset(CMAKE_C_COMPILER_LAUNCHER)
-unset(CMAKE_CXX_COMPILER_LAUNCHER)
-unset(CMAKE_CUDA_COMPILER_LAUNCHER)
-
 include(${rapids-cmake-dir}/rapids-test.cmake)
 
 rapids_test_init()
