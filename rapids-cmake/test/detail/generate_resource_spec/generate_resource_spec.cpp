@@ -54,6 +54,7 @@ int main()
 
 #ifdef HAVE_CUDA
   cudaGetDeviceCount(&nDevices);
+  std::cerr << "Number of devices: " << nDevices << std::endl;
   if (nDevices == 0) {
     gpus.push_back(gpu(0));
   } else {
@@ -64,6 +65,7 @@ int main()
     }
   }
 #else
+  std::cerr << "Not built with CUDA! Falling back to empty GPU list" << std::endl;
   gpus.push_back(gpu(0));
 #endif
 
