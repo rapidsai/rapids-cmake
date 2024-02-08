@@ -18,10 +18,6 @@ project(generate_resource_spec ${lang})
 
 set(CMAKE_CUDA_ARCHITECTURES all)
 
-unset(CMAKE_C_COMPILER_LAUNCHER)
-unset(CMAKE_CXX_COMPILER_LAUNCHER)
-unset(CMAKE_CUDA_COMPILER_LAUNCHER)
-
 add_executable(generate_ctest_json generate_resource_spec.cpp)
 if(cuda_toolkit)
   find_package(CUDAToolkit REQUIRED QUIET)
@@ -30,7 +26,6 @@ if(cuda_toolkit)
 endif()
 set_property(SOURCE generate_resource_spec.cpp PROPERTY LANGUAGE ${lang})
 
-set_property(TARGET generate_ctest_json PROPERTY C_COMPILER_LAUNCHER)
 set_property(TARGET generate_ctest_json PROPERTY CXX_COMPILER_LAUNCHER)
 set_property(TARGET generate_ctest_json PROPERTY CUDA_COMPILER_LAUNCHER)
 
