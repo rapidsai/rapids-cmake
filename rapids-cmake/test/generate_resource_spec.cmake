@@ -51,19 +51,8 @@ function(rapids_test_generate_resource_spec DESTINATION filepath)
     )
   endif()
 
-  set(gpu_json_contents
-      [=[
-{
-"version": {"major": 1, "minor": 0},
-"local": [{
-  "gpus": [{"id":"0", "slots": 0}]
-}]
-}
-]=])
-
   include(${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/default_names.cmake)
   set(eval_exe ${PROJECT_BINARY_DIR}/rapids-cmake/${rapids_test_generate_exe_name})
-  set(error_file ${PROJECT_BINARY_DIR}/rapids-cmake/detect_gpus.stderr.log)
 
   if(NOT EXISTS "${eval_exe}")
     find_package(CUDAToolkit QUIET)
