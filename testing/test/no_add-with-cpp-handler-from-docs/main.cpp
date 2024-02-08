@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022-2024, NVIDIA CORPORATION.
+ * Copyright (c) 2022-2023, NVIDIA CORPORATION.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,21 @@
  * limitations under the License.
  */
 
-#include <fstream>
 #include <iostream>
+#include <vector>
+
+#include "rapids_cmake_ctest_allocation.cpp"
+#include "rapids_cmake_ctest_allocation.hpp"
 
 int main()
 {
-  std::ifstream build_file("rapids-cmake/generate_ctest_json-build/build.ninja");
-  std::cout << build_file.rdbuf();
-  return 1;
+  // Verify we only have a single GPU visible to us
+  auto allocs = rapids_cmake::full_allocation();
+
+  if (allocs.size() != 1) { return 1; }
+
+  auto alloc = allocs[0];
+  if (alloc.slots != 25) { return 1; }
+
+  return 0;
 }
