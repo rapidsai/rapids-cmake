@@ -13,7 +13,7 @@ Content <https://cmake.org/cmake/help/latest/module/FetchContent.html>`_ into yo
   cmake_minimum_required(...)
 
   if(NOT EXISTS ${CMAKE_CURRENT_BINARY_DIR}/<PROJ>_RAPIDS.cmake)
-    file(DOWNLOAD https://raw.githubusercontent.com/rapidsai/rapids-cmake/branch-23.12/RAPIDS.cmake
+    file(DOWNLOAD https://raw.githubusercontent.com/rapidsai/rapids-cmake/branch-24.02/RAPIDS.cmake
       ${CMAKE_CURRENT_BINARY_DIR}/<PROJ>_RAPIDS.cmake)
   endif()
   include(${CMAKE_CURRENT_BINARY_DIR}/<PROJ>_RAPIDS.cmake)
@@ -31,13 +31,13 @@ Usage
 ``rapids-cmake`` is designed for projects to use only the subset of features that they need. To enable
 this `rapids-cmake` comprises the following primary components:
 
-- `cmake <api.html#common>`__
-- `cpm <api.html#cpm>`__
-- `cython <api.html#cython>`__
-- `cuda <api.html#cuda>`__
-- `export <api.html#export>`__
-- `find <api.html#find>`__
-- `testing <api.html#testing>`__
+- :ref:`cmake <common>`
+- :ref:`cpm <cpm>`
+- :ref:`cython <cython>`
+- :ref:`cuda <cuda>`
+- :ref:`export <export>`
+- :ref:`find <find>`
+- :ref:`testing <testing>`
 
 There are two ways projects can use ``rapids-cmake`` functions.
 
@@ -58,7 +58,7 @@ like this:
     GIT_REPOSITORY https://github.com/<my_fork>/rapids-cmake.git
     GIT_TAG        <my_feature_branch>
   )
-  file(DOWNLOAD https://raw.githubusercontent.com/rapidsai/rapids-cmake/branch-23.12/RAPIDS.cmake
+  file(DOWNLOAD https://raw.githubusercontent.com/rapidsai/rapids-cmake/branch-24.02/RAPIDS.cmake
       ${CMAKE_CURRENT_BINARY_DIR}/RAPIDS.cmake)
   include(${CMAKE_CURRENT_BINARY_DIR}/RAPIDS.cmake)
 

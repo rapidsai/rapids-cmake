@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2023, NVIDIA CORPORATION.
+# Copyright (c) 2021-2024, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -53,6 +53,8 @@ across all RAPIDS projects.
 Result Targets
 ^^^^^^^^^^^^^^
   nvcomp::nvcomp target will be created
+  nvcomp::nvcomp_gdeflate target will be created
+  nvcomp::nvcomp_bitcomp target will be created
 
 Result Variables
 ^^^^^^^^^^^^^^^^
@@ -91,8 +93,9 @@ function(rapids_cpm_nvcomp)
   # first search locally if `rapids_cmake_always_download` is false
   if(NOT rapids_cmake_always_download)
     include("${rapids-cmake-dir}/find/package.cmake")
-    rapids_find_package(nvcomp ${version} GLOBAL_TARGETS nvcomp::nvcomp ${_RAPIDS_EXPORT_ARGUMENTS}
-                        FIND_ARGS QUIET)
+    rapids_find_package(nvcomp ${version}
+                        GLOBAL_TARGETS nvcomp::nvcomp nvcomp::nvcomp_gdeflate nvcomp::nvcomp_bitcomp
+                                       ${_RAPIDS_EXPORT_ARGUMENTS} FIND_ARGS QUIET)
     if(nvcomp_FOUND)
       # report where nvcomp was found
       message(STATUS "Found nvcomp: ${nvcomp_DIR} (found version ${nvcomp_VERSION})")
@@ -136,13 +139,12 @@ function(rapids_cpm_nvcomp)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
   rapids_cpm_find(nvcomp ${version} ${_RAPIDS_UNPARSED_ARGUMENTS}
-                  GLOBAL_TARGETS nvcomp::nvcomp
+                  GLOBAL_TARGETS nvcomp::nvcomp nvcomp::nvcomp_gdeflate nvcomp::nvcomp_bitcomp
                   CPM_ARGS
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
                   GIT_SHALLOW ${shallow}
-                  EXCLUDE_FROM_ALL ${to_exclude}
-                  PATCH_COMMAND ${patch_command}
+                  EXCLUDE_FROM_ALL ${to_exclude} ${patch_command}
                   OPTIONS "BUILD_STATIC ON" "BUILD_TESTS OFF" "BUILD_BENCHMARKS OFF"
                           "BUILD_EXAMPLES OFF")
 
@@ -152,6 +154,12 @@ function(rapids_cpm_nvcomp)
   # provide consistent targets between a found nvcomp and one building from source
   if(NOT TARGET nvcomp::nvcomp AND TARGET nvcomp)
     add_library(nvcomp::nvcomp ALIAS nvcomp)
+  endif()
+  if(NOT TARGET nvcomp::nvcomp_gdeflate AND TARGET nvcomp_gdeflate)
+    add_library(nvcomp::nvcomp_gdeflate ALIAS nvcomp_gdeflate)
+  endif()
+  if(NOT TARGET nvcomp::nvcomp_bitcomp AND TARGET nvcomp_bitcomp)
+    add_library(nvcomp::nvcomp_bitcomp ALIAS nvcomp_bitcomp)
   endif()
 
   # Propagate up variables that CPMFindPackage provide

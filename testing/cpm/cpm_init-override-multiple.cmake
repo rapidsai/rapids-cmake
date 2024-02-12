@@ -15,12 +15,27 @@
 #=============================================================================
 include(${rapids-cmake-dir}/cpm/init.cmake)
 
+function(expect_fetch_content_details project expected)
+  string(TOLOWER ${project} project)
+  set(internal_fetch_content_var_name "_FetchContent_${project}_savedDetails")
+  get_property(exists GLOBAL PROPERTY ${internal_fetch_content_var_name} DEFINED)
+  if(expected AND NOT exists)
+    message(FATAL_ERROR "FetchContent expected ${project} doesn't match expected[${exists}!=${expected})")
+  elseif(NOT expected AND exists)
+    message(FATAL_ERROR "FetchContent expected ${project} doesn't match expected[${exists}!=${expected})")
+  endif()
+endfunction()
+
 rapids_cpm_init()
 
 # Load the default values for nvbench and GTest projects
 include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
 rapids_cpm_package_details(nvbench nvbench_version nvbench_repository nvbench_tag nvbench_shallow nvbench_exclude)
 rapids_cpm_package_details(GTest GTest_version GTest_repository GTest_tag GTest_shallow GTest_exclude)
+
+expect_fetch_content_details(nvbench NO)
+expect_fetch_content_details(rmm NO)
+expect_fetch_content_details(GTest NO)
 
 
 # Need to write out an override file
@@ -43,6 +58,10 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
   ]=])
 
 rapids_cpm_init(OVERRIDE "${CMAKE_CURRENT_BINARY_DIR}/override.json")
+expect_fetch_content_details(nvbench YES)
+expect_fetch_content_details(rmm YES)
+expect_fetch_content_details(GTest YES)
+
 
 # Verify that the override works
 rapids_cpm_package_details(nvbench version repository tag shallow exclude)

@@ -5,23 +5,45 @@
       "git_url" : "https://github.com/google/benchmark.git",
       "git_tag" : "v${version}"
     },
+    "CCCL" : {
+      "version" : "2.2.0",
+      "git_url" : "https://github.com/NVIDIA/cccl.git",
+      "git_tag" : "v${version}",
+      "patches" : [
+        {
+          "file" : "cccl/bug_fixes.diff",
+          "issue" : "CCCL installs header-search.cmake files in nondeterministic order and has a typo in checking target creation that leads to duplicates",
+          "fixed_in" : "2.3"
+        },
+        {
+          "file" : "cccl/hide_kernels.diff",
+          "issue" : "Mark all cub and thrust kernels with hidden visibility [https://github.com/nvidia/cccl/pulls/443]",
+          "fixed_in" : "2.3"
+        },
+        {
+          "file" : "cccl/revert_pr_211.diff",
+          "issue" : "thrust::copy introduced a change in behavior that causes failures with cudaErrorInvalidValue.",
+          "fixed_in" : ""
+        }
+      ]
+    },
     "cuco" : {
       "version" : "0.0.1",
       "git_shallow" : false,
       "git_url" : "https://github.com/NVIDIA/cuCollections.git",
-      "git_tag" : "7c76a124df0c2cd3fd66e3e080b9470a3b4707c6"
-    },
-    "fmt" : {
-      "version" : "9.1.0",
-      "git_url" : "https://github.com/fmtlib/fmt.git",
-      "git_tag" : "${version}",
+      "git_tag" : "f823d30d6b08a60383266db25821074dbdbe5822",
       "patches" : [
         {
-          "file" : "fmt/no_debug_warnings.diff",
-          "issue" : "No warnings during debug builds [https://github.com/fmtlib/fmt/issues/3351]",
-          "fixed_in" : "10.0"
+          "file" : "cuco/hide_kernels.diff",
+          "issue" : "CUCO Mark all kernels with hidden visibility [https://github.com/NVIDIA/cuCollections/pull/422]",
+          "fixed_in" : ""
         }
       ]
+    },
+    "fmt" : {
+      "version" : "10.1.1",
+      "git_url" : "https://github.com/fmtlib/fmt.git",
+      "git_tag" : "${version}"
     },
     "GTest" : {
       "version" : "1.13.0",
@@ -59,17 +81,10 @@
       "version" : "0.0",
       "git_shallow" : false,
       "git_url" : "https://github.com/NVIDIA/nvbench.git",
-      "git_tag" : "b8f0f6b5832dd632006492fd2434c81fdef0f2de",
-      "patches" : [
-        {
-          "file" : "nvbench/nvml_with_static_builds.diff",
-          "issue" : "Add support for nvml with static nvbench [https://github.com/NVIDIA/nvbench/pull/148]",
-          "fixed_in" : ""
-        }
-      ]
+      "git_tag" : "978d81a0cba97e3f30508e3c0e3cd65ce94fb699"
     },
     "nvcomp" : {
-      "version" : "3.0.4",
+      "version" : "3.0.5",
       "git_url" : "https://github.com/NVIDIA/nvcomp.git",
       "git_tag" : "v2.2.0",
       "proprietary_binary" : {
@@ -83,9 +98,16 @@
       "git_tag" : "branch-${version}"
     },
     "spdlog" : {
-      "version" : "1.11.0",
+      "version" : "1.12.0",
       "git_url" : "https://github.com/gabime/spdlog.git",
-      "git_tag" : "v${version}"
+      "git_tag" : "v${version}",
+      "patches" : [
+        {
+          "file" : "spdlog/nvcc_constexpr_fix.diff",
+          "issue" : "Fix constexpr mismatch between spdlog and fmt [https://github.com/gabime/spdlog/issues/2856]",
+                "fixed_in" : "1.13"
+        }
+      ]
     },
     "Thrust" : {
       "version" : "1.17.2",

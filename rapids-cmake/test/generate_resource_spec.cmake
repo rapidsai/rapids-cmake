@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2022-2023, NVIDIA CORPORATION.
+# Copyright (c) 2022-2024, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -71,9 +71,11 @@ function(rapids_test_generate_resource_spec DESTINATION filepath)
     file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/rapids-cmake/")
 
     if(CUDAToolkit_FOUND)
-      set(compile_options "-I${CUDAToolkit_INCLUDE_DIRS}" "-DHAVE_CUDA")
+      set(cuda_include_options ${CUDAToolkit_INCLUDE_DIRS})
+      list(TRANSFORM cuda_include_options PREPEND "-I")
+      set(compile_options ${cuda_include_options} "-DHAVE_CUDA")
     endif()
-    set(link_options ${CUDA_cudart_LIBRARY})
+    set(link_options ${CUDA_cudart_LIBRARY} -lpthread -lrt -ldl)
     set(compiler "${CMAKE_CXX_COMPILER}")
     if(NOT DEFINED CMAKE_CXX_COMPILER)
       set(compiler "${CMAKE_CUDA_COMPILER}")
@@ -81,17 +83,14 @@ function(rapids_test_generate_resource_spec DESTINATION filepath)
 
     execute_process(COMMAND "${compiler}" "${eval_file}" ${compile_options} ${link_options} -o
                             "${eval_exe}" OUTPUT_VARIABLE compile_output
-                    ERROR_VARIABLE compile_output)
-  endif()
+                    ERROR_VARIABLE compile_output RESULT_VARIABLE result)
 
-  if(NOT EXISTS "${eval_exe}")
-    message(STATUS "rapids_test_generate_resource_spec failed to build detection executable, presuming no GPUs."
-    )
-    message(STATUS "rapids_test_generate_resource_spec compile[${compiler} ${compile_options} ${link_options}] failure details are ${compile_output}"
-    )
-    file(WRITE "${filepath}" "${gpu_json_contents}")
-  else()
-    execute_process(COMMAND ${eval_exe} OUTPUT_FILE "${filepath}")
+    if(NOT result EQUAL 0)
+      string(REPLACE "\n" "\n  " compile_output "${compile_output}")
+      message(FATAL_ERROR "rapids_test_generate_resource_spec failed to build detection executable.\nrapids_test_generate_resource_spec compile[${compiler} ${compile_options} ${link_options}] failure details are:\n  ${compile_output}"
+      )
+    endif()
   endif()
+  execute_process(COMMAND ${eval_exe} OUTPUT_FILE "${filepath}" COMMAND_ERROR_IS_FATAL ANY)
 
 endfunction()
