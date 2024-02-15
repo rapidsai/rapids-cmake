@@ -31,14 +31,7 @@
       "version" : "0.0.1",
       "git_shallow" : false,
       "git_url" : "https://github.com/NVIDIA/cuCollections.git",
-      "git_tag" : "f823d30d6b08a60383266db25821074dbdbe5822",
-      "patches" : [
-        {
-          "file" : "cuco/hide_kernels.diff",
-          "issue" : "CUCO Mark all kernels with hidden visibility [https://github.com/NVIDIA/cuCollections/pull/422]",
-          "fixed_in" : ""
-        }
-      ]
+      "git_tag" : "56c53beb6fb0cafd265b7fcc3df78ae487811b22"
     },
     "fmt" : {
       "version" : "10.1.1",
