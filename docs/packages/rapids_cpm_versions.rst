@@ -33,7 +33,7 @@ as needed.
 
     Supports the following placeholders:
         - ``${rapids-cmake-version}`` will be evaluated to 'major.minor' of the current rapids-cmake cal-ver value.
-        - ``$ENV{variable}`` will be evaluated to the contents environment variable listed
+        - ``$ENV{variable}`` will be evaluated to the contents of the listed environment variable
 
 ``git_url``
 
@@ -44,7 +44,7 @@ as needed.
     Supports the following placeholders:
         - ``${rapids-cmake-version}`` will be evaluated to 'major.minor' of the current rapids-cmake cal-ver value.
         - ``${version}`` will be evaluated to the contents of the ``version`` field.
-        - ``$ENV{variable}`` will be evaluated to the contents environment variable listed
+        - ``$ENV{variable}`` will be evaluated to the contents of the listed environment variable
 
 ``git_tag``
 
@@ -55,7 +55,7 @@ as needed.
     Supports the following placeholders:
         - ``${rapids-cmake-version}`` will be evaluated to 'major.minor' of the current rapids-cmake cal-ver value.
         - ``${version}`` will be evaluated to the contents of the ``version`` field.
-        - ``$ENV{variable}`` will be evaluated to the contents environment variable listed
+        - ``$ENV{variable}`` will be evaluated to the contents of the listed environment variable
 
 ``git_shallow``
 
@@ -142,7 +142,7 @@ as needed.
         - ``${version}`` will be evaluated to the contents of the ``version`` field.
         - ``${cuda-toolkit-version}`` will be evaluated to 'major.minor' of the current CUDA Toolkit version.
         - ``${cuda-toolkit-version-major}`` will be evaluated to 'major' of the current CUDA Toolkit version.
-        - ``$ENV{variable}`` will be evaluated to the contents environment variable listed
+        - ``$ENV{variable}`` will be evaluated to the contents of the listed environment variable
 
     If this field exists in the default package, the value will be ignored when an override file
     entry exists for the package. This ensures that the git url or `proprietary_binary` entry in the override will be used.
