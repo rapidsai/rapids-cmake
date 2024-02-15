@@ -1,3 +1,52 @@
+# rapids-cmake 24.02.00 (12 Feb 2024)
+
+## 🚨 Breaking Changes
+
+- Drop Pascal architecture (60). ([#482](https://github.com/rapidsai/rapids-cmake/pull/482)) [@bdice](https://github.com/bdice)
+
+## 🐛 Bug Fixes
+
+- Error out if generate_ctest_json fails to build or run ([#533](https://github.com/rapidsai/rapids-cmake/pull/533)) [@KyleFromNVIDIA](https://github.com/KyleFromNVIDIA)
+- rapids_cpm_cccl now works as expected when given `DOWNLOAD_ONLY ON` ([#527](https://github.com/rapidsai/rapids-cmake/pull/527)) [@robertmaynard](https://github.com/robertmaynard)
+- Always download repos when they are being patched ([#525](https://github.com/rapidsai/rapids-cmake/pull/525)) [@vyasr](https://github.com/vyasr)
+- Mark all cccl and cuco kernels with hidden visibility ([#523](https://github.com/rapidsai/rapids-cmake/pull/523)) [@robertmaynard](https://github.com/robertmaynard)
+- Fix message context ([#520](https://github.com/rapidsai/rapids-cmake/pull/520)) [@vyasr](https://github.com/vyasr)
+- Generate template copyright year at build time. ([#325) (#519](https://github.com/rapidsai/rapids-cmake/pull/325) (#519)) [@KyleFromNVIDIA](https://github.com/KyleFromNVIDIA)
+- Add link libraries to generate_resource_spec cmake ([#516](https://github.com/rapidsai/rapids-cmake/pull/516)) [@davidwendt](https://github.com/davidwendt)
+- rapids_cpm_cccl preserve install location details from first invocation. ([#513](https://github.com/rapidsai/rapids-cmake/pull/513)) [@robertmaynard](https://github.com/robertmaynard)
+- Only apply install rules for CCCL if we actually downloaded ([#507](https://github.com/rapidsai/rapids-cmake/pull/507)) [@bdice](https://github.com/bdice)
+- Mark flaky test as serial ([#506](https://github.com/rapidsai/rapids-cmake/pull/506)) [@vyasr](https://github.com/vyasr)
+- Manually invoke install rules for components ([#505](https://github.com/rapidsai/rapids-cmake/pull/505)) [@vyasr](https://github.com/vyasr)
+- multiple entry overrides now sets FetchContent for all entries ([#494](https://github.com/rapidsai/rapids-cmake/pull/494)) [@robertmaynard](https://github.com/robertmaynard)
+- Remove deprecated function usages ([#484](https://github.com/rapidsai/rapids-cmake/pull/484)) [@robertmaynard](https://github.com/robertmaynard)
+
+## 📖 Documentation
+
+- Fix docs references to API sections. ([#509](https://github.com/rapidsai/rapids-cmake/pull/509)) [@bdice](https://github.com/bdice)
+- fix typo in README ([#501](https://github.com/rapidsai/rapids-cmake/pull/501)) [@jameslamb](https://github.com/jameslamb)
+- Fix indentation typo ([#497](https://github.com/rapidsai/rapids-cmake/pull/497)) [@vyasr](https://github.com/vyasr)
+
+## 🚀 New Features
+
+- rapids cpm patches now support differences in white space. ([#515](https://github.com/rapidsai/rapids-cmake/pull/515)) [@robertmaynard](https://github.com/robertmaynard)
+- Upgrade nvCOMP to 3.0.5 ([#498](https://github.com/rapidsai/rapids-cmake/pull/498)) [@davidwendt](https://github.com/davidwendt)
+- Move to latest nvbench which has nvml+static support ([#488](https://github.com/rapidsai/rapids-cmake/pull/488)) [@robertmaynard](https://github.com/robertmaynard)
+- Update to spdlog 1.12 and fmt 10.1.1 ([#473](https://github.com/rapidsai/rapids-cmake/pull/473)) [@kkraus14](https://github.com/kkraus14)
+- Support scikit-build-core ([#433](https://github.com/rapidsai/rapids-cmake/pull/433)) [@vyasr](https://github.com/vyasr)
+
+## 🛠️ Improvements
+
+- Remove usages of rapids-env-update ([#524](https://github.com/rapidsai/rapids-cmake/pull/524)) [@KyleFromNVIDIA](https://github.com/KyleFromNVIDIA)
+- refactor CUDA versions in dependencies.yaml ([#517](https://github.com/rapidsai/rapids-cmake/pull/517)) [@jameslamb](https://github.com/jameslamb)
+- Remove scikit-build from dependency list ([#512](https://github.com/rapidsai/rapids-cmake/pull/512)) [@vyasr](https://github.com/vyasr)
+- Add patch reverting CCCL PR 211. ([#511](https://github.com/rapidsai/rapids-cmake/pull/511)) [@bdice](https://github.com/bdice)
+- Update cuCollections for CCCL 2.2.0 support. ([#510](https://github.com/rapidsai/rapids-cmake/pull/510)) [@bdice](https://github.com/bdice)
+- Disable NVBench CUPTI support by default. ([#504](https://github.com/rapidsai/rapids-cmake/pull/504)) [@bdice](https://github.com/bdice)
+- Remove CCCL::Thrust from GLOBAL_TARGETS. ([#500](https://github.com/rapidsai/rapids-cmake/pull/500)) [@bdice](https://github.com/bdice)
+- Add missing nvcomp targets ([#496](https://github.com/rapidsai/rapids-cmake/pull/496)) [@vyasr](https://github.com/vyasr)
+- Add rapids_cpm_cccl feature. ([#495](https://github.com/rapidsai/rapids-cmake/pull/495)) [@bdice](https://github.com/bdice)
+- Drop Pascal architecture (60). ([#482](https://github.com/rapidsai/rapids-cmake/pull/482)) [@bdice](https://github.com/bdice)
+
 # rapids-cmake 23.12.00 (6 Dec 2023)
 
 ## 🚨 Breaking Changes
