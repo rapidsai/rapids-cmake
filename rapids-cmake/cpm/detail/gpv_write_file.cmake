@@ -81,7 +81,7 @@ rapids_cpm_gpv_add_json_entry
 .. versionadded:: v24.04.00
 
 #]=======================================================================]
-function(rapids_cpm_gpv_add_json_entry json_var package_name url_var sha_var)
+function(rapids_cpm_gpv_add_json_entry json_var package_name is_last_package url_var sha_var)
   include("${rapids-cmake-dir}/cpm/detail/get_default_json.cmake")
   include("${rapids-cmake-dir}/cpm/detail/get_override_json.cmake")
   get_default_json(${package_name} json_data)
@@ -103,9 +103,15 @@ function(rapids_cpm_gpv_add_json_entry json_var package_name url_var sha_var)
   "git_shallow": "false",
   "always_download": "true",
   "trailing_place_holder": "true"
-},
 ]=]
                    pinned_json_entry)
+  if(NOT is_last_package)
+    string(APPEND pinned_json_entry [=[},
+]=])
+  else()
+    string(APPEND pinned_json_entry [=[}
+]=])
+  endif()
 
   # Insert a json key and value
   #
@@ -224,20 +230,25 @@ function(rapids_cpm_gpv_write_file)
 {
 "packages" : {
 ]=])
-  foreach(package IN LISTS CPM_PACKAGES)
+
+  list(POP_BACK CPM_PACKAGES last_package)
+  foreach(package IN LISTS CPM_PACKAGES last_package)
     # Clear variables so we don't re-use them between packages when one package doesn't have a git
     # url or sha
     set(git_url)
     set(git_sha)
+    set(is_last_package FALSE)
+    if(package STREQUAL last_package)
+      set(is_last_package TRUE)
+    endif()
     rapids_cpm_gpv_extract_source_git_info(${package} git_url git_sha)
-    rapids_cpm_gpv_add_json_entry(_rapids_entry ${package} git_url git_sha)
+    rapids_cpm_gpv_add_json_entry(_rapids_entry ${package} ${is_last_package} git_url git_sha)
     string(APPEND _rapids_json "${_rapids_entry}")
   endforeach()
 
   # To make everything easier we add a fake package to the end so we don't have any trailing ','
   set(post_amble
       [=[
-  "trailing_place_holder" : {}
 }
 }]=])
   string(APPEND _rapids_json "${post_amble}")
