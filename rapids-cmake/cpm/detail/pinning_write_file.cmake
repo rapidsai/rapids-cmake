@@ -16,14 +16,14 @@
 include_guard(GLOBAL)
 
 #[=======================================================================[.rst:
-rapids_cpm_gpv_extract_source_git_info
------------------------------------------
+rapids_cpm_pinning_extract_source_git_info
+------------------------------------------
 
 .. versionadded:: v24.04.00
 
 
 #]=======================================================================]
-function(rapids_cpm_gpv_extract_source_git_info package git_url_var git_sha_var)
+function(rapids_cpm_pinning_extract_source_git_info package git_url_var git_sha_var)
   set(source_dir "${CPM_PACKAGE_${package}_SOURCE_DIR}")
   set(_RAPIDS_URL)
   set(_RAPIDS_SHA)
@@ -75,13 +75,13 @@ function(rapids_cpm_gpv_extract_source_git_info package git_url_var git_sha_var)
 endfunction()
 
 #[=======================================================================[.rst:
-rapids_cpm_gpv_add_json_entry
------------------------------
+rapids_cpm_pinning_add_json_entry
+---------------------------------
 
 .. versionadded:: v24.04.00
 
 #]=======================================================================]
-function(rapids_cpm_gpv_add_json_entry json_var package_name is_last_package url_var sha_var)
+function(rapids_cpm_pinning_add_json_entry json_var package_name is_last_package url_var sha_var)
   include("${rapids-cmake-dir}/cpm/detail/get_default_json.cmake")
   include("${rapids-cmake-dir}/cpm/detail/get_override_json.cmake")
   get_default_json(${package_name} json_data)
@@ -115,7 +115,7 @@ function(rapids_cpm_gpv_add_json_entry json_var package_name is_last_package url
 
   # Insert a json key and value
   #
-  function(rapids_cpm_gpv_create_and_set_member json_blob_var key value)
+  function(rapids_cpm_pinning_create_and_set_member json_blob_var key value)
 
     # if the first char in value is { or [ we don't need quotes
     if(NOT value MATCHES "^(\\{|\\[)")
@@ -145,7 +145,7 @@ function(rapids_cpm_gpv_add_json_entry json_var package_name is_last_package url
       string(JSON existing_value ERROR_VARIABLE dont_have GET "${pinned_json_entry}" ${member})
       if(dont_have)
         string(JSON value GET "${data}" ${member})
-        rapids_cpm_gpv_create_and_set_member(pinned_json_entry ${member} ${value})
+        rapids_cpm_pinning_create_and_set_member(pinned_json_entry ${member} ${value})
       endif()
     endforeach()
   endforeach()
@@ -153,15 +153,15 @@ function(rapids_cpm_gpv_add_json_entry json_var package_name is_last_package url
 endfunction()
 
 #[=======================================================================[.rst:
-rapids_cpm_gpv_pretty_format_json
----------------------------------
+rapids_cpm_pinning_pretty_format_json
+-------------------------------------
 
 
 .. versionadded:: v24.04.00
 
 Formats provided JSON to be easily read by humans
 #]=======================================================================]
-function(rapids_cpm_gpv_pretty_format_json _rapids_json_var)
+function(rapids_cpm_pinning_pretty_format_json _rapids_json_var)
   set(pretty_json)
   #[=[
   - parse each line
@@ -210,15 +210,15 @@ function(rapids_cpm_gpv_pretty_format_json _rapids_json_var)
 endfunction()
 
 #[=======================================================================[.rst:
-rapids_cpm_gpv_write_file
--------------------------
+rapids_cpm_pinning_write_file
+-----------------------------
 
 .. versionadded:: v24.04.00
 
 This function will write out the pinned version info to the provided files when we are in the root
 CMakeLists.txt
 #]=======================================================================]
-function(rapids_cpm_gpv_write_file)
+function(rapids_cpm_pinning_write_file)
   if(NOT CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
     return()
   endif()
@@ -241,8 +241,8 @@ function(rapids_cpm_gpv_write_file)
     if(package STREQUAL last_package)
       set(is_last_package TRUE)
     endif()
-    rapids_cpm_gpv_extract_source_git_info(${package} git_url git_sha)
-    rapids_cpm_gpv_add_json_entry(_rapids_entry ${package} ${is_last_package} git_url git_sha)
+    rapids_cpm_pinning_extract_source_git_info(${package} git_url git_sha)
+    rapids_cpm_pinning_add_json_entry(_rapids_entry ${package} ${is_last_package} git_url git_sha)
     string(APPEND _rapids_json "${_rapids_entry}")
   endforeach()
 
@@ -253,7 +253,7 @@ function(rapids_cpm_gpv_write_file)
 }]=])
   string(APPEND _rapids_json "${post_amble}")
 
-  rapids_cpm_gpv_pretty_format_json(_rapids_json)
+  rapids_cpm_pinning_pretty_format_json(_rapids_json)
 
   get_property(write_paths GLOBAL PROPERTY rapids_cpm_generate_pin_files)
   foreach(path IN LISTS write_paths)

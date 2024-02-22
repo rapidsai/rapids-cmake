@@ -23,9 +23,9 @@ cmake_policy(PUSH)
 cmake_policy(VERSION 3.23)
 
 # Include the needed functions that write out the the pinned versions file
-include("${rapids-cmake-dir}/cpm/detail/gpv_write_file.cmake")
+include("${rapids-cmake-dir}/cpm/detail/pinning_write_file.cmake")
 
 # Compute and write out the pinned versions file
-rapids_cpm_gpv_write_file()
+rapids_cpm_pinning_write_file()
 
 cmake_policy(POP)

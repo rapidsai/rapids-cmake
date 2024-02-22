@@ -100,7 +100,7 @@ function(rapids_cpm_generate_pinned_versions)
     # `N` times if needed
     set(root_dir "${${CMAKE_PROJECT_NAME}_SOURCE_DIR}")
     cmake_language(DEFER DIRECTORY ${root_dir} ID rapids_cpm_generate_pinned_versions CALL include
-                   "${rapids-cmake-dir}/cpm/detail/gpv_root_dir_hook.cmake")
+                   "${rapids-cmake-dir}/cpm/detail/pinning_root_dir_hook.cmake")
     set_property(GLOBAL PROPERTY rapids_cpm_generate_pin_hook "ON")
   endif()
 
