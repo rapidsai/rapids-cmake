@@ -37,7 +37,7 @@ in the build tree of the calling project
 .. versionadded:: v24.04.00
   As part of establishing rapids-cmake CPM the :cmake:command:`rapids_cpm_init` command
   will call :cmake:command:`rapids_cpm_generate_pinned_versions` to automatically generate
-  `<CMAKE_BINARY_DIR>/rapids-cmake/pinned_versions.json` which will contain all the exact GIT SHAs
+  `<CMAKE_BINARY_DIR>/rapids-cmake/pinned_versions.json` which will contain all the exact git SHAs
   used to build cpm dependencies.
 
 .. versionadded:: v21.10.00
@@ -54,7 +54,7 @@ in the build tree of the calling project
   ```
   Generates a json file with all cpm dependencies with pinned version values.
   This allows for reproducible builds using the exact same state.
-  The follow will be located at `<CMAKE_BINARY_DIR>/rapids-cmake/pinned_versions.json`
+  The pinning file will be located at `<CMAKE_BINARY_DIR>/rapids-cmake/pinned_versions.json`
 
 .. note::
   Must be called before any invocation of :cmake:command:`rapids_cpm_find`.

@@ -15,7 +15,7 @@
 #=============================================================================
 include_guard(GLOBAL)
 
-# Make sure we always have CMake 3.23 policies when executing this file Since we can be executing in
+# Make sure we always have CMake 3.23 policies when executing this file since we can be executing in
 # directories of users of rapids-cmake which have a lower minimum cmake version and therefore
 # different policies
 #

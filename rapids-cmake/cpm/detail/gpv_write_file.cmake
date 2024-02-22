@@ -97,13 +97,13 @@ function(rapids_cpm_gpv_add_json_entry json_var package_name url_var sha_var)
   endif()
   # We start with a default template, and only add members that don't exist
   string(CONFIGURE [=[{
-  "version" : "${CPM_PACKAGE_${package_name}_VERSION}",
+  "version": "${CPM_PACKAGE_${package_name}_VERSION}",
   ${url_string}
   ${sha_string}
-  "git_shallow" : "false",
-  "always_download" : "true",
-  "trailing_place_holder" : "true"
-  },
+  "git_shallow": "false",
+  "always_download": "true",
+  "trailing_place_holder": "true"
+},
 ]=]
                    pinned_json_entry)
 

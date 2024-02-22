@@ -61,11 +61,11 @@ The generated json file will have the following entries for each package:
   }
 
 
-If the original package ( or override ) also had any `patches`, or `proprietary_binary`
+If the original package (or override) also had any `patches`, or `proprietary_binary`
 fields those will be propagated to the generated entry.
 
 .. note::
-  The git SHA1 computed for each package is found be finding the most recent
+  The git SHA1 computed for each package is found by finding the most recent
   commit that can be cloned from the url.
 
   This means that for proper reproducible builds, all patches must be encapsulated
@@ -96,7 +96,7 @@ function(rapids_cpm_generate_pinned_versions)
   get_property(already_hooked GLOBAL PROPERTY rapids_cpm_generate_pin_hook SET)
   if(NOT already_hooked)
     # install a hook that writes out the pinned versions at the end of the root level
-    # CMakeLists.cmake execution so we get all CPM packages added. Plus we can compute the paths
+    # CMakeLists.txt execution so we get all CPM packages added. Plus we can compute the paths
     # once, and write out `N` times if needed
     set(root_dir "${${CMAKE_PROJECT_NAME}_SOURCE_DIR}")
     cmake_language(DEFER DIRECTORY ${root_dir} ID rapids_cpm_generate_pinned_versions CALL include
