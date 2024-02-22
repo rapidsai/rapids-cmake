@@ -7,8 +7,8 @@
       "git_tag" : "f823d30d6b08a60383266db25821074dbdbe5822",
       "patches" : [
         {
-          "file" : "${current_json_dir}/patches/hide_kernels.patch",
-          "issue" : "CUCO Mark all kernels with hidden visibility [https://github.com/NVIDIA/cuCollections/pull/422]",
+          "file" : "${current_json_dir}/patches/0001-move-git-sha1.patch",
+          "issue" : "Move git sha1",
           "fixed_in" : ""
         }
       ]
@@ -19,12 +19,12 @@
       "patches" : [
         {
           "file" : "${current_json_dir}/patches/0001-move-git-sha1.patch",
-          "issue" : "Move GIT SHA1",
+          "issue" : "Move git sha1",
           "fixed_in" : ""
         },
         {
           "file" : "${current_json_dir}/patches/0002-move-git-sha1-a-second-time.patch",
-          "issue" : "Move GIT SHA1 a second time",
+          "issue" : "Move git sha1 a second time",
           "fixed_in" : ""
         }
       ]
