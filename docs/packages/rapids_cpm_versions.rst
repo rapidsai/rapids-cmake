@@ -32,13 +32,19 @@ as needed.
     copy of the project.
 
     Supports the following placeholders:
-        - ``${rapids-cmake-version}`` will be evulated to 'major.minor' of the current rapids-cmake cal-ver value.
+        - ``${rapids-cmake-version}`` will be evaluated to 'major.minor' of the current rapids-cmake cal-ver value.
+        - ``$ENV{variable}`` will be evaluated to the contents of the listed environment variable
 
 ``git_url``
 
     A required string representing the git url to be used when cloning the
     project locally by the :cmake:command:`rapids_cpm_find` when a locally
     installed copy of the project can't be found.
+
+    Supports the following placeholders:
+        - ``${rapids-cmake-version}`` will be evaluated to 'major.minor' of the current rapids-cmake cal-ver value.
+        - ``${version}`` will be evaluated to the contents of the ``version`` field.
+        - ``$ENV{variable}`` will be evaluated to the contents of the listed environment variable
 
 ``git_tag``
 
@@ -47,8 +53,9 @@ as needed.
     installed copy of the project can't be found.
 
     Supports the following placeholders:
-        - ``${rapids-cmake-version}`` will be evulated to 'major.minor' of the current rapids-cmake cal-ver value.
+        - ``${rapids-cmake-version}`` will be evaluated to 'major.minor' of the current rapids-cmake cal-ver value.
         - ``${version}`` will be evaluated to the contents of the ``version`` field.
+        - ``$ENV{variable}`` will be evaluated to the contents of the listed environment variable
 
 ``git_shallow``
 
@@ -135,6 +142,7 @@ as needed.
         - ``${version}`` will be evaluated to the contents of the ``version`` field.
         - ``${cuda-toolkit-version}`` will be evaluated to 'major.minor' of the current CUDA Toolkit version.
         - ``${cuda-toolkit-version-major}`` will be evaluated to 'major' of the current CUDA Toolkit version.
+        - ``$ENV{variable}`` will be evaluated to the contents of the listed environment variable
 
     If this field exists in the default package, the value will be ignored when an override file
     entry exists for the package. This ensures that the git url or `proprietary_binary` entry in the override will be used.
