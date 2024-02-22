@@ -23,7 +23,7 @@ project(write_language-multiple-nested-enable LANGUAGES NONE)
 # only installs one hook in `A` and `CMAKE_SOURCE_DIR`
 add_subdirectory(A)
 
-#Verify number of hooks is equal to 3 (2 langs, 1 rapids init hook)
+# Verify number of hooks is equal to 3 (2 langs, 1 rapids init hook)
 cmake_language(DEFER GET_CALL_IDS all_ids)
 list(LENGTH all_ids list_len)
 if(NOT list_len EQUAL 3)
