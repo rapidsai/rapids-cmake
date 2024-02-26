@@ -90,10 +90,10 @@ function(rapids_cpm_pinning_add_json_entry json_var package_name is_last_package
   set(url_string)
   set(sha_string)
   if(${url_var})
-    string(CONFIGURE [=["git_url" : "${${url_var}}",]=] url_string)
+    string(CONFIGURE [=["git_url": "${${url_var}}",]=] url_string)
   endif()
   if(${sha_var})
-    string(CONFIGURE [=["git_tag" : "${${sha_var}}",]=] sha_string)
+    string(CONFIGURE [=["git_tag": "${${sha_var}}",]=] sha_string)
   endif()
   # We start with a default template, and only add members that don't exist
   string(CONFIGURE [=[{
@@ -122,12 +122,12 @@ function(rapids_cpm_pinning_add_json_entry json_var package_name is_last_package
       set(value "\"${value}\"")
     endif()
     string(CONFIGURE [=[
-    "${key}" : ${value},
-    "trailing_place_holder" : "true"
+    "${key}": ${value},
+    "trailing_place_holder": "true"
   ]=]
                      replacement_string)
 
-    string(REPLACE [=[  "trailing_place_holder" : "true"]=] "${replacement_string}" json_blob
+    string(REPLACE [=[  "trailing_place_holder": "true"]=] "${replacement_string}" json_blob
                    "${${json_blob_var}}")
     set(${json_blob_var} "${json_blob}" PARENT_SCOPE)
   endfunction()
@@ -149,7 +149,7 @@ function(rapids_cpm_pinning_add_json_entry json_var package_name is_last_package
       endif()
     endforeach()
   endforeach()
-  set(${json_var} "\"${package_name}\" : ${pinned_json_entry}" PARENT_SCOPE)
+  set(${json_var} "\"${package_name}\": ${pinned_json_entry}" PARENT_SCOPE)
 endfunction()
 
 #[=======================================================================[.rst:
@@ -228,7 +228,7 @@ function(rapids_cpm_pinning_write_file)
   set(_rapids_json
       [=[
 {
-"packages" : {
+"packages": {
 ]=])
 
   list(POP_BACK CPM_PACKAGES last_package)

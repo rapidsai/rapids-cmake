@@ -53,11 +53,11 @@ The generated json file will have the following entries for each package:
 .. code-block:: json
 
   {
-    "version" : "<CPM_PACKAGE_<package_name>_VERSION>",
-    "git_url" : "<deduced>",
-    "git_tag" : "<deduced>",
-    "git_shallow" : "false",
-    "always_download" : "true"
+    "version": "<CPM_PACKAGE_<package_name>_VERSION>",
+    "git_url": "<deduced>",
+    "git_tag": "<deduced>",
+    "git_shallow": "false",
+    "always_download": "true"
   }
 
 
