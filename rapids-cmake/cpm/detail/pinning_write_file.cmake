@@ -81,7 +81,7 @@ rapids_cpm_pinning_add_json_entry
 .. versionadded:: v24.04.00
 
 #]=======================================================================]
-function(rapids_cpm_pinning_add_json_entry json_var package_name is_last_package url_var sha_var)
+function(rapids_cpm_pinning_add_json_entry json_var package_name url_var sha_var)
   include("${rapids-cmake-dir}/cpm/detail/get_default_json.cmake")
   include("${rapids-cmake-dir}/cpm/detail/get_override_json.cmake")
   get_default_json(${package_name} json_data)
@@ -101,17 +101,9 @@ function(rapids_cpm_pinning_add_json_entry json_var package_name is_last_package
   ${url_string}
   ${sha_string}
   "git_shallow": "false",
-  "always_download": "true",
-  "trailing_place_holder": "true"
-]=]
+  "always_download": "true"
+  }]=]
                    pinned_json_entry)
-  if(NOT is_last_package)
-    string(APPEND pinned_json_entry [=[},
-]=])
-  else()
-    string(APPEND pinned_json_entry [=[}
-]=])
-  endif()
 
   # Insert a json key and value
   #
@@ -121,14 +113,9 @@ function(rapids_cpm_pinning_add_json_entry json_var package_name is_last_package
     if(NOT value MATCHES "^(\\{|\\[)")
       set(value "\"${value}\"")
     endif()
-    string(CONFIGURE [=[
-    "${key}": ${value},
-    "trailing_place_holder": "true"
-  ]=]
-                     replacement_string)
-
-    string(REPLACE [=[  "trailing_place_holder": "true"]=] "${replacement_string}" json_blob
-                   "${${json_blob_var}}")
+    # We need to quote 'value' so that it is a valid json element. Only ones not allowed to be
+    # unquted are numbers by the json spec
+    string(JSON json_blob ERROR_VARIABLE err_var SET "${${json_blob_var}}" ${key} "${value}")
     set(${json_blob_var} "${json_blob}" PARENT_SCOPE)
   endfunction()
 
@@ -237,12 +224,19 @@ function(rapids_cpm_pinning_write_file)
     # url or sha
     set(git_url)
     set(git_sha)
-    set(is_last_package FALSE)
+    set(not_last_package TRUE)
     if(package STREQUAL last_package)
-      set(is_last_package TRUE)
+      set(not_last_package FALSE)
     endif()
     rapids_cpm_pinning_extract_source_git_info(${package} git_url git_sha)
-    rapids_cpm_pinning_add_json_entry(_rapids_entry ${package} ${is_last_package} git_url git_sha)
+    rapids_cpm_pinning_add_json_entry(_rapids_entry ${package} git_url git_sha)
+    if(not_last_package)
+      string(APPEND _rapids_entry [=[,
+]=])
+    else()
+      string(APPEND _rapids_entry [=[
+]=])
+    endif()
     string(APPEND _rapids_json "${_rapids_entry}")
   endforeach()
 
