@@ -22,11 +22,11 @@ set(ENV{rapids_user} custom_env_user)
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
   [=[
 {
-  "packages" : {
-    "nvbench" : {
-      "version" : "$ENV{rapids_version}",
-      "git_url" : "$ENV{rapids_user}@gitlab.private.com",
-      "git_tag" : "my_tag"
+  "packages": {
+    "nvbench": {
+      "version": "$ENV{rapids_version}",
+      "git_url": "$ENV{rapids_user}@gitlab.private.com",
+      "git_tag": "my_tag"
     }
   }
 }
