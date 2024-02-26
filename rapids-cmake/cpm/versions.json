@@ -98,7 +98,7 @@
         {
           "file": "spdlog/nvcc_constexpr_fix.diff",
           "issue": "Fix constexpr mismatch between spdlog and fmt [https://github.com/gabime/spdlog/issues/2856]",
-                "fixed_in": "1.13"
+          "fixed_in": "1.13"
         }
       ]
     },
