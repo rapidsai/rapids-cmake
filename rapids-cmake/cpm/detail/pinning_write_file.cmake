@@ -100,8 +100,8 @@ function(rapids_cpm_pinning_add_json_entry json_var package_name url_var sha_var
   "version": "${CPM_PACKAGE_${package_name}_VERSION}",
   ${url_string}
   ${sha_string}
-  "git_shallow": "false",
-  "always_download": "true"
+  "git_shallow": false,
+  "always_download": true
   }]=]
                    pinned_json_entry)
 
@@ -109,14 +109,17 @@ function(rapids_cpm_pinning_add_json_entry json_var package_name url_var sha_var
   #
   function(rapids_cpm_pinning_create_and_set_member json_blob_var key value)
 
-    # if the first char in value is { or [ we don't need quotes
-    if(NOT value MATCHES "^(\\{|\\[)")
-      set(value "\"${value}\"")
+    # Identify special values types that shouldn't be treated as a string
+    # https://gitlab.kitware.com/cmake/cmake/-/issues/25716
+    if(value MATCHES "(^true$|^false$|^null$|^\\{|^\\[)")
+      # value is a json type that doesn't need quotes
+      string(JSON json_blob ERROR_VARIABLE err_var SET "${${json_blob_var}}" ${key} ${value})
+    else()
+      # We need to quote 'value' so that it is a valid string json element.
+      string(JSON json_blob ERROR_VARIABLE err_var SET "${${json_blob_var}}" ${key} "\"${value}\"")
     endif()
-    # We need to quote 'value' so that it is a valid json element. Only ones not allowed to be
-    # unquoted are numbers, booleans, or null by the JSON spec
-    string(JSON json_blob ERROR_VARIABLE err_var SET "${${json_blob_var}}" ${key} "${value}")
     set(${json_blob_var} "${json_blob}" PARENT_SCOPE)
+
   endfunction()
 
   foreach(data IN LISTS override_json_data json_data)

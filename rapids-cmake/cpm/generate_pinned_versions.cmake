@@ -56,8 +56,8 @@ The generated json file will have the following entries for each package:
     "version": "<CPM_PACKAGE_<package_name>_VERSION>",
     "git_url": "<deduced>",
     "git_tag": "<deduced>",
-    "git_shallow": "false",
-    "always_download": "true"
+    "git_shallow": false,
+    "always_download": true
   }
 
 
