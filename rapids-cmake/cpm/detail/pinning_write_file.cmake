@@ -114,7 +114,7 @@ function(rapids_cpm_pinning_add_json_entry json_var package_name url_var sha_var
       set(value "\"${value}\"")
     endif()
     # We need to quote 'value' so that it is a valid json element. Only ones not allowed to be
-    # unquted are numbers by the json spec
+    # unquoted are numbers, booleans, or null by the JSON spec
     string(JSON json_blob ERROR_VARIABLE err_var SET "${${json_blob_var}}" ${key} "${value}")
     set(${json_blob_var} "${json_blob}" PARENT_SCOPE)
   endfunction()
@@ -240,7 +240,6 @@ function(rapids_cpm_pinning_write_file)
     string(APPEND _rapids_json "${_rapids_entry}")
   endforeach()
 
-  # To make everything easier we add a fake package to the end so we don't have any trailing ','
   set(post_amble
       [=[
 }

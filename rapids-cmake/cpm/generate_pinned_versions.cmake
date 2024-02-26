@@ -45,7 +45,7 @@ builds, e.g:
      to have reproducible builds for that release
 
 ``OUTPUT``
-Specify a file path to write the pinned versions information to. Can be called multiple
+Specify a file path where the pinned versions information will be written. Can be called multiple
 times and each unique path will be written too.
 
 The generated json file will have the following entries for each package:
