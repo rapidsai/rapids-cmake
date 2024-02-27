@@ -87,7 +87,9 @@
       "rapids_cpm_init": {
         "pargs": {
           "nargs": 0,
-          "flags": ["GENERATE_PINNED_VERSIONS"]
+          "flags": [
+            "GENERATE_PINNED_VERSIONS"
+          ]
         },
         "kwargs": {
           "OVERRIDE": 1
