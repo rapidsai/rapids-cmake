@@ -40,11 +40,11 @@ add_cmake_config_test( cpm_init-override-simple.cmake )
 add_cmake_config_test( cpm_package_override-bad-path.cmake SHOULD_FAIL "rapids_cpm_package_override can't load")
 add_cmake_config_test( cpm_package_override-before-init.cmake )
 add_cmake_config_test( cpm_package_override-empty.cmake )
+add_cmake_config_test( cpm_package_override-env-var-support.cmake )
 add_cmake_config_test( cpm_package_override-multiple.cmake )
 add_cmake_config_test( cpm_package_override-obey-cpm-source-var.cmake )
 add_cmake_config_test( cpm_package_override-patches.cmake )
 add_cmake_config_test( cpm_package_override-simple.cmake )
-
 
 add_cmake_config_test( cpm_generate_patch_command-invalid.cmake )
 add_cmake_config_test( cpm_generate_patch_command-override.cmake )

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (c) 2023, NVIDIA CORPORATION.
+# Copyright (c) 2023-2024, NVIDIA CORPORATION.
 
 set -euo pipefail
 
@@ -35,7 +35,7 @@ EXITCODE=0
 trap "EXITCODE=1" ERR
 set +e
 
-ctest -j20 --schedule-random --output-on-failure
+ctest -j20 --schedule-random --output-on-failure --no-tests=error
 
 rapids-logger "Test script exiting with value: $EXITCODE"
 exit ${EXITCODE}

@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2023-2024, NVIDIA CORPORATION.
+# Copyright (c) 2024, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,34 +14,39 @@
 # limitations under the License.
 #=============================================================================
 include(${rapids-cmake-dir}/cpm/init.cmake)
-include(${rapids-cmake-dir}/cpm/package_override.cmake)
 
-rapids_cpm_init()
+set(ENV{rapids_version} custom_env_version)
+set(ENV{rapids_user} custom_env_user)
 
 # Need to write out an override file
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
   [=[
 {
   "packages": {
-    "rmm": {
-      "patches": [
-        {
-          "file": "rmm_patch_install_rules.diff",
-          "issue": "Fake install rule patch file",
-          "fixed_in": "39.99.0"
-        }
-      ]
+    "nvbench": {
+      "version": "$ENV{rapids_version}",
+      "git_url": "$ENV{rapids_user}@gitlab.private.com",
+      "git_tag": "my_tag"
     }
   }
 }
   ]=])
 
-rapids_cpm_package_override(${CMAKE_CURRENT_BINARY_DIR}/override.json)
+rapids_cpm_init(OVERRIDE "${CMAKE_CURRENT_BINARY_DIR}/override.json")
 
 # Verify that the override works
 include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
+rapids_cpm_package_details(nvbench version repository tag shallow exclude)
 
-rapids_cpm_package_details(rmm version repository tag shallow exclude)
+if(NOT version STREQUAL "custom_env_version")
+  message(FATAL_ERROR "custom version field was ignored. ${version} found instead of custom_env_version")
+endif()
+if(NOT repository STREQUAL "custom_env_user@gitlab.private.com")
+  message(FATAL_ERROR "custom git_url field was ignored. ${repository} found instead of custom_env_user@gitlab.private.com")
+endif()
+if(NOT DEFINED CPM_DOWNLOAD_ALL)
+  message(FATAL_ERROR "CPM_DOWNLOAD_ALL should be defined when an override exists")
+endif()
 if(NOT CPM_DOWNLOAD_ALL)
-  message(FATAL_ERROR "CPM_DOWNLOAD_ALL should be set to true when an override exists with a patches entry")
+  message(FATAL_ERROR "CPM_DOWNLOAD_ALL should be set to true when an override exists")
 endif()
