@@ -27,7 +27,7 @@ Generate a json file with all dependencies with pinned version values
 
   rapids_cpm_generate_pinned_versions( OUTPUT <json_verions_output_path> )
 
-Generates a json file with all cpm dependencies with pinned version values.
+Generates a json file with all `CPM` dependencies with pinned version values.
 This allows for subsequent reproducible builds using the exact same state.
 
 The rapids-cmake default `versions.json` uses branch names or git tag names
@@ -46,7 +46,7 @@ builds, e.g:
 
 ``OUTPUT``
 Specify a file path where the pinned versions information will be written. Can be called multiple
-times and each unique path will be written too.
+times and each unique path will be written to.
 
 The generated json file will have the following entries for each package:
 
@@ -81,13 +81,13 @@ function(rapids_cpm_generate_pinned_versions)
   cmake_parse_arguments(_RAPIDS "${_rapids_options}" "${_rapids_one_value}"
                         "${_rapids_multi_value}" ${ARGN})
 
+  if(NOT _RAPIDS_OUTPUT)
+    message(FATAL_ERROR "rapids_cpm_generate_pinned_versions requires an `OUTPUT` argument")
+  endif()
+
   find_package(Git QUIET)
   if(NOT Git_FOUND)
     message(FATAL_ERROR "rapids_cpm_generate_pinned_versions requires 'git' to exist")
-  endif()
-
-  if(NOT _RAPIDS_OUTPUT)
-    message(FATAL_ERROR "rapids_cpm_generate_pinned_versions requires an `OUTPUT` argument")
   endif()
 
   # Append the requested write path for `detail/write_pinned_versions.cmake`

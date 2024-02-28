@@ -75,6 +75,29 @@ function(rapids_cpm_pinning_extract_source_git_info package git_url_var git_sha_
 endfunction()
 
 #[=======================================================================[.rst:
+rapids_cpm_pinning_create_and_set_member
+----------------------------------------
+
+.. versionadded:: v24.04.00
+
+Insert the given json key value pair into the provided json data variable
+
+#]=======================================================================]
+function(rapids_cpm_pinning_create_and_set_member json_blob_var key value)
+
+  # Identify special values types that shouldn't be treated as a string
+  # https://gitlab.kitware.com/cmake/cmake/-/issues/25716
+  if(value MATCHES "(^true$|^false$|^null$|^\\{|^\\[)")
+    # value is a json type that doesn't need quotes
+    string(JSON json_blob ERROR_VARIABLE err_var SET "${${json_blob_var}}" ${key} ${value})
+  else()
+    # We need to quote 'value' so that it is a valid string json element.
+    string(JSON json_blob ERROR_VARIABLE err_var SET "${${json_blob_var}}" ${key} "\"${value}\"")
+  endif()
+  set(${json_blob_var} "${json_blob}" PARENT_SCOPE)
+endfunction()
+
+#[=======================================================================[.rst:
 rapids_cpm_pinning_add_json_entry
 ---------------------------------
 
@@ -104,23 +127,6 @@ function(rapids_cpm_pinning_add_json_entry json_var package_name url_var sha_var
   "always_download": true
   }]=]
                    pinned_json_entry)
-
-  # Insert a json key and value
-  #
-  function(rapids_cpm_pinning_create_and_set_member json_blob_var key value)
-
-    # Identify special values types that shouldn't be treated as a string
-    # https://gitlab.kitware.com/cmake/cmake/-/issues/25716
-    if(value MATCHES "(^true$|^false$|^null$|^\\{|^\\[)")
-      # value is a json type that doesn't need quotes
-      string(JSON json_blob ERROR_VARIABLE err_var SET "${${json_blob_var}}" ${key} ${value})
-    else()
-      # We need to quote 'value' so that it is a valid string json element.
-      string(JSON json_blob ERROR_VARIABLE err_var SET "${${json_blob_var}}" ${key} "\"${value}\"")
-    endif()
-    set(${json_blob_var} "${json_blob}" PARENT_SCOPE)
-
-  endfunction()
 
   foreach(data IN LISTS override_json_data json_data)
     if(NOT data)
@@ -209,11 +215,8 @@ This function will write out the pinned version info to the provided files when 
 CMakeLists.txt
 #]=======================================================================]
 function(rapids_cpm_pinning_write_file)
-  if(NOT CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
-    return()
-  endif()
 
-  find_package(Git QUIET)
+  find_package(Git QUIET REQUIRED)
 
   set(_rapids_json
       [=[

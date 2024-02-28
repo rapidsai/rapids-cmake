@@ -52,7 +52,7 @@ in the build tree of the calling project
   ```
   GENERATE_PINNED_VERSIONS
   ```
-  Generates a json file with all cpm dependencies with pinned version values.
+  Generates a json file with all `CPM` dependencies with pinned version values.
   This allows for reproducible builds using the exact same state.
   The pinning file will be located at `<CMAKE_BINARY_DIR>/rapids-cmake/pinned_versions.json`
 
