@@ -149,63 +149,6 @@ function(rapids_cpm_pinning_add_json_entry json_var package_name url_var sha_var
 endfunction()
 
 #[=======================================================================[.rst:
-rapids_cpm_pinning_pretty_format_json
--------------------------------------
-
-
-.. versionadded:: v24.04.00
-
-Formats provided JSON to be easily read by humans
-#]=======================================================================]
-function(rapids_cpm_pinning_pretty_format_json _rapids_json_var)
-  set(pretty_json)
-  #[=[
-  - parse each line
-  - trim all leading spaces
-  - exclusive if line contains "}" or "]" decement indenter
-  - print with given indenter
-  - exclusive if line contains "{" or "[" increment indenter
-  ]=]
-  #
-  set(indent "  ")
-  set(indent_len 2)
-  set(current_indent "")
-  string(REPLACE "\n" ";" input "${${_rapids_json_var}}")
-
-  # Needed due to rules around cmake language list expansion:
-  #
-  # during evaluation of an Unquoted Argument. In such contexts, a string is divided into list
-  # elements by splitting on ; characters not following an unequal number of [ and ] characters
-  #
-  string(REPLACE "[" "``" input "${input}")
-  string(REPLACE "]" "~~" input "${input}")
-  foreach(line ${input})
-    string(STRIP "${line}" line)
-    set(push_indent)
-    set(pop_indent)
-    if(line MATCHES "(\\{|``)")
-      set(push_indent TRUE)
-    endif()
-    if(line MATCHES "(\\}|~~)")
-      set(pop_indent TRUE)
-    endif()
-
-    if(pop_indent AND NOT push_indent)
-      string(SUBSTRING "${current_indent}" ${indent_len} -1 current_indent)
-    endif()
-
-    string(APPEND pretty_json "${current_indent}${line}\n")
-
-    if(push_indent AND NOT pop_indent)
-      string(APPEND current_indent "${indent}")
-    endif()
-  endforeach()
-  string(REPLACE "``" "[" pretty_json "${pretty_json}")
-  string(REPLACE "~~" "]" pretty_json "${pretty_json}")
-  set(${_rapids_json_var} "${pretty_json}" PARENT_SCOPE)
-endfunction()
-
-#[=======================================================================[.rst:
 rapids_cpm_pinning_write_file
 -----------------------------
 
@@ -221,6 +164,7 @@ function(rapids_cpm_pinning_write_file)
   set(_rapids_json
       [=[
 {
+"root": {
 "packages": {
 ]=])
 
@@ -246,13 +190,13 @@ function(rapids_cpm_pinning_write_file)
     string(APPEND _rapids_json "${_rapids_entry}")
   endforeach()
 
-  set(post_amble
-      [=[
-}
-}]=])
+  set(post_amble [=[
+}}}]=])
   string(APPEND _rapids_json "${post_amble}")
 
-  rapids_cpm_pinning_pretty_format_json(_rapids_json)
+  # We extract everything out of the fake `root` element so that we get a pretty JSON format from
+  # CMake.
+  string(JSON _rapids_json GET "${_rapids_json}" root)
 
   get_property(write_paths GLOBAL PROPERTY rapids_cpm_generate_pin_files)
   foreach(path IN LISTS write_paths)
