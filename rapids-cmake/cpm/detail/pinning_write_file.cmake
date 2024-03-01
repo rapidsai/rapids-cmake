@@ -190,9 +190,8 @@ function(rapids_cpm_pinning_write_file)
     string(APPEND _rapids_json "${_rapids_entry}")
   endforeach()
 
-  set(post_amble [=[
-}}}]=])
-  string(APPEND _rapids_json "${post_amble}")
+  # Add closing braces
+  string(APPEND _rapids_json [=[}}}]=])
 
   # We extract everything out of the fake `root` element so that we get a pretty JSON format from
   # CMake.

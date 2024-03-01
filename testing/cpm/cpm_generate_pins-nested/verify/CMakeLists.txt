@@ -30,7 +30,6 @@ endforeach()
 
 
 file(READ "${CMAKE_CURRENT_BINARY_DIR}/../rapids-cmake/pinned_versions.json" json_data)
-message(STATUS "${json_data}")
 
 # Verify that the pinned_versions is valid json by using it
 rapids_cpm_package_override("${CMAKE_CURRENT_BINARY_DIR}/../rapids-cmake/pinned_versions.json")

@@ -38,6 +38,11 @@ if(NOT EXISTS "${rmm_SOURCE_DIR}/git_file_2.txt")
   message(FATAL_ERROR "failed to apply rmm second patch")
 endif()
 
+# Verify that the one file that we inserted into the cuco source tree exists.
+if(NOT EXISTS "${cuco_SOURCE_DIR}/git_file_1.txt")
+  message(FATAL_ERROR "failed to apply cucco first patch")
+endif()
+
 add_custom_target(verify_generated_pins ALL
   COMMAND ${CMAKE_COMMAND} -S="${CMAKE_SOURCE_DIR}/verify/" -B"${CMAKE_BINARY_DIR}/verify_build" -D"rapids-cmake-dir=${rapids-cmake-dir}"
 )
