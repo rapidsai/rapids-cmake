@@ -225,18 +225,17 @@ function(rapids_cpm_pinning_write_file)
 "packages": {
 ]=])
 
-  # initial pass to remove any packages that aren't checked out by source
-  # or an existing json entry.
+  # initial pass to remove any packages that aren't checked out by source or an existing json entry.
   #
-  # By doing this as an initial pass it makes the logic around `last_package`
-  # and trailing comma's significantly easier
+  # By doing this as an initial pass it makes the logic around `last_package` and trailing comma's
+  # significantly easier
   set(packages)
   foreach(package IN LISTS CPM_PACKAGES)
     # Only add packages that have a src tree, that way we exclude packages that have been found
     # locally via `CPMFindPackage`
     if(NOT DEFINED CPM_PACKAGE_${package}_SOURCE_DIR)
-      # check to see if we have an rapids_cmake json entry, this catches all packages like
-      # nvcomp that don't have a source tree.
+      # check to see if we have an rapids_cmake json entry, this catches all packages like nvcomp
+      # that don't have a source tree.
       include("${rapids-cmake-dir}/cpm/detail/get_default_json.cmake")
       include("${rapids-cmake-dir}/cpm/detail/get_override_json.cmake")
       get_default_json(${package} json_data)
