@@ -16,18 +16,39 @@
 cmake_minimum_required(VERSION 3.23.1)
 project(rapids-test-project LANGUAGES CXX)
 
-add_subdirectory(a)
-add_subdirectory(b)
-
-# Turn on pin generation after cpm dependencies have been added
-# to make sure it is order invariant
 include(${rapids-cmake-dir}/cpm/init.cmake)
-rapids_cpm_init(GENERATE_PINNED_VERSIONS)
+include(${rapids-cmake-dir}/cpm/generate_pinned_versions.cmake)
+include(${rapids-cmake-dir}/cpm/find.cmake)
+include(${rapids-cmake-dir}/find/package.cmake)
+rapids_cpm_init()
+rapids_cpm_generate_pinned_versions(OUTPUT "${CMAKE_BINARY_DIR}/output_pinned_versions.json")
 
-# don't check cuco here as it uses hashes and that breaks our verify script
-set(projects-to-verify rmm fmt spdlog CCCL)
+set(PKG_VERSION  0.6.2)
+set(PKG_REPOSITORY https://github.com/nmslib/hnswlib.git)
+rapids_cpm_find(
+    hnswlib ${PKG_VERSION}
+    GLOBAL_TARGETS hnswlib::hnswlib
+    CPM_ARGS
+    GIT_REPOSITORY ${PKG_REPOSITORY}
+    GIT_TAG v${PKG_VERSION}
+    GIT_SHALLOW TRUE
+    DOWNLOAD_ONLY ON
+    EXCLUDE_FROM_ALL ON
+  )
+
+# rapids_find_package should never be in CPM packages, but lets double check
+rapids_find_package(Threads REQUIRED)
+
+# rapids_cpm_find for found system installed packages will be in CPM package
+# So we need to verify that we don't generate a pinned versions entry
+# for this package
+rapids_cpm_find(ZLIB 1.0 REQUIRED)
+
+set(projects-to-verify hnswlib)
+set(projects-not-in-list ZLIB Threads)
 add_custom_target(verify_generated_pins ALL
   COMMAND ${CMAKE_COMMAND} -S="${CMAKE_SOURCE_DIR}/verify/" -B"${CMAKE_BINARY_DIR}/verify_build"
   -D"rapids-cmake-dir=${rapids-cmake-dir}"
   -D"projects-to-verify=${projects-to-verify}"
+  -D"projects-not-in-list=${projects-not-in-list}"
 )

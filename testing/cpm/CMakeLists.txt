@@ -30,6 +30,7 @@ add_cmake_config_test( cpm_find-version-explicit-install.cmake )
 add_cmake_build_test( cpm_generate_pins-format-patches NO_CPM_CACHE)
 add_cmake_build_test( cpm_generate_pins-nested NO_CPM_CACHE)
 add_cmake_build_test( cpm_generate_pins-override NO_CPM_CACHE)
+add_cmake_build_test( cpm_generate_pins-no-src-dir )
 add_cmake_build_test( cpm_generate_pins-pure-cpm )
 add_cmake_build_test( cpm_generate_pins-simple NO_CPM_CACHE)
 
