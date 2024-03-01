@@ -24,6 +24,9 @@ add_subdirectory(b)
 include(${rapids-cmake-dir}/cpm/init.cmake)
 rapids_cpm_init(GENERATE_PINNED_VERSIONS)
 
+set(projects-to-verify rmm fmt spdlog CCCL cuco)
 add_custom_target(verify_generated_pins ALL
-  COMMAND ${CMAKE_COMMAND} -S="${CMAKE_SOURCE_DIR}/verify/" -B"${CMAKE_BINARY_DIR}/verify_build" -D"rapids-cmake-dir=${rapids-cmake-dir}"
+  COMMAND ${CMAKE_COMMAND} -S="${CMAKE_SOURCE_DIR}/verify/" -B"${CMAKE_BINARY_DIR}/verify_build"
+  -D"rapids-cmake-dir=${rapids-cmake-dir}"
+  -D"projects-to-verify=${projects-to-verify}"
 )

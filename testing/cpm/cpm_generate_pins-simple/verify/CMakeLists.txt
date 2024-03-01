@@ -22,9 +22,12 @@ include(${rapids-cmake-dir}/cpm/detail/package_details.cmake)
 
 rapids_cpm_init()
 
-set(projects rmm fmt spdlog CCCL)
+if(NOT projects-to-verify)
+  message(FATAL_ERROR "Failed to pass anything in projects-to-verify")
+endif()
+
 # Get the baseline before the override is added
-foreach(proj IN LISTS ${projects})
+foreach(proj IN LISTS ${projects-to-verify})
   rapids_cpm_package_details(${proj} ${proj}_version ${proj}_repository ${proj}_tag ${proj}_shallow ${proj}_exclude)
 endforeach()
 
