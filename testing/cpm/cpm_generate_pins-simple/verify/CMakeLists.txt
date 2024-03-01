@@ -34,7 +34,7 @@ endforeach()
 # Verify that the pinned_versions is valid json by using it
 rapids_cpm_package_override("${CMAKE_CURRENT_BINARY_DIR}/../rapids-cmake/pinned_versions.json")
 
-foreach(proj IN LISTS ${projects})
+foreach(proj IN LISTS ${projects-to-verify})
   # Verify that each git_tag is now different.
   rapids_cpm_package_details(${proj} ${proj}_version ${proj}_repository pin_${proj}_tag ${proj}_shallow ${proj}_exclude)
   if(pin_${proj}_tag STREQUAL ${proj}_tag)
