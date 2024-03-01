@@ -22,28 +22,29 @@ include(${rapids-cmake-dir}/cpm/detail/package_details.cmake)
 
 rapids_cpm_init()
 
+string(REPLACE " " ";" projects-to-verify "${projects-to-verify}")
 if(NOT projects-to-verify)
   message(FATAL_ERROR "Failed to pass anything in projects-to-verify")
 endif()
 
 # Get the baseline before the override is added
-foreach(proj IN LISTS ${projects-to-verify})
+foreach(proj IN LISTS projects-to-verify)
   rapids_cpm_package_details(${proj} ${proj}_version ${proj}_repository ${proj}_tag ${proj}_shallow ${proj}_exclude)
 endforeach()
 
 # Verify that the pinned_versions is valid json by using it
 rapids_cpm_package_override("${CMAKE_CURRENT_BINARY_DIR}/../rapids-cmake/pinned_versions.json")
 
-foreach(proj IN LISTS ${projects-to-verify})
+foreach(proj IN LISTS projects-to-verify)
   # Verify that each git_tag is now different.
-  rapids_cpm_package_details(${proj} ${proj}_version ${proj}_repository pin_${proj}_tag ${proj}_shallow ${proj}_exclude)
+  rapids_cpm_package_details(${proj} ${proj}_version ${proj}_repository pin_${proj}_tag pin_${proj}_shallow ${proj}_exclude)
   if(pin_${proj}_tag STREQUAL ${proj}_tag)
     message(FATAL_ERROR "pinned ${proj} tag (${pin_${proj}_tag}) should differ compared to baseline ${${proj}_tag}")
   endif()
 
   # Everything should have shallow marked as false
   # so that clones by SHA1 work
-  if(${proj}_shallow)
-    message(FATAL_ERROR "${proj}_shallow} is expected to be false, but got ${${proj}_shallow}")
+  if(pin_${proj}_shallow)
+    message(FATAL_ERROR "pin_${proj}_shallow is expected to be false, but got ${pin_${proj}_shallow}")
   endif()
 endforeach()

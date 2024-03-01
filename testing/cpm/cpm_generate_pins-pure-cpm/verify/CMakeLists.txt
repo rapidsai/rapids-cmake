@@ -23,19 +23,20 @@ include(${rapids-cmake-dir}/cpm/detail/package_details.cmake)
 
 rapids_cpm_init()
 
+string(REPLACE " " ";" projects-to-verify "${projects-to-verify}")
 if(NOT projects-to-verify)
   message(FATAL_ERROR "Failed to pass anything in projects-to-verify")
 endif()
 
 # Get the baseline before the override is added
-foreach(proj IN LISTS ${projects-to-verify})
+foreach(proj IN LISTS projects-to-verify)
   rapids_cpm_package_details(${proj} ${proj}_version ${proj}_repository ${proj}_tag ${proj}_shallow ${proj}_exclude)
 endforeach()
 
 # Verify that the pinned_versions is valid json by using it
 rapids_cpm_package_override("${CMAKE_CURRENT_BINARY_DIR}/../output_pinned_versions.json")
 
-foreach(proj IN LISTS ${projects-to-verify})
+foreach(proj IN LISTS projects-to-verify)
   # Verify that each git_tag is now different.
   rapids_cpm_package_details(${proj} ${proj}_version ${proj}_repository pin_${proj}_tag ${proj}_shallow ${proj}_exclude)
   if(pin_${proj}_tag STREQUAL ${proj}_tag)
