@@ -21,6 +21,25 @@ rapids_cpm_pinning_extract_source_git_info
 
 .. versionadded:: v24.04.00
 
+Extract the git url and git sha1 from the source directory of
+the given package.
+
+Parameters:
+
+``package``
+    Name of package to extract git url and git sha for
+
+``git_url_var``
+    Holds the name of the variable to set in the calling scope with the
+    git url extracted from the package.
+
+    If no git url can be found for the package, the variable won't be set.
+
+``git_sha_var``
+    Holds the name of the variable to set in the calling scope with the
+    git sha1 extracted from the package.
+
+    If no git sha1 can be found for the package, the variable won't be set.
 
 #]=======================================================================]
 function(rapids_cpm_pinning_extract_source_git_info package git_url_var git_sha_var)
@@ -80,21 +99,33 @@ rapids_cpm_pinning_create_and_set_member
 
 .. versionadded:: v24.04.00
 
-Insert the given json key value pair into the provided json data variable
+Insert the given json key value pair into the provided json object variable.
+If the key already exists in the json object, this will overwrite with the
+new value.
+
+Parameters:
+
+``json_var``
+    Variable name of the json object to both read and write too.
+
+``key``
+    Holds the key that should be created/updated in the json object
+``var``
+    Holds the var that should be written to the json object
 
 #]=======================================================================]
-function(rapids_cpm_pinning_create_and_set_member json_blob_var key value)
+function(rapids_cpm_pinning_create_and_set_member json_var key value)
 
   # Identify special values types that shouldn't be treated as a string
   # https://gitlab.kitware.com/cmake/cmake/-/issues/25716
   if(value MATCHES "(^true$|^false$|^null$|^\\{|^\\[)")
     # value is a json type that doesn't need quotes
-    string(JSON json_blob ERROR_VARIABLE err_var SET "${${json_blob_var}}" ${key} ${value})
+    string(JSON json_blob ERROR_VARIABLE err_var SET "${${json_var}}" ${key} ${value})
   else()
     # We need to quote 'value' so that it is a valid string json element.
-    string(JSON json_blob ERROR_VARIABLE err_var SET "${${json_blob_var}}" ${key} "\"${value}\"")
+    string(JSON json_blob ERROR_VARIABLE err_var SET "${${json_var}}" ${key} "\"${value}\"")
   endif()
-  set(${json_blob_var} "${json_blob}" PARENT_SCOPE)
+  set(${json_var} "${json_blob}" PARENT_SCOPE)
 endfunction()
 
 #[=======================================================================[.rst:
@@ -103,20 +134,38 @@ rapids_cpm_pinning_add_json_entry
 
 .. versionadded:: v24.04.00
 
-#]=======================================================================]
-function(rapids_cpm_pinning_add_json_entry json_var package_name url_var sha_var)
-  include("${rapids-cmake-dir}/cpm/detail/get_default_json.cmake")
-  include("${rapids-cmake-dir}/cpm/detail/get_override_json.cmake")
-  get_default_json(${package_name} json_data)
-  get_override_json(${package_name} override_json_data)
+Write a valid json object that represent the package with the updated
+If the key already exists in the json object, this will overwrite with the
+new value.
 
-  set(url_string)
-  set(sha_string)
-  if(${url_var})
-    string(CONFIGURE [=["git_url": "${${url_var}}",]=] url_string)
+The generated json object will have `git_shallow` as `false`, and
+`always_download` as `true`. This ensures we always build from source, and
+that we can safely fetch even when the SHA1 doesn't reference the tip of a named
+branch/tag.
+
+Parameters:
+
+``package``
+    Name of package to generate a valid json object for.
+
+``json_var``
+    Variable name to write the generated json object to in the callers
+    scope.
+
+#]=======================================================================]
+function(rapids_cpm_pinning_add_json_entry package_name json_var)
+
+  # Make sure variables from the callers scope doesn't break us
+  unset(git_url)
+  unset(git_sha)
+  unset(url_string)
+  unset(sha_string)
+  rapids_cpm_pinning_extract_source_git_info(${package} git_url git_sha)
+  if(git_url)
+    string(CONFIGURE [=["git_url": "${git_url}",]=] url_string)
   endif()
-  if(${sha_var})
-    string(CONFIGURE [=["git_tag": "${${sha_var}}",]=] sha_string)
+  if(git_sha)
+    string(CONFIGURE [=["git_tag": "${git_sha}",]=] sha_string)
   endif()
   # We start with a default template, and only add members that don't exist
   string(CONFIGURE [=[{
@@ -128,6 +177,10 @@ function(rapids_cpm_pinning_add_json_entry json_var package_name url_var sha_var
   }]=]
                    pinned_json_entry)
 
+  include("${rapids-cmake-dir}/cpm/detail/get_default_json.cmake")
+  include("${rapids-cmake-dir}/cpm/detail/get_override_json.cmake")
+  get_default_json(${package_name} json_data)
+  get_override_json(${package_name} override_json_data)
   foreach(data IN LISTS override_json_data json_data)
     if(NOT data)
       # Need to handle both json_data and the override being empty
@@ -154,8 +207,12 @@ rapids_cpm_pinning_write_file
 
 .. versionadded:: v24.04.00
 
-This function will write out the pinned version info to the provided files when we are in the root
-CMakeLists.txt
+This function generates a rapids-cmake `versions.json` file that has
+pinned versions of each project that resolved to an CPMAddPackage call for
+this CMake project.
+
+This pinned versions.json file will be written to all output files
+provided to :cmake:command:`rapids_cpm_generate_pinned_versions`.
 #]=======================================================================]
 function(rapids_cpm_pinning_write_file)
 
@@ -178,8 +235,7 @@ function(rapids_cpm_pinning_write_file)
     if(package STREQUAL last_package)
       set(not_last_package FALSE)
     endif()
-    rapids_cpm_pinning_extract_source_git_info(${package} git_url git_sha)
-    rapids_cpm_pinning_add_json_entry(_rapids_entry ${package} git_url git_sha)
+    rapids_cpm_pinning_add_json_entry(${package} _rapids_entry)
     if(not_last_package)
       string(APPEND _rapids_entry [=[,
 ]=])
