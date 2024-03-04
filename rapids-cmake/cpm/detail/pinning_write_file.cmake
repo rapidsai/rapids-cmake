@@ -230,6 +230,7 @@ function(rapids_cpm_pinning_write_file)
   # By doing this as an initial pass it makes the logic around `last_package` and trailing comma's
   # significantly easier
   set(packages)
+  set(ignored_packages)
   foreach(package IN LISTS CPM_PACKAGES)
     # Only add packages that have a src tree, that way we exclude packages that have been found
     # locally via `CPMFindPackage`
@@ -241,6 +242,7 @@ function(rapids_cpm_pinning_write_file)
       get_default_json(${package} json_data)
       get_override_json(${package} override_json_data)
       if(NOT (json_data OR override_json_data))
+        list(APPEND ignored_packages ${package})
         continue()
       endif()
     endif()
@@ -275,9 +277,16 @@ function(rapids_cpm_pinning_write_file)
   # CMake.
   string(JSON _rapids_json GET "${_rapids_json}" root)
 
+  # Setup status string to developer.
+  set(message_extra_info)
+  if(ignored_packages)
+    set(message_extra_info "The following packages resolved to system installed versions: ${ignored_packages}. If you need those pinned to an explicit version please set `CPM_DOWNLOAD_ALL` and re-generate.")
+  endif()
+
   get_property(write_paths GLOBAL PROPERTY rapids_cpm_generate_pin_files)
   foreach(path IN LISTS write_paths)
     file(WRITE "${path}" "${_rapids_json}")
+    message(STATUS "rapids_cpm_generate_pinned_versions wrote version information to: ${path}. ${message_extra_info}")
   endforeach()
 
 endfunction()
