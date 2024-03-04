@@ -290,5 +290,6 @@ function(rapids_cpm_pinning_write_file)
     )
   endif()
 
-  message(STATUS "rapids_cpm_generate_pinned_versions wrote version information. ${message_extra_info}")
+  message(STATUS "rapids_cpm_generate_pinned_versions wrote version information. ${message_extra_info}"
+  )
 endfunction()
