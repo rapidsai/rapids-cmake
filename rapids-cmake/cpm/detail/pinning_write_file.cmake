@@ -281,7 +281,8 @@ function(rapids_cpm_pinning_write_file)
   set(message_extra_info)
   if(ignored_packages)
     set(message_extra_info
-        "The following packages resolved to system installed versions: ${ignored_packages}. If you need those pinned to an explicit version please set `CPM_DOWNLOAD_ALL` and re-generate.")
+        "The following packages resolved to system installed versions: ${ignored_packages}. If you need those pinned to an explicit version please set `CPM_DOWNLOAD_ALL` and re-generate."
+    )
   endif()
 
   get_property(write_paths GLOBAL PROPERTY rapids_cpm_generate_pin_files)
