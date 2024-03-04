@@ -280,13 +280,15 @@ function(rapids_cpm_pinning_write_file)
   # Setup status string to developer.
   set(message_extra_info)
   if(ignored_packages)
-    set(message_extra_info "The following packages resolved to system installed versions: ${ignored_packages}. If you need those pinned to an explicit version please set `CPM_DOWNLOAD_ALL` and re-generate.")
+    set(message_extra_info
+        "The following packages resolved to system installed versions: ${ignored_packages}. If you need those pinned to an explicit version please set `CPM_DOWNLOAD_ALL` and re-generate.")
   endif()
 
   get_property(write_paths GLOBAL PROPERTY rapids_cpm_generate_pin_files)
   foreach(path IN LISTS write_paths)
     file(WRITE "${path}" "${_rapids_json}")
-    message(STATUS "rapids_cpm_generate_pinned_versions wrote version information to: ${path}. ${message_extra_info}")
+    message(STATUS "rapids_cpm_generate_pinned_versions wrote version information to: ${path}. ${message_extra_info}"
+    )
   endforeach()
 
 endfunction()
