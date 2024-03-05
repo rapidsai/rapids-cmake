@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021, NVIDIA CORPORATION.
+# Copyright (c) 2024, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,8 +14,15 @@
 # limitations under the License.
 #=============================================================================
 cmake_minimum_required(VERSION 3.23.1)
+project(rapids-test-b LANGUAGES CXX)
 
-# We need to enable at least one language so that we get properly
-# generated system search paths.
-project(@test_name_stem@ LANGUAGES CXX)
-include("@test_cmake_file@")
+include(${rapids-cmake-dir}/cpm/init.cmake)
+rapids_cpm_init()
+
+include(${rapids-cmake-dir}/cpm/cccl.cmake)
+include(${rapids-cmake-dir}/cpm/cuco.cmake)
+include(${rapids-cmake-dir}/cpm/nvcomp.cmake)
+
+rapids_cpm_cccl()
+rapids_cpm_cuco()
+rapids_cpm_nvcomp()

@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021, NVIDIA CORPORATION.
+# Copyright (c) 2024, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,8 +14,20 @@
 # limitations under the License.
 #=============================================================================
 cmake_minimum_required(VERSION 3.23.1)
+project(rapids-test-project LANGUAGES CXX)
 
-# We need to enable at least one language so that we get properly
-# generated system search paths.
-project(@test_name_stem@ LANGUAGES CXX)
-include("@test_cmake_file@")
+add_subdirectory(a)
+add_subdirectory(b)
+
+# Turn on pin generation after cpm dependencies have been added
+# to make sure it is order invariant
+include(${rapids-cmake-dir}/cpm/init.cmake)
+rapids_cpm_init(GENERATE_PINNED_VERSIONS)
+
+# don't check cuco here as it uses hashes and that breaks our verify script
+set(projects-to-verify rmm fmt spdlog CCCL)
+add_custom_target(verify_generated_pins ALL
+  COMMAND ${CMAKE_COMMAND} -S="${CMAKE_SOURCE_DIR}/verify/" -B"${CMAKE_BINARY_DIR}/verify_build"
+  -D"rapids-cmake-dir=${rapids-cmake-dir}"
+  -D"projects-to-verify=${projects-to-verify}"
+)

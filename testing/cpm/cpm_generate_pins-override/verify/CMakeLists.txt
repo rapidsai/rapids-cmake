@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021, NVIDIA CORPORATION.
+# Copyright (c) 2024, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,8 +14,18 @@
 # limitations under the License.
 #=============================================================================
 cmake_minimum_required(VERSION 3.23.1)
+project(rapids-test-project LANGUAGES CXX)
 
-# We need to enable at least one language so that we get properly
-# generated system search paths.
-project(@test_name_stem@ LANGUAGES CXX)
-include("@test_cmake_file@")
+include(${rapids-cmake-dir}/cpm/init.cmake)
+include(${rapids-cmake-dir}/cpm/package_override.cmake)
+include(${rapids-cmake-dir}/cpm/detail/package_details.cmake)
+
+rapids_cpm_init()
+rapids_cpm_package_override("${CMAKE_CURRENT_BINARY_DIR}/../rapids-cmake/pinned_versions.json")
+
+# Verify that each git_tag is now different.
+rapids_cpm_package_details(rmm rmm_version rmm_repository pin_rmm_tag rmm_shallow rmm_exclude)
+
+if(NOT pin_rmm_tag STREQUAL "e3e32150d1bef13480ede4b2df1f0b38e43108a4")
+  message(FATAL_ERROR "pinned rmm tag (${pin_rmm_tag}) doesn't match pre-computed SHA1 for the 22.02 tag")
+endif()

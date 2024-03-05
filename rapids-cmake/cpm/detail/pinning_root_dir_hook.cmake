@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021, NVIDIA CORPORATION.
+# Copyright (c) 2024, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,9 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-cmake_minimum_required(VERSION 3.23.1)
+include_guard(GLOBAL)
 
-# We need to enable at least one language so that we get properly
-# generated system search paths.
-project(@test_name_stem@ LANGUAGES CXX)
-include("@test_cmake_file@")
+# Make sure we always have CMake 3.23 policies when executing this file since we can be executing in
+# directories of users of rapids-cmake which have a lower minimum cmake version and therefore
+# different policies
+#
+cmake_policy(PUSH)
+cmake_policy(VERSION 3.23)
+
+# Include the needed functions that write out the the pinned versions file
+include("${rapids-cmake-dir}/cpm/detail/pinning_write_file.cmake")
+
+# Compute and write out the pinned versions file
+rapids_cpm_pinning_write_file()
+
+cmake_policy(POP)
