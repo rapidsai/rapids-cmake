@@ -6,9 +6,9 @@
       "git_tag": "v${version}"
     },
     "CCCL": {
-      "version": "2.2.0",
-      "git_url": "https://github.com/NVIDIA/cccl.git",
-      "git_tag": "v${version}",
+      "version": "2.3.0",
+      "git_url": "https://github.com/miscco/cccl.git",
+      "git_tag": "fix_thrust_addressof",
       "patches": [
         {
           "file": "cccl/bug_fixes.diff",
