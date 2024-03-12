@@ -27,6 +27,11 @@ tracking of these dependencies for correct export support.
 Uses the version of libcudacxx :ref:`specified in the version file <cpm_versions>` for consistency
 across all RAPIDS projects.
 
+.. deprecated:: v24.04.00
+  ``rapids_cpm_thrust`` uses Thrust 1.x. Users should migrate to
+  ``rapids_cpm_cccl`` which uses CCCL 2.x, including new versions of Thrust,
+  CUB, and libcudacxx.
+
 .. code-block:: cmake
 
   rapids_cpm_libcudacxx( [BUILD_EXPORT_SET <export-name>]
@@ -50,6 +55,12 @@ Result Variables
 #]=======================================================================]
 function(rapids_cpm_libcudacxx)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.libcudacxx")
+
+  include("${rapids-cmake-dir}/cmake/detail/policy.cmake")
+  rapids_cmake_policy(DEPRECATED_IN 24.04
+                      REMOVED_IN 24.10
+                      MESSAGE [=[Usage of `rapids_cpm_libcudacxx` has been deprecated in favor of `rapids_cpm_cccl`.]=]
+  )
 
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
   rapids_cpm_package_details(libcudacxx version repository tag shallow exclude)
