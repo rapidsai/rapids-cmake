@@ -16,5 +16,8 @@
 add_cmake_config_test( rapids_cmake-multiple-cpm NO_RAPIDS_CMAKE_HOOKS)
 add_cmake_config_test( rapids_cmake-multiple-simple NO_RAPIDS_CMAKE_HOOKS)
 
+add_cmake_config_test( rapids_cmake-fetch-via-git NO_RAPIDS_CMAKE_HOOKS)
+add_cmake_config_test( rapids_cmake-fetch-via-zip NO_RAPIDS_CMAKE_HOOKS)
+
 add_cmake_config_test( FetchContent-legacy NO_RAPIDS_CMAKE_HOOKS)
 add_cmake_config_test( FetchContent-hostile-legacy NO_RAPIDS_CMAKE_HOOKS)
