@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2023-2024, NVIDIA CORPORATION.
+# Copyright (c) 2021-2024, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,34 +15,25 @@
 #=============================================================================
 include(${rapids-cmake-dir}/cpm/init.cmake)
 include(${rapids-cmake-dir}/cpm/package_override.cmake)
-include(${rapids-cmake-dir}/cpm/detail/get_proprietary_binary_url.cmake)
-include(${rapids-cmake-dir}/cpm/detail/package_details.cmake)
 
 rapids_cpm_init()
 
-# Need to write out an override file with a proprietary blob url
+# Need to write out an override file
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
   [=[
 {
   "packages": {
-    "test_binary": {
-      "version": "2.6.1",
-      "git_url": "empty",
-      "git_tag": "empty",
-      "proprietary_binary": {
-        "x86_64-linux":  "https://fake.url.com/x86_${version}.tgz",
-        "aarch64-linux": "https://fake.url.com/aarch_${version}.tgz",
-      }
+    "fake_package_no_version": {
+      "git_url": "fake_url",
+      "git_tag": "a"
     }
   }
 }
-]=])
+  ]=])
+
 rapids_cpm_package_override(${CMAKE_CURRENT_BINARY_DIR}/override.json)
 
-rapids_cpm_package_details(test_binary version repository tag shallow exclude)
-rapids_cpm_get_proprietary_binary_url(test_binary ${version} nvcomp_url)
+# Verify that the override works
+include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
 
-# Verify that we didn't go searching for the CUDAToolkit
-if(TARGET CUDA::cudart_static OR TARGET CUDA::cudart)
-  message(FATAL_ERROR "test_binary didn't use the cuda toolkit placeholder, but searching for it still occurred")
-endif()
+rapids_cpm_package_details(fake_package_no_version version repository tag shallow exclude)

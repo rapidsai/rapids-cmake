@@ -27,6 +27,8 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
   "packages": {
     "test_binary": {
       "version": "2.6.1",
+      "git_url": "a_url",
+      "git_tag": "a_tag",
       "proprietary_binary": {
         "x86_64-linux":  "https://fake.url.com/${version}/${cuda-toolkit-version}/x86_64_${cuda-toolkit-version-major}.tgz",
         "aarch64-linux": "https://fake.url.com/${version}/${cuda-toolkit-version}/aarch64_${cuda-toolkit-version-major}.tgz",
