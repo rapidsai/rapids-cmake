@@ -30,6 +30,7 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
   "packages": {
     "pkg_with_patch": {
       "version": "10.2",
+      "git_url": "a_url",
       "git_tag": "a_tag",
       "git_shallow": "OFF",
       "exclude_from_all": "ON",
