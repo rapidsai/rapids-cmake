@@ -95,11 +95,15 @@ function(rapids_cpm_package_override filepath)
         include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
         rapids_cpm_generate_patch_command(${package_name} ${version} patch_command)
 
+        unset(exclude_from_all)
+        if(exclude AND CMAKE_VERSION VERSION_GREATER_EQUAL 3.28.0)
+          set(exclude_from_all EXCLUDE_FROM_ALL)
+        endif()
         FetchContent_Declare(${package_name}
                              GIT_REPOSITORY ${repository}
                              GIT_TAG ${tag}
                              GIT_SHALLOW ${shallow}
-                             ${patch_command} EXCLUDE_FROM_ALL ${exclude})
+                             ${patch_command} ${exclude_from_all})
       endif()
     endforeach()
   endif()
