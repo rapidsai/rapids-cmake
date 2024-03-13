@@ -28,7 +28,7 @@ Uses the version of libcudacxx :ref:`specified in the version file <cpm_versions
 across all RAPIDS projects.
 
 .. deprecated:: v24.04.00
-  ``rapids_cpm_thrust`` uses Thrust 1.x. Users should migrate to
+  ``rapids_cpm_libcudacxx`` uses libcudacxx 2.1.0. Users should migrate to
   ``rapids_cpm_cccl`` which uses CCCL 2.x, including new versions of Thrust,
   CUB, and libcudacxx.
 
