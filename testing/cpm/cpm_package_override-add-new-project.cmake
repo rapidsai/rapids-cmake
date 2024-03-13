@@ -26,7 +26,7 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
   "packages": {
     "custom_package_never_in_rapids" : {
       "version" : "3.1.0",
-      "git_url" : "https://github.com/nvidia/nvtx/",
+      "git_url" : "https://github.com/NVIDIA/NVTX",
       "git_tag" : "96aeb0d8702981972fac0f6e485fea7acbfd5446",
       "git_shallow" : false,
       "exclude_from_all" : true
