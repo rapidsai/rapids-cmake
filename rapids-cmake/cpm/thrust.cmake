@@ -27,6 +27,11 @@ tracking of these dependencies for correct export support.
 Uses the version of Thrust :ref:`specified in the version file <cpm_versions>` for consistency
 across all RAPIDS projects.
 
+.. deprecated:: v24.04.00
+  ``rapids_cpm_thrust`` uses Thrust 1.x. Users should migrate to
+  ``rapids_cpm_cccl`` which uses CCCL 2.x, including new versions of Thrust,
+  CUB, and libcudacxx.
+
 .. code-block:: cmake
 
   rapids_cpm_thrust( NAMESPACE <namespace>
@@ -62,6 +67,12 @@ Result Variables
 # cmake-lint: disable=R0915
 function(rapids_cpm_thrust NAMESPACE namespaces_name)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.thrust")
+
+  include("${rapids-cmake-dir}/cmake/detail/policy.cmake")
+  rapids_cmake_policy(DEPRECATED_IN 24.04
+                      REMOVED_IN 24.10
+                      MESSAGE [=[Usage of `rapids_cpm_thrust` has been deprecated in favor of `rapids_cpm_cccl`.]=]
+  )
 
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
   rapids_cpm_package_details(Thrust version repository tag shallow exclude)

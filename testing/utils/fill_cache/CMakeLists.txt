@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2023, NVIDIA CORPORATION.
+# Copyright (c) 2021-2024, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ include(${rapids-cmake-dir}/cpm/spdlog.cmake)
 include(${rapids-cmake-dir}/cpm/fmt.cmake)
 include(${rapids-cmake-dir}/cpm/thrust.cmake)
 
-rapids_cpm_init()
+rapids_cpm_init(GENERATE_PINNED_VERSIONS)
 
 set(CPM_SOURCE_CACHE "${CMAKE_BINARY_DIR}")
 

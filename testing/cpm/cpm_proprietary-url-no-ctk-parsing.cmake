@@ -27,6 +27,8 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
   "packages": {
     "test_binary": {
       "version": "2.6.1",
+      "git_url": "empty",
+      "git_tag": "empty",
       "proprietary_binary": {
         "x86_64-linux":  "https://fake.url.com/x86_${version}.tgz",
         "aarch64-linux": "https://fake.url.com/aarch_${version}.tgz",

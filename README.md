@@ -141,6 +141,19 @@ At times projects or developers will need to verify ``rapids-cmake`` branches. T
   # Or to override the entire repository URL (e.g. to use a GitLab repo):
   set(rapids-cmake-url "https://gitlab.com/<my_user>/<my_fork>/-/archive/<my_branch>/<my_fork>-<my_branch>.zip")
 
+  # To override the usage of fetching the repository without git info
+  # This only works when specifying
+  #
+  # set(rapids-cmake-fetch-via-git "ON")
+  # set(rapids-cmake-branch "branch-<cal_ver>")
+  #
+  # or
+  # set(rapids-cmake-fetch-via-git "ON")
+  # set(rapids-cmake-url "https://gitlab.com/<my_user>/<private_fork>/")
+  # set(rapids-cmake-sha "ABC123")
+  #
+  set(rapids-cmake-fetch-via-git "ON")
+
   file(DOWNLOAD https://raw.githubusercontent.com/rapidsai/rapids-cmake/branch-22.10/RAPIDS.cmake
       ${CMAKE_CURRENT_BINARY_DIR}/RAPIDS.cmake)
   include(${CMAKE_CURRENT_BINARY_DIR}/RAPIDS.cmake)
