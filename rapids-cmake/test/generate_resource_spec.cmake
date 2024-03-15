@@ -60,7 +60,7 @@ function(rapids_test_generate_resource_spec DESTINATION filepath)
 
     set(compiler "${CMAKE_CXX_COMPILER}")
     set(lang CXX)
-    if(NOT DEFINED CMAKE_CXX_COMPILER)
+    if(DEFINED CMAKE_CUDA_COMPILER)
       set(compiler "${CMAKE_CUDA_COMPILER}")
       set(lang CUDA)
     endif()
