@@ -17,6 +17,7 @@ cmake_minimum_required(VERSION 3.23.1)
 project(generate_resource_spec ${lang})
 
 set(CMAKE_CUDA_ARCHITECTURES all)
+set(CMAKE_CUDA_RUNTIME_LIBRARY STATIC)
 
 add_executable(generate_ctest_json generate_resource_spec.cpp)
 if(cuda_toolkit)
