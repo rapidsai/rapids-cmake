@@ -112,7 +112,7 @@ function(rapids_cpm_nvcomp)
     if(nvcomp_url)
       rapids_cpm_download_proprietary_binary(nvcomp ${nvcomp_url})
 
-      # unset CPM_DOWNLOAD_ALL if we have a proprietary binary enabled this ensure we actually use
+      # Unset CPM_DOWNLOAD_ALL if we have a proprietary binary enabled. This ensures we actually use
       # the proprietary binary
       unset(CPM_DOWNLOAD_ALL)
     endif()
