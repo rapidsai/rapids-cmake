@@ -51,6 +51,6 @@ if(NOT nvcomp_proprietary_binary)
   message(FATAL_ERROR "Ignored nvcomp override file failed to get proprietary binary version")
 endif()
 
-if(NOT EXISTS "${nvcomp_SOURCE_DIR}/lib/")
-
+if(NOT "${nvcomp_SOURCE_DIR}/CMakeLists.txt")
+  message(FATAL_ERROR "Ignored nvcomp override file failed to get proprietary binary version")
 endif()
