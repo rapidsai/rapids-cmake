@@ -92,6 +92,7 @@ add_cmake_config_test( cpm_nvcomp-proprietary-off.cmake )
 add_cmake_config_test( cpm_nvcomp-proprietary-on.cmake )
 add_cmake_config_test( cpm_nvcomp-simple.cmake )
 add_cmake_config_test( cpm_nvcomp-invalid-arch.cmake )
+add_cmake_config_test( cpm_nvcomp-always-download-proprietary_binary.cmake SERIAL)
 add_cmake_config_test( cpm_nvcomp-override-clears-proprietary_binary.cmake SERIAL)
 
 add_cmake_config_test( cpm_proprietary-url-ctk-version-find-ctk.cmake )
