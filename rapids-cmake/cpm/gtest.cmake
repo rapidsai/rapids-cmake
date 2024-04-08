@@ -31,10 +31,17 @@ across all RAPIDS projects.
 
   rapids_cpm_gtest( [BUILD_EXPORT_SET <export-name>]
                     [INSTALL_EXPORT_SET <export-name>]
+                    [BUILD_STATIC]
                     [<CPM_ARGS> ...])
 
 .. |PKG_NAME| replace:: GTest
 .. include:: common_package_args.txt
+
+.. versionadded:: v24.06.00
+
+``BUILD_STATIC``
+  Will build `Google Test` statically. No local searching for a previously
+  built version will occur.
 
 Result Targets
 ^^^^^^^^^^^^^^
@@ -56,6 +63,12 @@ function(rapids_cpm_gtest)
     set(to_install ON)
   endif()
 
+  set(build_shared ON)
+  if(BUILD_STATIC IN_LIST ARGN)
+    set(build_shared OFF)
+    set(CPM_DOWNLOAD_benchmark ON) # Since we need static we build from source
+  endif()
+
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
   rapids_cpm_package_details(GTest version repository tag shallow exclude)
 
@@ -70,7 +83,8 @@ function(rapids_cpm_gtest)
                   GIT_TAG ${tag}
                   GIT_SHALLOW ${shallow} ${patch_command}
                   EXCLUDE_FROM_ALL ${exclude}
-                  OPTIONS "INSTALL_GTEST ${to_install}" "CMAKE_POSITION_INDEPENDENT_CODE ON")
+                  OPTIONS "INSTALL_GTEST ${to_install}" "CMAKE_POSITION_INDEPENDENT_CODE ON"
+                          "BUILD_SHARED_LIBS ${build_shared}")
 
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
   rapids_cpm_display_patch_status(GTest)
