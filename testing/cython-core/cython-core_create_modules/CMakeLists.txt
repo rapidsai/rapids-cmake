@@ -34,3 +34,13 @@ rapids_cython_create_modules(
 if(NOT TARGET test)
   message(FATAL_ERROR "rapids_cython_create_modules didn't create the target `test`")
 endif()
+
+# Test that the dependency file was created properly.
+cmake_path(SET depfile NORMALIZE "${CMAKE_CURRENT_BINARY_DIR}/test.c.dep")
+if(NOT EXISTS "${depfile}")
+  message(
+    FATAL_ERROR
+    "rapids_cython_create_modules didn't create the dependency file. "
+    "Expected dependency file: ${depfile}"
+  )
+endif()

@@ -106,6 +106,7 @@ function(rapids_cython_create_modules)
     cmake_path(GET cython_filename FILENAME cython_module)
     cmake_path(REPLACE_EXTENSION cython_module "${_ext}" OUTPUT_VARIABLE cpp_filename)
     cmake_path(REMOVE_EXTENSION cython_module)
+    cmake_path(SET depfile NORMALIZE "${CMAKE_CURRENT_BINARY_DIR}/${cpp_filename}.dep")
 
     # Save the name of the module without the provided prefix so that we can control the output.
     set(cython_module_filename "${cython_module}")
@@ -117,9 +118,10 @@ function(rapids_cython_create_modules)
     add_custom_command(OUTPUT ${cpp_filename}
                        DEPENDS ${cython_filename}
                        VERBATIM
-                       COMMAND "${CYTHON}" ARGS "${_language_flag}" -3 ${CYTHON_FLAGS_LIST}
+                       COMMAND "${CYTHON}" ARGS ${_language_flag} -3 ${CYTHON_FLAGS_LIST}
                                "${CMAKE_CURRENT_SOURCE_DIR}/${cython_filename}" --output-file
-                               "${CMAKE_CURRENT_BINARY_DIR}/${cpp_filename}"
+                               "${CMAKE_CURRENT_BINARY_DIR}/${cpp_filename}" --depfile
+                       DEPFILE ${depfile}
                        COMMENT "Transpiling ${cython_filename} to ${cpp_filename}")
 
     python_add_library(${cython_module} MODULE "${CMAKE_CURRENT_BINARY_DIR}/${cpp_filename}"
