@@ -42,11 +42,14 @@ in the build tree of the calling project
 
 .. versionadded:: v21.10.00
   ``OVERRIDE``
-  Override the `CPM` preset package information for the project. The user provided
-  json file must follow the `versions.json` format, which is :ref:`documented here<cpm_version_format>`.
+  Allows projects to override the default values for any :cmake:command:`rapids_cpm_find`,
+  :ref:`rapids_cpm_* <cpm_pre-configured_packages>`, `CPM <https://github.com/cpm-cmake/CPM.cmake>`_,
+  and :cmake:module:`FetchContent() <cmake:module:FetchContent>` package. By providing a secondary
+  file with extra`CPM` preset package information for the project.
 
-  If the override file doesn't specify a value or package entry the default
-  version will be used.
+  The provided json file must follow the `versions.json` format, which is :ref:`documented here<cpm_version_format>`.
+
+  If the override file doesn't specify a value or package entry the default version will be used.
 
 .. versionadded:: v24.04.00
   ```
