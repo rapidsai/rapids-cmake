@@ -43,7 +43,7 @@ index e1ea61e23..6a84292a9 100644
          UpsweepKernelT      upsweep_kernel,         ///< [in] Kernel function pointer to parameterization of cub::DeviceRadixSortUpsweepKernel
          UpsweepKernelT      alt_upsweep_kernel,     ///< [in] Alternate kernel function pointer to parameterization of cub::DeviceRadixSortUpsweepKernel
 @@ -2252,7 +2252,7 @@ struct DispatchSegmentedRadixSort : SelectedPolicy
- 
+
          /// Initialize pass configuration
          template <typename SegmentedPolicyT>
 -        CUB_RUNTIME_FUNCTION __forceinline__
@@ -54,7 +54,7 @@ index e1ea61e23..6a84292a9 100644
 @@ -2263,12 +2263,11 @@ struct DispatchSegmentedRadixSort : SelectedPolicy
          }
      };
- 
+
 -
      /// Invocation (run multiple digit passes)
      template <
@@ -102,7 +102,7 @@ index 146a54547..db675fef7 100644
 +++ b/cub/cub/device/dispatch/dispatch_reduce_by_key.cuh
 @@ -284,7 +284,7 @@ struct DispatchReduceByKey
    //---------------------------------------------------------------------
- 
+
    template <typename ActivePolicyT, typename ScanInitKernelT, typename ReduceByKeyKernelT>
 -  CUB_RUNTIME_FUNCTION __forceinline__ cudaError_t Invoke(ScanInitKernelT init_kernel,
 +  CUB_RUNTIME_FUNCTION __attribute__ ((__visibility__("hidden"))) __forceinline__ cudaError_t Invoke(ScanInitKernelT init_kernel,
@@ -132,7 +132,7 @@ index b13f97b59..8694796ae 100644
      LargeKernelT large_kernel,
      SmallKernelT small_kernel,
 @@ -1725,7 +1725,7 @@ private:
- 
+
    template <typename LargeSegmentPolicyT,
              typename FallbackKernelT>
 -  CUB_RUNTIME_FUNCTION __forceinline__ cudaError_t SortWithoutPartitioning(
@@ -177,7 +177,7 @@ index 4cd5fddb0..cd44a0ead 100644
      KernelPtr           kernel_ptr,                 ///< [in] Kernel pointer for which to compute SM occupancy
 @@ -656,7 +656,7 @@ struct KernelConfig
      KernelConfig() : block_threads(0), items_per_thread(0), tile_size(0), sm_occupancy(0) {}
- 
+
      template <typename AgentPolicyT, typename KernelPtrT>
 -    CUB_RUNTIME_FUNCTION __forceinline__
 +    CUB_RUNTIME_FUNCTION __attribute__ ((__visibility__("hidden")))  __forceinline__
