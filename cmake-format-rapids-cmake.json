@@ -141,7 +141,10 @@
       },
       "rapids_cpm_gtest": {
         "pargs": {
-          "nargs": 0
+          "nargs": 0,
+          "flags": [
+            "BUILD_STATIC"
+          ]
         },
         "kwargs": {
           "BUILD_EXPORT_SET": 1,
