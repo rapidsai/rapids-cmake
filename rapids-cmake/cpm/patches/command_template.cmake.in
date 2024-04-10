@@ -49,6 +49,9 @@ function(rapids_cpm_run_git_patch file issue)
       )
     endif()
   elseif(ext STREQUAL "patch")
+    # Setup a fake committer name/email so we execute everywhere
+    set(ENV{GIT_COMMITTER_NAME} "rapids-cmake" )
+    set(ENV{GIT_COMMITTER_EMAIL} "rapids.cmake@rapids.ai" )
     # no need to check if the git patch was already applied
     # `am` does that and returns a success error code for those cases
     execute_process(

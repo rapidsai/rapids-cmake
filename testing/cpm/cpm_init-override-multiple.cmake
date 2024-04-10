@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2023, NVIDIA CORPORATION.
+# Copyright (c) 2021-2024, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -42,16 +42,16 @@ expect_fetch_content_details(GTest NO)
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
   [=[
 {
-  "packages" : {
-    "nvbench" : {
-      "git_tag" : "my_tag",
-      "always_download" : false
+  "packages": {
+    "nvbench": {
+      "git_tag": "my_tag",
+      "always_download": false
     },
-    "rmm" : {
-      "git_tag" : "my_tag"
+    "rmm": {
+      "git_tag": "my_tag"
     },
-    "GTest" : {
-      "version" : "2.99"
+    "GTest": {
+      "version": "2.99"
     }
   }
 }

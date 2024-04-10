@@ -15,6 +15,8 @@ repos:
             ^rapids-cmake/cpm/patches/.*
           )
       - id: check-json
+      - id: pretty-format-json
+        args: ["--autofix", "--no-sort-keys"]
   - repo: https://github.com/pre-commit/mirrors-clang-format
     rev: v16.0.6
     hooks:
@@ -25,14 +27,13 @@ repos:
     rev: v2.2.2
     hooks:
       - id: codespell
+  - repo: https://github.com/rapidsai/dependency-file-generator
+    rev: v1.8.0
+    hooks:
+        - id: rapids-dependency-file-generator
+          args: ["--clean"]
   - repo: local
     hooks:
-      - id: copyright-check
-        name: copyright-check
-        entry: python ./ci/checks/copyright.py --git-modified-only --update-current-year
-        language: python
-        pass_filenames: false
-        additional_dependencies: [gitpython]
       - id: cmake-format
         name: cmake-format
         entry: ./ci/checks/run-cmake-format.sh cmake-format
@@ -63,6 +64,15 @@ repos:
           (?x)^(
             ^rapids-cmake/.*$
           )
+  - repo: https://github.com/rapidsai/pre-commit-hooks
+    rev: v0.0.3
+    hooks:
+      - id: verify-copyright
+        files: |
+          (?x)
+              [.](cmake|cpp|cu|cuh|h|hpp|sh|pxd|py|pyx)$|
+              CMakeLists[.]txt$|
+              meta[.]yaml$
 
 default_language_version:
   python: python3

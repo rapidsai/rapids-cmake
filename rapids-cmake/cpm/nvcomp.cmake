@@ -111,6 +111,10 @@ function(rapids_cpm_nvcomp)
     rapids_cpm_get_proprietary_binary_url(nvcomp ${version} nvcomp_url)
     if(nvcomp_url)
       rapids_cpm_download_proprietary_binary(nvcomp ${nvcomp_url})
+
+      # Unset CPM_DOWNLOAD_ALL if we have a proprietary binary enabled. This ensures we actually use
+      # the proprietary binary
+      unset(CPM_DOWNLOAD_ALL)
     endif()
 
     # Record the nvcomp_DIR so that if USE_PROPRIETARY_BINARY is disabled we can safely clear the

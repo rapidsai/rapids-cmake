@@ -33,6 +33,7 @@ tracking of these dependencies for correct export support.
 
    /command/rapids_cpm_init
    /command/rapids_cpm_find
+   /command/rapids_cpm_generate_pinned_versions
    /command/rapids_cpm_package_override
 
 .. _`cpm_pre-configured_packages`:
