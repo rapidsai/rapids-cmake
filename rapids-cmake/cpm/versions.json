@@ -24,6 +24,11 @@
           "file": "cccl/revert_pr_211.diff",
           "issue": "thrust::copy introduced a change in behavior that causes failures with cudaErrorInvalidValue.",
           "fixed_in": ""
+        },
+        {
+          "file": "cccl/kernel_pointer_hiding.diff",
+          "issue": "Hide APIs that accept kernel pointers [https://github.com/NVIDIA/cccl/pull/1395]",
+          "fixed_in": "2.4"
         }
       ]
     },
