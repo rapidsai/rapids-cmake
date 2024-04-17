@@ -66,7 +66,7 @@ function(rapids_cpm_gtest)
   set(build_shared ON)
   if(BUILD_STATIC IN_LIST ARGN)
     set(build_shared OFF)
-    set(CPM_DOWNLOAD_benchmark ON) # Since we need static we build from source
+    set(CPM_DOWNLOAD_GTest ON) # Since we need static we build from source
   endif()
 
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
