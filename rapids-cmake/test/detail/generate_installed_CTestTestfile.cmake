@@ -19,6 +19,10 @@ cmake_policy(SET CMP0007 NEW) # allow empty list entries
 cmake_policy(SET CMP0009 NEW) # don't follow symlinks
 cmake_policy(SET CMP0057 NEW) # allow `if( IN_LIST )`
 
+if(POLICY CMP0159)
+  cmake_policy(SET CMP0159 NEW)
+endif()
+
 #[=[
 The goal of this script is to re-parse the `CTestTestfile`
 and record each test and relevant properties for execution
