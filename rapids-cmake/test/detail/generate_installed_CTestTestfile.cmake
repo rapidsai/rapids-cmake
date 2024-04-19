@@ -15,9 +15,7 @@
 #=============================================================================
 include_guard(GLOBAL)
 
-cmake_policy(SET CMP0007 NEW) # allow empty list entries
-cmake_policy(SET CMP0009 NEW) # don't follow symlinks
-cmake_policy(SET CMP0057 NEW) # allow `if( IN_LIST )`
+cmake_minimum_required(VERSION 3.26...3.29)
 
 #[=[
 The goal of this script is to re-parse the `CTestTestfile`
