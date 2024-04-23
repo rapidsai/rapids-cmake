@@ -5,8 +5,9 @@ RAPIDS-CMake Basics
 Installation
 ************
 
-The ``rapids-cmake`` module is designed to be acquired via CMake's `Fetch
-Content <https://cmake.org/cmake/help/latest/module/FetchContent.html>`_ into your project.
+The ``rapids-cmake`` module is designed to be acquired at configure time in your project.
+Download the ``RAPIDS.cmake`` script, which handles fetching the rest of the module's content
+via CMake's `FetchContent <https://cmake.org/cmake/help/latest/module/FetchContent.html>`_.
 
 .. code-block:: cmake
 
@@ -29,7 +30,7 @@ Usage
 *****
 
 ``rapids-cmake`` is designed for projects to use only the subset of features that they need. To enable
-this `rapids-cmake` comprises the following primary components:
+this ``rapids-cmake`` comprises the following primary components:
 
 - :ref:`cmake <common>`
 - :ref:`cpm <cpm>`

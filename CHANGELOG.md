@@ -1,3 +1,40 @@
+# rapids-cmake 24.04.00 (10 Apr 2024)
+
+## 🐛 Bug Fixes
+
+- nvcomp try proprietary binary when &#39;always_download&#39; is on ([#570](https://github.com/rapidsai/rapids-cmake/pull/570)) [@robertmaynard](https://github.com/robertmaynard)
+- Update pre-commit-hooks to v0.0.3 ([#566](https://github.com/rapidsai/rapids-cmake/pull/566)) [@KyleFromNVIDIA](https://github.com/KyleFromNVIDIA)
+- Always link against cudart_static ([#564](https://github.com/rapidsai/rapids-cmake/pull/564)) [@KyleFromNVIDIA](https://github.com/KyleFromNVIDIA)
+- Use CUDA compiler if available for generate_resource_spec ([#561](https://github.com/rapidsai/rapids-cmake/pull/561)) [@KyleFromNVIDIA](https://github.com/KyleFromNVIDIA)
+- rapids-cmake support empty patches array in json ([#559](https://github.com/rapidsai/rapids-cmake/pull/559)) [@robertmaynard](https://github.com/robertmaynard)
+- Handle CMake 3.28 new EXCLUDE_FROM_ALL option of `FetchContent` ([#557](https://github.com/rapidsai/rapids-cmake/pull/557)) [@robertmaynard](https://github.com/robertmaynard)
+- Add rapids_cuda_set_runtime to default includes of cuda ([#538](https://github.com/rapidsai/rapids-cmake/pull/538)) [@robertmaynard](https://github.com/robertmaynard)
+- add rapids-dependency-file-generator pre-commit hook ([#531](https://github.com/rapidsai/rapids-cmake/pull/531)) [@jameslamb](https://github.com/jameslamb)
+
+## 🚀 New Features
+
+- Deprecate rapids_cpm_libcudacxx and rapids_cpm_thrust. ([#560](https://github.com/rapidsai/rapids-cmake/pull/560)) [@bdice](https://github.com/bdice)
+- rapids_cpm_package_details now validates required entries exist ([#558](https://github.com/rapidsai/rapids-cmake/pull/558)) [@robertmaynard](https://github.com/robertmaynard)
+- Support getting rapids-cmake via git clone ([#555](https://github.com/rapidsai/rapids-cmake/pull/555)) [@robertmaynard](https://github.com/robertmaynard)
+- Bump nvbench version for faster benchmark runs ([#549](https://github.com/rapidsai/rapids-cmake/pull/549)) [@PointKernel](https://github.com/PointKernel)
+- Remove unneeded whitespace from json ([#544](https://github.com/rapidsai/rapids-cmake/pull/544)) [@robertmaynard](https://github.com/robertmaynard)
+- Officially support env var expansion in version.json ([#540](https://github.com/rapidsai/rapids-cmake/pull/540)) [@robertmaynard](https://github.com/robertmaynard)
+- rapids-cmake can generate pinned versions file ([#530](https://github.com/rapidsai/rapids-cmake/pull/530)) [@robertmaynard](https://github.com/robertmaynard)
+- Fetch the latest cuco and remove outdated patches ([#526](https://github.com/rapidsai/rapids-cmake/pull/526)) [@PointKernel](https://github.com/PointKernel)
+- Support CUDA 12.2 ([#521](https://github.com/rapidsai/rapids-cmake/pull/521)) [@jameslamb](https://github.com/jameslamb)
+
+## 🛠️ Improvements
+
+- Use `conda env create --yes` instead of `--force` ([#573](https://github.com/rapidsai/rapids-cmake/pull/573)) [@bdice](https://github.com/bdice)
+- Replace local copyright check with pre-commit-hooks verify-copyright ([#556](https://github.com/rapidsai/rapids-cmake/pull/556)) [@KyleFromNVIDIA](https://github.com/KyleFromNVIDIA)
+- Add patch to fix fmt `v10.1.1` version ([#548](https://github.com/rapidsai/rapids-cmake/pull/548)) [@trxcllnt](https://github.com/trxcllnt)
+- Add support for Python 3.11 ([#547](https://github.com/rapidsai/rapids-cmake/pull/547)) [@jameslamb](https://github.com/jameslamb)
+- Forward-merge branch-24.02 to branch-24.04 ([#545](https://github.com/rapidsai/rapids-cmake/pull/545)) [@bdice](https://github.com/bdice)
+- target branch-24.04 for GitHub Actions workflows ([#541](https://github.com/rapidsai/rapids-cmake/pull/541)) [@jameslamb](https://github.com/jameslamb)
+- Build generate_ctest_json in try_compile() ([#537](https://github.com/rapidsai/rapids-cmake/pull/537)) [@KyleFromNVIDIA](https://github.com/KyleFromNVIDIA)
+- Ensure that `ctest` is called with `--no-tests=error`. ([#535](https://github.com/rapidsai/rapids-cmake/pull/535)) [@bdice](https://github.com/bdice)
+- Update ops-bot.yaml ([#532](https://github.com/rapidsai/rapids-cmake/pull/532)) [@AyodeAwe](https://github.com/AyodeAwe)
+
 # rapids-cmake 24.02.00 (12 Feb 2024)
 
 ## 🚨 Breaking Changes
