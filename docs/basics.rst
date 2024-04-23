@@ -30,7 +30,7 @@ Usage
 *****
 
 ``rapids-cmake`` is designed for projects to use only the subset of features that they need. To enable
-this `rapids-cmake` comprises the following primary components:
+this ``rapids-cmake`` comprises the following primary components:
 
 - :ref:`cmake <common>`
 - :ref:`cpm <cpm>`
