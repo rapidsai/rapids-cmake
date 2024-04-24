@@ -62,27 +62,27 @@ as needed.
     An optional boolean value that represents if we should do a shallow git clone
     or not.
 
-    If no such field exists the default is `true`.
+    If no such field exists the default is ``true``.
 
 ``exclude_from_all``
 
-    An optional boolean value that represents the CMake `EXCLUDE_FROM_ALL` property.
-    If this is set to `true`, and the project is built from source all targets of that
-    project will be excluded from the `ALL` build rule. This means that any target
+    An optional boolean value that represents the CMake ```EXCLUDE_FROM_ALL``` property.
+    If this is set to ``true``, and the project is built from source all targets of that
+    project will be excluded from the ``ALL`` build rule. This means that any target
     that isn't used by the consuming project will not be compiled. This is useful
     when a project generates multiple targets that aren't required and the cost
     of building them isn't desired.
 
-    If no such field exists the default is `false`.
+    If no such field exists the default is ``false``.
 
 ``always_download``
 
     An optional boolean value that represents if CPM should just download the
-    package ( `CPM_DOWNLOAD_ALL` ) instead of first searching for it on the machine.
+    package ( ``CPM_DOWNLOAD_ALL`` ) instead of first searching for it on the machine.
 
-    The default value for this field is `false` unless all of the following criteria is met.
+    The default value for this field is ``false`` unless all of the following criteria is met.
         - The projects exists in both the default and override files
-        - The `git_url`, `git_tag`, `patches` keys exist in the override
+        - The ``git_url``, ``git_tag``, ``patches`` keys exist in the override
 
 ``patches``
     An optional list of dictionary sets of git patches to apply to the project
@@ -96,7 +96,7 @@ as needed.
         ``file``
             A required string representing the git diff ( .diff ) or patch ( .patch ) to apply.
             Absolute and relative paths are supported. Relative paths are
-            evaluated in relation to the `rapids-cmake/cpm/patches` directory.
+            evaluated in relation to the ``rapids-cmake/cpm/patches`` directory.
 
             Supports the following placeholders:
                 - ``${current_json_dir}`` will be evaluated to the absolute path to the directory holding the current json file
@@ -116,10 +116,10 @@ as needed.
     An optional dictionary of cpu architecture and operating system keys to url values that represents a download for a pre-built proprietary version of the library. This creates a new entry in the search
     logic for a project:
 
-        - Search for a local version matching the `version` key
-            - disabled by `always_download`
+        - Search for a local version matching the ``version`` key
+            - disabled by ``always_download``
         - Download proprietary version if a valid OS + CPU Arch exists
-            - disabled by `USE_PROPRIETARY_BLOB` being off
+            - disabled by ``USE_PROPRIETARY_BLOB`` being off
         - Fallback to using git url and tag
 
     To determine the correct key, CMake will query for a key that matches the lower case value of `<arch>-<os>` where `arch` maps to
@@ -135,7 +135,7 @@ as needed.
 
     Due to requirements of proprietary binaries, explicit opt-in by the user on usage is required.
     Therefore for this binary to be used the caller must call the associated `rapids_cpm` command
-    with the `USE_PROPRIETARY_BLOB` set to `ON`.
+    with the ``USE_PROPRIETARY_BLOB`` set to ``ON``.
 
     Supports the following placeholders:
         - ``${rapids-cmake-version}`` will be evaluated to 'major.minor' of the current rapids-cmake cal-ver value.
