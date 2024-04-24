@@ -39,7 +39,7 @@
       "git_tag": "56c53beb6fb0cafd265b7fcc3df78ae487811b22"
     },
     "fmt": {
-      "version": "10.2.0",
+      "version": "10.2.1",
       "git_url": "https://github.com/fmtlib/fmt.git",
       "git_tag": "${version}",
     },
