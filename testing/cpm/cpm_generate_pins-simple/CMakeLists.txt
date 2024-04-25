@@ -25,10 +25,9 @@ rapids_cpm_rmm()
 
 # only check projects that were downloaded by CPM (ignore those already in the build environment)
 foreach(proj IN ITEMS rmm fmt spdlog CCCL)
-  list(APPEND projects-to-verify ${proj})
-  # if(${proj}_SOURCE_DIR)
-  #   list(APPEND projects-to-verify ${proj})
-  # endif()
+  if(${proj}_SOURCE_DIR)
+    list(APPEND projects-to-verify ${proj})
+  endif()
 endforeach()
 
 add_custom_target(verify_generated_pins ALL

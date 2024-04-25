@@ -28,10 +28,9 @@ rapids_cpm_init(GENERATE_PINNED_VERSIONS)
 #
 # don't check cuco here as it uses hashes and that breaks our verify script
 foreach(proj IN ITEMS rmm fmt spdlog CCCL)
-  list(APPEND projects-to-verify ${proj})
-  # if(${proj}_SOURCE_DIR)
-  #   list(APPEND projects-to-verify ${proj})
-  # endif()
+  if(${proj}_SOURCE_DIR)
+    list(APPEND projects-to-verify ${proj})
+  endif()
 endforeach()
 
 add_custom_target(verify_generated_pins ALL
