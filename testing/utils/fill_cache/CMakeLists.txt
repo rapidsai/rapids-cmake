@@ -43,9 +43,9 @@ rapids_cpm_gbench(DOWNLOAD_ONLY ON)
 rapids_cpm_gtest(DOWNLOAD_ONLY ON)
 rapids_cpm_libcudacxx(DOWNLOAD_ONLY ON)
 rapids_cpm_nvbench(DOWNLOAD_ONLY ON)
-rapids_cpm_rmm(DOWNLOAD_ONLY ON)
 rapids_cpm_spdlog(DOWNLOAD_ONLY ON)
 rapids_cpm_fmt(DOWNLOAD_ONLY ON)
+rapids_cpm_rmm(DOWNLOAD_ONLY ON)
 rapids_cpm_thrust(NAMESPACE temp DOWNLOAD_ONLY ON)
 rapids_cpm_find(skbuild 0.14.1
                 GIT_REPOSITORY https://github.com/scikit-build/scikit-build.git
