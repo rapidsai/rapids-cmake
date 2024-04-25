@@ -19,7 +19,7 @@ project(rapids-test-project LANGUAGES CXX)
 
 include(${rapids-cmake-dir}/cpm/init.cmake)
 include(${rapids-cmake-dir}/cpm/rmm.cmake)
-
+set(CPM_DOWNLOAD_ALL ON)
 rapids_cpm_init(GENERATE_PINNED_VERSIONS)
 rapids_cpm_rmm()
 set(projects-to-verify rmm fmt spdlog CCCL)
