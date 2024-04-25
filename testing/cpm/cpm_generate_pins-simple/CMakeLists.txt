@@ -19,6 +19,7 @@ project(rapids-test-project LANGUAGES CXX)
 
 include(${rapids-cmake-dir}/cpm/init.cmake)
 include(${rapids-cmake-dir}/cpm/rmm.cmake)
+
 rapids_cpm_init(GENERATE_PINNED_VERSIONS)
 rapids_cpm_rmm()
 
