@@ -32,17 +32,20 @@ foreach(proj IN LISTS projects-to-verify)
   rapids_cpm_package_details(${proj} ${proj}_version ${proj}_repository ${proj}_tag ${proj}_shallow ${proj}_exclude)
 endforeach()
 
-
-file(READ "${CMAKE_CURRENT_BINARY_DIR}/../rapids-cmake/pinned_versions.json" json_data)
-
 # Verify that the pinned_versions is valid json by using it
 rapids_cpm_package_override("${CMAKE_CURRENT_BINARY_DIR}/../rapids-cmake/pinned_versions.json")
 
 foreach(proj IN LISTS projects-to-verify)
+
   # Verify that each git_tag is now different.
   rapids_cpm_package_details(${proj} ${proj}_version ${proj}_repository pin_${proj}_tag pin_${proj}_shallow ${proj}_exclude)
+
   if(pin_${proj}_tag STREQUAL ${proj}_tag)
-    message(FATAL_ERROR "pinned ${proj} tag (${pin_${proj}_tag}) should differ compared to baseline ${${proj}_tag}")
+    include("${rapids-cmake-dir}/cpm/detail/get_default_json.cmake")
+    include("${rapids-cmake-dir}/cpm/detail/get_override_json.cmake")
+    get_default_json(${proj} default_versions)
+    get_override_json(${proj} pinned_versions)
+    message(FATAL_ERROR "pinned ${proj} tag (${pin_${proj}_tag}) should differ compared to baseline ${${proj}_tag}\npinned_versions.json:\n${pinned_versions}\nversions.json:\n${default_versions}")
   endif()
 
   # Everything should have shallow marked as false

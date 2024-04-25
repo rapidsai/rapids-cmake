@@ -39,6 +39,7 @@ foreach(proj IN LISTS projects-to-verify)
   # Verify that each git_tag is now different.
   rapids_cpm_package_details(${proj} ${proj}_version ${proj}_repository pin_${proj}_tag pin_${proj}_shallow ${proj}_exclude)
   if(pin_${proj}_tag STREQUAL ${proj}_tag)
+
     message(FATAL_ERROR "pinned ${proj} tag (${pin_${proj}_tag}) should differ compared to baseline ${${proj}_tag}")
   endif()
 
