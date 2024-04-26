@@ -177,9 +177,11 @@ function(rapids_cpm_nvcomp)
   # will set the correct install rules
   include("${rapids-cmake-dir}/export/find_package_root.cmake")
   if(NOT to_exclude AND nvcomp_proprietary_binary)
+    include("${rapids-cmake-dir}/install_lib_dir.cmake")
+    rapids_cmake_install_lib_dir(lib_dir)
     include(GNUInstallDirs)
-    install(DIRECTORY "${nvcomp_ROOT}/lib/" DESTINATION lib)
-    install(DIRECTORY "${nvcomp_ROOT}/include/" DESTINATION include)
+    install(DIRECTORY "${nvcomp_ROOT}/lib/" DESTINATION "${lib_dir}")
+    install(DIRECTORY "${nvcomp_ROOT}/include/" DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
     # place the license information in the location that conda uses
     install(FILES "${nvcomp_ROOT}/NOTICE" DESTINATION info/ RENAME NVCOMP_NOTICE)
     install(FILES "${nvcomp_ROOT}/LICENSE" DESTINATION info/ RENAME NVCOMP_LICENSE)
