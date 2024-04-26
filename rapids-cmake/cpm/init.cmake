@@ -76,6 +76,7 @@ in the build tree of the calling project
   If the override file doesn't specify a value or package entry the default version will be used.
 
   .. versionadded:: v24.06.00
+
   If the variable :cmake:variable:`RAPIDS_CMAKE_CPM_OVERRIDE_VERSION_FILE` is specified it will be used
   in all calls to ``rapids_cpm_init``. Any existing explicit `OVERRIDE` files will be ignored, and
   all other calls will be treated as if this file was specified as the override.
