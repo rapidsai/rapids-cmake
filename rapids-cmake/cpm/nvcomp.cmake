@@ -177,7 +177,7 @@ function(rapids_cpm_nvcomp)
   # will set the correct install rules
   include("${rapids-cmake-dir}/export/find_package_root.cmake")
   if(NOT to_exclude AND nvcomp_proprietary_binary)
-    include("${rapids-cmake-dir}/install_lib_dir.cmake")
+    include("${rapids-cmake-dir}/cmake/install_lib_dir.cmake")
     rapids_cmake_install_lib_dir(lib_dir)
     include(GNUInstallDirs)
     install(DIRECTORY "${nvcomp_ROOT}/lib/" DESTINATION "${lib_dir}")
