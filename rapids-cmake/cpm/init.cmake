@@ -39,20 +39,20 @@ in the build tree of the calling project
   ```
   CUSTOM_DEFAULT_VERSION_FILE
   ```
-  This is an advanced option that allows projects to specify a custom default `versions.json` file that will
+  This is an advanced option that allows projects to specify a custom default ``versions.json`` file that will
   be used instead of the one packaged inside rapids-cmake. Since this allows you to specify a new default
-  `versions.json` it must contain information for all the built-in rapids-cmake packages ( cccl, fmt, rmm, etc )
+  ``versions.json`` it must contain information for all the built-in rapids-cmake packages ( cccl, fmt, rmm, etc )
   that are used by your project.
 
   Using a built-in rapids-cmake package without an explicit entry in the custom default version file is undefined behavior.
 
-  If multiple calls to `rapids_cpm_init` occur with different default version files being used,
+  If multiple calls to ``rapids_cpm_init`` occur with different default version files being used,
   each version file will be loaded. If a project is listed in multiple default version files, the first
   file values will be used, and all later calls for that packaged will be ignored.  This "first to record, wins"
-  approach is used to match FetchContent, and allows parent projects to override child
+  approach is used to match ``FetchContent``, and allows parent projects to override child
   projects.
 
-  The provided json file must follow the `versions.json` format, which is :ref:`documented here<cpm_version_format>`.
+  The provided json file must follow the ``versions.json`` format, which is :ref:`documented here<cpm_version_format>`.
 
 .. versionadded:: v21.10.00
   ``OVERRIDE``
@@ -61,10 +61,10 @@ in the build tree of the calling project
   and :cmake:module:`FetchContent() <cmake:module:FetchContent>` package. By providing a secondary
   file with extra`CPM` preset package information for the project.
 
-  If multiple calls to `rapids_cpm_init` occur with different OVERRIDE files being used,
+  If multiple calls to ``rapids_cpm_init`` occur with different ``OVERRIDE`` files being used,
   each version file will be loaded. If a project is listed in multiple override files, the first
   file values will be used, and all later calls for that packaged will be ignored.  This "first to record, wins"
-  approach is used to match FetchContent, and allows parent projects to override child
+  approach is used to match ``FetchContent``, and allows parent projects to override child
   projects.
 
   The provided json file must follow the `versions.json` format, which is :ref:`documented here<cpm_version_format>`.
