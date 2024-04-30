@@ -185,6 +185,13 @@ function(rapids_cpm_nvcomp)
     # place the license information in the location that conda uses
     install(FILES "${nvcomp_ROOT}/NOTICE" DESTINATION info/ RENAME NVCOMP_NOTICE)
     install(FILES "${nvcomp_ROOT}/LICENSE" DESTINATION info/ RENAME NVCOMP_LICENSE)
+
+    # Replace ${_IMPORT_PREFIX}/lib/ with ${_IMPORT_PREFIX}/${lib_dir}/ in
+    # nvcomp-release-targets.cmake
+    file(READ "${nvcomp_ROOT}/lib/cmake/nvcomp/nvcomp-targets-release.cmake" FILE_CONTENTS)
+    string(REPLACE "\$\{_IMPORT_PREFIX\}/lib/" "\$\{_IMPORT_PREFIX\}/${lib_dir}/" FILE_CONTENTS
+                   ${FILE_CONTENTS})
+    file(WRITE "${nvcomp_ROOT}/lib/cmake/nvcomp/nvcomp-targets-release.cmake" ${FILE_CONTENTS})
   endif()
 
   # point our consumers to where they can find the pre-built version
