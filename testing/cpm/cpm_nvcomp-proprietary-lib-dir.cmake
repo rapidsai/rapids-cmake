@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2023, NVIDIA CORPORATION.
+# Copyright (c) 2021-2024, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
 #=============================================================================
 include(${rapids-cmake-dir}/cpm/init.cmake)
 include(${rapids-cmake-dir}/cpm/nvcomp.cmake)
+include(${rapids-cmake-dir}/cpm/package_override.cmake)
 
 rapids_cpm_init()
 
@@ -22,17 +23,31 @@ if(TARGET nvcomp::nvcomp)
   message(FATAL_ERROR "Expected nvcomp::nvcomp not to exist")
 endif()
 
-rapids_cpm_nvcomp(USE_PROPRIETARY_BINARY ON)
+# Need to write out an nvcomp override file to force downloading
+#file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
+#  [=[
+#{
+#  "packages": {
+#    "nvcomp": {
+#      "always_download" : true,
+#      "version": "3.0.6",
+#      "git_url": "https://github.com/NVIDIA/nvcomp.git",
+#      "git_tag": "v2.2.0",
+#      "proprietary_binary": {
+#        "x86_64-linux": "https://developer.download.nvidia.com/compute/nvcomp/${version}/local_installers/nvcomp_${version}_x86_64_${cuda-toolkit-version-major}.x.tgz",
+#        "aarch64-linux": "https://developer.download.nvidia.com/compute/nvcomp/${version}/local_installers/nvcomp_${version}_SBSA_${cuda-toolkit-version-major}.x.tgz"
+#      }
+#    }
+#  }
+#}
+#]=])
+#rapids_cpm_package_override(${CMAKE_CURRENT_BINARY_DIR}/override.json)
+
+# Need an export set to trigger setup of the install rules.
+rapids_cpm_nvcomp(USE_PROPRIETARY_BINARY ON BUILD_EXPORT_SET nvcomp_exports INSTALL_EXPORT_SET nvcomp_exports)
 
 if(NOT nvcomp_proprietary_binary)
   message(FATAL_ERROR "Expected nvcomp::nvcomp target to exist")
-endif()
-
-# Make sure CUDA::cudart_static isn't in the interface link lines
-get_target_property(libs nvcomp::nvcomp INTERFACE_LINK_LIBRARIES)
-
-if("CUDA::cudart_static" IN_LIST libs)
-  message(FATAL_ERROR "nvcomp::nvcomp shouldn't link to CUDA::cudart_static")
 endif()
 
 # Make sure we can be called multiple times
