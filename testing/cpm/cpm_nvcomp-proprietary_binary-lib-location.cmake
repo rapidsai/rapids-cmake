@@ -44,3 +44,29 @@ foreach(line IN LISTS nvcomp_targets_release_contents)
     message(FATAL_ERROR "nvcomp-targets-release.cmake file does not contain lib64")
   endif()
 endforeach()
+
+# Install and check the install directory.
+add_custom_target(install_project ALL
+  COMMAND ${CMAKE_COMMAND} --install "${CMAKE_BINARY_DIR}" --prefix check_nvcomp_lib_dir/install/
+  )
+
+# Need to capture the install directory based on the binary dir of this project, not the subproject used for testing.
+set(expected_install_dir "${CMAKE_BINARY_DIR}/check_nvcomp_lib_dir/install/")
+
+# Add a custom command that verifies that the expect files have
+# been installed for each component
+file(WRITE "${CMAKE_BINARY_DIR}/check_nvcomp_lib_dir/CMakeLists.txt" "
+cmake_minimum_required(VERSION 3.23.1)
+project(verify_install_targets LANGUAGES CXX)
+
+message(\"Checking for lib64 directory in ${expected_install_dir}\")
+if (NOT EXISTS ${expected_install_dir}/lib64)
+  message(FATAL_ERROR \"The lib64 directory didn't exist!\")
+endif()
+")
+
+add_custom_target(verify_nvcomp_lib_dir ALL
+  COMMAND ${CMAKE_COMMAND} -E rm -rf "${CMAKE_BINARY_DIR}/check_nvcomp_lib_dir/build"
+  COMMAND ${CMAKE_COMMAND} -S="${CMAKE_BINARY_DIR}/check_nvcomp_lib_dir" -B="${CMAKE_BINARY_DIR}/install/build"
+)
+add_dependencies(verify_nvcomp_lib_dir install_project)
