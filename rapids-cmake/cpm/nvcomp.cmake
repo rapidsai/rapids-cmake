@@ -102,7 +102,7 @@ function(rapids_cpm_nvcomp)
     endif()
   endif()
 
-  # second see if we have a proprietary pre-built binary listed in versions.json and it if
+  # second see if we have a proprietary pre-built binary listed in versions.json and download it if
   # requested.
   set(nvcomp_proprietary_binary OFF) # will be set to true by rapids_cpm_get_proprietary_binary
   if(_RAPIDS_USE_PROPRIETARY_BINARY AND NOT nvcomp_FOUND)
