@@ -44,11 +44,9 @@ rapids_find_package(Threads REQUIRED)
 # for this package
 rapids_cpm_find(ZLIB 1.0 REQUIRED)
 
-set(projects-to-verify hnswlib)
-set(projects-not-in-list ZLIB Threads)
-add_custom_target(verify_generated_pins ALL
-  COMMAND ${CMAKE_COMMAND} -S="${CMAKE_SOURCE_DIR}/verify/" -B"${CMAKE_BINARY_DIR}/verify_build"
-  -D"rapids-cmake-dir=${rapids-cmake-dir}"
-  -D"projects-to-verify=${projects-to-verify}"
-  -D"projects-not-in-list=${projects-not-in-list}"
-)
+
+include("${rapids-cmake-testing-dir}/cpm/verify_generated_pins.cmake")
+verify_generated_pins(verify_pins
+    PROJECTS hnswlib
+    PROJECTS_NOT_EXIST ZLIB Threads
+    PIN_FILE "${CMAKE_BINARY_DIR}/output_pinned_versions.json")
