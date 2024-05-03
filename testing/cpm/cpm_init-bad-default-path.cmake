@@ -13,25 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-cmake_minimum_required(VERSION 3.23.1)
-project(rapids-test-project LANGUAGES CXX)
-
-
 include(${rapids-cmake-dir}/cpm/init.cmake)
-include(${rapids-cmake-dir}/cpm/rmm.cmake)
 
-rapids_cpm_init(GENERATE_PINNED_VERSIONS)
-rapids_cpm_rmm()
-
-# only check projects that were downloaded by CPM (ignore those already in the build environment)
-foreach(proj IN ITEMS rmm fmt spdlog CCCL)
-  if(${proj}_SOURCE_DIR)
-    list(APPEND projects-to-verify ${proj})
-  endif()
-endforeach()
-
-add_custom_target(verify_generated_pins ALL
-  COMMAND ${CMAKE_COMMAND} -S="${CMAKE_SOURCE_DIR}/verify/" -B"${CMAKE_BINARY_DIR}/verify_build"
-  -D"rapids-cmake-dir=${rapids-cmake-dir}"
-  -D"projects-to-verify=${projects-to-verify}"
-)
+rapids_cpm_init(CUSTOM_DEFAULT_VERSION_FILE ${CMAKE_CURRENT_LIST_DIR}/bad_path.cmake)

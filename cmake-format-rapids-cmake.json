@@ -92,6 +92,7 @@
           ]
         },
         "kwargs": {
+          "CUSTOM_DEFAULT_VERSION_FILE": 1,
           "OVERRIDE": 1
         }
       },
