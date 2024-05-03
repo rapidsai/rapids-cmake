@@ -89,6 +89,14 @@ in the build tree of the calling project
   This allows for reproducible builds using the exact same state.
   The pinning file will be located at `<CMAKE_BINARY_DIR>/rapids-cmake/pinned_versions.json`
 
+  .. versionadded:: v24.06.00
+
+  If the variable :cmake:variable:`RAPIDS_CMAKE_CPM_PINNED_VERSIONS_FILE` exists it will be treated
+  as if all calls to ``rapids_cpm_init`` are requesting generation of a pinned versions file.
+  In addition to any existing explicit `GENERATE_PINNED_VERSIONS` files, the file path contained
+  in :cmake:variable:`RAPIDS_CMAKE_CPM_PINNED_VERSIONS_FILE` will be used as a destination to
+  write the pinned versions.json content.
+
 .. note::
   Must be called before any invocation of :cmake:command:`rapids_cpm_find`.
 
@@ -119,6 +127,11 @@ function(rapids_cpm_init)
     include("${rapids-cmake-dir}/cpm/generate_pinned_versions.cmake")
     rapids_cpm_generate_pinned_versions(
       OUTPUT "${CMAKE_BINARY_DIR}/rapids-cmake/pinned_versions.json")
+  endif()
+
+  if(DEFINED RAPIDS_CMAKE_CPM_PINNED_VERSIONS_FILE)
+    include("${rapids-cmake-dir}/cpm/generate_pinned_versions.cmake")
+    rapids_cpm_generate_pinned_versions(OUTPUT "${RAPIDS_CMAKE_CPM_PINNED_VERSIONS_FILE}")
   endif()
 
   include("${rapids-cmake-dir}/cpm/detail/download.cmake")
