@@ -37,10 +37,10 @@ function(verify_generated_pins target_name)
 
   add_custom_target(${target_name} ALL
     COMMAND ${CMAKE_COMMAND} -S="${CMAKE_CURRENT_FUNCTION_LIST_DIR}/verify_generated_pins/" -B"${CMAKE_BINARY_DIR}/${target_name}_verify_build"
-    -D"rapids-cmake-dir=${rapids-cmake-dir}"
-    -D"projects-to-verify=${projects-to-verify}"
-    -D"projects-not-in-list=${_RAPIDS_PROJECTS_NOT_EXIST}"
-    -D"pinned_versions_file=${_RAPIDS_PIN_FILE}"
+    "-Drapids-cmake-dir=${rapids-cmake-dir}"
+    "-Dpinned_versions_file=${_RAPIDS_PIN_FILE}"
+    "-Dprojects-to-verify=\"${projects-to-verify}\""
+    "-Dprojects-not-in-list=\"${_RAPIDS_PROJECTS_NOT_EXIST}\""
   )
 
 endfunction()

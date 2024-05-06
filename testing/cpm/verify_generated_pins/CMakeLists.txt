@@ -24,7 +24,6 @@ include(${rapids-cmake-dir}/cpm/package_override.cmake)
 
 rapids_cpm_init()
 
-string(REPLACE " " ";" projects-to-verify "${projects-to-verify}")
 if(NOT projects-to-verify)
   message(FATAL_ERROR "Failed to pass anything in projects-to-verify")
 endif()
@@ -59,9 +58,6 @@ foreach(proj IN LISTS projects-to-verify)
   endif()
 endforeach()
 
-if(DEFINED projects-not-in-list)
-  string(REPLACE " " ";" projects-not-in-list "${projects-not-in-list}")
-endif()
 foreach(proj IN LISTS projects-not-in-list)
   # Verify that we don't have entries for these
   rapids_cpm_package_details(${proj} pin_${proj}_version ${proj}_repository pin_${proj}_tag ${proj}_shallow ${proj}_exclude)
