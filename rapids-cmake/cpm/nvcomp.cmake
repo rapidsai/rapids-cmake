@@ -102,7 +102,7 @@ function(rapids_cpm_nvcomp)
     endif()
   endif()
 
-  # second see if we have a proprietary pre-built binary listed in versions.json and it if
+  # second see if we have a proprietary pre-built binary listed in versions.json and download it if
   # requested.
   set(nvcomp_proprietary_binary OFF) # will be set to true by rapids_cpm_get_proprietary_binary
   if(_RAPIDS_USE_PROPRIETARY_BINARY AND NOT nvcomp_FOUND)
@@ -177,12 +177,21 @@ function(rapids_cpm_nvcomp)
   # will set the correct install rules
   include("${rapids-cmake-dir}/export/find_package_root.cmake")
   if(NOT to_exclude AND nvcomp_proprietary_binary)
+    include("${rapids-cmake-dir}/cmake/install_lib_dir.cmake")
+    rapids_cmake_install_lib_dir(lib_dir)
     include(GNUInstallDirs)
-    install(DIRECTORY "${nvcomp_ROOT}/lib/" DESTINATION lib)
-    install(DIRECTORY "${nvcomp_ROOT}/include/" DESTINATION include)
+    install(DIRECTORY "${nvcomp_ROOT}/lib/" DESTINATION "${lib_dir}")
+    install(DIRECTORY "${nvcomp_ROOT}/include/" DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
     # place the license information in the location that conda uses
     install(FILES "${nvcomp_ROOT}/NOTICE" DESTINATION info/ RENAME NVCOMP_NOTICE)
     install(FILES "${nvcomp_ROOT}/LICENSE" DESTINATION info/ RENAME NVCOMP_LICENSE)
+
+    # Replace ${_IMPORT_PREFIX}/lib/ with ${_IMPORT_PREFIX}/${lib_dir}/ in
+    # nvcomp-release-targets.cmake
+    file(READ "${nvcomp_ROOT}/lib/cmake/nvcomp/nvcomp-targets-release.cmake" FILE_CONTENTS)
+    string(REPLACE "\$\{_IMPORT_PREFIX\}/lib/" "\$\{_IMPORT_PREFIX\}/${lib_dir}/" FILE_CONTENTS
+                   ${FILE_CONTENTS})
+    file(WRITE "${nvcomp_ROOT}/lib/cmake/nvcomp/nvcomp-targets-release.cmake" ${FILE_CONTENTS})
   endif()
 
   # point our consumers to where they can find the pre-built version
