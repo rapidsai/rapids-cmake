@@ -111,19 +111,37 @@ function(rapids_cpm_nvcomp)
     rapids_cpm_get_proprietary_binary_url(nvcomp ${version} nvcomp_url)
     if(nvcomp_url)
       rapids_cpm_download_proprietary_binary(nvcomp ${nvcomp_url})
-
-      # Unset CPM_DOWNLOAD_ALL if we have a proprietary binary enabled. This ensures we actually use
-      # the proprietary binary
-      unset(CPM_DOWNLOAD_ALL)
     endif()
 
-    # Record the nvcomp_DIR so that if USE_PROPRIETARY_BINARY is disabled we can safely clear the
-    # nvcomp_DIR value
     if(nvcomp_proprietary_binary)
-      set(nvcomp_proprietary_binary_dir "${nvcomp_ROOT}/lib/cmake/nvcomp")
+      # Set up the version of nvcomp we have downloaded to match the OS layout. that means ensuring
+      # we have a `lib64` directory on Fedora based machines
+      include("${rapids-cmake-dir}/cmake/install_lib_dir.cmake")
+      rapids_cmake_install_lib_dir(lib_dir)
+
+      # Replace ${_IMPORT_PREFIX}/lib/ with ${_IMPORT_PREFIX}/${lib_dir}/ in
+      # nvcomp-release-targets.cmake. Guarded in an EXISTS check so we only try to do this on the
+      # first configuration pass
+      if(NOT EXISTS "${nvcomp_ROOT}/${lib_dir}/cmake/nvcomp/nvcomp-targets-release.cmake")
+        file(READ "${nvcomp_ROOT}/lib/cmake/nvcomp/nvcomp-targets-release.cmake" FILE_CONTENTS)
+        string(REPLACE "\$\{_IMPORT_PREFIX\}/lib/" "\$\{_IMPORT_PREFIX\}/${lib_dir}/" FILE_CONTENTS
+                       ${FILE_CONTENTS})
+        file(WRITE "${nvcomp_ROOT}/lib/cmake/nvcomp/nvcomp-targets-release.cmake" ${FILE_CONTENTS})
+        file(RENAME "${nvcomp_ROOT}/lib/" "${nvcomp_ROOT}/${lib_dir}/")
+      endif()
+
+      # Record the nvcomp_DIR so that if USE_PROPRIETARY_BINARY is disabled we can safely clear the
+      # nvcomp_DIR value
+      set(nvcomp_proprietary_binary_dir "${nvcomp_ROOT}/${lib_dir}/cmake/nvcomp")
       cmake_path(NORMAL_PATH nvcomp_proprietary_binary_dir)
       set(rapids_cpm_nvcomp_proprietary_binary_dir "${nvcomp_proprietary_binary_dir}"
           CACHE INTERNAL "nvcomp proprietary location")
+
+      # Enforce that we need to find the local download of nvcomp and nothing else when we have a
+      # proprietary binary enabled.
+      list(APPEND CMAKE_PREFIX_PATH "${nvcomp_ROOT}/${lib_dir}/cmake/nvcomp")
+      unset(CPM_DOWNLOAD_ALL)
+      set(CPM_USE_LOCAL_PACKAGES ON)
     endif()
   elseif(DEFINED nvcomp_DIR)
     cmake_path(NORMAL_PATH nvcomp_DIR)
@@ -175,26 +193,20 @@ function(rapids_cpm_nvcomp)
 
   # Set up up install rules when using the proprietary_binary. When building from source, nvcomp
   # will set the correct install rules
-  include("${rapids-cmake-dir}/export/find_package_root.cmake")
   if(NOT to_exclude AND nvcomp_proprietary_binary)
     include("${rapids-cmake-dir}/cmake/install_lib_dir.cmake")
     rapids_cmake_install_lib_dir(lib_dir)
     include(GNUInstallDirs)
-    install(DIRECTORY "${nvcomp_ROOT}/lib/" DESTINATION "${lib_dir}")
+
+    install(DIRECTORY "${nvcomp_ROOT}/${lib_dir}/" DESTINATION "${lib_dir}")
     install(DIRECTORY "${nvcomp_ROOT}/include/" DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
     # place the license information in the location that conda uses
     install(FILES "${nvcomp_ROOT}/NOTICE" DESTINATION info/ RENAME NVCOMP_NOTICE)
     install(FILES "${nvcomp_ROOT}/LICENSE" DESTINATION info/ RENAME NVCOMP_LICENSE)
-
-    # Replace ${_IMPORT_PREFIX}/lib/ with ${_IMPORT_PREFIX}/${lib_dir}/ in
-    # nvcomp-release-targets.cmake
-    file(READ "${nvcomp_ROOT}/lib/cmake/nvcomp/nvcomp-targets-release.cmake" FILE_CONTENTS)
-    string(REPLACE "\$\{_IMPORT_PREFIX\}/lib/" "\$\{_IMPORT_PREFIX\}/${lib_dir}/" FILE_CONTENTS
-                   ${FILE_CONTENTS})
-    file(WRITE "${nvcomp_ROOT}/lib/cmake/nvcomp/nvcomp-targets-release.cmake" ${FILE_CONTENTS})
   endif()
 
   # point our consumers to where they can find the pre-built version
+  include("${rapids-cmake-dir}/export/find_package_root.cmake")
   rapids_export_find_package_root(BUILD nvcomp "${nvcomp_ROOT}"
                                   EXPORT_SET ${_RAPIDS_BUILD_EXPORT_SET}
                                   CONDITION nvcomp_proprietary_binary)

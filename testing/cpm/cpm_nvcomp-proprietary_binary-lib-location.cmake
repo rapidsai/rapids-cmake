@@ -33,7 +33,7 @@ endif()
 
 # Check the contents of the nvcomp-targets-release.cmake file to ensure that
 # every line containing "_IMPORT_PREFIX" also contains "lib64"
-file(STRINGS "${CMAKE_CURRENT_BINARY_DIR}/_deps/nvcomp_proprietary_binary-src/lib/cmake/nvcomp/nvcomp-targets-release.cmake" nvcomp_targets_release_contents)
+file(STRINGS "${CMAKE_CURRENT_BINARY_DIR}/_deps/nvcomp_proprietary_binary-src/lib64/cmake/nvcomp/nvcomp-targets-release.cmake" nvcomp_targets_release_contents)
 foreach(line IN LISTS nvcomp_targets_release_contents)
   string(FIND "${line}" "_IMPORT_PREFIX" _IMPORT_PREFIX_INDEX)
   if(_IMPORT_PREFIX_INDEX EQUAL -1)
@@ -63,6 +63,14 @@ message(\"Checking for lib64 directory in ${expected_install_dir}\")
 if (NOT EXISTS ${expected_install_dir}/lib64)
   message(FATAL_ERROR \"The lib64 directory didn't exist!\")
 endif()
+
+set(nvcomp_ROOT \"${expected_install_dir}/lib64/cmake/nvcomp\")
+find_package(nvcomp REQUIRED)
+
+file(WRITE \"\${CMAKE_CURRENT_BINARY_DIR}/stub.cpp\" \" \")
+add_library(uses_nvcomp SHARED stub.cpp)
+target_link_libraries(uses_nvcomp PRIVATE nvcomp::nvcomp)
+
 ")
 
 add_custom_target(verify_nvcomp_lib_dir ALL
