@@ -16,7 +16,6 @@
 cmake_minimum_required(VERSION 3.23.1)
 project(rapids-test-project LANGUAGES CXX)
 
-
 include(${rapids-cmake-dir}/cpm/init.cmake)
 include(${rapids-cmake-dir}/cpm/rmm.cmake)
 
@@ -30,8 +29,5 @@ foreach(proj IN ITEMS rmm fmt spdlog CCCL)
   endif()
 endforeach()
 
-add_custom_target(verify_generated_pins ALL
-  COMMAND ${CMAKE_COMMAND} -S="${CMAKE_SOURCE_DIR}/verify/" -B"${CMAKE_BINARY_DIR}/verify_build"
-  -D"rapids-cmake-dir=${rapids-cmake-dir}"
-  -D"projects-to-verify=${projects-to-verify}"
-)
+include("${rapids-cmake-testing-dir}/cpm/verify_generated_pins.cmake")
+verify_generated_pins(verify_pins PROJECTS rmm fmt spdlog CCCL)
