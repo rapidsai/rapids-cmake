@@ -62,6 +62,6 @@ foreach(proj IN LISTS projects-not-in-list)
   # Verify that we don't have entries for these
   rapids_cpm_package_details(${proj} pin_${proj}_version ${proj}_repository pin_${proj}_tag ${proj}_shallow ${proj}_exclude)
   if(pin_${proj}_version)
-    message(FATAL_ERROR "${proj} shouldn't in override, it was a system installed package")
+    message(FATAL_ERROR "${proj} shouldn't be in override, it was a system installed package")
   endif()
 endforeach()
