@@ -195,8 +195,8 @@ function(extract_install_info line)
   # item 1 is the install location item 2 is the filter if valid item 3+ are the lists of files
   # being installed
   list(GET line 2 type)
-  if(type STREQUAL " TYPE SHARED_LIBRARY FILES " OR type STREQUAL " TYPE STATIC_LIBRARY FILES "
-     OR type STREQUAL " TYPE OBJECT_LIBRARY FILES " OR type STREQUAL " TYPE EXECUTABLE FILES ")
+  if(type MATCHES " TYPE EXECUTABLE " OR type MATCHES " TYPE SHARED_LIBRARY "
+     OR type MATCHES " TYPE STATIC_LIBRARY " OR type MATCHES " TYPE OBJECT_LIBRARY ")
     list(GET line 1 install_loc)
     list(GET line 3 build_loc)
     cmake_path(GET build_loc FILENAME name)
