@@ -35,6 +35,6 @@ rapids_test_install_relocatable(INSTALL_COMPONENT_SET testing DESTINATION bin/te
 
 add_custom_target(install_testing_component ALL
   COMMAND ${CMAKE_COMMAND} --install "${CMAKE_CURRENT_BINARY_DIR}" --component testing --prefix install/
-  COMMAND ctest --test-dir install/bin/tests/to_verify/ --output-on-failure --no-tests=error
+  COMMAND ${CMAKE_CTEST_COMMAND} --test-dir install/bin/tests/to_verify/ --output-on-failure --no-tests=error
   )
 add_dependencies(install_testing_component verify_)
