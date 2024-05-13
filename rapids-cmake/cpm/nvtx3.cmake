@@ -16,24 +16,24 @@
 include_guard(GLOBAL)
 
 #[=======================================================================[.rst:
-rapids_cpm_nvtx
----------------
+rapids_cpm_nvtx3
+----------------
 
 .. versionadded:: v24.06.00
 
 Allow projects to find `NVTX3` via `CPM` with built-in tracking of dependencies
 for correct export support.
 
-Uses the version of nvtx :ref:`specified in the version file <cpm_versions>` for consistency
+Uses the version of nvtx3 :ref:`specified in the version file <cpm_versions>` for consistency
 across all RAPIDS projects.
 
 .. code-block:: cmake
 
-  rapids_cpm_nvtx( [BUILD_EXPORT_SET <export-name>]
-                   [INSTALL_EXPORT_SET <export-name>]
-                   [<CPM_ARGS> ...])
+  rapids_cpm_nvtx3( [BUILD_EXPORT_SET <export-name>]
+                    [INSTALL_EXPORT_SET <export-name>]
+                    [<CPM_ARGS> ...])
 
-.. |PKG_NAME| replace:: nvtx
+.. |PKG_NAME| replace:: nvtx3
 .. include:: common_package_args.txt
 
 Result Targets
@@ -42,14 +42,14 @@ Result Targets
 
 Result Variables
 ^^^^^^^^^^^^^^^^
-  :cmake:variable:`NVTX3_SOURCE_DIR` is set to the path to the source directory of nvtx.
-  :cmake:variable:`NVTX3_BINARY_DIR` is set to the path to the build directory of nvtx.
-  :cmake:variable:`NVTX3_ADDED`      is set to a true value if nvtx has not been added before.
-  :cmake:variable:`NVTX3_VERSION`    is set to the version of nvtx specified by the versions.json.
+  :cmake:variable:`NVTX3_SOURCE_DIR` is set to the path to the source directory of nvtx3.
+  :cmake:variable:`NVTX3_BINARY_DIR` is set to the path to the build directory of nvtx3.
+  :cmake:variable:`NVTX3_ADDED`      is set to a true value if nvtx3 has not been added before.
+  :cmake:variable:`NVTX3_VERSION`    is set to the version of nvtx3 specified by the versions.json.
 
 #]=======================================================================]
-function(rapids_cpm_nvtx)
-  list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.nvtx")
+function(rapids_cpm_nvtx3)
+  list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.nvtx3")
 
   set(options)
   set(one_value USE_PROPRIETARY_BINARY BUILD_EXPORT_SET INSTALL_EXPORT_SET)
@@ -71,10 +71,10 @@ function(rapids_cpm_nvtx)
   endif()
 
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
-  rapids_cpm_package_details(nvtx version repository tag shallow exclude)
+  rapids_cpm_package_details(nvtx3 version repository tag shallow exclude)
 
   include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
-  rapids_cpm_generate_patch_command(nvtx ${version} patch_command)
+  rapids_cpm_generate_patch_command(nvtx3 ${version} patch_command)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
   rapids_cpm_find(NVTX3 ${version} ${ARGN}
@@ -97,12 +97,6 @@ function(rapids_cpm_nvtx)
       install(TARGETS nvtx3-c nvtx3-cpp EXPORT ${_RAPIDS_INSTALL_EXPORT_SET})
     endif()
   endif()
-
-  rapids_export_find_package_root(BUILD NVTX3 "${NVTX3_SOURCE_DIR}/c/"
-                                  EXPORT_SET ${_RAPIDS_BUILD_EXPORT_SET})
-
-  rapids_export_find_package_root(INSTALL NVTX3 "${NVTX3_SOURCE_DIR}/c/"
-                                  EXPORT_SET ${_RAPIDS_INSTALL_EXPORT_SET})
 
   # Propagate up variables that CPMFindPackage provide
   set(NVTX3_SOURCE_DIR "${NVTX3_SOURCE_DIR}" PARENT_SCOPE)

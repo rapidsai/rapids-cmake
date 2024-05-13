@@ -14,24 +14,24 @@
 # limitations under the License.
 #=============================================================================
 include(${rapids-cmake-dir}/cpm/init.cmake)
-include(${rapids-cmake-dir}/cpm/nvtx.cmake)
+include(${rapids-cmake-dir}/cpm/nvtx3.cmake)
 
 rapids_cpm_init()
 
-rapids_cpm_nvtx(BUILD_EXPORT_SET frank INSTALL_EXPORT_SET test)
-rapids_cpm_nvtx(INSTALL_EXPORT_SET test2)
+rapids_cpm_nvtx3(BUILD_EXPORT_SET frank INSTALL_EXPORT_SET test)
+rapids_cpm_nvtx3(INSTALL_EXPORT_SET test2)
 
 get_target_property(packages rapids_export_install_test PACKAGE_NAMES)
 if(NOT NVTX3 IN_LIST packages)
-  message(FATAL_ERROR "rapids_cpm_nvtx failed to record nvtx needs to be exported")
+  message(FATAL_ERROR "rapids_cpm_nvtx3 failed to record nvtx3 needs to be exported")
 endif()
 
 get_target_property(packages rapids_export_install_test2 PACKAGE_NAMES)
 if(NOT NVTX3 IN_LIST packages)
-  message(FATAL_ERROR "rapids_cpm_nvtx failed to record nvtx needs to be exported")
+  message(FATAL_ERROR "rapids_cpm_nvtx3 failed to record nvtx3 needs to be exported")
 endif()
 
 get_target_property(packages rapids_export_build_frank PACKAGE_NAMES)
 if(NOT NVTX3 IN_LIST packages)
-  message(FATAL_ERROR "rapids_cpm_nvtx failed to record nvtx needs to be exported")
+  message(FATAL_ERROR "rapids_cpm_nvtx3 failed to record nvtx3 needs to be exported")
 endif()
