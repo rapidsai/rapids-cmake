@@ -51,6 +51,20 @@ Result Variables
 function(rapids_cpm_nvtx)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.nvtx")
 
+  set(options)
+  set(one_value USE_PROPRIETARY_BINARY BUILD_EXPORT_SET INSTALL_EXPORT_SET)
+  set(multi_value)
+  cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
+
+  # Fix up _RAPIDS_UNPARSED_ARGUMENTS to have EXPORT_SETS as this is need for rapids_cpm_find
+  if(_RAPIDS_INSTALL_EXPORT_SET)
+    list(APPEND _RAPIDS_EXPORT_ARGUMENTS INSTALL_EXPORT_SET ${_RAPIDS_INSTALL_EXPORT_SET})
+  endif()
+  if(_RAPIDS_BUILD_EXPORT_SET)
+    list(APPEND _RAPIDS_EXPORT_ARGUMENTS BUILD_EXPORT_SET ${_RAPIDS_BUILD_EXPORT_SET})
+  endif()
+  set(_RAPIDS_UNPARSED_ARGUMENTS ${_RAPIDS_EXPORT_ARGUMENTS})
+
   set(to_install OFF)
   if(INSTALL_EXPORT_SET IN_LIST ARGN)
     set(to_install ON)
@@ -73,6 +87,26 @@ function(rapids_cpm_nvtx)
 
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
   rapids_cpm_display_patch_status(NVTX3)
+
+  # TODO: I think I need to write install rules for nvtx? This is a complete guess.
+
+  # Set up install rules
+  if(to_install AND NOT exclude)
+    message(STATUS "Setting up NVTX3 install rule.")
+    include(GNUInstallDirs)
+    install(DIRECTORY "${NVTX3_SOURCE_DIR}/c/include/" DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
+  endif()
+
+  message(STATUS "to_install: ${to_install}")
+  message(STATUS "exclude: ${exclude}")
+  message(STATUS "BUILD_EXPORT_SET: ${_RAPIDS_BUILD_EXPORT_SET}")
+  message(STATUS "INSTALL_EXPORT_SET: ${_RAPIDS_INSTALL_EXPORT_SET}")
+
+  rapids_export_find_package_root(BUILD NVTX3 "${NVTX3_SOURCE_DIR}/c/"
+                                  EXPORT_SET ${_RAPIDS_BUILD_EXPORT_SET})
+
+  rapids_export_find_package_root(INSTALL NVTX3 "${NVTX3_SOURCE_DIR}/c/"
+                                  EXPORT_SET ${_RAPIDS_INSTALL_EXPORT_SET})
 
   # Propagate up variables that CPMFindPackage provide
   set(NVTX3_SOURCE_DIR "${NVTX3_SOURCE_DIR}" PARENT_SCOPE)
