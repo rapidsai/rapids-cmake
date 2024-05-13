@@ -88,19 +88,15 @@ function(rapids_cpm_nvtx)
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
   rapids_cpm_display_patch_status(NVTX3)
 
-  # TODO: I think I need to write install rules for nvtx? This is a complete guess.
-
   # Set up install rules
-  if(to_install AND NOT exclude)
-    message(STATUS "Setting up NVTX3 install rule.")
+  if(to_install)
     include(GNUInstallDirs)
     install(DIRECTORY "${NVTX3_SOURCE_DIR}/c/include/" DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
+    install(TARGETS nvtx3-c nvtx3-cpp EXPORT ${_RAPIDS_BUILD_EXPORT_SET})
+    if(NOT _RAPIDS_BUILD_EXPORT_SET STREQUAL _RAPIDS_INSTALL_EXPORT_SET)
+      install(TARGETS nvtx3-c nvtx3-cpp EXPORT ${_RAPIDS_INSTALL_EXPORT_SET})
+    endif()
   endif()
-
-  message(STATUS "to_install: ${to_install}")
-  message(STATUS "exclude: ${exclude}")
-  message(STATUS "BUILD_EXPORT_SET: ${_RAPIDS_BUILD_EXPORT_SET}")
-  message(STATUS "INSTALL_EXPORT_SET: ${_RAPIDS_INSTALL_EXPORT_SET}")
 
   rapids_export_find_package_root(BUILD NVTX3 "${NVTX3_SOURCE_DIR}/c/"
                                   EXPORT_SET ${_RAPIDS_BUILD_EXPORT_SET})
