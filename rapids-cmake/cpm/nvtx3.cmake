@@ -65,11 +65,6 @@ function(rapids_cpm_nvtx3)
   endif()
   set(_RAPIDS_UNPARSED_ARGUMENTS ${_RAPIDS_EXPORT_ARGUMENTS})
 
-  set(to_install OFF)
-  if(INSTALL_EXPORT_SET IN_LIST ARGN)
-    set(to_install ON)
-  endif()
-
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
   rapids_cpm_package_details(nvtx3 version repository tag shallow exclude)
 
@@ -89,13 +84,10 @@ function(rapids_cpm_nvtx3)
   rapids_cpm_display_patch_status(NVTX3)
 
   # Set up install rules
-  if(to_install)
+  if(_RAPIDS_INSTALL_EXPORT_SET)
     include(GNUInstallDirs)
     install(DIRECTORY "${NVTX3_SOURCE_DIR}/c/include/" DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
-    install(TARGETS nvtx3-c nvtx3-cpp EXPORT ${_RAPIDS_BUILD_EXPORT_SET})
-    if(NOT _RAPIDS_BUILD_EXPORT_SET STREQUAL _RAPIDS_INSTALL_EXPORT_SET)
-      install(TARGETS nvtx3-c nvtx3-cpp EXPORT ${_RAPIDS_INSTALL_EXPORT_SET})
-    endif()
+    install(TARGETS nvtx3-c nvtx3-cpp EXPORT ${_RAPIDS_INSTALL_EXPORT_SET})
   endif()
 
   # Propagate up variables that CPMFindPackage provide
