@@ -6,9 +6,10 @@
       "git_tag": "v${version}"
     },
     "CCCL": {
-      "version": "2.2.0",
+      "version": "2.5.0",
+      "git_shallow": false,
       "git_url": "https://github.com/NVIDIA/cccl.git",
-      "git_tag": "v${version}",
+      "git_tag": "deaa9186c546445135ae20d0023630cea73b900b",
       "patches": [
         {
           "file": "cccl/bug_fixes.diff",
@@ -36,7 +37,7 @@
       "version": "0.0.1",
       "git_shallow": false,
       "git_url": "https://github.com/NVIDIA/cuCollections.git",
-      "git_tag": "2101cb31d0210b609cd02c88f9b538e10881d91d"
+      "git_tag": "fb3d490ec8d564eba694d9919db92dbc50b635e8"
     },
     "fmt": {
       "version": "10.1.1",
