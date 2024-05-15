@@ -83,23 +83,28 @@ function(rapids_cpm_nvtx3)
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
   rapids_cpm_display_patch_status(NVTX3)
 
+  # Extract the major version value of nvtx3 to use with `rapids-export` to setup compatibility
+  # rules
+  include("${rapids-cmake-dir}/cmake/parse_version.cmake")
+  rapids_cmake_parse_version(MAJOR ${version} ${version})
+
   # Set up install rules
   install(TARGETS nvtx3-c nvtx3-cpp EXPORT nvtx3-targets)
   if(_RAPIDS_BUILD_EXPORT_SET)
     rapids_export(BUILD nvtx3
-      EXPORT_SET nvtx3-targets
-      GLOBAL_TARGETS  nvtx3-c nvtx3-cpp
-      NAMESPACE nvtx::
-      )
+                  VERSION ${version}
+                  EXPORT_SET nvtx3-targets
+                  GLOBAL_TARGETS nvtx3-c nvtx3-cpp
+                  NAMESPACE nvtx::)
   endif()
   if(_RAPIDS_INSTALL_EXPORT_SET AND NOT exclude)
     include(GNUInstallDirs)
     install(DIRECTORY "${NVTX3_SOURCE_DIR}/c/include/" DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
     rapids_export(INSTALL nvtx3
-      EXPORT_SET nvtx3-targets
-      GLOBAL_TARGETS  nvtx3-c nvtx3-cpp
-      NAMESPACE nvtx::
-      )
+                  VERSION ${version}
+                  EXPORT_SET nvtx3-targets
+                  GLOBAL_TARGETS nvtx3-c nvtx3-cpp
+                  NAMESPACE nvtx::)
   endif()
 
   # Propagate up variables that CPMFindPackage provide
