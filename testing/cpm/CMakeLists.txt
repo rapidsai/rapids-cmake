@@ -107,10 +107,10 @@ add_cmake_config_test( cpm_nvcomp-always-download-proprietary_binary.cmake SERIA
 add_cmake_config_test( cpm_nvcomp-override-clears-proprietary_binary.cmake SERIAL)
 add_cmake_build_test( cpm_nvcomp-proprietary_binary-lib-location.cmake SERIAL NO_CPM_CACHE)
 
+add_cmake_build_test( cpm_nvtx-build-config-works.cmake )
+add_cmake_build_test( cpm_nvtx-install-config-works.cmake )
 add_cmake_config_test( cpm_nvtx-export.cmake )
 add_cmake_config_test( cpm_nvtx-simple.cmake )
-add_cmake_build_test( cpm_nvtx-install-config-works.cmake )
-add_cmake_build_test( cpm_nvtx-build-config-works.cmake )
 
 add_cmake_config_test( cpm_proprietary-url-ctk-version-find-ctk.cmake )
 add_cmake_config_test( cpm_proprietary-url-ctk-version.cmake )

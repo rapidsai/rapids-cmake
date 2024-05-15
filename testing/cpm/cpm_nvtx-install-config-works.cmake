@@ -19,11 +19,6 @@ include(${rapids-cmake-dir}/cpm/nvtx3.cmake)
 rapids_cpm_init()
 rapids_cpm_nvtx3(INSTALL_EXPORT_SET test)
 
-all and check the install directory.
-add_custom_target(install_project ALL
-  COMMAND ${CMAKE_COMMAND} --install "${CMAKE_BINARY_DIR}" --prefix check_nvcomp_lib_dir/install/
-  )
-
 # Add a custom command that verifies that the expect files have
 # been installed for each component
 file(WRITE "${CMAKE_BINARY_DIR}/check_nvtx_dir/CMakeLists.txt" "
