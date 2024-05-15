@@ -88,23 +88,27 @@ function(rapids_cpm_nvtx3)
   include("${rapids-cmake-dir}/cmake/parse_version.cmake")
   rapids_cmake_parse_version(MAJOR ${version} ${version})
 
-  # Set up install rules
-  install(TARGETS nvtx3-c nvtx3-cpp EXPORT nvtx3-targets)
-  if(_RAPIDS_BUILD_EXPORT_SET)
-    rapids_export(BUILD nvtx3
-                  VERSION ${version}
-                  EXPORT_SET nvtx3-targets
-                  GLOBAL_TARGETS nvtx3-c nvtx3-cpp
-                  NAMESPACE nvtx::)
-  endif()
-  if(_RAPIDS_INSTALL_EXPORT_SET AND NOT exclude)
-    include(GNUInstallDirs)
-    install(DIRECTORY "${NVTX3_SOURCE_DIR}/c/include/" DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
-    rapids_export(INSTALL nvtx3
-                  VERSION ${version}
-                  EXPORT_SET nvtx3-targets
-                  GLOBAL_TARGETS nvtx3-c nvtx3-cpp
-                  NAMESPACE nvtx::)
+  # Set up install rules Need to be re-entrant safe so only call when `NVTX3_ADDED`
+  if(NVTX3_ADDED)
+    install(TARGETS nvtx3-c nvtx3-cpp EXPORT nvtx3-targets)
+    if(_RAPIDS_BUILD_EXPORT_SET)
+      include("${rapids-cmake-dir}/export/export.cmake")
+      rapids_export(BUILD nvtx3
+                    VERSION ${version}
+                    EXPORT_SET nvtx3-targets
+                    GLOBAL_TARGETS nvtx3-c nvtx3-cpp
+                    NAMESPACE nvtx::)
+    endif()
+    if(_RAPIDS_INSTALL_EXPORT_SET AND NOT exclude)
+      include(GNUInstallDirs)
+      install(DIRECTORY "${NVTX3_SOURCE_DIR}/c/include/" DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
+      include("${rapids-cmake-dir}/export/export.cmake")
+      rapids_export(INSTALL nvtx3
+                    VERSION ${version}
+                    EXPORT_SET nvtx3-targets
+                    GLOBAL_TARGETS nvtx3-c nvtx3-cpp
+                    NAMESPACE nvtx::)
+    endif()
   endif()
 
   # Propagate up variables that CPMFindPackage provide
