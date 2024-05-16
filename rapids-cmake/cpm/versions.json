@@ -9,7 +9,7 @@
       "version": "2.5.0",
       "git_shallow": false,
       "git_url": "https://github.com/NVIDIA/cccl.git",
-      "git_tag": "deaa9186c546445135ae20d0023630cea73b900b",
+      "git_tag": "3a40a7c4aab20e969426387d178ceb4746c7b5d6",
       "patches": [
         {
           "file": "cccl/bug_fixes.diff",
