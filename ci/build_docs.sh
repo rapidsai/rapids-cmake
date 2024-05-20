@@ -16,7 +16,7 @@ conda activate docs
 
 rapids-print-env
 
-export RAPIDS_VERSION_NUMBER="24.06"
+export RAPIDS_VERSION_NUMBER="24.08"
 export RAPIDS_DOCS_DIR="$(mktemp -d)"
 
 rapids-logger "Build Sphinx docs"
