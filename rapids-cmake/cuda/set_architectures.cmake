@@ -80,4 +80,6 @@ function(rapids_cuda_set_architectures mode)
     set(CMAKE_CUDA_ARCHITECTURES ${CMAKE_CUDA_ARCHITECTURES} PARENT_SCOPE)
   endif()
 
+  message(STATUS "${CMAKE_PROJECT_NAME} CUDA architectures building for: ${CMAKE_CUDA_ARCHITECTURES}")
+
 endfunction()
