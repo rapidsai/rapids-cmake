@@ -8,7 +8,7 @@ SOURCE_DIR=${REPO_DIR}/conda/recipes/rapids_core_dependencies
 BUILD_DIR=${BUILD_DIR:=${REPO_DIR}/build}
 
 INSTALL_PREFIX=${INSTALL_PREFIX:=${PREFIX:=${CONDA_PREFIX:=$BUILD_DIR/install}}}
-export PARALLEL_LEVEL=${PARALLEL_LEVEL:-4}
+export PARALLEL_LEVEL=${PARALLEL_LEVEL:=$(nproc)}
 
 # If the dir to clean is a mounted dir in a container, the
 # contents should be removed but the mounted dirs will remain.
