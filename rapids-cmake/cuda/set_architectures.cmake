@@ -81,6 +81,7 @@ function(rapids_cuda_set_architectures mode)
   endif()
 
   string(REPLACE ";" "\n  " _cuda_architectures_pretty "${CMAKE_CUDA_ARCHITECTURES}")
-  message(STATUS "${CMAKE_PROJECT_NAME} CUDA architectures building for:\n  ${_cuda_architectures_pretty}")
+  message(STATUS "${CMAKE_PROJECT_NAME} CUDA architectures building for:\n  ${_cuda_architectures_pretty}"
+  )
 
 endfunction()
