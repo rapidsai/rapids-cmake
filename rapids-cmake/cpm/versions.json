@@ -97,6 +97,11 @@
         "aarch64-linux": "https://developer.download.nvidia.com/compute/nvcomp/${version}/local_installers/nvcomp_${version}_SBSA_${cuda-toolkit-version-major}.x.tgz"
       }
     },
+    "nvtx3": {
+      "version": "3.1.0",
+      "git_url": "https://github.com/NVIDIA/NVTX.git",
+      "git_tag": "v${version}"
+    },
     "rmm": {
       "version": "${rapids-cmake-version}",
       "git_url": "https://github.com/rapidsai/rmm.git",
