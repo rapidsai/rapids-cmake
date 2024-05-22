@@ -56,11 +56,8 @@ to be setup:
 
   1. Enable generation of a pinned versions during builds via
   :cmake:command:`rapids_cpm_generate_pinned_versions` or by specifying the :cmake:variable:`RAPIDS_CMAKE_CPM_PINNED_VERSIONS_FILE`.
-  2. If build is good, create the release branch and commit the generated pinned `versions.json`
-     to the repository
-  3. Rebuilds of the project using the pinned version are now possible by using the
-     :cmake:variable:`RAPIDS_CMAKE_CPM_OVERRIDE_VERSION_FILE` set to the path
-     of the generated pinned versions file.
+  2. If build is good, create the release branch and commit the generated pinned `versions.json` to the repository
+  3. Rebuilds of the project using the pinned version are now possible by using the :cmake:variable:`RAPIDS_CMAKE_CPM_OVERRIDE_VERSION_FILE` set to the path of the generated pinned versions file.
 
 
 rapids-cmake cpm command line controls
