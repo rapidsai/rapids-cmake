@@ -33,7 +33,7 @@ For example if you wanted to change the version of `fmt` you would do the follow
 .. literalinclude:: /packages/example_git_tag_override.json
   :language: json
 
-If you want to specify a completly new project, you need to specify at a minimum all
+If you want to specify a completely new project, you need to specify at a minimum all
 the required fields:
 
 .. literalinclude:: /packages/example_new_project_override.json
