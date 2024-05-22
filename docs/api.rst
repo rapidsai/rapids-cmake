@@ -48,21 +48,7 @@ These allow projects to make sure they use the same version and flags for
 dependencies as the rest of RAPIDS. The exact versions that each pre-configured
 package uses :ref:`can be found here. <cpm_versions>`
 
-.. toctree::
-   :titlesonly:
-
-   /packages/rapids_cpm_cccl
-   /packages/rapids_cpm_cuco
-   /packages/rapids_cpm_fmt
-   /packages/rapids_cpm_gbench
-   /packages/rapids_cpm_gtest
-   /packages/rapids_cpm_libcudacxx
-   /packages/rapids_cpm_nvbench
-   /packages/rapids_cpm_nvcomp
-   /packages/rapids_cpm_nvtx3
-   /packages/rapids_cpm_rmm
-   /packages/rapids_cpm_spdlog
-   /packages/rapids_cpm_thrust
+.. literalinclude:: /packages/packages.rst
 
 .. _`cython`:
 
