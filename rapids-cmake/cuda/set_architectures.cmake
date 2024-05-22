@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2023, NVIDIA CORPORATION.
+# Copyright (c) 2021-2024, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -79,5 +79,9 @@ function(rapids_cuda_set_architectures mode)
     list(TRANSFORM CMAKE_CUDA_ARCHITECTURES APPEND "-real")
     set(CMAKE_CUDA_ARCHITECTURES ${CMAKE_CUDA_ARCHITECTURES} PARENT_SCOPE)
   endif()
+
+  string(REPLACE ";" "\n  " _cuda_architectures_pretty "${CMAKE_CUDA_ARCHITECTURES}")
+  message(STATUS "${CMAKE_PROJECT_NAME} CUDA architectures building for:\n  ${_cuda_architectures_pretty}"
+  )
 
 endfunction()
