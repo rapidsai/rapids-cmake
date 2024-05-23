@@ -38,7 +38,7 @@ across all RAPIDS projects.
 
 Result Targets
 ^^^^^^^^^^^^^^
-  nvtx3-c, nvtx3-cpp targets will be created
+  nvtx3::nvtx3-c, nvtx3::nvtx3-cpp targets will be created
 
 Result Variables
 ^^^^^^^^^^^^^^^^
@@ -89,7 +89,7 @@ function(rapids_cpm_nvtx3)
   rapids_cmake_parse_version(MAJOR ${version} ${version})
 
   # Set up install rules Need to be re-entrant safe so only call when `nvtx3_ADDED`
-  if(nvtx3_ADDED)
+  if(nvtx3_ADDED AND TARGET nvtx3-c)
     install(TARGETS nvtx3-c nvtx3-cpp EXPORT nvtx3-targets)
     if(_RAPIDS_BUILD_EXPORT_SET)
       include("${rapids-cmake-dir}/export/export.cmake")
@@ -97,7 +97,7 @@ function(rapids_cpm_nvtx3)
                     VERSION ${version}
                     EXPORT_SET nvtx3-targets
                     GLOBAL_TARGETS nvtx3-c nvtx3-cpp
-                    NAMESPACE nvtx::)
+                    NAMESPACE nvtx3::)
       include("${rapids-cmake-dir}/export/find_package_root.cmake")
       rapids_export_find_package_root(BUILD nvtx3 [=[${CMAKE_CURRENT_LIST_DIR}]=]
                                       EXPORT_SET ${_RAPIDS_BUILD_EXPORT_SET})
@@ -110,8 +110,15 @@ function(rapids_cpm_nvtx3)
                     VERSION ${version}
                     EXPORT_SET nvtx3-targets
                     GLOBAL_TARGETS nvtx3-c nvtx3-cpp
-                    NAMESPACE nvtx::)
+                    NAMESPACE nvtx3::)
     endif()
+  endif()
+
+  if(NOT TARGET nvtx3::nvtx3-c AND TARGET nvtx3-c)
+    add_library(nvtx3::nvtx3-c ALIAS nvtx3-c)
+  endif()
+  if(NOT TARGET nvtx3::nvtx3-cpp AND TARGET nvtx3-cpp)
+    add_library(nvtx3::nvtx3-cpp ALIAS nvtx3-cpp)
   endif()
 
   # Propagate up variables that CPMFindPackage provide
