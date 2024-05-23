@@ -21,7 +21,7 @@ rapids_cpm_nvtx3
 
 .. versionadded:: v24.06.00
 
-Allow projects to find `NVTX3` via `CPM` with built-in tracking of dependencies
+Allow projects to find `nvtx3` via `CPM` with built-in tracking of dependencies
 for correct export support.
 
 Uses the version of nvtx3 :ref:`specified in the version file <cpm_versions>` for consistency
@@ -38,14 +38,14 @@ across all RAPIDS projects.
 
 Result Targets
 ^^^^^^^^^^^^^^
-  nvtx3-c, nvtx3-cpp targets will be created
+  nvtx3::nvtx3-c, nvtx3::nvtx3-cpp targets will be created
 
 Result Variables
 ^^^^^^^^^^^^^^^^
-  :cmake:variable:`NVTX3_SOURCE_DIR` is set to the path to the source directory of nvtx3.
-  :cmake:variable:`NVTX3_BINARY_DIR` is set to the path to the build directory of nvtx3.
-  :cmake:variable:`NVTX3_ADDED`      is set to a true value if nvtx3 has not been added before.
-  :cmake:variable:`NVTX3_VERSION`    is set to the version of nvtx3 specified by the versions.json.
+  :cmake:variable:`nvtx3_SOURCE_DIR` is set to the path to the source directory of nvtx3.
+  :cmake:variable:`nvtx3_BINARY_DIR` is set to the path to the build directory of nvtx3.
+  :cmake:variable:`nvtx3_ADDED`      is set to a true value if nvtx3 has not been added before.
+  :cmake:variable:`nvtx3_VERSION`    is set to the version of nvtx3 specified by the versions.json.
 
 #]=======================================================================]
 function(rapids_cpm_nvtx3)
@@ -72,7 +72,7 @@ function(rapids_cpm_nvtx3)
   rapids_cpm_generate_patch_command(nvtx3 ${version} patch_command)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
-  rapids_cpm_find(NVTX3 ${version} ${ARGN}
+  rapids_cpm_find(nvtx3 ${version} ${ARGN}
                   GLOBAL_TARGETS nvtx3-c nvtx3-cpp
                   CPM_ARGS
                   GIT_REPOSITORY ${repository}
@@ -81,15 +81,15 @@ function(rapids_cpm_nvtx3)
                   EXCLUDE_FROM_ALL ${exclude})
 
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
-  rapids_cpm_display_patch_status(NVTX3)
+  rapids_cpm_display_patch_status(nvtx3)
 
   # Extract the major version value of nvtx3 to use with `rapids-export` to setup compatibility
   # rules
   include("${rapids-cmake-dir}/cmake/parse_version.cmake")
   rapids_cmake_parse_version(MAJOR ${version} ${version})
 
-  # Set up install rules Need to be re-entrant safe so only call when `NVTX3_ADDED`
-  if(NVTX3_ADDED)
+  # Set up install rules Need to be re-entrant safe so only call when `nvtx3_ADDED`
+  if(nvtx3_ADDED AND TARGET nvtx3-c)
     install(TARGETS nvtx3-c nvtx3-cpp EXPORT nvtx3-targets)
     if(_RAPIDS_BUILD_EXPORT_SET)
       include("${rapids-cmake-dir}/export/export.cmake")
@@ -97,24 +97,34 @@ function(rapids_cpm_nvtx3)
                     VERSION ${version}
                     EXPORT_SET nvtx3-targets
                     GLOBAL_TARGETS nvtx3-c nvtx3-cpp
-                    NAMESPACE nvtx::)
+                    NAMESPACE nvtx3::)
+      include("${rapids-cmake-dir}/export/find_package_root.cmake")
+      rapids_export_find_package_root(BUILD nvtx3 [=[${CMAKE_CURRENT_LIST_DIR}]=]
+                                      EXPORT_SET ${_RAPIDS_BUILD_EXPORT_SET})
     endif()
     if(_RAPIDS_INSTALL_EXPORT_SET AND NOT exclude)
       include(GNUInstallDirs)
-      install(DIRECTORY "${NVTX3_SOURCE_DIR}/c/include/" DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
+      install(DIRECTORY "${nvtx3_SOURCE_DIR}/c/include/" DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
       include("${rapids-cmake-dir}/export/export.cmake")
       rapids_export(INSTALL nvtx3
                     VERSION ${version}
                     EXPORT_SET nvtx3-targets
                     GLOBAL_TARGETS nvtx3-c nvtx3-cpp
-                    NAMESPACE nvtx::)
+                    NAMESPACE nvtx3::)
     endif()
   endif()
 
+  if(NOT TARGET nvtx3::nvtx3-c AND TARGET nvtx3-c)
+    add_library(nvtx3::nvtx3-c ALIAS nvtx3-c)
+  endif()
+  if(NOT TARGET nvtx3::nvtx3-cpp AND TARGET nvtx3-cpp)
+    add_library(nvtx3::nvtx3-cpp ALIAS nvtx3-cpp)
+  endif()
+
   # Propagate up variables that CPMFindPackage provide
-  set(NVTX3_SOURCE_DIR "${NVTX3_SOURCE_DIR}" PARENT_SCOPE)
-  set(NVTX3_BINARY_DIR "${NVTX3_BINARY_DIR}" PARENT_SCOPE)
-  set(NVTX3_ADDED "${NVTX3_ADDED}" PARENT_SCOPE)
-  set(NVTX3_VERSION ${version} PARENT_SCOPE)
+  set(nvtx3_SOURCE_DIR "${nvtx3_SOURCE_DIR}" PARENT_SCOPE)
+  set(nvtx3_BINARY_DIR "${nvtx3_BINARY_DIR}" PARENT_SCOPE)
+  set(nvtx3_ADDED "${nvtx3_ADDED}" PARENT_SCOPE)
+  set(nvtx3_VERSION ${version} PARENT_SCOPE)
 
 endfunction()
