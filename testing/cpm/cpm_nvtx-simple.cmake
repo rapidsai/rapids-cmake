@@ -36,4 +36,12 @@ if(NOT TARGET nvtx3-cpp)
   message(FATAL_ERROR "Expected nvtx3-cpp target to exist")
 endif()
 
+if(NOT TARGET nvtx3::nvtx3-c)
+  message(FATAL_ERROR "Expected nvtx3::nvtx3-c target to exist")
+endif()
+
+if(NOT TARGET nvtx3::nvtx3-cpp)
+  message(FATAL_ERROR "Expected nvtx3::nvtx3-cpp target to exist")
+endif()
+
 rapids_cpm_nvtx3()

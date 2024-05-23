@@ -30,7 +30,7 @@ find_package(nvtx3 REQUIRED)
 
 file(WRITE \"\${CMAKE_CURRENT_BINARY_DIR}/stub.cpp\" \" \")
 add_library(uses_nvtx SHARED stub.cpp)
-target_link_libraries(uses_nvtx PRIVATE nvtx::nvtx3-cpp)
+target_link_libraries(uses_nvtx PRIVATE nvtx3::nvtx3-cpp)
 ")
 
 add_custom_target(verify_build_config ALL
