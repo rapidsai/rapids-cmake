@@ -65,14 +65,6 @@ rapids-cpm command line controls
 
 rapids-cpm offers multiple command line options to control behavior.
 
-If you need to explicitly state a package must be downloaded and not searched
-for locally you enable the variable :cmake:variable:`CPM_DOWNLOAD_<package_name>`.
-
-```
-cmake -DCPM_DOWNLOAD_<package_name>=ON ....
-```
-
-
 Some builds are performed fully offline and the default package and override urls
 can't be used. In those cases you can use the variable :cmake:variable:`RAPIDS_CMAKE_CPM_OVERRIDE_VERSION_FILE` to provide a new versions.json that will be
 used instead of ALL overrides specified in that project. This would allow you to
@@ -88,6 +80,27 @@ the project use the :cmake:variable:`RAPIDS_CMAKE_CPM_PINNED_VERSIONS_FILE` vari
 
 ```
 cmake -DRAPIDS_CMAKE_CPM_PINNED_VERSIONS_FILE
+```
+
+additional CPM command line controls
+************************************
+
+In addition any of the CPM options can be used with rapids-cpm. A
+full list of CPM options can be found in the `CPM README.md <https://github.com/cpm-cmake/CPM.cmake/blob/master/README.md>`_.
+
+
+If you need to explicitly state a package must be downloaded and not searched
+for locally you enable the variable :cmake:variable:`CPM_DOWNLOAD_<package_name>`.
+
+```
+cmake -DCPM_DOWNLOAD_<package_name>=ON ....
+```
+
+If you need to explicitly state all packages must be downloaded and not searched
+for locally you enable the variable :cmake:variable:`CPM_DOWNLOAD_ALL`.
+
+```
+cmake -DCPM_DOWNLOAD_ALL=ON ....
 ```
 
 
