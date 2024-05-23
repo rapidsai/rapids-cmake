@@ -71,17 +71,17 @@ function(rapids_cuda_set_architectures mode)
     list(TRANSFORM supported_archs APPEND "-real")
     list(APPEND supported_archs ${latest_arch})
 
-    set(CMAKE_CUDA_ARCHITECTURES ${supported_archs} PARENT_SCOPE)
+    set(CMAKE_CUDA_ARCHITECTURES ${supported_archs})
   elseif(${mode} STREQUAL "NATIVE")
     include(${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/detect_architectures.cmake)
     rapids_cuda_detect_architectures(supported_archs CMAKE_CUDA_ARCHITECTURES)
 
     list(TRANSFORM CMAKE_CUDA_ARCHITECTURES APPEND "-real")
-    set(CMAKE_CUDA_ARCHITECTURES ${CMAKE_CUDA_ARCHITECTURES} PARENT_SCOPE)
   endif()
 
   string(REPLACE ";" "\n  " _cuda_architectures_pretty "${CMAKE_CUDA_ARCHITECTURES}")
   message(STATUS "${CMAKE_PROJECT_NAME} CUDA architectures building for:\n  ${_cuda_architectures_pretty}"
   )
+  set(CMAKE_CUDA_ARCHITECTURES ${CMAKE_CUDA_ARCHITECTURES} PARENT_SCOPE)
 
 endfunction()
