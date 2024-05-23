@@ -98,6 +98,9 @@ function(rapids_cpm_nvtx3)
                     EXPORT_SET nvtx3-targets
                     GLOBAL_TARGETS nvtx3-c nvtx3-cpp
                     NAMESPACE nvtx::)
+      rapids_export_package(BUILD nvtx3 ${_RAPIDS_BUILD_EXPORT_SET} GLOBAL_TARGETS nvtx3-c nvtx3-cpp)
+      rapids_export_find_package_root(BUILD nvtx3 [=[${CMAKE_CURRENT_LIST_DIR}]=]
+                                      EXPORT_SET ${_RAPIDS_BUILD_EXPORT_SET})
     endif()
     if(_RAPIDS_INSTALL_EXPORT_SET AND NOT exclude)
       include(GNUInstallDirs)
