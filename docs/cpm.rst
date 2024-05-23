@@ -46,24 +46,24 @@ reproducible rapids-cmake builds
 The rapids-cmake default `versions.json` uses branch names or git tag names
 for dependencies. This is done so that projects can 'live at head' of dependencies.
 This directly conflicts with the concept of reproducible release packages that each
-time they are built contain the exact same byteconde.
+time they are built produce bitwise-identical artifacts.
 
-:cmake:command:`rapids_cpm_generate_pinned_versions` can be used to generate a set of
-rapids-cmake dependencies from the existing branch names to explicit pinned git SHA1 values. This results in a fully reproducible set of dependencies when building.
+:cmake:command:`rapids_cpm_generate_pinned_versions` can be used to generate a set of explicit
+pinned git SHA1 values corresponding to the set of rapids-cmake dependencies in use. This results in a fully reproducible set of dependencies when building.
 
 To utilize this behavior in your release CI/CD something like the following needs
-to be setup:
+to be set up:
 
-  1. Enable generation of a pinned versions during builds via
+  1. Enable generation of a pinned versions file during builds via
   :cmake:command:`rapids_cpm_generate_pinned_versions` or by specifying the :cmake:variable:`RAPIDS_CMAKE_CPM_PINNED_VERSIONS_FILE`.
-  2. If build is good, create the release branch and commit the generated pinned `versions.json` to the repository
-  3. Rebuilds of the project using the pinned version are now possible by using the :cmake:variable:`RAPIDS_CMAKE_CPM_OVERRIDE_VERSION_FILE` set to the path of the generated pinned versions file.
+  2. If the build is good, create the release branch and commit the generated pinned `versions.json` to the repository
+  3. Rebuilds of the project using the pinned version are now possible by setting the :cmake:variable:`RAPIDS_CMAKE_CPM_OVERRIDE_VERSION_FILE` to the path of the generated pinned versions file.
 
 
-rapids-cmake cpm command line controls
+rapids-cpm command line controls
 ######################################
 
-rapids-cmake cpm offers multiple command line options to control behavior
+rapids-cpm offers multiple command line options to control behavior.
 
 If you need to explicitly state a package must be downloaded and not searched
 for locally you enable the variable :cmake:variable:`CPM_DOWNLOAD_<package_name>`.
@@ -73,10 +73,10 @@ cmake -DCPM_DOWNLOAD_<package_name>=ON ....
 ```
 
 
-Some build locations are fully offline and the default packages and override urls
+Some builds are performed fully offline and the default package and override urls
 can't be used. In those cases you can use the variable :cmake:variable:`RAPIDS_CMAKE_CPM_OVERRIDE_VERSION_FILE` to provide a new versions.json that will be
 used instead of ALL overrides specified in that project. This would allow you to
-specifify custom internal urls for all dependencies without modifying the project source code.
+specify custom internal urls for all dependencies without modifying the project source code.
 
 
 ```
@@ -90,8 +90,6 @@ the project use the :cmake:variable:`RAPIDS_CMAKE_CPM_PINNED_VERSIONS_FILE` vari
 cmake -DRAPIDS_CMAKE_CPM_PINNED_VERSIONS_FILE
 ```
 
-RAPIDS_CMAKE_CPM_PINNED_VERSIONS_FILE
-
 
 rapids-cmake package version format
 ###################################
@@ -102,7 +100,7 @@ rapids-cmake uses a JSON file to encode the version of a project and how to down
 The JSON format is a root object that contains the ``packages`` object.
 
 The ``packages`` object contains a key/value map of all supported
-packages where the key is the case sensitive name of the project and
+packages where the key is the case-sensitive name of the project and
 the value is a ``project`` object, as seen in this example:
 
 .. literalinclude:: /packages/example_all_fields.json
