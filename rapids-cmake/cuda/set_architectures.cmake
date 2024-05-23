@@ -79,9 +79,11 @@ function(rapids_cuda_set_architectures mode)
     list(TRANSFORM CMAKE_CUDA_ARCHITECTURES APPEND "-real")
   endif()
 
-  string(REPLACE ";" "\n  " _cuda_architectures_pretty "${CMAKE_CUDA_ARCHITECTURES}")
-  message(STATUS "${CMAKE_PROJECT_NAME} CUDA architectures building for:\n  ${_cuda_architectures_pretty}"
-  )
+  if(PROJECT_IS_TOP_LEVEL)
+    string(REPLACE ";" "\n  " _cuda_architectures_pretty "${CMAKE_CUDA_ARCHITECTURES}")
+    message(STATUS "${CMAKE_PROJECT_NAME} CUDA architectures building for:\n  ${_cuda_architectures_pretty}"
+    )
+  endif()
   set(CMAKE_CUDA_ARCHITECTURES ${CMAKE_CUDA_ARCHITECTURES} PARENT_SCOPE)
 
 endfunction()
