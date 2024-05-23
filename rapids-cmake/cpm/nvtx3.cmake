@@ -38,7 +38,7 @@ across all RAPIDS projects.
 
 Result Targets
 ^^^^^^^^^^^^^^
-  nvtx3-c, nvtx3-cpp targets will be created
+  nvtx3::nvtx3-c, nvtx3::nvtx3-cpp targets will be created
 
 Result Variables
 ^^^^^^^^^^^^^^^^
