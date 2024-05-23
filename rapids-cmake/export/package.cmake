@@ -42,7 +42,7 @@ generated information will include a :cmake:command:`find_dependency` call for <
   Will record <PackageName> is part of the build directory export set
 
 ``INSTALL``
-  Will record <PackageName> is part of the build directory export set
+  Will record <PackageName> is part of the install directory export set
 
 ``VERSION``
   .. versionadded:: v22.04.00
