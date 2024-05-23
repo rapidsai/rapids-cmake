@@ -114,6 +114,13 @@ function(rapids_cpm_nvtx3)
     endif()
   endif()
 
+  if(NOT TARGET nvtx::nvtx3-c AND TARGET nvtx3-c)
+    add_library(nvtx::nvtx3-c ALIAS nvtx3-c)
+  endif()
+  if(NOT TARGET nvtx::nvtx3-cpp AND TARGET nvtx3-cpp)
+    add_library(nvtx::nvtx3-cpp ALIAS nvtx3-cpp)
+  endif()
+
   # Propagate up variables that CPMFindPackage provide
   set(nvtx3_SOURCE_DIR "${nvtx3_SOURCE_DIR}" PARENT_SCOPE)
   set(nvtx3_BINARY_DIR "${nvtx3_BINARY_DIR}" PARENT_SCOPE)
