@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2023, NVIDIA CORPORATION.
+# Copyright (c) 2021-2024, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,7 +40,6 @@ if(RAPIDS_CMAKE_ENABLE_DOWNLOAD_TESTS)
   setup_cpm_cache()
 
   add_subdirectory(cpm)
-  add_subdirectory(cython)
   add_subdirectory(cython-core)
   add_subdirectory(other)
 endif()
