@@ -61,7 +61,7 @@ to be set up:
 
 
 rapids-cpm command line controls
-###########################
+################################
 
 rapids-cpm offers multiple command line options to control behavior.
 
