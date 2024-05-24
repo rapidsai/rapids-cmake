@@ -40,7 +40,7 @@ the required fields:
   :language: json
 
 
-reproducible rapids-cmake builds
+Reproducible rapids-cmake builds
 ################################
 
 The rapids-cmake default `versions.json` uses branch names or git tag names
@@ -61,7 +61,7 @@ to be set up:
 
 
 rapids-cpm command line controls
-######################################
+###########################
 
 rapids-cpm offers multiple command line options to control behavior.
 
@@ -82,11 +82,12 @@ the project use the :cmake:variable:`RAPIDS_CMAKE_CPM_PINNED_VERSIONS_FILE` vari
 cmake -DRAPIDS_CMAKE_CPM_PINNED_VERSIONS_FILE
 ```
 
-additional CPM command line controls
+Additional CPM command line controls
 ************************************
 
 In addition any of the CPM options can be used with rapids-cpm. A
-full list of CPM options can be found in the `CPM README.md <https://github.com/cpm-cmake/CPM.cmake/blob/master/README.md>`_.
+full list of CPM options can be found in the `CPM README.md <https://github.com/cpm-cmake/CPM.cmake/blob/master/README.md>`_;
+we document some of the most important ones below.
 
 
 If you need to explicitly state a package must be downloaded and not searched
