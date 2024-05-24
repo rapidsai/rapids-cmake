@@ -79,11 +79,17 @@ function(rapids_cuda_set_architectures mode)
     list(TRANSFORM CMAKE_CUDA_ARCHITECTURES APPEND "-real")
   endif()
 
-  if(PROJECT_IS_TOP_LEVEL)
+  # cache the cuda archs.
+  get_property(cached_value GLOBAL PROPERTY rapids_cuda_architectures)
+  if(NOT cached_value)
+    set_property(GLOBAL PROPERTY rapids_cuda_architectures "${CMAKE_CUDA_ARCHITECTURES}")
+  endif()
+  if(NOT cached_value STREQUAL CMAKE_CUDA_ARCHITECTURES)
     string(REPLACE ";" "\n  " _cuda_architectures_pretty "${CMAKE_CUDA_ARCHITECTURES}")
-    message(STATUS "${CMAKE_PROJECT_NAME} CUDA architectures building for:\n  ${_cuda_architectures_pretty}"
+    message(STATUS "Project ${PROJECT_NAME} is building for CUDA architectures:\n  ${_cuda_architectures_pretty}"
     )
   endif()
+
   set(CMAKE_CUDA_ARCHITECTURES ${CMAKE_CUDA_ARCHITECTURES} PARENT_SCOPE)
 
 endfunction()
