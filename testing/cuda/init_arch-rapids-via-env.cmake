@@ -15,7 +15,6 @@
 #=============================================================================
 include(${rapids-cmake-dir}/cuda/init_architectures.cmake)
 
-set(CMAKE_ERROR_DEPRECATED ON)
 set(ENV{CUDAARCHS} "RAPIDS")
 
 rapids_cuda_init_architectures(rapids-project)
