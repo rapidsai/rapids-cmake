@@ -61,7 +61,6 @@ function(rapids_cuda_set_architectures mode)
   endif()
 
   include(${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/architectures_policy.cmake)
-  rapids_cuda_architectures_policy(FROM_SET mode)
 
   if(${mode} STREQUAL "RAPIDS")
 
