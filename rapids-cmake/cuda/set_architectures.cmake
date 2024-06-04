@@ -60,8 +60,6 @@ function(rapids_cuda_set_architectures mode)
     list(REMOVE_ITEM supported_archs "90")
   endif()
 
-  include(${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/architectures_policy.cmake)
-
   if(${mode} STREQUAL "RAPIDS")
 
     # CMake architecture list entry of "80" means to build compute and sm. What we want is for the
