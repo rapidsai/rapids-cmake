@@ -14,7 +14,7 @@
 # limitations under the License.
 #=============================================================================
 
-cmake_minimum_required(VERSION 3.23.1)
+cmake_minimum_required(VERSION 3.26.4)
 project(rapids-test-project LANGUAGES CXX)
 
 set(RAPIDS_CMAKE_CPM_PINNED_VERSIONS_FILE "${CMAKE_CURRENT_BINARY_DIR}/custom_path/pinned_versions.json")

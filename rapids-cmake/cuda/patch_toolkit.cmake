@@ -32,6 +32,11 @@ of cublas and cusolver targets are incorrect. This module must be called
 from the same CMakeLists.txt as the first `find_project(CUDAToolkit)` to
 patch the targets.
 
+.. deprecated:: v24.08.00
+  ``rapids_cuda_patch_toolkit`` has been deprecated and will be removed
+  in 24.10 as now the minimum CMake required to use rapids-cmake is
+  3.26.4.
+
 .. note::
   :cmake:command:`rapids_cpm_find` will automatically call this module
   when asked to find the CUDAToolkit.
@@ -39,6 +44,12 @@ patch the targets.
 #]=======================================================================]
 function(rapids_cuda_patch_toolkit)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cuda.patch_toolkit")
+
+  include("${rapids-cmake-dir}/cmake/detail/policy.cmake")
+  rapids_cmake_policy(DEPRECATED_IN 24.08
+                      REMOVED_IN 24.10
+                      MESSAGE [=[Usage of `rapids_cuda_patch_toolkit` has been deprecated as CMake has fixed the issue it solves.]=]
+  )
 
   get_directory_property(itargets IMPORTED_TARGETS)
   if(CMAKE_VERSION VERSION_LESS 3.24.2)
