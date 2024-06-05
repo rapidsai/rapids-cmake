@@ -44,8 +44,13 @@ directly.
 Result Variables
 ^^^^^^^^^^^^^^^^
 
-  ``CMAKE_CUDA_ARCHITECTURES`` will exist and set to the list of architectures
+``CMAKE_CUDA_ARCHITECTURES``
+
+  Will exist as a local variable and be set to the list of architectures
   that should be compiled for. Will overwrite any existing values.
+
+.. versionadded:: v24.08.00
+  Will be added as a cache variable if it isn't already one.
 
 #]=======================================================================]
 function(rapids_cuda_set_architectures mode)
@@ -87,6 +92,12 @@ function(rapids_cuda_set_architectures mode)
     )
   endif()
 
+  # Need to set in the cache so we match CMake behavior of setting up as a cache variable. This
+  # ensures that on subsequent executions we use the value we computed from the first execution, and
+  # don't re-evaluate env vars which could have changed
+  set(CMAKE_CUDA_ARCHITECTURES "${CMAKE_CUDA_ARCHITECTURES}" CACHE STRING "CUDA architectures")
+
+  # Set as a local variable to maintain comp
   set(CMAKE_CUDA_ARCHITECTURES ${CMAKE_CUDA_ARCHITECTURES} PARENT_SCOPE)
 
 endfunction()
