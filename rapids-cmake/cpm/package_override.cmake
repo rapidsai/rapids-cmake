@@ -47,6 +47,13 @@ and all later calls for that packaged will be ignored.  This "first to record, w
 approach is used to match FetchContent, and allows parent projects to override child
 projects.
 
+.. versionadded:: v24.06.00
+
+If the variable :cmake:variable:`RAPIDS_CMAKE_CPM_OVERRIDE_VERSION_FILE` is specified it will be used
+in all calls to ``rapids_cpm_init``. Any existing explicit `OVERRIDE` files will be ignored, and
+all other calls will be treated as if this file was specified as the override.
+
+
 .. note::
 
   .. versionadded:: v23.10.00
@@ -62,13 +69,20 @@ projects.
   Must be called before any invocation of :cmake:command:`rapids_cpm_find`.
 
 #]=======================================================================]
-function(rapids_cpm_package_override filepath)
+function(rapids_cpm_package_override _rapids_override_filepath)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.rapids_cpm_package_override")
 
-  if(NOT EXISTS "${filepath}")
-    message(FATAL_ERROR "rapids_cpm_package_override can't load '${filepath}', verify it exists")
+  # The `RAPIDS_CMAKE_CPM_OVERRIDE_VERSION_FILE` must be loaded instead of any explicit file path
+  # when it is set
+  if(DEFINED RAPIDS_CMAKE_CPM_OVERRIDE_VERSION_FILE)
+    set(_rapids_override_filepath "${RAPIDS_CMAKE_CPM_OVERRIDE_VERSION_FILE}")
   endif()
-  file(READ "${filepath}" json_data)
+
+  if(NOT EXISTS "${_rapids_override_filepath}")
+    message(FATAL_ERROR "rapids_cpm_package_override can't load '${_rapids_override_filepath}', verify it exists"
+    )
+  endif()
+  file(READ "${_rapids_override_filepath}" json_data)
 
   # Determine all the projects that exist in the json file
   string(JSON package_count LENGTH "${json_data}" packages)
@@ -85,7 +99,8 @@ function(rapids_cpm_package_override filepath)
         # only add the first override for a project we encounter
         string(JSON data GET "${json_data}" packages "${package_name}")
         set_property(GLOBAL PROPERTY rapids_cpm_${package_name}_override_json "${data}")
-        set_property(GLOBAL PROPERTY rapids_cpm_${package_name}_override_json_file "${filepath}")
+        set_property(GLOBAL PROPERTY rapids_cpm_${package_name}_override_json_file
+                                     "${_rapids_override_filepath}")
 
         # establish the fetch content
         include(FetchContent)

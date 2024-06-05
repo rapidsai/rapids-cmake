@@ -24,10 +24,5 @@ add_subdirectory(b)
 include(${rapids-cmake-dir}/cpm/init.cmake)
 rapids_cpm_init(GENERATE_PINNED_VERSIONS)
 
-# don't check cuco here as it uses hashes and that breaks our verify script
-set(projects-to-verify rmm fmt spdlog CCCL)
-add_custom_target(verify_generated_pins ALL
-  COMMAND ${CMAKE_COMMAND} -S="${CMAKE_SOURCE_DIR}/verify/" -B"${CMAKE_BINARY_DIR}/verify_build"
-  -D"rapids-cmake-dir=${rapids-cmake-dir}"
-  -D"projects-to-verify=${projects-to-verify}"
-)
+include("${rapids-cmake-testing-dir}/cpm/verify_generated_pins.cmake")
+verify_generated_pins(verify_pins PROJECTS rmm fmt spdlog CCCL)

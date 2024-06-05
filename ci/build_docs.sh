@@ -8,7 +8,7 @@ rapids-logger "Create test conda environment"
 
 rapids-dependency-file-generator \
   --output conda \
-  --file_key docs \
+  --file-key docs \
   --matrix "cuda=${RAPIDS_CUDA_VERSION%.*};arch=$(arch);py=${RAPIDS_PY_VERSION}" | tee env.yaml
 
 rapids-mamba-retry env create --yes -f env.yaml -n docs
@@ -16,7 +16,7 @@ conda activate docs
 
 rapids-print-env
 
-export RAPIDS_VERSION_NUMBER="24.04"
+export RAPIDS_VERSION_NUMBER="24.06"
 export RAPIDS_DOCS_DIR="$(mktemp -d)"
 
 rapids-logger "Build Sphinx docs"
