@@ -8,8 +8,8 @@
     "CCCL": {
       "version": "2.5.0",
       "git_shallow": false,
-      "git_url": "https://github.com/trxcllnt/cccl.git",
-      "git_tag": "fea/build-rapids",
+      "git_url": "https://github.com/NVIDIA/cccl.git",
+      "git_tag": "fde1cf79bde6744b6739636f502b5edfefe302e1",
       "patches": [
         {
           "file": "cccl/bug_fixes.diff",
