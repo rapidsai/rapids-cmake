@@ -1,3 +1,48 @@
+# rapids-cmake 24.06.00 (5 Jun 2024)
+
+## 🐛 Bug Fixes
+
+- Only output CUDA architectures we are building for once ([#621](https://github.com/rapidsai/rapids-cmake/pull/621)) [@robertmaynard](https://github.com/robertmaynard)
+- set_architectures output correct CUDA arch values for RAPIDS mode ([#619](https://github.com/rapidsai/rapids-cmake/pull/619)) [@robertmaynard](https://github.com/robertmaynard)
+- Always offer the install target names for nvtx3 ([#617](https://github.com/rapidsai/rapids-cmake/pull/617)) [@robertmaynard](https://github.com/robertmaynard)
+- Support CMAKE_INSTALL_MESSAGE + rapids_test_install_relocatable ([#604](https://github.com/rapidsai/rapids-cmake/pull/604)) [@robertmaynard](https://github.com/robertmaynard)
+- Ensure nvcomps build and install layouts are consistent ([#602](https://github.com/rapidsai/rapids-cmake/pull/602)) [@robertmaynard](https://github.com/robertmaynard)
+- Correctly set the install location for nvcomp when using the proprietary binary ([#597](https://github.com/rapidsai/rapids-cmake/pull/597)) [@vyasr](https://github.com/vyasr)
+- Ensure support_conda_env uses `isystem` ([#588](https://github.com/rapidsai/rapids-cmake/pull/588)) [@robertmaynard](https://github.com/robertmaynard)
+- Update rapids_test_install_relocatable to be aware of CMake 3.29 ([#586](https://github.com/rapidsai/rapids-cmake/pull/586)) [@robertmaynard](https://github.com/robertmaynard)
+- rapids_cpm_gtest(BUILD_STATIC) now doesn&#39;t search for a local version ([#585](https://github.com/rapidsai/rapids-cmake/pull/585)) [@robertmaynard](https://github.com/robertmaynard)
+- Add new patch to hide more CCCL APIs ([#580](https://github.com/rapidsai/rapids-cmake/pull/580)) [@vyasr](https://github.com/vyasr)
+- Forward-merge branch-24.04 into branch-24.06 [skip ci] ([#565](https://github.com/rapidsai/rapids-cmake/pull/565)) [@rapids-bot[bot]](https://github.com/rapids-bot[bot])
+
+## 📖 Documentation
+
+- use inline code formatting in docs for variables, functions, and modules ([#591](https://github.com/rapidsai/rapids-cmake/pull/591)) [@jameslamb](https://github.com/jameslamb)
+- clarify language around how FetchContent is used in RAPIDS.cmake ([#590](https://github.com/rapidsai/rapids-cmake/pull/590)) [@jameslamb](https://github.com/jameslamb)
+- fix docs for rapids_export_ functions ([#589](https://github.com/rapidsai/rapids-cmake/pull/589)) [@jameslamb](https://github.com/jameslamb)
+- Better explain OVERRIDE option ([#578](https://github.com/rapidsai/rapids-cmake/pull/578)) [@robertmaynard](https://github.com/robertmaynard)
+
+## 🚀 New Features
+
+- Output what cuda archs rapids-cmake is building for ([#609](https://github.com/rapidsai/rapids-cmake/pull/609)) [@robertmaynard](https://github.com/robertmaynard)
+- Add rapids_cpm_nvtx3. ([#606](https://github.com/rapidsai/rapids-cmake/pull/606)) [@bdice](https://github.com/bdice)
+- Refactor the common `verify` cpm pin test logic to a single source ([#601](https://github.com/rapidsai/rapids-cmake/pull/601)) [@robertmaynard](https://github.com/robertmaynard)
+- rapids-cmake allow GENERATE_PINNED_VERSIONS via CMake variable ([#600](https://github.com/rapidsai/rapids-cmake/pull/600)) [@robertmaynard](https://github.com/robertmaynard)
+- Allow for cpm default and override files via variables ([#596](https://github.com/rapidsai/rapids-cmake/pull/596)) [@robertmaynard](https://github.com/robertmaynard)
+- Expand rapids_cpm_init to support custom default version files ([#595](https://github.com/rapidsai/rapids-cmake/pull/595)) [@robertmaynard](https://github.com/robertmaynard)
+- Bump NVBench version for new `main` hooks. ([#584](https://github.com/rapidsai/rapids-cmake/pull/584)) [@alliepiper](https://github.com/alliepiper)
+- `rapids_cython_create_modules()`: Generate Cython dependency file ([#579](https://github.com/rapidsai/rapids-cmake/pull/579)) [@Jacobfaib](https://github.com/Jacobfaib)
+- rapids_cpm_gtest adds support for BUILD_STATIC ([#576](https://github.com/rapidsai/rapids-cmake/pull/576)) [@robertmaynard](https://github.com/robertmaynard)
+
+## 🛠️ Improvements
+
+- Fix `nvtx3` build export ([#615](https://github.com/rapidsai/rapids-cmake/pull/615)) [@trxcllnt](https://github.com/trxcllnt)
+- limit pinning tests to CPM-downloaded projects ([#599](https://github.com/rapidsai/rapids-cmake/pull/599)) [@jameslamb](https://github.com/jameslamb)
+- Migrate to `{{ stdlib(&quot;c&quot;) }}` ([#594](https://github.com/rapidsai/rapids-cmake/pull/594)) [@hcho3](https://github.com/hcho3)
+- resolve &#39;file_key&#39; deprecation warning from rapids-dependency-file-generator ([#593](https://github.com/rapidsai/rapids-cmake/pull/593)) [@jameslamb](https://github.com/jameslamb)
+- Prevent path conflict in builds ([#571](https://github.com/rapidsai/rapids-cmake/pull/571)) [@AyodeAwe](https://github.com/AyodeAwe)
+- Bump cuco version to fetch the latest set retrieve API ([#569](https://github.com/rapidsai/rapids-cmake/pull/569)) [@PointKernel](https://github.com/PointKernel)
+- Forward-merge branch-24.04 to branch-24.06 ([#563](https://github.com/rapidsai/rapids-cmake/pull/563)) [@bdice](https://github.com/bdice)
+
 # rapids-cmake 24.04.00 (10 Apr 2024)
 
 ## 🐛 Bug Fixes
