@@ -77,7 +77,7 @@ function(rapids_cpm_cccl)
   include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
   rapids_cpm_generate_patch_command(CCCL ${version} patch_command)
 
-  # Ensure for CMake 3.24+ that the CCCL::Thrust target exists:
+  # Ensure that the CCCL::Thrust target exists by making all targets from the package GLOBAL
   # https://github.com/NVIDIA/cccl/pull/1182
   set(CMAKE_FIND_PACKAGE_TARGETS_GLOBAL ON)
 
