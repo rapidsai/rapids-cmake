@@ -56,7 +56,7 @@ set(expected_install_dir "${CMAKE_BINARY_DIR}/check_nvcomp_lib_dir/install/")
 # Add a custom command that verifies that the expect files have
 # been installed for each component
 file(WRITE "${CMAKE_BINARY_DIR}/check_nvcomp_lib_dir/CMakeLists.txt" "
-cmake_minimum_required(VERSION 3.23.1)
+cmake_minimum_required(VERSION 3.26.4)
 project(verify_install_targets LANGUAGES CXX)
 
 message(\"Checking for lib64 directory in ${expected_install_dir}\")

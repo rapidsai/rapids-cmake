@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2023, NVIDIA CORPORATION.
+# Copyright (c) 2023-2024, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ endif()
 if(NOT TARGET CCCL::libcudacxx)
   message(FATAL_ERROR "Expected CCCL::libcudacxx target to exist")
 endif()
-if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.24.0 AND NOT TARGET CCCL::Thrust)
+if(NOT TARGET CCCL::Thrust)
   message(FATAL_ERROR "Expected CCCL::Thrust target to exist")
 endif()
 if(NOT TARGET libcudacxx::libcudacxx)
