@@ -195,8 +195,8 @@ function(extract_install_info)
   set(multi_value FILES)
   cmake_parse_arguments(_RAPIDS_TEST "${options}" "${one_value}" "${multi_value}"
                         ${install_contents})
-  if(_RAPIDS_TEST_TYPE STREQUAL "EXECUTABLE " OR _RAPIDS_TEST_TYPE STREQUAL "SHARED_LIBRARY"
-     OR _RAPIDS_TEST_TYPE STREQUAL "STATIC_LIBRARY " OR _RAPIDS_TEST_TYPE STREQUAL "OBJECT_LIBRARY")
+  if(_RAPIDS_TEST_TYPE STREQUAL "EXECUTABLE" OR _RAPIDS_TEST_TYPE STREQUAL "SHARED_LIBRARY"
+     OR _RAPIDS_TEST_TYPE STREQUAL "STATIC_LIBRARY" OR _RAPIDS_TEST_TYPE STREQUAL "OBJECT_LIBRARY")
     foreach(build_loc IN LISTS _RAPIDS_TEST_FILES)
       cmake_path(GET build_loc FILENAME name)
       set_property(GLOBAL PROPERTY ${name}_install ${_RAPIDS_TEST_DESTINATION})
