@@ -184,20 +184,19 @@ endfunction()
 # =============================================================================
 # ============== Parse Install Location Functions         ====================
 # =============================================================================
-function(extract_install_info )
-  # Leverate separate_arguments to parse a space-separated string into a list of items
-  # We use `UNIX_COMMAND` as that means args are separated by unquoted whitespace ( single, and double supported).
+function(extract_install_info)
+  # Leverate separate_arguments to parse a space-separated string into a list of items We use
+  # `UNIX_COMMAND` as that means args are separated by unquoted whitespace ( single, and double
+  # supported).
   separate_arguments(install_contents UNIX_COMMAND ${ARGN})
 
   set(options "file(INSTALL" ")")
   set(one_value DESTINATION TYPE)
   set(multi_value FILES)
-  cmake_parse_arguments(_RAPIDS_TEST "${options}" "${one_value}"
-                        "${multi_value}" ${install_contents})
-  if( _RAPIDS_TEST_TYPE STREQUAL "EXECUTABLE " OR
-      _RAPIDS_TEST_TYPE STREQUAL "SHARED_LIBRARY" OR
-      _RAPIDS_TEST_TYPE STREQUAL "STATIC_LIBRARY " OR
-      _RAPIDS_TEST_TYPE STREQUAL "OBJECT_LIBRARY")
+  cmake_parse_arguments(_RAPIDS_TEST "${options}" "${one_value}" "${multi_value}"
+                        ${install_contents})
+  if(_RAPIDS_TEST_TYPE STREQUAL "EXECUTABLE " OR _RAPIDS_TEST_TYPE STREQUAL "SHARED_LIBRARY"
+     OR _RAPIDS_TEST_TYPE STREQUAL "STATIC_LIBRARY " OR _RAPIDS_TEST_TYPE STREQUAL "OBJECT_LIBRARY")
     foreach(build_loc IN LISTS _RAPIDS_TEST_FILES)
       cmake_path(GET build_loc FILENAME name)
       set_property(GLOBAL PROPERTY ${name}_install ${_RAPIDS_TEST_DESTINATION})
@@ -214,7 +213,7 @@ function(determine_install_location_of_all_targets)
     file(STRINGS "${file}" contents)
 
     set(parsing_file_command FALSE)
-    set(file_command_contents )
+    set(file_command_contents)
     foreach(line IN LISTS contents)
       if(line MATCHES "INSTALL DESTINATION")
         # We found the first line of `file(INSTALL`
@@ -222,8 +221,8 @@ function(determine_install_location_of_all_targets)
       endif()
 
       if(parsing_file_command)
-        # Continue to add the lines of `file(INSTALL` till we hit the closing `)`
-        # That allows us to support multiple line file commands
+        # Continue to add the lines of `file(INSTALL` till we hit the closing `)` That allows us to
+        # support multiple line file commands
         string(APPEND command_contents "${line}")
         if(line MATCHES "\\)")
           # We have all the lines for this file command, now parse it
