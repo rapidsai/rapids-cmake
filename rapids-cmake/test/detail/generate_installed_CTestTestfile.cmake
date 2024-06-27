@@ -184,24 +184,25 @@ endfunction()
 # =============================================================================
 # ============== Parse Install Location Functions         ====================
 # =============================================================================
-function(extract_install_info line)
-  # We have a problem where we want to split on spaces but only when it is between two UPPER CASE
-  # letters and not in quotes :( We can't use string(REPLACE " ") since that will split paths with
-  # spaces
+function(extract_install_info )
+  # Leverate separate_arguments to parse a space-separated string into a list of items
+  # We use `UNIX_COMMAND` as that means args are separated by unquoted whitespace ( single, and double supported).
+  separate_arguments(install_contents UNIX_COMMAND ${ARGN})
 
-  # what we can do is split on quotes and make this in a list. At that point we can split all other
-  # entries again
-  string(REPLACE "\"" ";" line "${line}")
-  # item 1 is the install location item 2 is the filter if valid item 3+ are the lists of files
-  # being installed
-  list(GET line 2 type)
-  if(type MATCHES " TYPE EXECUTABLE " OR type MATCHES " TYPE SHARED_LIBRARY "
-     OR type MATCHES " TYPE STATIC_LIBRARY " OR type MATCHES " TYPE OBJECT_LIBRARY ")
-    list(GET line 1 install_loc)
-    list(GET line 3 build_loc)
-    cmake_path(GET build_loc FILENAME name)
-    set_property(GLOBAL PROPERTY ${name}_install ${install_loc})
-    set_property(GLOBAL PROPERTY ${name}_build ${build_loc})
+  set(options "file(INSTALL" ")")
+  set(one_value DESTINATION TYPE)
+  set(multi_value FILES)
+  cmake_parse_arguments(_RAPIDS_TEST "${options}" "${one_value}"
+                        "${multi_value}" ${install_contents})
+  if( _RAPIDS_TEST_TYPE STREQUAL "EXECUTABLE " OR
+      _RAPIDS_TEST_TYPE STREQUAL "SHARED_LIBRARY" OR
+      _RAPIDS_TEST_TYPE STREQUAL "STATIC_LIBRARY " OR
+      _RAPIDS_TEST_TYPE STREQUAL "OBJECT_LIBRARY")
+    foreach(build_loc IN LISTS _RAPIDS_TEST_FILES)
+      cmake_path(GET build_loc FILENAME name)
+      set_property(GLOBAL PROPERTY ${name}_install ${_RAPIDS_TEST_DESTINATION})
+      set_property(GLOBAL PROPERTY ${name}_build ${build_loc})
+    endforeach()
   endif()
 endfunction()
 
@@ -210,9 +211,29 @@ endfunction()
 function(determine_install_location_of_all_targets)
   file(GLOB_RECURSE install_rule_files "${_RAPIDS_PROJECT_DIR}/cmake_install.cmake")
   foreach(file IN LISTS install_rule_files)
-    file(STRINGS "${file}" contents REGEX "INSTALL DESTINATION")
+    file(STRINGS "${file}" contents)
+
+    set(parsing_file_command FALSE)
+    set(file_command_contents )
     foreach(line IN LISTS contents)
-      extract_install_info("${line}")
+      if(line MATCHES "INSTALL DESTINATION")
+        # We found the first line of `file(INSTALL`
+        set(parsing_file_command TRUE)
+      endif()
+
+      if(parsing_file_command)
+        # Continue to add the lines of `file(INSTALL` till we hit the closing `)`
+        # That allows us to support multiple line file commands
+        string(APPEND command_contents "${line}")
+        if(line MATCHES "\\)")
+          # We have all the lines for this file command, now parse it
+          extract_install_info(${command_contents})
+
+          # Reset to empty state for next `file(INSTALL)` command
+          set(parsing_file_command FALSE)
+          unset(command_contents)
+        endif()
+      endif()
     endforeach()
   endforeach()
 endfunction()
