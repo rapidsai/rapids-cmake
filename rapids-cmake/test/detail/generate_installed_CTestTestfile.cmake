@@ -184,13 +184,17 @@ endfunction()
 # =============================================================================
 # ============== Parse Install Location Functions         ====================
 # =============================================================================
-function(extract_install_info)
+function(extract_install_info line)
+  # remove the trailing `)` so that it doesn't get parsed as part of the file name
+  string(REGEX REPLACE "\\)$" "" line "${line}")
+  string(APPEND command_contents "${line}")
+
   # Leverate separate_arguments to parse a space-separated string into a list of items We use
   # `UNIX_COMMAND` as that means args are separated by unquoted whitespace ( single, and double
   # supported).
-  separate_arguments(install_contents UNIX_COMMAND ${ARGN})
+  separate_arguments(install_contents UNIX_COMMAND ${line})
 
-  set(options "file(INSTALL" ")")
+  set(options "file(INSTALL")
   set(one_value DESTINATION TYPE)
   set(multi_value FILES)
   cmake_parse_arguments(_RAPIDS_TEST "${options}" "${one_value}" "${multi_value}"
@@ -224,7 +228,7 @@ function(determine_install_location_of_all_targets)
         # Continue to add the lines of `file(INSTALL` till we hit the closing `)` That allows us to
         # support multiple line file commands
         string(APPEND command_contents "${line}")
-        if(line MATCHES "\\)")
+        if(line MATCHES "\\)$")
           # We have all the lines for this file command, now parse it
           extract_install_info(${command_contents})
 
