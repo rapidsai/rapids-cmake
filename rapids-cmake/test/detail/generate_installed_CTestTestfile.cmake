@@ -184,15 +184,14 @@ endfunction()
 # =============================================================================
 # ============== Parse Install Location Functions         ====================
 # =============================================================================
-function(extract_install_info line)
+function(extract_install_info)
   # remove the trailing `)` so that it doesn't get parsed as part of the file name
-  string(REGEX REPLACE "\\)$" "" line "${line}")
-  string(APPEND command_contents "${line}")
+  string(REGEX REPLACE "\\)$" "" line "${ARGN}")
 
   # Leverate separate_arguments to parse a space-separated string into a list of items We use
   # `UNIX_COMMAND` as that means args are separated by unquoted whitespace ( single, and double
   # supported).
-  separate_arguments(install_contents UNIX_COMMAND ${line})
+  separate_arguments(install_contents UNIX_COMMAND "${line}")
 
   set(options "file(INSTALL")
   set(one_value DESTINATION TYPE)
