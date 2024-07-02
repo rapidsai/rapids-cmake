@@ -48,7 +48,7 @@ These allow projects to make sure they use the same version and flags for
 dependencies as the rest of RAPIDS. The exact versions that each pre-configured
 package uses :ref:`can be found here. <cpm_versions>`
 
-.. literalinclude:: /packages/packages.rst
+.. include:: /packages/packages.rst
 
 .. _`cython`:
 
