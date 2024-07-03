@@ -11,7 +11,7 @@ rapids-cmake provides a collection of pre-defined packages to ensure that all co
 the same version of dependencies. The exact versions that each pre-configured package uses
 can be found at the bottom of the page.
 
-.. literalinclude:: /packages/packages.rst
+.. include:: /packages/packages.rst
 
 rapids-cmake package override
 #############################
