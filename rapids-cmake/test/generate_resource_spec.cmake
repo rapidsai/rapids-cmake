@@ -46,7 +46,19 @@ files to be generated.
 function(rapids_test_generate_resource_spec DESTINATION filepath)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.test.generate_resource_spec")
 
-  if(NOT DEFINED CMAKE_CUDA_COMPILER AND NOT DEFINED CMAKE_CXX_COMPILER)
+  set(rapids_have_cxx OFF)
+  set(rapids_have_cuda OFF)
+  get_property(rapids_languages GLOBAL PROPERTY ENABLED_LANGUAGES)
+  if("CXX" IN_LIST rapids_languages)
+    set(rapids_lang CXX)
+    set(rapids_have_cxx ON)
+  endif()
+  if("CUDA" IN_LIST rapids_languages)
+    set(rapids_lang CUDA)
+    set(rapids_have_cuda ON)
+  endif()
+
+  if(NOT (rapids_have_cxx OR rapids_have_cuda))
     message(FATAL_ERROR "rapids_test_generate_resource_spec Requires the CUDA or C++ language to be enabled."
     )
   endif()
@@ -58,19 +70,11 @@ function(rapids_test_generate_resource_spec DESTINATION filepath)
     find_package(CUDAToolkit QUIET)
     file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/rapids-cmake/")
 
-    set(compiler "${CMAKE_CXX_COMPILER}")
-    set(lang CXX)
-    get_property(rapids_languages GLOBAL PROPERTY ENABLED_LANGUAGES)
-    if("CUDA" IN_LIST rapids_languages)
-      set(compiler "${CMAKE_CUDA_COMPILER}")
-      set(lang CUDA)
-    endif()
-
     try_compile(result "${PROJECT_BINARY_DIR}/rapids-cmake/generate_ctest_json-build"
                 "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/generate_resource_spec"
                 generate_resource_spec
                 CMAKE_FLAGS "-DCUDAToolkit_ROOT=${CUDAToolkit_ROOT}" "-Doutput_file=${eval_exe}"
-                            "-Dlang=${lang}" "-Dcuda_toolkit=${CUDAToolkit_FOUND}"
+                            "-Dlang=${rapids_lang}" "-Dcuda_toolkit=${CUDAToolkit_FOUND}"
                 OUTPUT_VARIABLE compile_output)
 
     if(NOT result)
