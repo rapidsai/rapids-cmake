@@ -122,8 +122,8 @@ function(rapids_cpm_nvcomp)
       rapids_cmake_install_lib_dir(lib_dir)
 
       # Replace ${_IMPORT_PREFIX}/lib/ with ${_IMPORT_PREFIX}/${lib_dir}/ in all the target files
-      # that nvcomp ships. Guarded in an EXISTS check so we only try to do this on the
-      # first configuration pass
+      # that nvcomp ships. Guarded in an EXISTS check so we only try to do this on the first
+      # configuration pass
       if(NOT EXISTS "${nvcomp_ROOT}/${lib_dir}/")
         file(RENAME "${nvcomp_ROOT}/lib/" "${nvcomp_ROOT}/${lib_dir}/")
         set(filename
@@ -137,8 +137,8 @@ function(rapids_cpm_nvcomp)
         foreach(filename IN LISTS nvcomp_list_of_target_files)
           if(EXISTS "${nvcomp_ROOT}/${lib_dir}/cmake/nvcomp/${filename}")
             file(READ "${nvcomp_ROOT}/${lib_dir}/cmake/nvcomp/${filename}" FILE_CONTENTS)
-            string(REPLACE "\$\{_IMPORT_PREFIX\}/lib/" "\$\{_IMPORT_PREFIX\}/${lib_dir}/" FILE_CONTENTS
-                         ${FILE_CONTENTS})
+            string(REPLACE "\$\{_IMPORT_PREFIX\}/lib/" "\$\{_IMPORT_PREFIX\}/${lib_dir}/"
+                           FILE_CONTENTS ${FILE_CONTENTS})
             file(WRITE "${nvcomp_ROOT}/${lib_dir}/cmake/nvcomp/${filename}" ${FILE_CONTENTS})
           endif()
         endforeach()
