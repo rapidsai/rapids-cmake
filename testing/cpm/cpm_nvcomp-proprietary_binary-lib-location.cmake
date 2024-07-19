@@ -31,18 +31,27 @@ if(NOT nvcomp_proprietary_binary)
   message(FATAL_ERROR "Ignored nvcomp override file failed to get proprietary binary version")
 endif()
 
-# Check the contents of the nvcomp-targets-release.cmake file to ensure that
+# Check the contents of all of nvcomps targets-release.cmake files to ensure that
 # every line containing "_IMPORT_PREFIX" also contains "lib64"
-file(STRINGS "${CMAKE_CURRENT_BINARY_DIR}/_deps/nvcomp_proprietary_binary-src/lib64/cmake/nvcomp/nvcomp-targets-release.cmake" nvcomp_targets_release_contents)
-foreach(line IN LISTS nvcomp_targets_release_contents)
-  string(FIND "${line}" "_IMPORT_PREFIX" _IMPORT_PREFIX_INDEX)
-  if(_IMPORT_PREFIX_INDEX EQUAL -1)
-    continue()
-  endif()
-  string(FIND "${line}" "lib64" _LIB64_INDEX)
-  if(_LIB64_INDEX EQUAL -1)
-    message(FATAL_ERROR "nvcomp-targets-release.cmake file does not contain lib64")
-  endif()
+set(nvcomp_list_of_target_files
+    "nvcomp-targets-common-release.cmake"
+    "nvcomp-targets-common.cmake"
+    "nvcomp-targets-dynamic-release.cmake"
+    "nvcomp-targets-dynamic.cmake"
+    "nvcomp-targets-static-release.cmake"
+    "nvcomp-targets-static.cmake")
+foreach(filename IN LISTS nvcomp_list_of_target_files)
+  file(STRINGS "${CMAKE_CURRENT_BINARY_DIR}/_deps/nvcomp_proprietary_binary-src/lib64/cmake/nvcomp/${filename}" nvcomp_targets_release_contents)
+  foreach(line IN LISTS nvcomp_targets_release_contents)
+    string(FIND "${line}" "_IMPORT_PREFIX" _IMPORT_PREFIX_INDEX)
+    if(_IMPORT_PREFIX_INDEX EQUAL -1)
+      continue()
+    endif()
+    string(FIND "${line}" "lib64" _LIB64_INDEX)
+    if(_LIB64_INDEX EQUAL -1)
+      message(FATAL_ERROR "nvcomp-targets-release.cmake file does not contain lib64")
+    endif()
+  endforeach()
 endforeach()
 
 # Install and check the install directory.

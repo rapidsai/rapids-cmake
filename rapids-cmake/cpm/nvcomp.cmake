@@ -126,7 +126,7 @@ function(rapids_cpm_nvcomp)
       # configuration pass
       if(NOT EXISTS "${nvcomp_ROOT}/${lib_dir}/")
         file(RENAME "${nvcomp_ROOT}/lib/" "${nvcomp_ROOT}/${lib_dir}/")
-        set(filename
+        set(nvcomp_list_of_target_files
             "nvcomp-targets-common-release.cmake"
             "nvcomp-targets-common.cmake"
             "nvcomp-targets-dynamic-release.cmake"
