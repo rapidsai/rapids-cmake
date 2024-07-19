@@ -126,20 +126,20 @@ function(rapids_cpm_nvcomp)
       # first configuration pass
       if(NOT EXISTS "${nvcomp_ROOT}/${lib_dir}/")
         file(RENAME "${nvcomp_ROOT}/lib/" "${nvcomp_ROOT}/${lib_dir}/")
-        set(nvcomp_list_of_target_files
-          "nvcomp-targets-common-release.cmake"
-          "nvcomp-targets-common.cmake"
-          "nvcomp-targets-dynamic-release.cmake"
-          "nvcomp-targets-dynamic.cmake"
-          "nvcomp-targets-release.cmake"
-          "nvcomp-targets-static-release.cmake"
-          "nvcomp-targets-static.cmake")
-        foreach(nvcomp_possible_target_file IN LISTS nvcomp_list_of_target_files)
-          if(EXISTS "${nvcomp_ROOT}/${lib_dir}/cmake/nvcomp/${nvcomp_possible_target_file}")
-            file(READ "${nvcomp_ROOT}/${lib_dir}/cmake/nvcomp/${nvcomp_possible_target_file}" FILE_CONTENTS)
+        set(filename
+            "nvcomp-targets-common-release.cmake"
+            "nvcomp-targets-common.cmake"
+            "nvcomp-targets-dynamic-release.cmake"
+            "nvcomp-targets-dynamic.cmake"
+            "nvcomp-targets-release.cmake"
+            "nvcomp-targets-static-release.cmake"
+            "nvcomp-targets-static.cmake")
+        foreach(filename IN LISTS nvcomp_list_of_target_files)
+          if(EXISTS "${nvcomp_ROOT}/${lib_dir}/cmake/nvcomp/${filename}")
+            file(READ "${nvcomp_ROOT}/${lib_dir}/cmake/nvcomp/${filename}" FILE_CONTENTS)
             string(REPLACE "\$\{_IMPORT_PREFIX\}/lib/" "\$\{_IMPORT_PREFIX\}/${lib_dir}/" FILE_CONTENTS
                          ${FILE_CONTENTS})
-            file(WRITE "${nvcomp_ROOT}/${lib_dir}/cmake/nvcomp/${nvcomp_possible_target_file}" ${FILE_CONTENTS})
+            file(WRITE "${nvcomp_ROOT}/${lib_dir}/cmake/nvcomp/${filename}" ${FILE_CONTENTS})
           endif()
         endforeach()
       endif()
@@ -188,15 +188,8 @@ function(rapids_cpm_nvcomp)
   rapids_cpm_display_patch_status(nvcomp)
 
   # provide consistent targets between a found nvcomp and one building from source
-  set(nvcomp_possible_target_names
-    nvcomp
-    nvcomp_bitcomp
-    nvcomp_cpu
-    nvcomp_cpu_static
-    nvcomp_device_static
-    nvcomp_gdeflate
-    nvcomp_static
-    )
+  set(nvcomp_possible_target_names nvcomp nvcomp_bitcomp nvcomp_cpu nvcomp_cpu_static
+                                   nvcomp_device_static nvcomp_gdeflate nvcomp_static)
   foreach(name IN LISTS nvcomp_possible_target_names)
     if(NOT TARGET nvcomp::${name} AND TARGET ${name})
       add_library(nvcomp::${name} ALIAS ${name})
