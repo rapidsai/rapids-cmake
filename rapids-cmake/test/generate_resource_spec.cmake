@@ -52,6 +52,9 @@ function(rapids_test_generate_resource_spec DESTINATION filepath)
   if("CXX" IN_LIST rapids_languages)
     set(rapids_lang CXX)
     set(rapids_have_cxx ON)
+    # Even when the CUDA language is disabled we want to pass this since it is used by
+    # find_package(CUDAToolkit) to find the location
+    set(CMAKE_TRY_COMPILE_PLATFORM_VARIABLES CMAKE_CUDA_COMPILER)
   endif()
   if("CUDA" IN_LIST rapids_languages)
     set(rapids_lang CUDA)
