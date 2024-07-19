@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2023, NVIDIA CORPORATION.
+# Copyright (c) 2021-2024, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -42,8 +42,8 @@ function(rapids_cpm_download)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.download")
 
   # When changing version verify no new variables needs to be propagated
-  set(CPM_DOWNLOAD_VERSION 0.38.5)
-  set(CPM_DOWNLOAD_MD5_HASH c98d14a13dfd1952e115979c095f6794)
+  set(CPM_DOWNLOAD_VERSION 0.40.0)
+  set(CPM_DOWNLOAD_MD5_HASH 6c9866a0aa0f804a36fe8c3866fb8a2c)
 
   if(CPM_SOURCE_CACHE)
     # Expand relative path. This is important if the provided path contains a tilde (~)

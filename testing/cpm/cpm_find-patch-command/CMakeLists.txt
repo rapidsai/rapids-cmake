@@ -32,19 +32,33 @@ set(cccl_dir "${deps_dir}/cccl")
 list(APPEND CMAKE_PREFIX_PATH "${cccl_dir}")
 
 include(${rapids-cmake-dir}/cpm/init.cmake)
-include(${rapids-cmake-dir}/cpm/cccl.cmake)
 rapids_cpm_init()
+
+include(${rapids-cmake-dir}/cpm/package_override.cmake)
+rapids_cpm_package_override(${CMAKE_CURRENT_SOURCE_DIR}/override.json)
+
+include(${rapids-cmake-dir}/cpm/cccl.cmake)
 rapids_cpm_cccl()
 
 if(NOT "${CCCL_ADDED}")
     message(FATAL_ERROR "The found repo was used rather than downloading and patching a new version")
 endif()
 
+# Verify that the two files that we inserted into the CCCL source tree exist
+# Which proves the patches in the override are properly applied
+if(NOT EXISTS "${CCCL_SOURCE_DIR}/git_file_1.txt")
+  message(FATAL_ERROR "failed to apply CCCL first patch")
+endif()
+
+if(NOT EXISTS "${CCCL_SOURCE_DIR}/git_file_2.txt")
+  message(FATAL_ERROR "failed to apply CCCL second patch")
+endif()
+
 execute_process(
-    COMMAND ${GIT_EXECUTABLE} diff-files --quiet
-    RESULT_VARIABLE REPO_IS_DIRTY
+    COMMAND ${GIT_EXECUTABLE} diff --quiet ${tag}
+    RESULT_VARIABLE REPO_IS_PATCHED
     WORKING_DIRECTORY "${CCCL_SOURCE_DIR}")
 
-if(NOT ${REPO_IS_DIRTY})
+if(NOT ${REPO_IS_PATCHED})
     message(FATAL_ERROR "The repo was downloaded to ${CCCL_SOURCE_DIR} but not patched.")
 endif()

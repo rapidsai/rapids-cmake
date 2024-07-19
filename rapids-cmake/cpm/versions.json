@@ -9,21 +9,14 @@
       "version": "2.5.0",
       "git_shallow": false,
       "git_url": "https://github.com/NVIDIA/cccl.git",
-      "git_tag": "e21d607157218540cd7c45461213fb96adf720b7",
-      "patches": [
-        {
-          "file": "cccl/revert_pr_211.diff",
-          "issue": "thrust::copy introduced a change in behavior that causes failures with cudaErrorInvalidValue.",
-          "fixed_in": ""
-        }
-      ]
+      "git_tag": "e21d607157218540cd7c45461213fb96adf720b7"
     },
     "cuco": {
       "version": "0.0.1",
       "git_shallow": false,
       "always_download": true,
       "git_url": "https://github.com/NVIDIA/cuCollections.git",
-      "git_tag": "6923b3b1e526b3305de81f784fdca26736caf5ba"
+      "git_tag": "ee5c10456c7ad584c254152411ba3dc114537a6f"
     },
     "fmt": {
       "version": "10.1.1",
