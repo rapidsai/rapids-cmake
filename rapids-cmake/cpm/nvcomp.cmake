@@ -53,8 +53,10 @@ across all RAPIDS projects.
 Result Targets
 ^^^^^^^^^^^^^^
   nvcomp::nvcomp target will be created
-  nvcomp::nvcomp_gdeflate target will be created
-  nvcomp::nvcomp_bitcomp target will be created
+  nvcomp::nvcomp_cpu target will be created
+  nvcomp::nvcomp_device_static target will be created
+  nvcomp::nvcomp_static target might be created
+  nvcomp::nvcomp_cpu_static target might be created
 
 Result Variables
 ^^^^^^^^^^^^^^^^
@@ -119,15 +121,27 @@ function(rapids_cpm_nvcomp)
       include("${rapids-cmake-dir}/cmake/install_lib_dir.cmake")
       rapids_cmake_install_lib_dir(lib_dir)
 
-      # Replace ${_IMPORT_PREFIX}/lib/ with ${_IMPORT_PREFIX}/${lib_dir}/ in
-      # nvcomp-release-targets.cmake. Guarded in an EXISTS check so we only try to do this on the
+      # Replace ${_IMPORT_PREFIX}/lib/ with ${_IMPORT_PREFIX}/${lib_dir}/ in all the target files
+      # that nvcomp ships. Guarded in an EXISTS check so we only try to do this on the
       # first configuration pass
-      if(NOT EXISTS "${nvcomp_ROOT}/${lib_dir}/cmake/nvcomp/nvcomp-targets-release.cmake")
-        file(READ "${nvcomp_ROOT}/lib/cmake/nvcomp/nvcomp-targets-release.cmake" FILE_CONTENTS)
-        string(REPLACE "\$\{_IMPORT_PREFIX\}/lib/" "\$\{_IMPORT_PREFIX\}/${lib_dir}/" FILE_CONTENTS
-                       ${FILE_CONTENTS})
-        file(WRITE "${nvcomp_ROOT}/lib/cmake/nvcomp/nvcomp-targets-release.cmake" ${FILE_CONTENTS})
+      if(NOT EXISTS "${nvcomp_ROOT}/${lib_dir}/")
         file(RENAME "${nvcomp_ROOT}/lib/" "${nvcomp_ROOT}/${lib_dir}/")
+        set(nvcomp_list_of_target_files
+          "nvcomp-targets-common-release.cmake"
+          "nvcomp-targets-common.cmake"
+          "nvcomp-targets-dynamic-release.cmake"
+          "nvcomp-targets-dynamic.cmake"
+          "nvcomp-targets-release.cmake"
+          "nvcomp-targets-static-release.cmake"
+          "nvcomp-targets-static.cmake")
+        foreach(nvcomp_possible_target_file IN LISTS nvcomp_list_of_target_files)
+          if(EXISTS "${nvcomp_ROOT}/${lib_dir}/cmake/nvcomp/${nvcomp_possible_target_file}")
+            file(READ "${nvcomp_ROOT}/${lib_dir}/cmake/nvcomp/${nvcomp_possible_target_file}" FILE_CONTENTS)
+            string(REPLACE "\$\{_IMPORT_PREFIX\}/lib/" "\$\{_IMPORT_PREFIX\}/${lib_dir}/" FILE_CONTENTS
+                         ${FILE_CONTENTS})
+            file(WRITE "${nvcomp_ROOT}/${lib_dir}/cmake/nvcomp/${nvcomp_possible_target_file}" ${FILE_CONTENTS})
+          endif()
+        endforeach()
       endif()
 
       # Record the nvcomp_DIR so that if USE_PROPRIETARY_BINARY is disabled we can safely clear the
@@ -174,15 +188,20 @@ function(rapids_cpm_nvcomp)
   rapids_cpm_display_patch_status(nvcomp)
 
   # provide consistent targets between a found nvcomp and one building from source
-  if(NOT TARGET nvcomp::nvcomp AND TARGET nvcomp)
-    add_library(nvcomp::nvcomp ALIAS nvcomp)
-  endif()
-  if(NOT TARGET nvcomp::nvcomp_gdeflate AND TARGET nvcomp_gdeflate)
-    add_library(nvcomp::nvcomp_gdeflate ALIAS nvcomp_gdeflate)
-  endif()
-  if(NOT TARGET nvcomp::nvcomp_bitcomp AND TARGET nvcomp_bitcomp)
-    add_library(nvcomp::nvcomp_bitcomp ALIAS nvcomp_bitcomp)
-  endif()
+  set(nvcomp_possible_target_names
+    nvcomp
+    nvcomp_bitcomp
+    nvcomp_cpu
+    nvcomp_cpu_static
+    nvcomp_device_static
+    nvcomp_gdeflate
+    nvcomp_static
+    )
+  foreach(name IN LISTS nvcomp_possible_target_names)
+    if(NOT TARGET nvcomp::${name} AND TARGET ${name})
+      add_library(nvcomp::${name} ALIAS ${name})
+    endif()
+  endforeach()
 
   # Propagate up variables that CPMFindPackage provide
   set(nvcomp_SOURCE_DIR "${nvcomp_SOURCE_DIR}" PARENT_SCOPE)
