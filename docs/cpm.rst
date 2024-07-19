@@ -251,10 +251,24 @@ as needed.
         - ``${version}`` will be evaluated to the contents of the ``version`` field.
         - ``${cuda-toolkit-version}`` will be evaluated to 'major.minor' of the current CUDA Toolkit version.
         - ``${cuda-toolkit-version-major}`` will be evaluated to 'major' of the current CUDA Toolkit version.
+        - ``${cuda-toolkit-version-mapping}`` will be evaluated to the contents of the json `cuda_version_mapping` entry
+          of the current CUDA Toolkit major version value
         - ``$ENV{variable}`` will be evaluated to the contents of the listed environment variable
 
     If this field exists in the default package, the value will be ignored when an override file
     entry exists for the package. This ensures that the git url or `proprietary_binary` entry in the override will be used.
+
+``proprietary_binary_cuda_version_mapping``
+
+    An optional dictionary of CUDA major version keys to arbitrary values that are needed to compute download urls for a pre-built proprietary binaries
+    in the ``proprietary_binary`` dictionary
+
+    .. literalinclude:: /packages/cuda_version_mapping.json
+        :language: json
+
+    As this represents meta information needed by the proprietary binary dictionary only the following packages support this entry:
+        - nvcomp
+
 
 rapids-cmake package versions
 #############################
