@@ -77,8 +77,8 @@
         "12": "12.5"
       },
       "proprietary_binary": {
-        "x86_64-linux": "https://developer.download.nvidia.com/compute/nvcomp/${version}/local_installers/nvcomp-linux-x86_64-${version}-cuda${cuda-toolkit-version-mapping}.tgz",
-        "aarch64-linux": "https://developer.download.nvidia.com/compute/nvcomp/${version}/local_installers/nvcomp-linux-sbsa-${version}-cuda${cuda-toolkit-version-mapping}.tgz"
+        "x86_64-linux": "https://developer.download.nvidia.com/compute/nvcomp/${version}/local_installers/nvcomp-linux-x86_64-${version}-cuda${cuda-toolkit-version-mapping}.tar.gz",
+        "aarch64-linux": "https://developer.download.nvidia.com/compute/nvcomp/${version}/local_installers/nvcomp-linux-sbsa-${version}-cuda${cuda-toolkit-version-mapping}.tar.gz"
       }
     },
     "nvtx3": {
