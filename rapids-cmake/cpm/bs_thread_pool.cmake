@@ -88,12 +88,13 @@ function(rapids_cpm_bs_thread_pool)
 
   # Set up install rules Need to be re-entrant safe so only call when `bs_thread_pool_ADDED`
   if(bs_thread_pool_ADDED)
-    if(NOT TARGET thread_pool)
-      add_library(thread_pool INTERFACE)
-      target_include_directories(thread_pool
+    if(NOT TARGET rapids_bs_thread_pool)
+      add_library(rapids_bs_thread_pool INTERFACE)
+      target_include_directories(rapids_bs_thread_pool
                                  INTERFACE "$<BUILD_INTERFACE:${bs_thread_pool_SOURCE_DIR}/include>"
                                            "$<INSTALL_INTERFACE:include>")
-      install(TARGETS thread_pool EXPORT bs_thread_pool-targets)
+      set_property(TARGET rapids_bs_thread_pool PROPERTY EXPORT_NAME thread_pool)
+      install(TARGETS rapids_bs_thread_pool EXPORT bs_thread_pool-targets)
     endif()
     if(_RAPIDS_BUILD_EXPORT_SET)
       include("${rapids-cmake-dir}/export/export.cmake")
@@ -119,8 +120,8 @@ function(rapids_cpm_bs_thread_pool)
     endif()
   endif()
 
-  if(NOT TARGET BS::thread_pool AND TARGET thread_pool)
-    add_library(BS::thread_pool ALIAS thread_pool)
+  if(NOT TARGET BS::thread_pool AND TARGET rapids_bs_thread_pool)
+    add_library(BS::thread_pool ALIAS rapids_bs_thread_pool)
   endif()
 
   # Propagate up variables that CPMFindPackage provide
