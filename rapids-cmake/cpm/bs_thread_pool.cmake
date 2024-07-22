@@ -93,6 +93,7 @@ function(rapids_cpm_bs_thread_pool)
       target_include_directories(rapids_bs_thread_pool
                                  INTERFACE "$<BUILD_INTERFACE:${bs_thread_pool_SOURCE_DIR}/include>"
                                            "$<INSTALL_INTERFACE:include>")
+      target_compile_definitions(rapids_bs_thread_pool INTERFACE "BS_THREAD_POOL_ENABLE_PAUSE=1")
       set_property(TARGET rapids_bs_thread_pool PROPERTY EXPORT_NAME thread_pool)
       install(TARGETS rapids_bs_thread_pool EXPORT bs_thread_pool-targets)
     endif()
