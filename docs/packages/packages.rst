@@ -1,6 +1,7 @@
 .. toctree::
    :titlesonly:
 
+   /packages/rapids_cpm_bs_thread_pool
    /packages/rapids_cpm_cccl
    /packages/rapids_cpm_cuco
    /packages/rapids_cpm_fmt
