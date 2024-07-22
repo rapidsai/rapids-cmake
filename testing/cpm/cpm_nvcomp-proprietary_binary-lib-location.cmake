@@ -35,11 +35,8 @@ endif()
 # every line containing "_IMPORT_PREFIX" also contains "lib64"
 set(nvcomp_list_of_target_files
     "nvcomp-targets-common-release.cmake"
-    "nvcomp-targets-common.cmake"
     "nvcomp-targets-dynamic-release.cmake"
-    "nvcomp-targets-dynamic.cmake"
-    "nvcomp-targets-static-release.cmake"
-    "nvcomp-targets-static.cmake")
+    "nvcomp-targets-static-release.cmake")
 foreach(filename IN LISTS nvcomp_list_of_target_files)
   file(STRINGS "${CMAKE_CURRENT_BINARY_DIR}/_deps/nvcomp_proprietary_binary-src/lib64/cmake/nvcomp/${filename}" nvcomp_targets_release_contents)
   foreach(line IN LISTS nvcomp_targets_release_contents)
@@ -49,7 +46,7 @@ foreach(filename IN LISTS nvcomp_list_of_target_files)
     endif()
     string(FIND "${line}" "lib64" _LIB64_INDEX)
     if(_LIB64_INDEX EQUAL -1)
-      message(FATAL_ERROR "nvcomp-targets-release.cmake file does not contain lib64")
+      message(FATAL_ERROR "${filename} file does not contain lib64")
     endif()
   endforeach()
 endforeach()
