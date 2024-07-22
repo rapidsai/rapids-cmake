@@ -183,6 +183,16 @@
           "USE_PROPRIETARY_BINARY": 1
         }
       },
+      "rapids_cpm_nvtx3": {
+        "pargs": {
+          "nargs": 0
+        },
+        "kwargs": {
+          "BUILD_EXPORT_SET": 1,
+          "INSTALL_EXPORT_SET": 1,
+          "USE_PROPRIETARY_BINARY": 1
+        }
+      },
       "rapids_cpm_rmm": {
         "pargs": {
           "nargs": 0
