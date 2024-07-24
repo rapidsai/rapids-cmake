@@ -32,3 +32,6 @@ if(NOT TARGET BS::thread_pool)
 endif()
 
 rapids_cpm_bs_thread_pool()
+
+include(${rapids-cmake-dir}/cpm/generate_pinned_versions.cmake)
+rapids_cpm_generate_pinned_versions(OUTPUT ${CMAKE_BINARY_DIR}/versions.json)

@@ -71,6 +71,7 @@ function(rapids_cpm_bs_thread_pool)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
   rapids_cpm_find(bs_thread_pool ${version} ${ARGN}
+                  GLOBAL_TARGETS rapids_bs_thread_pool
                   CPM_ARGS
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
