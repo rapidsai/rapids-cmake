@@ -46,6 +46,7 @@ Result Variables
   :cmake:variable:`bs_thread_pool_VERSION`    is set to the version of `thread-pool` specified by the versions.json.
 
 #]=======================================================================]
+# cmake-lint: disable=R0915
 function(rapids_cpm_bs_thread_pool)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.bs_thread_pool")
 
@@ -95,6 +96,7 @@ function(rapids_cpm_bs_thread_pool)
                                  INTERFACE "$<BUILD_INTERFACE:${bs_thread_pool_SOURCE_DIR}/include>"
                                            "$<INSTALL_INTERFACE:include>")
       target_compile_definitions(rapids_bs_thread_pool INTERFACE "BS_THREAD_POOL_ENABLE_PAUSE=1")
+      target_compile_features(rapids_bs_thread_pool INTERFACE cxx_std_17 cuda_std_17)
       set_property(TARGET rapids_bs_thread_pool PROPERTY EXPORT_NAME thread_pool)
       install(TARGETS rapids_bs_thread_pool EXPORT bs_thread_pool-targets)
     endif()
