@@ -76,7 +76,6 @@ add_cmake_build_test( cpm_cccl-preserve-custom-install-loc )
 
 add_cmake_config_test( cpm_cuco-simple.cmake )
 add_cmake_config_test( cpm_cuco-export.cmake )
-add_cmake_config_test( cpm_cuco-libcudacxx-no-install-export.cmake )
 
 add_cmake_config_test( cpm_fmt-export.cmake )
 add_cmake_config_test( cpm_fmt-simple.cmake )
@@ -90,11 +89,6 @@ add_cmake_config_test( cpm_gtest-export.cmake )
 add_cmake_config_test( cpm_gtest-simple.cmake )
 add_cmake_config_test( cpm_gtest-static.cmake )
 add_cmake_config_test( cpm_gtest-explicit-static.cmake )
-
-add_cmake_config_test( cpm_libcudacxx-after_cpmfind.cmake SERIAL)
-add_cmake_config_test( cpm_libcudacxx-export.cmake )
-add_cmake_config_test( cpm_libcudacxx-simple.cmake )
-add_cmake_build_test( cpm_libcudacxx-verify-install-custom-libdir )
 
 add_cmake_config_test( cpm_nvbench-export.cmake SERIAL)
 add_cmake_config_test( cpm_nvbench-simple.cmake SERIAL)
@@ -127,7 +121,3 @@ add_cmake_config_test( cpm_rmm-simple.cmake )
 add_cmake_build_test( cpm_spdlog-external-fmt.cmake )
 add_cmake_config_test( cpm_spdlog-export.cmake )
 add_cmake_config_test( cpm_spdlog-simple.cmake )
-
-add_cmake_config_test( cpm_thrust-export.cmake )
-add_cmake_config_test( cpm_thrust-simple.cmake )
-add_cmake_build_test( cpm_thrust-verify-post-find-code )
