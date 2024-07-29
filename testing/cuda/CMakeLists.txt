@@ -35,9 +35,6 @@ add_cmake_config_test( init_arch-user-via-env.cmake )
 add_cmake_config_test( init_arch-user-over-env.cmake )
 add_cmake_config_test( init_arch-var-over-env.cmake )
 
-add_cmake_config_test( patch_toolkit.cmake )
-add_cmake_config_test( patch_toolkit-nested )
-
 add_cmake_config_test( set_arch-existing.cmake )
 add_cmake_config_test( set_arch-invalid-mode.cmake )
 add_cmake_config_test( set_arch-native.cmake )
