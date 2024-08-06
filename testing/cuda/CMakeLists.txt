@@ -32,6 +32,7 @@ add_cmake_config_test( init_arch-rapids.cmake )
 add_cmake_config_test( init_arch-rapids-via-env.cmake )
 add_cmake_config_test( init_arch-user.cmake )
 add_cmake_config_test( init_arch-user-via-env.cmake )
+add_cmake_config_test( init_arch-user-over-env.cmake )
 add_cmake_config_test( init_arch-var-over-env.cmake )
 
 add_cmake_config_test( patch_toolkit.cmake )

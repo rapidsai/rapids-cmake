@@ -101,6 +101,15 @@
           "nargs": 1
         }
       },
+      "rapids_cpm_bs_thread_pool": {
+        "pargs": {
+          "nargs": 0
+        },
+        "kwargs": {
+          "BUILD_EXPORT_SET": 1,
+          "INSTALL_EXPORT_SET": 1
+        }
+      },
       "rapids_cpm_cccl": {
         "pargs": {
           "nargs": 0
@@ -181,6 +190,15 @@
           "BUILD_EXPORT_SET": 1,
           "INSTALL_EXPORT_SET": 1,
           "USE_PROPRIETARY_BINARY": 1
+        }
+      },
+      "rapids_cpm_nvtx3": {
+        "pargs": {
+          "nargs": 0
+        },
+        "kwargs": {
+          "BUILD_EXPORT_SET": 1,
+          "INSTALL_EXPORT_SET": 1
         }
       },
       "rapids_cpm_rmm": {
