@@ -5,38 +5,23 @@
       "git_url": "https://github.com/google/benchmark.git",
       "git_tag": "v${version}"
     },
+    "bs_thread_pool": {
+      "version": "4.1.0",
+      "git_url": "https://github.com/bshoshany/thread-pool.git",
+      "git_tag": "097aa718f25d44315cadb80b407144ad455ee4f9"
+    },
     "CCCL": {
-      "version": "2.2.0",
+      "version": "2.5.0",
+      "git_shallow": false,
       "git_url": "https://github.com/NVIDIA/cccl.git",
-      "git_tag": "v${version}",
-      "patches": [
-        {
-          "file": "cccl/bug_fixes.diff",
-          "issue": "CCCL installs header-search.cmake files in nondeterministic order and has a typo in checking target creation that leads to duplicates",
-          "fixed_in": "2.3"
-        },
-        {
-          "file": "cccl/hide_kernels.diff",
-          "issue": "Mark all cub and thrust kernels with hidden visibility [https://github.com/nvidia/cccl/pulls/443]",
-          "fixed_in": "2.3"
-        },
-        {
-          "file": "cccl/revert_pr_211.diff",
-          "issue": "thrust::copy introduced a change in behavior that causes failures with cudaErrorInvalidValue.",
-          "fixed_in": ""
-        },
-        {
-          "file": "cccl/kernel_pointer_hiding.diff",
-          "issue": "Hide APIs that accept kernel pointers [https://github.com/NVIDIA/cccl/pull/1395]",
-          "fixed_in": "2.4"
-        }
-      ]
+      "git_tag": "e21d607157218540cd7c45461213fb96adf720b7"
     },
     "cuco": {
       "version": "0.0.1",
       "git_shallow": false,
+      "always_download": true,
       "git_url": "https://github.com/NVIDIA/cuCollections.git",
-      "git_tag": "2101cb31d0210b609cd02c88f9b538e10881d91d"
+      "git_tag": "ee5c10456c7ad584c254152411ba3dc114537a6f"
     },
     "fmt": {
       "version": "10.1.1",
@@ -92,9 +77,13 @@
       "version": "3.0.6",
       "git_url": "https://github.com/NVIDIA/nvcomp.git",
       "git_tag": "v2.2.0",
+      "proprietary_binary_cuda_version_mapping": {
+        "11": "11.x",
+        "12": "12.x"
+      },
       "proprietary_binary": {
-        "x86_64-linux": "https://developer.download.nvidia.com/compute/nvcomp/${version}/local_installers/nvcomp_${version}_x86_64_${cuda-toolkit-version-major}.x.tgz",
-        "aarch64-linux": "https://developer.download.nvidia.com/compute/nvcomp/${version}/local_installers/nvcomp_${version}_SBSA_${cuda-toolkit-version-major}.x.tgz"
+        "x86_64-linux": "https://developer.download.nvidia.com/compute/nvcomp/${version}/local_installers/nvcomp_${version}_x86_64_${cuda-toolkit-version-mapping}.tgz",
+        "aarch64-linux": "https://developer.download.nvidia.com/compute/nvcomp/${version}/local_installers/nvcomp_${version}_SBSA_${cuda-toolkit-version-mapping}.tgz"
       }
     },
     "nvtx3": {

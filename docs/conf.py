@@ -1,4 +1,4 @@
-# Copyright (c) 2023, NVIDIA CORPORATION.
+# Copyright (c) 2023-2024, NVIDIA CORPORATION.
 #
 # Configuration file for the Sphinx documentation builder.
 #
@@ -25,9 +25,9 @@ author = "NVIDIA"
 # built documents.
 #
 # The short X.Y version.
-version = "24.06"
+version = "24.08"
 # The full version, including alpha/beta/rc tags.
-release = "24.06.00"
+release = "24.08.00"
 
 
 # -- General configuration ---------------------------------------------------

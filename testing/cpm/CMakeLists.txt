@@ -65,6 +65,11 @@ add_cmake_config_test( cpm_generate_patch_command-override.cmake )
 add_cmake_config_test( cpm_generate_patch_command-current_json_dir.cmake )
 add_cmake_config_test( cpm_generate_patch_command-verify-copyright-header.cmake )
 
+add_cmake_config_test( cpm_bs_thread_pool-simple.cmake )
+add_cmake_config_test( cpm_bs_thread_pool-export.cmake )
+add_cmake_build_test( cpm_bs_thread_pool-build-config-works.cmake )
+add_cmake_build_test( cpm_bs_thread_pool-install-config-works.cmake )
+
 add_cmake_config_test( cpm_cccl-simple.cmake )
 add_cmake_config_test( cpm_cccl-export.cmake )
 add_cmake_build_test( cpm_cccl-preserve-custom-install-loc )
