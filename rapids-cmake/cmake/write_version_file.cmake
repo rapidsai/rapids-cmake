@@ -91,6 +91,7 @@ function(rapids_cmake_write_version_file file_path)
     set(_RAPIDS_WRITE_PATCH 0)
   endif()
 
+  string(TIMESTAMP current_year "%Y" UTC)
   configure_file("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/version.hpp.in" "${output_path}"
                  @ONLY)
 endfunction()

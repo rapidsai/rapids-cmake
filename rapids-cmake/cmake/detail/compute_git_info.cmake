@@ -49,4 +49,5 @@ if(_RAPIDS_WRITE_VERSION MATCHES dirty)
   set(_RAPIDS_GIT_IS_DIRTY 1)
 endif()
 
+string(TIMESTAMP current_year "%Y" UTC)
 configure_file("${TEMPLATE_FILE}" "${FILE_TO_WRITE}" @ONLY)
