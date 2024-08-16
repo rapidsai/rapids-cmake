@@ -102,6 +102,11 @@ function(rapids_cpm_nvcomp)
     endif()
   endif()
 
+  # Set up the version of nvcomp we have downloaded to match the OS layout. that means ensuring we
+  # have a `lib64` directory on Fedora based machines
+  include("${rapids-cmake-dir}/cmake/install_lib_dir.cmake")
+  rapids_cmake_install_lib_dir(lib_dir)
+
   # second see if we have a proprietary pre-built binary listed in versions.json and download it if
   # requested.
   set(nvcomp_proprietary_binary OFF) # will be set to true by rapids_cpm_get_proprietary_binary
@@ -114,11 +119,6 @@ function(rapids_cpm_nvcomp)
     endif()
 
     if(nvcomp_proprietary_binary)
-      # Set up the version of nvcomp we have downloaded to match the OS layout. that means ensuring
-      # we have a `lib64` directory on Fedora based machines
-      include("${rapids-cmake-dir}/cmake/install_lib_dir.cmake")
-      rapids_cmake_install_lib_dir(lib_dir)
-
       # Replace ${_IMPORT_PREFIX}/lib/ with ${_IMPORT_PREFIX}/${lib_dir}/ in
       # nvcomp-release-targets.cmake. Guarded in an EXISTS check so we only try to do this on the
       # first configuration pass
@@ -143,10 +143,10 @@ function(rapids_cpm_nvcomp)
 
       # Record the nvcomp_DIR so that if USE_PROPRIETARY_BINARY is disabled we can safely clear the
       # nvcomp_DIR value
-      set(nvcomp_proprietary_binary_dir "${nvcomp_ROOT}/${lib_dir}/cmake/nvcomp")
-      cmake_path(NORMAL_PATH nvcomp_proprietary_binary_dir)
-      set(rapids_cpm_nvcomp_proprietary_binary_dir "${nvcomp_proprietary_binary_dir}"
-          CACHE INTERNAL "nvcomp proprietary location")
+      set(nvcomp_proprietary_root "${nvcomp_ROOT}")
+      cmake_path(NORMAL_PATH nvcomp_proprietary_root)
+      set(rapids_cpm_nvcomp_proprietary_root "${nvcomp_proprietary_root}"
+          CACHE INTERNAL "nvcomp proprietary root dir location")
 
       # Enforce that we need to find the local download of nvcomp and nothing else when we have a
       # proprietary binary enabled.
@@ -156,7 +156,9 @@ function(rapids_cpm_nvcomp)
     endif()
   elseif(DEFINED nvcomp_DIR)
     cmake_path(NORMAL_PATH nvcomp_DIR)
-    if(nvcomp_DIR STREQUAL rapids_cpm_nvcomp_proprietary_binary_dir)
+    if(nvcomp_DIR STREQUAL "${rapids_cpm_nvcomp_proprietary_root}/${lib_dir}/cmake/nvcomp")
+      set(nvcomp_proprietary_binary ON)
+      set(nvcomp_ROOT "${rapids_cpm_nvcomp_proprietary_root}")
       unset(nvcomp_DIR)
       unset(nvcomp_DIR CACHE)
     endif()
