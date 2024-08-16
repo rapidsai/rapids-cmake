@@ -123,11 +123,18 @@ function(rapids_cpm_nvcomp)
       # nvcomp-release-targets.cmake. Guarded in an EXISTS check so we only try to do this on the
       # first configuration pass
       if(NOT EXISTS "${nvcomp_ROOT}/${lib_dir}/cmake/nvcomp/nvcomp-targets-release.cmake")
+        include(GNUInstallDirs)
+        get_filename_component(lib_dir_name "${lib_dir}" NAME)
         file(READ "${nvcomp_ROOT}/lib/cmake/nvcomp/nvcomp-targets-release.cmake" FILE_CONTENTS)
-        string(REPLACE "\$\{_IMPORT_PREFIX\}/lib/" "\$\{_IMPORT_PREFIX\}/${lib_dir}/" FILE_CONTENTS
-                       ${FILE_CONTENTS})
+        string(REPLACE "\$\{_IMPORT_PREFIX\}/lib/" "\$\{_IMPORT_PREFIX\}/${lib_dir_name}/"
+                       FILE_CONTENTS ${FILE_CONTENTS})
         file(WRITE "${nvcomp_ROOT}/lib/cmake/nvcomp/nvcomp-targets-release.cmake" ${FILE_CONTENTS})
+        get_filename_component(lib_dir_parent "${lib_dir}" DIRECTORY)
+        file(MAKE_DIRECTORY "${nvcomp_ROOT}/${lib_dir_parent}")
         file(RENAME "${nvcomp_ROOT}/lib/" "${nvcomp_ROOT}/${lib_dir}/")
+        get_filename_component(include_dir_parent "${CMAKE_INSTALL_INCLUDEDIR}" DIRECTORY)
+        file(MAKE_DIRECTORY "${nvcomp_ROOT}/${include_dir_parent}")
+        file(RENAME "${nvcomp_ROOT}/include/" "${nvcomp_ROOT}/${CMAKE_INSTALL_INCLUDEDIR}/")
       endif()
 
       # Record the nvcomp_DIR so that if USE_PROPRIETARY_BINARY is disabled we can safely clear the
@@ -199,7 +206,8 @@ function(rapids_cpm_nvcomp)
     include(GNUInstallDirs)
 
     install(DIRECTORY "${nvcomp_ROOT}/${lib_dir}/" DESTINATION "${lib_dir}")
-    install(DIRECTORY "${nvcomp_ROOT}/include/" DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
+    install(DIRECTORY "${nvcomp_ROOT}/${CMAKE_INSTALL_INCLUDEDIR}/"
+            DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
     # place the license information in the location that conda uses
     install(FILES "${nvcomp_ROOT}/NOTICE" DESTINATION info/ RENAME NVCOMP_NOTICE)
     install(FILES "${nvcomp_ROOT}/LICENSE" DESTINATION info/ RENAME NVCOMP_LICENSE)

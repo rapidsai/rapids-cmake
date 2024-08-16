@@ -105,6 +105,7 @@ add_cmake_config_test( cpm_nvcomp-invalid-arch.cmake )
 add_cmake_config_test( cpm_nvcomp-always-download-proprietary_binary.cmake SERIAL)
 add_cmake_config_test( cpm_nvcomp-override-clears-proprietary_binary.cmake SERIAL)
 add_cmake_build_test( cpm_nvcomp-proprietary_binary-lib-location.cmake SERIAL NO_CPM_CACHE)
+add_cmake_build_test( cpm_nvcomp-proprietary_binary-lib-location-nested.cmake SERIAL NO_CPM_CACHE)
 
 add_cmake_build_test( cpm_nvtx-build-config-works.cmake )
 add_cmake_build_test( cpm_nvtx-install-config-works.cmake )
