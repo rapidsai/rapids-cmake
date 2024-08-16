@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2024, NVIDIA CORPORATION.
+# Copyright (c) 2024, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,8 +14,6 @@
 # limitations under the License.
 #=============================================================================
 
-include(${rapids-cmake-dir}/export/write_language.cmake)
-
-add_subdirectory(../C C)
-
-add_library(B STATIC static.cu)
+set(CMAKE_INSTALL_LIBDIR "nested/lib64")
+set(CMAKE_INSTALL_INCLUDEDIR "nested/include")
+include("${CMAKE_CURRENT_LIST_DIR}/cpm_nvcomp-proprietary_binary-lib-location-common.cmake")
