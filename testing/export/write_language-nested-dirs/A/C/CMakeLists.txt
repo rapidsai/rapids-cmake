@@ -16,6 +16,13 @@
 
 include(${rapids-cmake-dir}/export/write_language.cmake)
 
-add_subdirectory(../C C)
+function(enable_nested_language file_path)
+  #replicates CPM including the file
+  include("${file_path}")
+endfunction()
 
-add_library(B STATIC static.cu)
+set(path "${CMAKE_CURRENT_BINARY_DIR}/enable_cuda_language.cmake")
+rapids_export_write_language(INSTALL CUDA "${path}")
+enable_nested_language("${path}")
+
+add_library(C STATIC static.cu)
