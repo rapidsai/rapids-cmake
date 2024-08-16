@@ -124,21 +124,20 @@ function(rapids_cpm_nvcomp)
       # first configuration pass
       if(NOT EXISTS "${nvcomp_ROOT}/${lib_dir}/cmake/nvcomp/nvcomp-targets-release.cmake")
         include(GNUInstallDirs)
-        get_filename_component(lib_dir_parent "${lib_dir}" DIRECTORY)
-        get_filename_component(include_dir_parent "${CMAKE_INSTALL_INCLUDEDIR}" DIRECTORY)
+        cmake_path(GET lib_dir PARENT_PATH lib_dir_parent)
+        cmake_path(GET CMAKE_INSTALL_INCLUDEDIR PARENT_PATH include_dir_parent)
         if(NOT lib_dir_parent STREQUAL include_dir_parent)
           message(FATAL_ERROR "CMAKE_INSTALL_INCLUDEDIR and CMAKE_INSTALL_LIBDIR must share parent directory"
           )
         endif()
 
-        get_filename_component(lib_dir_name "${lib_dir}" NAME)
+        cmake_path(GET lib_dir FILENAME lib_dir_name)
         file(READ "${nvcomp_ROOT}/lib/cmake/nvcomp/nvcomp-targets-release.cmake" FILE_CONTENTS)
         string(REPLACE "\$\{_IMPORT_PREFIX\}/lib/" "\$\{_IMPORT_PREFIX\}/${lib_dir_name}/"
                        FILE_CONTENTS ${FILE_CONTENTS})
         file(WRITE "${nvcomp_ROOT}/lib/cmake/nvcomp/nvcomp-targets-release.cmake" ${FILE_CONTENTS})
         file(MAKE_DIRECTORY "${nvcomp_ROOT}/${lib_dir_parent}")
         file(RENAME "${nvcomp_ROOT}/lib/" "${nvcomp_ROOT}/${lib_dir}/")
-        file(MAKE_DIRECTORY "${nvcomp_ROOT}/${include_dir_parent}")
         file(RENAME "${nvcomp_ROOT}/include/" "${nvcomp_ROOT}/${CMAKE_INSTALL_INCLUDEDIR}/")
       endif()
 
