@@ -14,5 +14,6 @@
 # limitations under the License.
 #=============================================================================
 
-set(CMAKE_INSTALL_LIBDIR "lib64")
+set(CMAKE_INSTALL_LIBDIR "nested/lib64")
+set(CMAKE_INSTALL_INCLUDEDIR "nested/include")
 include("${CMAKE_CURRENT_LIST_DIR}/cpm_nvcomp-proprietary_binary-lib-location-common.cmake")
