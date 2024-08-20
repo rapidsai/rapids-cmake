@@ -50,7 +50,7 @@ Overriding RAPIDS.cmake
 
 At times projects or developers will need to verify ``rapids-cmake`` branches. To do this you can set variables that control which repository ``RAPIDS.cmake`` downloads, which should be done like this:
 
-```cmake
+.. code-block:: cmake
   # To override the version that is pulled:
   set(rapids-cmake-version "<version>")
 
@@ -85,14 +85,13 @@ At times projects or developers will need to verify ``rapids-cmake`` branches. T
   file(DOWNLOAD https://raw.githubusercontent.com/rapidsai/rapids-cmake/branch-22.10/RAPIDS.cmake
       ${CMAKE_CURRENT_BINARY_DIR}/RAPIDS.cmake)
   include(${CMAKE_CURRENT_BINARY_DIR}/RAPIDS.cmake)
-```
 
 A few notes:
 
 - An explicitly defined ``rapids-cmake-url`` will always be used
-- `rapids-cmake-sha` takes precedence over `rapids-cmake-tag`
-- `rapids-cmake-tag` takes precedence over `rapids-cmake-branch`
-- It is advised to always set `rapids-cmake-version` to the version expected by the repo your modifications will pull
+- ``rapids-cmake-sha`` takes precedence over ``rapids-cmake-tag``
+- ``rapids-cmake-tag`` takes precedence over ``rapids-cmake-branch``
+- It is advised to always set ``rapids-cmake-version`` to the version expected by the repo your modifications will pull
 
 An incorrect approach that people try is to modify the ``file(DOWNLOAD)`` line to point to the
 custom ``rapids-cmake`` branch. That doesn't work as the downloaded ``RAPIDS.cmake`` contains
