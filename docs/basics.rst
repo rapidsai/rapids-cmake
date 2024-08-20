@@ -51,6 +51,7 @@ Overriding RAPIDS.cmake
 At times projects or developers will need to verify ``rapids-cmake`` branches. To do this you can set variables that control which repository ``RAPIDS.cmake`` downloads, which should be done like this:
 
 .. code-block:: cmake
+
   # To override the version that is pulled:
   set(rapids-cmake-version "<version>")
 
