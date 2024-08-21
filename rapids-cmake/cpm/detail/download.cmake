@@ -27,8 +27,18 @@ Does the downloading of the `CPM` module
 
   rapids_cpm_download()
 
-The CPM module will be downloaded based on the state of :cmake:variable:`CPM_SOURCE_CACHE` and
-:cmake:variable:`ENV{CPM_SOURCE_CACHE}`.
+The CPM module will be downloaded based on the following.
+
+.. versionadded:: v24.10.00
+
+If :cmake:variable:`CPM_DOWNLOAD_LOCATION` is defined that location will be used
+as the download location. If a file already exists at that location no download will occur
+
+If the :cmake:variable:`CPM_SOURCE_CACHE` or :cmake:variable:`ENV{CPM_SOURCE_CACHE}` are
+defined those will be used to compute a location for the file.
+
+If none of the above variables are defined, rapids-cmake will download the file
+to `cmake` directory under :cmake:variable:`CMAKE_BINARY_DIR`.
 
 .. note::
   Use `rapids_cpm_init` instead of this function, as this is an implementation detail
