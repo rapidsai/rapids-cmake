@@ -32,8 +32,6 @@ include(${rapids-cmake-dir}/cpm/fmt.cmake)
 
 rapids_cpm_init(GENERATE_PINNED_VERSIONS)
 
-set(CPM_SOURCE_CACHE "${CMAKE_BINARY_DIR}")
-
 # Download all source packages
 set(CPM_DOWNLOAD_ALL "ON")
 rapids_cpm_cccl(DOWNLOAD_ONLY ON)

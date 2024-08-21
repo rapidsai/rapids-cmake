@@ -44,5 +44,5 @@ if(NOT EXISTS "${cuco_SOURCE_DIR}/git_file_1.txt")
 endif()
 
 add_custom_target(verify_generated_pins ALL
-  COMMAND ${CMAKE_COMMAND} -S="${CMAKE_SOURCE_DIR}/verify/" -B"${CMAKE_BINARY_DIR}/verify_build" -D"rapids-cmake-dir=${rapids-cmake-dir}"
+  COMMAND ${CMAKE_COMMAND} -S="${CMAKE_SOURCE_DIR}/verify/" -B"${CMAKE_BINARY_DIR}/verify_build" -D"rapids-cmake-dir=${rapids-cmake-dir}" -D"CPM_DOWNLOAD_LOCATION=${CPM_DOWNLOAD_LOCATION}"
 )
