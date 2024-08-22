@@ -1,6 +1,6 @@
 {
   "packages": {
-    "CCCL": {
+    "fmt": {
       "patches": [
         {
           "file": "${current_json_dir}/patches/0001-move-git-sha1.patch",
