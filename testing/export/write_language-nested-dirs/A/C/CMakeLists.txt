@@ -13,21 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-include(${rapids-cmake-dir}/cmake/write_version_file.cmake)
-include(${rapids-cmake-testing-dir}/utils/check_copyright_header.cmake)
 
-cmake_minimum_required(VERSION 3.26.4)
+include(${rapids-cmake-dir}/export/write_language.cmake)
 
-project(DEMO VERSION 3.2.0 LANGUAGES NONE)
-rapids_cmake_write_version_file(demo_version.hpp)
+function(enable_nested_language file_path)
+  #replicates CPM including the file
+  include("${file_path}")
+endfunction()
 
-project(NESTED VERSION 3.14.159 LANGUAGES NONE)
-rapids_cmake_write_version_file(nested_version.hpp)
+set(path "${CMAKE_CURRENT_BINARY_DIR}/enable_cuda_language.cmake")
+rapids_export_write_language(INSTALL CUDA "${path}")
+enable_nested_language("${path}")
 
-enable_language(CXX)
-add_executable(write_version main.cpp)
-target_include_directories(write_version PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
-target_compile_features(write_version PRIVATE cxx_std_14)
-
-check_copyright_header("${CMAKE_CURRENT_BINARY_DIR}/demo_version.hpp")
-check_copyright_header("${CMAKE_CURRENT_BINARY_DIR}/nested_version.hpp")
+add_library(C STATIC static.cu)

@@ -104,6 +104,11 @@ function(rapids_cpm_nvcomp)
     endif()
   endif()
 
+  # Set up the version of nvcomp we have downloaded to match the OS layout. that means ensuring we
+  # have a `lib64` directory on Fedora based machines
+  include("${rapids-cmake-dir}/cmake/install_lib_dir.cmake")
+  rapids_cmake_install_lib_dir(lib_dir)
+
   # second see if we have a proprietary pre-built binary listed in versions.json and download it if
   # requested.
   set(nvcomp_proprietary_binary OFF) # will be set to true by rapids_cpm_get_proprietary_binary
@@ -116,16 +121,19 @@ function(rapids_cpm_nvcomp)
     endif()
 
     if(nvcomp_proprietary_binary)
-      # Set up the version of nvcomp we have downloaded to match the OS layout. that means ensuring
-      # we have a `lib64` directory on Fedora based machines
-      include("${rapids-cmake-dir}/cmake/install_lib_dir.cmake")
-      rapids_cmake_install_lib_dir(lib_dir)
+      if(NOT EXISTS "${nvcomp_ROOT}/${lib_dir}/cmake/nvcomp/nvcomp-config.cmake")
+        include(GNUInstallDirs)
+        cmake_path(GET lib_dir PARENT_PATH lib_dir_parent)
+        cmake_path(GET CMAKE_INSTALL_INCLUDEDIR PARENT_PATH include_dir_parent)
+        if(NOT lib_dir_parent STREQUAL include_dir_parent)
+          message(FATAL_ERROR "CMAKE_INSTALL_INCLUDEDIR and CMAKE_INSTALL_LIBDIR must share parent directory"
+          )
+        endif()
 
-      # Replace ${_IMPORT_PREFIX}/lib/ with ${_IMPORT_PREFIX}/${lib_dir}/ in all the target files
-      # that nvcomp ships. Guarded in an EXISTS check so we only try to do this on the first
-      # configuration pass
-      if(NOT EXISTS "${nvcomp_ROOT}/${lib_dir}/")
-        file(RENAME "${nvcomp_ROOT}/lib/" "${nvcomp_ROOT}/${lib_dir}/")
+      # Replace ${_IMPORT_PREFIX}/lib/ with ${_IMPORT_PREFIX}/${lib_dir}/ in
+      # nvcomp-release-targets.cmake. Guarded in an EXISTS check so we only try to do this on the
+      # first configuration pass
+        cmake_path(GET lib_dir FILENAME lib_dir_name)
         set(nvcomp_list_of_target_files
             "nvcomp-targets-common-release.cmake"
             "nvcomp-targets-common.cmake"
@@ -135,21 +143,25 @@ function(rapids_cpm_nvcomp)
             "nvcomp-targets-static-release.cmake"
             "nvcomp-targets-static.cmake")
         foreach(filename IN LISTS nvcomp_list_of_target_files)
-          if(EXISTS "${nvcomp_ROOT}/${lib_dir}/cmake/nvcomp/${filename}")
-            file(READ "${nvcomp_ROOT}/${lib_dir}/cmake/nvcomp/${filename}" FILE_CONTENTS)
-            string(REPLACE "\$\{_IMPORT_PREFIX\}/lib/" "\$\{_IMPORT_PREFIX\}/${lib_dir}/"
+          if(EXISTS "${nvcomp_ROOT}/lib/cmake/nvcomp/${filename}")
+            file(READ "${nvcomp_ROOT}/lib/cmake/nvcomp/${filename}" FILE_CONTENTS)
+            string(REPLACE "\$\{_IMPORT_PREFIX\}/lib/" "\$\{_IMPORT_PREFIX\}/${lib_dir_name}/"
                            FILE_CONTENTS ${FILE_CONTENTS})
-            file(WRITE "${nvcomp_ROOT}/${lib_dir}/cmake/nvcomp/${filename}" ${FILE_CONTENTS})
+            file(WRITE "${nvcomp_ROOT}/lib/cmake/nvcomp/${filename}" ${FILE_CONTENTS})
           endif()
         endforeach()
+        file(MAKE_DIRECTORY "${nvcomp_ROOT}/${lib_dir_parent}")
+        file(RENAME "${nvcomp_ROOT}/lib/" "${nvcomp_ROOT}/${lib_dir}/")
+        # Move the `include` dir if necessary as well
+        file(RENAME "${nvcomp_ROOT}/include/" "${nvcomp_ROOT}/${CMAKE_INSTALL_INCLUDEDIR}/")
       endif()
 
       # Record the nvcomp_DIR so that if USE_PROPRIETARY_BINARY is disabled we can safely clear the
       # nvcomp_DIR value
-      set(nvcomp_proprietary_binary_dir "${nvcomp_ROOT}/${lib_dir}/cmake/nvcomp")
-      cmake_path(NORMAL_PATH nvcomp_proprietary_binary_dir)
-      set(rapids_cpm_nvcomp_proprietary_binary_dir "${nvcomp_proprietary_binary_dir}"
-          CACHE INTERNAL "nvcomp proprietary location")
+      set(nvcomp_proprietary_root "${nvcomp_ROOT}")
+      cmake_path(NORMAL_PATH nvcomp_proprietary_root)
+      set(rapids_cpm_nvcomp_proprietary_root "${nvcomp_proprietary_root}"
+          CACHE INTERNAL "nvcomp proprietary root dir location")
 
       # Enforce that we need to find the local download of nvcomp and nothing else when we have a
       # proprietary binary enabled.
@@ -159,7 +171,9 @@ function(rapids_cpm_nvcomp)
     endif()
   elseif(DEFINED nvcomp_DIR)
     cmake_path(NORMAL_PATH nvcomp_DIR)
-    if(nvcomp_DIR STREQUAL rapids_cpm_nvcomp_proprietary_binary_dir)
+    if(nvcomp_DIR STREQUAL "${rapids_cpm_nvcomp_proprietary_root}/${lib_dir}/cmake/nvcomp")
+      set(nvcomp_proprietary_binary ON)
+      set(nvcomp_ROOT "${rapids_cpm_nvcomp_proprietary_root}")
       unset(nvcomp_DIR)
       unset(nvcomp_DIR CACHE)
     endif()
@@ -211,7 +225,8 @@ function(rapids_cpm_nvcomp)
     include(GNUInstallDirs)
 
     install(DIRECTORY "${nvcomp_ROOT}/${lib_dir}/" DESTINATION "${lib_dir}")
-    install(DIRECTORY "${nvcomp_ROOT}/include/" DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
+    install(DIRECTORY "${nvcomp_ROOT}/${CMAKE_INSTALL_INCLUDEDIR}/"
+            DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
     # place the license information in the location that conda uses
     install(FILES "${nvcomp_ROOT}/NOTICE" DESTINATION info/ RENAME NVCOMP_NOTICE)
     install(FILES "${nvcomp_ROOT}/LICENSE" DESTINATION info/ RENAME NVCOMP_LICENSE)
