@@ -130,9 +130,9 @@ function(rapids_cpm_nvcomp)
           )
         endif()
 
-      # Replace ${_IMPORT_PREFIX}/lib/ with ${_IMPORT_PREFIX}/${lib_dir}/ in
-      # nvcomp-release-targets.cmake. Guarded in an EXISTS check so we only try to do this on the
-      # first configuration pass
+        # Replace ${_IMPORT_PREFIX}/lib/ with ${_IMPORT_PREFIX}/${lib_dir}/ in
+        # nvcomp-release-targets.cmake. Guarded in an EXISTS check so we only try to do this on the
+        # first configuration pass
         cmake_path(GET lib_dir FILENAME lib_dir_name)
         set(nvcomp_list_of_target_files
             "nvcomp-targets-common-release.cmake"
