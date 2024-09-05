@@ -96,7 +96,7 @@ function(rapids_cpm_nvcomp)
   if(NOT rapids_cmake_always_download)
     include("${rapids-cmake-dir}/find/package.cmake")
     rapids_find_package(nvcomp ${version}
-                        GLOBAL_TARGETS nvcomp::nvcomp nvcomp::nvcomp_gdeflate nvcomp::nvcomp_bitcomp
+                        GLOBAL_TARGETS nvcomp::nvcomp
                                        ${_RAPIDS_EXPORT_ARGUMENTS} FIND_ARGS QUIET)
     if(nvcomp_FOUND)
       # report where nvcomp was found
@@ -189,7 +189,7 @@ function(rapids_cpm_nvcomp)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
   rapids_cpm_find(nvcomp ${version} ${_RAPIDS_UNPARSED_ARGUMENTS}
-                  GLOBAL_TARGETS nvcomp::nvcomp nvcomp::nvcomp_gdeflate nvcomp::nvcomp_bitcomp
+                  GLOBAL_TARGETS nvcomp::nvcomp
                   CPM_ARGS
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
@@ -202,8 +202,8 @@ function(rapids_cpm_nvcomp)
   rapids_cpm_display_patch_status(nvcomp)
 
   # provide consistent targets between a found nvcomp and one building from source
-  set(nvcomp_possible_target_names nvcomp nvcomp_bitcomp nvcomp_cpu nvcomp_cpu_static
-                                   nvcomp_device_static nvcomp_gdeflate nvcomp_static)
+  set(nvcomp_possible_target_names nvcomp nvcomp_cpu nvcomp_cpu_static
+                                   nvcomp_device_static nvcomp_static)
   foreach(name IN LISTS nvcomp_possible_target_names)
     if(NOT TARGET nvcomp::${name} AND TARGET ${name})
       add_library(nvcomp::${name} ALIAS ${name})
