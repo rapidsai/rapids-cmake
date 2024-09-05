@@ -95,9 +95,8 @@ function(rapids_cpm_nvcomp)
   # first search locally if `rapids_cmake_always_download` is false
   if(NOT rapids_cmake_always_download)
     include("${rapids-cmake-dir}/find/package.cmake")
-    rapids_find_package(nvcomp ${version}
-                        GLOBAL_TARGETS nvcomp::nvcomp
-                                       ${_RAPIDS_EXPORT_ARGUMENTS} FIND_ARGS QUIET)
+    rapids_find_package(nvcomp ${version} GLOBAL_TARGETS nvcomp::nvcomp ${_RAPIDS_EXPORT_ARGUMENTS}
+                        FIND_ARGS QUIET)
     if(nvcomp_FOUND)
       # report where nvcomp was found
       message(STATUS "Found nvcomp: ${nvcomp_DIR} (found version ${nvcomp_VERSION})")
@@ -202,8 +201,8 @@ function(rapids_cpm_nvcomp)
   rapids_cpm_display_patch_status(nvcomp)
 
   # provide consistent targets between a found nvcomp and one building from source
-  set(nvcomp_possible_target_names nvcomp nvcomp_cpu nvcomp_cpu_static
-                                   nvcomp_device_static nvcomp_static)
+  set(nvcomp_possible_target_names nvcomp nvcomp_cpu nvcomp_cpu_static nvcomp_device_static
+                                   nvcomp_static)
   foreach(name IN LISTS nvcomp_possible_target_names)
     if(NOT TARGET nvcomp::${name} AND TARGET ${name})
       add_library(nvcomp::${name} ALIAS ${name})
