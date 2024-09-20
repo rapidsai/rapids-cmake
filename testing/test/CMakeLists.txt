@@ -50,6 +50,8 @@ add_cmake_config_test(install_relocatable-wrong-component.cmake SHOULD_FAIL "${w
 
 add_cmake_ctest_test(add-impossible-allocation SHOULD_FAIL "Insufficient resources for test")
 add_cmake_config_test(add-with-install-component.cmake)
+add_cmake_config_test(add-with-install-target.cmake)
+add_cmake_config_test(add-with-install-target-missing.cmake SHOULD_FAIL "rapids_add_test given INSTALL_TARGET \"noexist\", which does not exist")
 add_cmake_config_test(add-with-no-gpus.cmake)
 
 add_cmake_ctest_test(add-no-cuda-toolkit)
