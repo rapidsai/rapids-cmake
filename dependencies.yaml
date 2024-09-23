@@ -173,7 +173,7 @@ dependencies:
           - zlib
       - output_types: [conda]
         packages:
-          - fmt==9.1.0
+          - fmt==11.0.2
   py_version:
     specific:
       - output_types: conda
