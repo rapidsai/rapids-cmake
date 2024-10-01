@@ -264,6 +264,15 @@ execute_process(COMMAND ./${rapids_test_generate_exe_name} OUTPUT_FILE \"\${CTES
 if(EXISTS "${_RAPIDS_BUILD_DIR}/CTestTestfile.cmake")
   # Support multi-generators by setting the CTest config mode to be equal to the install mode
   set(CTEST_CONFIGURATION_TYPE "${CMAKE_INSTALL_CONFIG_NAME}")
+
+  # Too support tests added via gtest_discover_tests we
+  # need to tell GoogleTest we aren't in script mode.
+  # This stops GoogleTestAddTests from thinking it is being used
+  # in a POST_BUILD manner and should try and look for an undefined
+  # executable
+  include(GoogleTest)
+  set(CMAKE_SCRIPT_MODE_FILE OFF)
+
   include("${_RAPIDS_BUILD_DIR}/CTestTestfile.cmake")
 endif()
 
