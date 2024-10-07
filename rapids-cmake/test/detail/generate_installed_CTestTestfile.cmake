@@ -48,8 +48,14 @@ function(convert_paths_to_install_dir prop_var)
 
   get_property(install_loc GLOBAL PROPERTY ${name}_install)
   if(install_loc)
-    get_property(build_loc GLOBAL PROPERTY ${name}_build)
-    string(REPLACE "${build_loc}" "${install_loc}/${name}" install_value "${possible_build_path}")
+    get_property(build_locs GLOBAL PROPERTY ${name}_build)
+    foreach(build_loc IN LISTS build_locs)
+      if(build_loc STREQUAL possible_build_path)
+        string(REPLACE "${build_loc}" "${install_loc}/${name}" install_value
+                       "${possible_build_path}")
+        break()
+      endif()
+    endforeach()
   else()
     string(REPLACE "${_RAPIDS_BUILD_DIR}" "\${CMAKE_INSTALL_PREFIX}" install_value
                    "${possible_build_path}")
@@ -99,8 +105,13 @@ function(add_test name command)
   else()
     get_property(install_loc GLOBAL PROPERTY ${name}_install)
     if(install_loc)
-      get_property(build_loc GLOBAL PROPERTY ${name}_build)
-      string(REPLACE "${build_loc}" "${install_loc}/${name}" command "${command}")
+      get_property(build_locs GLOBAL PROPERTY ${name}_build)
+      foreach(build_loc IN LISTS build_locs)
+        if(build_loc STREQUAL command)
+          string(REPLACE "${build_loc}" "${install_loc}/${name}" command "${command}")
+          break()
+        endif()
+      endforeach()
     endif()
   endif()
 
@@ -203,7 +214,9 @@ function(extract_install_info)
     foreach(build_loc IN LISTS _RAPIDS_TEST_FILES)
       cmake_path(GET build_loc FILENAME name)
       set_property(GLOBAL PROPERTY ${name}_install ${_RAPIDS_TEST_DESTINATION})
-      set_property(GLOBAL PROPERTY ${name}_build ${build_loc})
+
+      # For multi-config generators we will have multiple locations
+      set_property(GLOBAL APPEND PROPERTY ${name}_build ${build_loc})
     endforeach()
   endif()
 endfunction()
@@ -264,6 +277,13 @@ execute_process(COMMAND ./${rapids_test_generate_exe_name} OUTPUT_FILE \"\${CTES
 if(EXISTS "${_RAPIDS_BUILD_DIR}/CTestTestfile.cmake")
   # Support multi-generators by setting the CTest config mode to be equal to the install mode
   set(CTEST_CONFIGURATION_TYPE "${CMAKE_INSTALL_CONFIG_NAME}")
+
+  # Too support tests added via gtest_discover_tests we need to tell GoogleTest we aren't in script
+  # mode. This stops GoogleTestAddTests from thinking it is being used in a POST_BUILD manner and
+  # should try and look for an undefined executable
+  include(GoogleTest)
+  set(CMAKE_SCRIPT_MODE_FILE OFF)
+
   include("${_RAPIDS_BUILD_DIR}/CTestTestfile.cmake")
 endif()
 
