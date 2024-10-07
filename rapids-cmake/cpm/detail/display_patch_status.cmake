@@ -39,5 +39,12 @@ function(rapids_cpm_display_patch_status package_name)
         message(STATUS "${line}")
       endforeach()
     endif()
+
+    set(err_file "${CMAKE_BINARY_DIR}/rapids-cmake/patches/${package_name}/err")
+    if(EXISTS "${err_file}")
+      file(READ "${err_file}" contents)
+      message(FATAL_ERROR "${contents}")
+    endif()
+
   endif()
 endfunction()
