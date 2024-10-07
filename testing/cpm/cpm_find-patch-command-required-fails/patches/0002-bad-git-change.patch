@@ -38,7 +38,7 @@ index 68ec255b39..a094ac7d77 100644
 @@ -2575,6 +2575,30 @@ TEST_F(JsonReaderTest, ViableDelimiter)
    EXPECT_THROW(json_parser_options.set_delimiter('\t'), std::invalid_argument);
  }
- 
+
 +TEST_F(JsonReaderTest, ViableDelimiterNewlineWS)
 +{
 +  // Test input
@@ -81,7 +81,7 @@ index 327169ae56..f32aba0e63 100644
 @@ -1196,4 +1197,181 @@ TEST_P(JsonDelimiterParamTest, RecoveringTokenStreamNewlineAndDelimiter)
    }
  }
- 
+
 +TEST_P(JsonDelimiterParamTest, RecoveringTokenStreamNewlineAsWSAndDelimiter)
 +{
 +  // Test input. Inline comments used to indicate character indexes
@@ -260,6 +260,6 @@ index 327169ae56..f32aba0e63 100644
 +}
 +
  CUDF_TEST_PROGRAM_MAIN()
--- 
+--
 2.46.2
 
