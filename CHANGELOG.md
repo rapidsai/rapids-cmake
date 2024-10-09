@@ -1,3 +1,45 @@
+# rapids-cmake 24.10.00 (9 Oct 2024)
+
+## 🚨 Breaking Changes
+
+- update fmt (to 11.0.2) and spdlog (to 1.14.1) ([#689](https://github.com/rapidsai/rapids-cmake/pull/689)) [@jameslamb](https://github.com/jameslamb)
+- Remove 24.10 deprecated commands ([#665](https://github.com/rapidsai/rapids-cmake/pull/665)) [@robertmaynard](https://github.com/robertmaynard)
+
+## 🐛 Bug Fixes
+
+- Add workaround for gcc bug in cuco ([#685](https://github.com/rapidsai/rapids-cmake/pull/685)) [@miscco](https://github.com/miscco)
+- Revert &quot;Update to CPM 0.40.2 to fix CMake 3.30 deprecation warnings ([#678)&quot; (#679](https://github.com/rapidsai/rapids-cmake/pull/678)&quot; (#679)) [@jameslamb](https://github.com/jameslamb)
+- Update to CPM 0.40.2 to fix CMake 3.30 deprecation warnings ([#678](https://github.com/rapidsai/rapids-cmake/pull/678)) [@robertmaynard](https://github.com/robertmaynard)
+- Bump cuco version to fetch several bug fixes ([#677](https://github.com/rapidsai/rapids-cmake/pull/677)) [@PointKernel](https://github.com/PointKernel)
+- rapids_cpm_nvcomp has consistent behavior on every cmake execution ([#676](https://github.com/rapidsai/rapids-cmake/pull/676)) [@robertmaynard](https://github.com/robertmaynard)
+- rapids-cmake generated C++ files have current copyright year ([#674](https://github.com/rapidsai/rapids-cmake/pull/674)) [@robertmaynard](https://github.com/robertmaynard)
+- `write_language` now properly walks up the `add_subdirectory` call stack ([#671](https://github.com/rapidsai/rapids-cmake/pull/671)) [@robertmaynard](https://github.com/robertmaynard)
+
+## 📖 Documentation
+
+- Update docs for overriding rapids-cmake ([#681](https://github.com/rapidsai/rapids-cmake/pull/681)) [@KyleFromNVIDIA](https://github.com/KyleFromNVIDIA)
+- add ASSOCIATED_TARGETS to function signature in rapids_cython_create_modules() docs ([#670](https://github.com/rapidsai/rapids-cmake/pull/670)) [@jameslamb](https://github.com/jameslamb)
+
+## 🚀 New Features
+
+- Reduce cpm tests network usage ([#683](https://github.com/rapidsai/rapids-cmake/pull/683)) [@robertmaynard](https://github.com/robertmaynard)
+- rapids-cmake tests no longer download CPM when `NO_CPM_CACHE` is set. ([#682](https://github.com/rapidsai/rapids-cmake/pull/682)) [@robertmaynard](https://github.com/robertmaynard)
+- Remove deprecated rapids_export_find_package_* signatures ([#666](https://github.com/rapidsai/rapids-cmake/pull/666)) [@robertmaynard](https://github.com/robertmaynard)
+- Upgrade nvcomp to 4.0.1 ([#633](https://github.com/rapidsai/rapids-cmake/pull/633)) [@vuule](https://github.com/vuule)
+
+## 🛠️ Improvements
+
+- Add INSTALL_TARGET argument to rapids_add_test() ([#692](https://github.com/rapidsai/rapids-cmake/pull/692)) [@KyleFromNVIDIA](https://github.com/KyleFromNVIDIA)
+- Use CI workflow branch &#39;branch-24.10&#39; again ([#691](https://github.com/rapidsai/rapids-cmake/pull/691)) [@jameslamb](https://github.com/jameslamb)
+- update fmt (to 11.0.2) and spdlog (to 1.14.1) ([#689](https://github.com/rapidsai/rapids-cmake/pull/689)) [@jameslamb](https://github.com/jameslamb)
+- Add support for Python 3.12 ([#688](https://github.com/rapidsai/rapids-cmake/pull/688)) [@jameslamb](https://github.com/jameslamb)
+- Update rapidsai/pre-commit-hooks ([#686](https://github.com/rapidsai/rapids-cmake/pull/686)) [@KyleFromNVIDIA](https://github.com/KyleFromNVIDIA)
+- Drop Python 3.9 support ([#684](https://github.com/rapidsai/rapids-cmake/pull/684)) [@jameslamb](https://github.com/jameslamb)
+- Allow nested lib location for nvcomp ([#675](https://github.com/rapidsai/rapids-cmake/pull/675)) [@KyleFromNVIDIA](https://github.com/KyleFromNVIDIA)
+- Update pre-commit hooks ([#669](https://github.com/rapidsai/rapids-cmake/pull/669)) [@KyleFromNVIDIA](https://github.com/KyleFromNVIDIA)
+- Improve update-version.sh ([#668](https://github.com/rapidsai/rapids-cmake/pull/668)) [@bdice](https://github.com/bdice)
+- Remove 24.10 deprecated commands ([#665](https://github.com/rapidsai/rapids-cmake/pull/665)) [@robertmaynard](https://github.com/robertmaynard)
+
 # rapids-cmake 24.08.00 (7 Aug 2024)
 
 ## 🚨 Breaking Changes
