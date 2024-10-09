@@ -173,15 +173,11 @@ dependencies:
           - zlib
       - output_types: [conda]
         packages:
-          - fmt==9.1.0
+          - fmt==11.0.2
   py_version:
     specific:
       - output_types: conda
         matrices:
-          - matrix:
-              py: "3.9"
-            packages:
-              - python=3.9
           - matrix:
               py: "3.10"
             packages:
@@ -191,8 +187,12 @@ dependencies:
             packages:
               - python=3.11
           - matrix:
+              py: "3.12"
             packages:
-              - python>=3.9,<3.12
+              - python=3.12
+          - matrix:
+            packages:
+              - python>=3.10,<3.13
   style_checks:
     common:
       - output_types: [conda, requirements]

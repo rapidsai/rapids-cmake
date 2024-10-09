@@ -1,5 +1,5 @@
 /*
- * Copyright (c) @current_year@, NVIDIA CORPORATION.
+ * Copyright (c) 2021-2024, NVIDIA CORPORATION.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#pragma once
 
-#define @_RAPIDS_GIT_PREFIX@_GIT_BRANCH "@_RAPIDS_WRITE_BRANCH@"
-#define @_RAPIDS_GIT_PREFIX@_GIT_SHA1 "@_RAPIDS_WRITE_SHA1@"
-#define @_RAPIDS_GIT_PREFIX@_GIT_VERSION "@_RAPIDS_WRITE_VERSION@"
-#if (@_RAPIDS_GIT_IS_DIRTY@) //
-#  define @_RAPIDS_GIT_PREFIX@_GIT_IS_DIRTY
-#endif
+static __global__ void example_cuda_kernel(int& r, int x, int y) { r = x * y + (x * 4 - (y / 2)); }
+
+int static_launch_kernelC(int x, int y)
+{
+  int r;
+  example_cuda_kernel<<<1, 1>>>(r, x, y);
+  return r;
+}

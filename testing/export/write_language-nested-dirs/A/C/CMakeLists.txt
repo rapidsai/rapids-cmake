@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2022, NVIDIA CORPORATION.
+# Copyright (c) 2021-2024, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,14 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-include(${rapids-cmake-dir}/cuda/patch_toolkit.cmake)
 
-rapids_cuda_patch_toolkit()
-find_package(CUDAToolkit)
-rapids_cuda_patch_toolkit()
+include(${rapids-cmake-dir}/export/write_language.cmake)
 
-if(TARGET CUDA::cublas_static)
-  verify_links_to(CUDA::cublas CUDA::cublasLt)
-  verify_links_to(CUDA::cublas_static CUDA::cublasLt_static)
-  verify_links_to(CUDA::cusolver_static CUDA::cusolver_lapack_static)
-endif()
+function(enable_nested_language file_path)
+  #replicates CPM including the file
+  include("${file_path}")
+endfunction()
+
+set(path "${CMAKE_CURRENT_BINARY_DIR}/enable_cuda_language.cmake")
+rapids_export_write_language(INSTALL CUDA "${path}")
+enable_nested_language("${path}")
+
+add_library(C STATIC static.cu)

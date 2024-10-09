@@ -65,7 +65,7 @@ repos:
             ^rapids-cmake/.*$
           )
   - repo: https://github.com/rapidsai/pre-commit-hooks
-    rev: v0.0.3
+    rev: v0.4.0
     hooks:
       - id: verify-copyright
         files: |

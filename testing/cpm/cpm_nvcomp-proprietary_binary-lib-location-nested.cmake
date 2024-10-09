@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2023, NVIDIA CORPORATION.
+# Copyright (c) 2024, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,20 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-include(${rapids-cmake-dir}/cpm/init.cmake)
-include(${rapids-cmake-dir}/cpm/thrust.cmake)
 
-rapids_cpm_init()
-
-rapids_cpm_thrust(NAMESPACE A BUILD_EXPORT_SET test)
-rapids_cpm_thrust(NAMESPACE B INSTALL_EXPORT_SET test2)
-
-get_target_property(packages rapids_export_build_test PACKAGE_NAMES)
-if(NOT Thrust IN_LIST packages)
-  message(FATAL_ERROR "rapids_cpm_thrust failed to record thrust needs to be exported")
-endif()
-
-get_target_property(packages rapids_export_install_test2 PACKAGE_NAMES)
-if(NOT Thrust IN_LIST packages)
-  message(FATAL_ERROR "rapids_cpm_thrust failed to record thrust needs to be exported")
-endif()
+set(CMAKE_INSTALL_LIBDIR "nested/lib64")
+set(CMAKE_INSTALL_INCLUDEDIR "nested/include")
+include("${CMAKE_CURRENT_LIST_DIR}/cpm_nvcomp-proprietary_binary-lib-location-common.cmake")

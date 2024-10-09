@@ -13,26 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
+include(${rapids-cmake-dir}/test/init.cmake)
+include(${rapids-cmake-dir}/test/add.cmake)
 
-cmake_minimum_required(VERSION 3.26.4)
-project(rapids-project LANGUAGES CUDA)
+enable_language(CUDA)
 
-include(${rapids-cmake-dir}/cuda/patch_toolkit.cmake)
+rapids_test_init()
 
-function(verify_links_to target library)
-  get_target_property(link_libs ${target} INTERFACE_LINK_LIBRARIES)
-  if(NOT ${library} IN_LIST link_libs)
-    message(FATAL_ERROR "${target} doesn't link to ${library}")
-  endif()
-endfunction()
+file(WRITE "${CMAKE_BINARY_DIR}/main.cu" "int main(){return 0;}")
+add_executable(verify_alloc "${CMAKE_BINARY_DIR}/main.cu")
 
-find_package(CUDAToolkit)
-rapids_cuda_patch_toolkit()
-
-add_subdirectory(subdir)
-
-if(TARGET CUDA::cublas_static)
-  verify_links_to(CUDA::cublas CUDA::cublasLt)
-  verify_links_to(CUDA::cublas_static CUDA::cublasLt_static)
-  verify_links_to(CUDA::cusolver_static CUDA::cusolver_lapack_static)
-endif()
+enable_testing()
+rapids_test_add(NAME simple_test COMMAND verify_alloc GPUS 1 INSTALL_COMPONENT_SET testing INSTALL_TARGET noexist)
