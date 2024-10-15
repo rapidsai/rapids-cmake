@@ -36,7 +36,7 @@ Result Variables
 
 #]=======================================================================]
 # cmake-lint: disable=R0913,R0915
-function(rapids_cpm_package_details package_name version_var url_var tag_var shallow_var
+function(rapids_cpm_package_details package_name version_var git_url_var git_tag_var shallow_var
          exclude_from_all_var)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.rapids_cpm_package_details")
 
@@ -67,8 +67,14 @@ function(rapids_cpm_package_details package_name version_var url_var tag_var sha
   # Only do validation if we have an entry
   if(json_data OR override_json_data)
     # Validate that we have the required fields
-    foreach(var IN ITEMS version git_url git_tag)
+    foreach(var IN ITEMS version)
       if(NOT ${var})
+        message(FATAL_ERROR "rapids_cmake can't parse '${package_name}' json entry, it is missing a `${var}` entry"
+        )
+      endif()
+    endforeach()
+    foreach(var IN ITEMS git_url git_tag)
+      if(NOT ${var} AND ${var}_var)
         message(FATAL_ERROR "rapids_cmake can't parse '${package_name}' json entry, it is missing a `${var}` entry"
         )
       endif()
@@ -111,8 +117,8 @@ function(rapids_cpm_package_details package_name version_var url_var tag_var sha
   cmake_language(EVAL CODE "set(git_url ${git_url})")
 
   set(${version_var} ${version} PARENT_SCOPE)
-  set(${url_var} ${git_url} PARENT_SCOPE)
-  set(${tag_var} ${git_tag} PARENT_SCOPE)
+  set(${git_url_var} ${git_url} PARENT_SCOPE)
+  set(${git_tag_var} ${git_tag} PARENT_SCOPE)
   set(${shallow_var} ${git_shallow} PARENT_SCOPE)
   set(${exclude_from_all_var} ${exclude_from_all} PARENT_SCOPE)
   if(DEFINED always_download)

@@ -47,8 +47,6 @@
     },
     "nvcomp": {
       "version": "4.0.1",
-      "git_url": "https://github.com/NVIDIA/nvcomp.git",
-      "git_tag": "v2.2.0",
       "proprietary_binary_cuda_version_mapping": {
         "11": "11.x",
         "12": "12.x"
