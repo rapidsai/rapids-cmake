@@ -86,7 +86,13 @@ function(rapids_cpm_nvcomp)
   set(_RAPIDS_UNPARSED_ARGUMENTS ${_RAPIDS_EXPORT_ARGUMENTS})
 
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
-  rapids_cpm_package_details(nvcomp version repository tag shallow exclude)
+  set(repository_var)
+  set(tag_var)
+  if(NOT _RAPIDS_USE_PROPRIETARY_BINARY)
+    set(repository_var repository)
+    set(tag_var tag)
+  endif()
+  rapids_cpm_package_details(nvcomp version "${repository_var}" "${tag_var}" shallow exclude)
   set(to_exclude OFF)
   if(NOT _RAPIDS_INSTALL_EXPORT_SET OR exclude)
     set(to_exclude ON)
@@ -187,11 +193,13 @@ function(rapids_cpm_nvcomp)
   endif()
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
+  set(git_args)
+  if(NOT _RAPIDS_USE_PROPRIETARY_BINARY)
+    set(git_args GIT_REPOSITORY ${repository} GIT_TAG ${tag})
+  endif()
   rapids_cpm_find(nvcomp ${version} ${_RAPIDS_UNPARSED_ARGUMENTS}
                   GLOBAL_TARGETS nvcomp::nvcomp
-                  CPM_ARGS
-                  GIT_REPOSITORY ${repository}
-                  GIT_TAG ${tag}
+                  CPM_ARGS ${git_args}
                   GIT_SHALLOW ${shallow}
                   EXCLUDE_FROM_ALL ${to_exclude} ${patch_command}
                   OPTIONS "BUILD_STATIC ON" "BUILD_TESTS OFF" "BUILD_BENCHMARKS OFF"
