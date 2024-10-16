@@ -12,13 +12,14 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
+import datetime
 import sphinx_rtd_theme
 
 # -- Project information -----------------------------------------------------
 
 project = "rapids-cmake"
-copyright = "2021-2023, NVIDIA"
-author = "NVIDIA"
+copyright = f"2021-{datetime.datetime.today().year}, NVIDIA Corporation"
+author = "NVIDIA Corporation"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -87,7 +88,6 @@ todo_include_todos = False
 #
 
 html_theme = "sphinx_rtd_theme"
-html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
