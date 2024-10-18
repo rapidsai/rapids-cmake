@@ -85,10 +85,9 @@ function(rapids_cpm_cccl)
                   GIT_TAG ${tag}
                   GIT_SHALLOW ${shallow} ${patch_command}
                   EXCLUDE_FROM_ALL ${exclude}
-                  OPTIONS
-                  "CCCL_TOPLEVEL_PROJECT OFF" # Fixes
-                                              # https://github.com/NVIDIA/cccl/pull/2597
-                  "CCCL_ENABLE_INSTALL_RULES ${to_install}")
+                  OPTIONS "CCCL_TOPLEVEL_PROJECT OFF" # Fixes
+                                                      # https://github.com/NVIDIA/cccl/pull/2597
+                          "CCCL_ENABLE_INSTALL_RULES ${to_install}")
 
   # rapids_cpm_cccl can be called multiple times from the same scope such as from
   # cudf/CMakeLists.txt and cudf's call to find_package(rmm). In these situations, subsequent
