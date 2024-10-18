@@ -86,7 +86,8 @@ function(rapids_cpm_cccl)
                   GIT_SHALLOW ${shallow} ${patch_command}
                   EXCLUDE_FROM_ALL ${exclude}
                   OPTIONS
-                  "CCCL_TOPLEVEL_PROJECT OFF" #Fixes https://github.com/NVIDIA/cccl/pull/2597
+                  "CCCL_TOPLEVEL_PROJECT OFF" # Fixes
+                                              # https://github.com/NVIDIA/cccl/pull/2597
                   "CCCL_ENABLE_INSTALL_RULES ${to_install}")
 
   # rapids_cpm_cccl can be called multiple times from the same scope such as from
@@ -101,7 +102,8 @@ function(rapids_cpm_cccl)
   if(CCCL_SOURCE_DIR AND to_install AND NOT rapids_cccl_install_rules_already_called)
 
     set_property(GLOBAL PROPERTY rapids_cmake_cccl_install_rules ON)
-    # CCCL < 2.7 does not currently correctly support installation of cub/thrust/libcudacxx in a subdirectory
+    # CCCL < 2.7 does not currently correctly support installation of cub/thrust/libcudacxx in a
+    # subdirectory
     if(version VERSION_LESS 2.7)
       set(Thrust_SOURCE_DIR "${CCCL_SOURCE_DIR}/thrust")
       set(CUB_SOURCE_DIR "${CCCL_SOURCE_DIR}/cub")
@@ -124,7 +126,7 @@ function(rapids_cpm_cccl)
     else()
       # CCCL 2.7 doesn't allow rapids-cmake to place libcudacxx headers into `include/libcudacxx` so
       # we manually invoke `cccl_generate_install_rules`
-      set(CCCL_TOPLEVEL_PROJECT OFF) #Fixes https://github.com/NVIDIA/cccl/pull/2597
+      set(CCCL_TOPLEVEL_PROJECT OFF) # Fixes https://github.com/NVIDIA/cccl/pull/2597
       set(CUB_ENABLE_INSTALL_RULES ON)
       set(Thrust_ENABLE_INSTALL_RULES ON)
       set(libcudacxx_ENABLE_INSTALL_RULES ON)
