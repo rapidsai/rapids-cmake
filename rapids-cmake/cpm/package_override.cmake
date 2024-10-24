@@ -94,32 +94,36 @@ function(rapids_cpm_package_override _rapids_override_filepath)
     # cmake-lint: disable=E1120
     foreach(index RANGE ${package_count})
       string(JSON package_name MEMBER "${json_data}" packages ${index})
-      get_property(override_exists GLOBAL PROPERTY rapids_cpm_${package_name}_override_json DEFINED)
-      if(NOT (override_exists OR DEFINED CPM_${package_name}_SOURCE))
-        # only add the first override for a project we encounter
-        string(JSON data GET "${json_data}" packages "${package_name}")
-        set_property(GLOBAL PROPERTY rapids_cpm_${package_name}_override_json "${data}")
-        set_property(GLOBAL PROPERTY rapids_cpm_${package_name}_override_json_file
-                                     "${_rapids_override_filepath}")
+      string(TOLOWER package_name normalized_pkg_name)
+      get_property(override_exists GLOBAL PROPERTY rapids_cpm_${normalized_pkg_name}_override_json DEFINED)
 
-        # establish the fetch content
-        include(FetchContent)
-        include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
-        rapids_cpm_package_details(${package_name} version repository tag shallow exclude)
-
-        include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
-        rapids_cpm_generate_patch_command(${package_name} ${version} patch_command)
-
-        unset(exclude_from_all)
-        if(exclude AND CMAKE_VERSION VERSION_GREATER_EQUAL 3.28.0)
-          set(exclude_from_all EXCLUDE_FROM_ALL)
-        endif()
-        FetchContent_Declare(${package_name}
-                             GIT_REPOSITORY ${repository}
-                             GIT_TAG ${tag}
-                             GIT_SHALLOW ${shallow}
-                             ${patch_command} ${exclude_from_all})
+      if(override_exists OR DEFINED CPM_${package_name}_SOURCE)
+        continue()
       endif()
+
+      # only add the first override for a project we encounter
+      string(JSON data GET "${json_data}" packages "${package_name}")
+      set_property(GLOBAL PROPERTY rapids_cpm_${normalized_pkg_name}_override_json "${data}")
+      set_property(GLOBAL PROPERTY rapids_cpm_${normalized_pkg_name}_override_json_file
+                                   "${_rapids_override_filepath}")
+
+      # establish the fetch content
+      include(FetchContent)
+      include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
+      rapids_cpm_package_details(${package_name} version repository tag shallow exclude)
+
+      include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
+      rapids_cpm_generate_patch_command(${package_name} ${version} patch_command)
+
+      unset(exclude_from_all)
+      if(exclude AND CMAKE_VERSION VERSION_GREATER_EQUAL 3.28.0)
+        set(exclude_from_all EXCLUDE_FROM_ALL)
+      endif()
+      FetchContent_Declare(${package_name}
+                           GIT_REPOSITORY ${repository}
+                           GIT_TAG ${tag}
+                           GIT_SHALLOW ${shallow}
+                           ${patch_command} ${exclude_from_all})
     endforeach()
   endif()
 endfunction()

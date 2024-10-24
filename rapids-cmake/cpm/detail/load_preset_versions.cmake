@@ -75,10 +75,13 @@ function(rapids_cpm_load_preset_versions)
     string(JSON package_name MEMBER "${json_data}" packages ${index})
     string(JSON data GET "${json_data}" packages "${package_name}")
 
-    get_property(already_exists GLOBAL PROPERTY rapids_cpm_${package_name}_json SET)
+    # Normalize the names all to lower case. This will allow us to better
+    # support overrides with different package name casing
+    string(TOLOWER package_name normalized_pkg_name)
+    get_property(already_exists GLOBAL PROPERTY rapids_cpm_${normalized_pkg_name}_json SET)
     if(NOT already_exists)
-      set_property(GLOBAL PROPERTY rapids_cpm_${package_name}_json "${data}")
-      set_property(GLOBAL PROPERTY rapids_cpm_${package_name}_json_file "${filepath}")
+      set_property(GLOBAL PROPERTY rapids_cpm_${normalized_pkg_name}_json "${data}")
+      set_property(GLOBAL PROPERTY rapids_cpm_${normalized_pkg_name}_json_file "${filepath}")
     endif()
   endforeach()
 
