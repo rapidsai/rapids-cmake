@@ -107,6 +107,9 @@ function(rapids_cpm_package_override _rapids_override_filepath)
       if(package_proper_name AND NOT package_proper_name STREQUAL package_name)
         message(AUTHOR_WARNING "RAPIDS-CMake is assuming the override ${package_name} is meant for the ${package_proper_name} package. For correctness please use the correctly cased name")
       endif()
+      if(NOT package_proper_name)
+        set(package_proper_name ${package_name}) # Required for FetchContent_Declare
+      endif()
 
       # only add the first override for a project we encounter
       string(JSON data GET "${json_data}" packages "${package_name}")
@@ -126,7 +129,7 @@ function(rapids_cpm_package_override _rapids_override_filepath)
       if(exclude AND CMAKE_VERSION VERSION_GREATER_EQUAL 3.28.0)
         set(exclude_from_all EXCLUDE_FROM_ALL)
       endif()
-      FetchContent_Declare(${package_name}
+      FetchContent_Declare(${package_proper_name}
                            GIT_REPOSITORY ${repository}
                            GIT_TAG ${tag}
                            GIT_SHALLOW ${shallow}
