@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021, NVIDIA CORPORATION.
+# Copyright (c) 2021-2024, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ get_default_json
 #]=======================================================================]
 function(get_default_json package_name output_variable)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.get_default_json")
+  string(TOLOWER "${package_name}" package_name)
   get_property(json_data GLOBAL PROPERTY rapids_cpm_${package_name}_json)
   set(${output_variable} "${json_data}" PARENT_SCOPE)
 endfunction()
