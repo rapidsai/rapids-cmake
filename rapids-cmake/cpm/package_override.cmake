@@ -101,6 +101,13 @@ function(rapids_cpm_package_override _rapids_override_filepath)
         continue()
       endif()
 
+      # Warn if our name all lower case matches a default package, but our
+      # case sensitive names doesn't ( ABC vs abc )
+      get_property(package_proper_name GLOBAL PROPERTY rapids_cpm_${normalized_pkg_name}_proper_name)
+      if(package_proper_name AND NOT package_proper_name STREQUAL package_name)
+        message(AUTHOR_WARNING "RAPIDS-CMake is assuming the override ${package_name} is meant for the ${package_proper_name} package. For correctness please use the correctly cased name")
+      endif()
+
       # only add the first override for a project we encounter
       string(JSON data GET "${json_data}" packages "${package_name}")
       set_property(GLOBAL PROPERTY rapids_cpm_${normalized_pkg_name}_override_json "${data}")

@@ -82,6 +82,8 @@ function(rapids_cpm_load_preset_versions)
     if(NOT already_exists)
       set_property(GLOBAL PROPERTY rapids_cpm_${normalized_pkg_name}_json "${data}")
       set_property(GLOBAL PROPERTY rapids_cpm_${normalized_pkg_name}_json_file "${filepath}")
+
+      set_property(GLOBAL PROPERTY rapids_cpm_${normalized_pkg_name}_proper_name "${package_name}")
     endif()
   endforeach()
 
