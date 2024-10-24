@@ -95,17 +95,20 @@ function(rapids_cpm_package_override _rapids_override_filepath)
     foreach(index RANGE ${package_count})
       string(JSON package_name MEMBER "${json_data}" packages ${index})
       string(TOLOWER package_name normalized_pkg_name)
-      get_property(override_exists GLOBAL PROPERTY rapids_cpm_${normalized_pkg_name}_override_json DEFINED)
+      get_property(override_exists GLOBAL PROPERTY rapids_cpm_${normalized_pkg_name}_override_json
+                   DEFINED)
 
       if(override_exists OR DEFINED CPM_${package_name}_SOURCE)
         continue()
       endif()
 
-      # Warn if our name all lower case matches a default package, but our
-      # case sensitive names doesn't ( ABC vs abc )
-      get_property(package_proper_name GLOBAL PROPERTY rapids_cpm_${normalized_pkg_name}_proper_name)
+      # Warn if our name all lower case matches a default package, but our case sensitive names
+      # doesn't ( ABC vs abc )
+      get_property(package_proper_name GLOBAL
+                   PROPERTY rapids_cpm_${normalized_pkg_name}_proper_name)
       if(package_proper_name AND NOT package_proper_name STREQUAL package_name)
-        message(AUTHOR_WARNING "RAPIDS-CMake is assuming the override ${package_name} is meant for the ${package_proper_name} package. For correctness please use the correctly cased name")
+        message(AUTHOR_WARNING "RAPIDS-CMake is assuming the override ${package_name} is meant for the ${package_proper_name} package. For correctness please use the correctly cased name"
+        )
       endif()
       if(NOT package_proper_name)
         set(package_proper_name ${package_name}) # Required for FetchContent_Declare
