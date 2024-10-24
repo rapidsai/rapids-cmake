@@ -94,7 +94,7 @@ function(rapids_cpm_package_override _rapids_override_filepath)
     # cmake-lint: disable=E1120
     foreach(index RANGE ${package_count})
       string(JSON package_name MEMBER "${json_data}" packages ${index})
-      string(TOLOWER package_name normalized_pkg_name)
+      string(TOLOWER "${package_name}" normalized_pkg_name)
       get_property(override_exists GLOBAL PROPERTY rapids_cpm_${normalized_pkg_name}_override_json
                    DEFINED)
 
@@ -137,6 +137,7 @@ function(rapids_cpm_package_override _rapids_override_filepath)
                            GIT_TAG ${tag}
                            GIT_SHALLOW ${shallow}
                            ${patch_command} ${exclude_from_all})
+      unset(package_proper_name)
     endforeach()
   endif()
 endfunction()
