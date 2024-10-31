@@ -33,7 +33,7 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
       "git_shallow": false,
       "git_url": "https://github.com/NVIDIA/cccl.git",
       "git_tag": "v2.7.0-rc2"
-    },
+    }
   }
 }
   ]=])
