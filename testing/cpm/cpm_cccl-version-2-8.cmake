@@ -29,11 +29,11 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
 {
   "packages": {
     "CCCL": {
-      "version": "2.7.0",
+      "version": "2.8.0",
       "git_shallow": false,
       "git_url": "https://github.com/NVIDIA/cccl.git",
-      "git_tag": "v2.7.0-rc2"
-    },
+      "git_tag": "fb4453dd632194dd2736772a9a0c19d200855ad7"
+    }
   }
 }
   ]=])
@@ -73,6 +73,7 @@ foreach(to_verify IN LISTS include_dirs_to_verify cmake_dirs_to_verify)
   endif()
 endforeach()
 ]=])
+
 
 add_custom_target(verify_thrust_header_search ALL
   COMMAND ${CMAKE_COMMAND} -E rm -rf "${CMAKE_BINARY_DIR}/check_cccl/build"

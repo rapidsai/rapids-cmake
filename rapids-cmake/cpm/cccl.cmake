@@ -101,9 +101,9 @@ function(rapids_cpm_cccl)
   if(CCCL_SOURCE_DIR AND to_install AND NOT rapids_cccl_install_rules_already_called)
 
     set_property(GLOBAL PROPERTY rapids_cmake_cccl_install_rules ON)
-    # CCCL < 2.7 does not currently correctly support installation of cub/thrust/libcudacxx in a
+    # CCCL < 2.8 does not currently correctly support installation of cub/thrust/libcudacxx in a
     # subdirectory
-    if(version VERSION_LESS 2.7)
+    if(version VERSION_LESS 2.8)
       set(Thrust_SOURCE_DIR "${CCCL_SOURCE_DIR}/thrust")
       set(CUB_SOURCE_DIR "${CCCL_SOURCE_DIR}/cub")
       set(libcudacxx_SOURCE_DIR "${CCCL_SOURCE_DIR}/libcudacxx")
