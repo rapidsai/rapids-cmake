@@ -78,6 +78,7 @@ add_cmake_config_test( cpm_cccl-simple.cmake )
 add_cmake_config_test( cpm_cccl-export.cmake )
 add_cmake_build_test( cpm_cccl-version-2-5.cmake )
 add_cmake_build_test( cpm_cccl-version-2-7.cmake )
+add_cmake_build_test( cpm_cccl-version-2-8.cmake )
 add_cmake_build_test( cpm_cccl-preserve-custom-install-loc )
 
 add_cmake_config_test( cpm_cuco-simple.cmake )
