@@ -95,9 +95,7 @@ function(rapids_cpm_package_override _rapids_override_filepath)
     foreach(index RANGE ${package_count})
       string(JSON package_name MEMBER "${json_data}" packages ${index})
       string(TOLOWER "${package_name}" normalized_pkg_name)
-      get_property(override_exists GLOBAL PROPERTY rapids_cpm_${normalized_pkg_name}_override_json
-                   DEFINED)
-
+      get_property(override_exists GLOBAL PROPERTY rapids_cpm_${normalized_pkg_name}_override_json SET)
       if(override_exists OR DEFINED CPM_${package_name}_SOURCE)
         continue()
       endif()

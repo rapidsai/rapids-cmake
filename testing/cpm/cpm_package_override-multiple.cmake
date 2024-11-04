@@ -69,10 +69,10 @@ if(NOT tag STREQUAL "my_tag")
 endif()
 
 rapids_cpm_package_details(GTest version repository tag shallow exclude)
-if(NOT version STREQUAL "3.99")
+if(NOT version STREQUAL "2.99")
   message(FATAL_ERROR "custom version field was removed. ${version} was found instead")
 endif()
-if(NOT tag MATCHES "3.99")
+if(NOT tag MATCHES "2.99")
   message(FATAL_ERROR "custom version field not used when computing git_tag value. ${tag} was found instead")
 endif()
 
