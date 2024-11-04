@@ -43,16 +43,16 @@ for that project will occur. This is done to make sure that the requested modifi
 version is used.
 
 If a project is listed in multiple override files, the first file values will be used,
-and all later calls for that packaged will be ignored.  This "first to record, wins"
+and all later calls for that package will be ignored.  This "first to record, wins"
 approach is used to match FetchContent, and allows parent projects to override child
 projects.
 
 .. versionadded:: v24.06.00
 
 If the variable :cmake:variable:`RAPIDS_CMAKE_CPM_OVERRIDE_VERSION_FILE` is specified it will be used
-in all calls to ``rapids_cpm_init``. Any existing explicit `OVERRIDE` files will be ignored, and
-all other calls will be treated as if this file was specified as the override.
-
+in all calls to ``rapids_cpm_init`` no matter the arguments. Any existing
+``rapids_cpm_init(OVERRIDE` files will be ignored, and all other calls will be treated as if this file was specified
+as the override.
 
 .. note::
 
@@ -71,12 +71,6 @@ all other calls will be treated as if this file was specified as the override.
 #]=======================================================================]
 function(rapids_cpm_package_override _rapids_override_filepath)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.rapids_cpm_package_override")
-
-  # The `RAPIDS_CMAKE_CPM_OVERRIDE_VERSION_FILE` must be loaded instead of any explicit file path
-  # when it is set
-  if(DEFINED RAPIDS_CMAKE_CPM_OVERRIDE_VERSION_FILE)
-    set(_rapids_override_filepath "${RAPIDS_CMAKE_CPM_OVERRIDE_VERSION_FILE}")
-  endif()
 
   if(NOT EXISTS "${_rapids_override_filepath}")
     message(FATAL_ERROR "rapids_cpm_package_override can't load '${_rapids_override_filepath}', verify it exists"
