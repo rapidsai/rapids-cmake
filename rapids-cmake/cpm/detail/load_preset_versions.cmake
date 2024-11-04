@@ -79,7 +79,10 @@ function(rapids_cpm_load_preset_versions)
     # different package name casing
     string(TOLOWER "${package_name}" normalized_pkg_name)
     get_property(already_exists GLOBAL PROPERTY rapids_cpm_${normalized_pkg_name}_json SET)
-    if(NOT already_exists)
+    if(already_exists)
+      # Warn that we have duplicate entries in the default json file
+      message(AUTHOR_WARNING "RAPIDS-CMake has detected two entries for ${package_name} in ${_rapids_preset_version_file}. Please ensure a single entry as all names are cased insensitive")
+    else()
       set_property(GLOBAL PROPERTY rapids_cpm_${normalized_pkg_name}_json "${data}")
       set_property(GLOBAL PROPERTY rapids_cpm_${normalized_pkg_name}_json_file "${filepath}")
 
