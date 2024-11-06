@@ -51,7 +51,7 @@ projects.
 
 If the variable :cmake:variable:`RAPIDS_CMAKE_CPM_OVERRIDE_VERSION_FILE` is specified it will be used
 in all calls to ``rapids_cpm_init`` no matter the arguments. Any existing
-``rapids_cpm_init(OVERRIDE` files will be ignored, and all other calls will be treated as if this file was specified
+``rapids_cpm_init(OVERRIDE`` files will be ignored, and all other calls will be treated as if this file was specified
 as the override.
 
 .. note::
