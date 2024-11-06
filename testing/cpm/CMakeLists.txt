@@ -15,6 +15,10 @@
 #=============================================================================
 add_cmake_config_test( rapids-cpm.cmake )
 
+# Do to https://github.com/rapidsai/rapids-cmake/issues/680 we need
+# to suppress dev warning as errors for all the rapids_cpm tests
+set(RAPIDS_TEST_DISABLE_DEV_ERRORS ON)
+
 add_cmake_config_test( cpm_find-add-pkg-source )
 add_cmake_config_test( cpm_find-and-find_package )
 add_cmake_config_test( cpm_find-components )
@@ -23,16 +27,16 @@ add_cmake_config_test( cpm_find-existing-target )
 add_cmake_config_test( cpm_find-existing-target-to-export-sets )
 add_cmake_config_test( cpm_find-gtest-no-gmock )
 add_cmake_config_test( cpm_find-options-escaped )
-add_cmake_config_test( cpm_find-patch-command NO_CPM_CACHE)
+add_cmake_config_test( cpm_find-patch-command NO_CPM_CACHE )
 add_cmake_config_test( cpm_find-patch-command-required NO_CPM_CACHE )
 add_cmake_config_test( cpm_find-patch-command-required-fails NO_CPM_CACHE SHOULD_FAIL "rapids-cmake [fmt]: failed to apply patch")
 add_cmake_config_test( cpm_find-restore-cpm-vars )
 add_cmake_config_test( cpm_find-version-explicit-install.cmake )
 
-add_cmake_build_test( cpm_generate_pins-format-patches NO_CPM_CACHE)
+add_cmake_build_test( cpm_generate_pins-format-patches NO_CPM_CACHE )
 add_cmake_build_test( cpm_generate_pins-nested )
 add_cmake_build_test( cpm_generate_pins-no-src-dir )
-add_cmake_build_test( cpm_generate_pins-override NO_CPM_CACHE)
+add_cmake_build_test( cpm_generate_pins-override NO_CPM_CACHE )
 add_cmake_build_test( cpm_generate_pins-pure-cpm )
 add_cmake_build_test( cpm_generate_pins-simple )
 add_cmake_build_test( cpm_generate_pins-simple-via-variable )
