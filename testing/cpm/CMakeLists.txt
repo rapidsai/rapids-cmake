@@ -65,6 +65,7 @@ add_cmake_config_test( cpm_package_override-patches.cmake )
 add_cmake_config_test( cpm_package_override-simple.cmake )
 
 add_cmake_config_test( cpm_generate_patch_command-invalid.cmake )
+add_cmake_config_test( cpm_generate_patch_command-override-case-insensitive.cmake )
 add_cmake_config_test( cpm_generate_patch_command-override.cmake )
 add_cmake_config_test( cpm_generate_patch_command-current_json_dir.cmake )
 add_cmake_config_test( cpm_generate_patch_command-verify-copyright-header.cmake )
