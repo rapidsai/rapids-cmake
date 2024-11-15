@@ -17,5 +17,5 @@
 # that breaks its usage by cpm/detail/package_details
 
 if(NOT DEFINED rapids-cmake-version)
-  set(rapids-cmake-version 24.12)
+  set(rapids-cmake-version 25.02)
 endif()
