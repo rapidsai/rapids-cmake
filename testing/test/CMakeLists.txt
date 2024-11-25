@@ -46,7 +46,7 @@ add_cmake_build_test(install_relocatable-no-tests.cmake)
 add_cmake_build_test(install_relocatable-simple.cmake)
 add_cmake_build_test(install_relocatable-installed-tests-run)
 add_cmake_build_test(install_relocatable-installed-tests-run-lazy-msg)
-add_cmake_build_test(install_relocatable-with-gtest_discover_tests.cmake)
+add_cmake_build_test(install_relocatable-with-gtest_discover_tests.cmake NO_DEV_ERRORS)
 add_cmake_config_test(install_relocatable-wrong-component.cmake SHOULD_FAIL "${wrong_component_message}")
 
 add_cmake_ctest_test(add-impossible-allocation SHOULD_FAIL "Insufficient resources for test")
