@@ -46,6 +46,13 @@ generated information will include a :cmake:command:`CPMFindPackage` call for <P
 ``INSTALL``
   Will record <PackageName> is part of the build directory export set
 
+``CPM_ARGS``
+  Arguments to be passed to the generated CPM call.
+
+``GLOBAL_TARGETS``
+  Which targets from this package should be made global. This information
+  will be propagated to any associated export set.
+
   .. note::
     It is an anti-pattern to use this command with `INSTALL` as most CMake
     based projects should be installed, and :cmake:command:`rapids_export_package(INSTALL` used
@@ -60,7 +67,7 @@ function(rapids_export_cpm type name export_set)
   string(TOLOWER ${type} type)
 
   set(options "")
-  set(one_value EXPORT_SET)
+  set(one_value)
   set(multi_value GLOBAL_TARGETS CPM_ARGS)
   cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
