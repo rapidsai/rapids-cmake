@@ -17,10 +17,12 @@ cmake_minimum_required(VERSION 3.26.4)
 project(rapids-test-project LANGUAGES CXX)
 
 include(${rapids-cmake-dir}/cpm/init.cmake)
+include(${rapids-cmake-dir}/cpm/fmt.cmake)
 include(${rapids-cmake-dir}/cpm/rmm.cmake)
 
 rapids_cpm_init(GENERATE_PINNED_VERSIONS)
-rapids_cpm_rmm()
+rapids_cpm_fmt(DOWNLOAD_ONLY ON)
+rapids_cpm_rmm(DOWNLOAD_ONLY ON)
 
 # only check projects that were downloaded by CPM (ignore those already in the build environment)
 foreach(proj IN ITEMS rmm fmt)

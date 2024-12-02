@@ -30,7 +30,7 @@ function(verify_generated_pins target_name)
 
   foreach(proj IN LISTS _RAPIDS_PROJECTS)
     if(NOT CPM_PACKAGE_${proj}_SOURCE_DIR)
-      message(FATAL_ERROR "Attempting to verify a project that was not cloned as part of this build")
+      message(FATAL_ERROR "Attempting to verify a project ( ${proj} ) that was not cloned as part of this build")
     endif()
   endforeach()
 

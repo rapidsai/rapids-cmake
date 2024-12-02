@@ -94,6 +94,65 @@ function(rapids_cpm_pinning_extract_source_git_info package git_url_var git_sha_
 endfunction()
 
 #[=======================================================================[.rst:
+rapids_cpm_pinning_transform_patches
+------------------------------------
+
+.. versionadded:: v25.02.00
+
+Transform the `patches` value json string to not reference any files
+on disk but instead embed the patches contents directly in the json
+
+Parameters:
+
+``value_var``
+    Variable name of the json object of the patch content to transform
+
+#]=======================================================================]
+function(rapids_cpm_pinning_transform_patches package_name patches_array_var output_var)
+
+  include("${rapids-cmake-dir}/cpm/detail/convert_patch_json.cmake")
+
+  # We need to get the `files` key and transform it
+  set(json_data "${${patches_array_var}}")
+  string(JSON patch_count LENGTH "${json_data}")
+  if(patch_count GREATER_EQUAL 1)
+
+    # Setup state so that we can eval `current_json_dir` placeholder
+    string(TOLOWER "${package_name}" normalized_pkg_name)
+    get_property(json_path GLOBAL PROPERTY rapids_cpm_${normalized_pkg_name}_override_json_file)
+    if(NOT json_path)
+      get_property(json_path GLOBAL PROPERTY rapids_cpm_${normalized_pkg_name}_json_file)
+    endif()
+    cmake_path(GET json_path PARENT_PATH current_json_dir)
+
+    math(EXPR patch_count "${patch_count} - 1")
+    # cmake-lint: disable=E1120
+    foreach(index RANGE ${patch_count})
+      string(JSON patch_data GET "${json_data}" ${index})
+      string(JSON file_path ERROR_VARIABLE have_error GET "${patch_data}" file)
+      cmake_language(EVAL CODE "set(file_path ${file_path})")
+      if(file_path)
+        # Eval the file to transform `current_json_dir`
+        cmake_path(IS_RELATIVE file_path is_relative)
+        if(is_relative)
+          string(PREPEND file_path "${rapids-cmake-dir}/cpm/patches/")
+        endif()
+
+        # Read the file and transform to string
+        rapids_cpm_convert_patch_json(FROM_FILE_TO_JSON as_json FILE_VAR file_path)
+        # Remove the the file entry and replace it with the correct inline json format
+        string(JSON patch_data ERROR_VARIABLE have_error REMOVE "${patch_data}" file)
+        set(json_key "inline_patch")
+        string(JSON patch_data ERROR_VARIABLE have_error SET "${patch_data}" "${json_key}"
+               "${as_json}")
+        string(JSON json_data SET "${json_data}" ${index} "${patch_data}")
+      endif()
+    endforeach()
+  endif()
+  set(${output_var} "${json_data}" PARENT_SCOPE)
+endfunction()
+
+#[=======================================================================[.rst:
 rapids_cpm_pinning_create_and_set_member
 ----------------------------------------
 
@@ -105,6 +164,9 @@ new value.
 
 Parameters:
 
+``package_name``
+    Name of the project that this json object is associated too.
+
 ``json_var``
     Variable name of the json object to both read and write too.
 
@@ -114,8 +176,12 @@ Parameters:
     Holds the var that should be written to the json object
 
 #]=======================================================================]
-function(rapids_cpm_pinning_create_and_set_member json_var key value)
+function(rapids_cpm_pinning_create_and_set_member package_name json_var key value)
 
+  if(key MATCHES "patches")
+    # Transform inplace the value to only have inline patches
+    rapids_cpm_pinning_transform_patches(${package_name} value value)
+  endif()
   # Identify special values types that shouldn't be treated as a string
   # https://gitlab.kitware.com/cmake/cmake/-/issues/25716
   if(value MATCHES "(^true$|^false$|^null$|^\\{|^\\[)")
@@ -186,7 +252,7 @@ function(rapids_cpm_pinning_add_json_entry package_name json_var)
   set(json_exclusion_list "")
   # patch and proprietary_binary can't propagate if an override exists
   if(override_json_data)
-    list(APPEND json_exclusion_list "patch"  "proprietary_binary")
+    list(APPEND json_exclusion_list "patch" "proprietary_binary")
   endif()
 
   set(data_list override_json_data json_data)
@@ -206,7 +272,8 @@ function(rapids_cpm_pinning_add_json_entry package_name json_var)
       string(JSON existing_value ERROR_VARIABLE dont_have GET "${pinned_json_entry}" ${member})
       if(dont_have AND (NOT member IN_LIST exclusions))
         string(JSON value GET "${data}" ${member})
-        rapids_cpm_pinning_create_and_set_member(pinned_json_entry ${member} ${value})
+        rapids_cpm_pinning_create_and_set_member(${package_name} pinned_json_entry ${member}
+                                                 ${value})
       endif()
     endforeach()
   endforeach()
