@@ -96,6 +96,13 @@ function(add_cmake_test mode source_or_dir)
   if(DEFINED CPM_DOWNLOAD_LOCATION)
     list(APPEND extra_configure_flags "-DCPM_DOWNLOAD_LOCATION=${CPM_DOWNLOAD_LOCATION}")
   endif()
+  if(PACKAGES_IN_CPM_CACHE)
+    # Prevent ever finding preexisting built packages for those that we have in
+    # the cache.
+    foreach(pkg ${PACKAGES_IN_CPM_CACHE})
+      list(APPEND extra_configure_flags "-DCPM_DOWNLOAD_${pkg}=ON")
+    endforeach()
+  endif()
 
   foreach(generator gen_name IN ZIP_LISTS supported_generators nice_gen_names)
 

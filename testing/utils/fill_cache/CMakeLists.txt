@@ -43,11 +43,18 @@ rapids_cpm_nvtx3(DOWNLOAD_ONLY ON)
 rapids_cpm_rmm(DOWNLOAD_ONLY ON)
 rapids_cpm_spdlog(DOWNLOAD_ONLY ON)
 rapids_cpm_fmt(DOWNLOAD_ONLY ON)
-rapids_cpm_find(skbuild 0.14.1
-                GIT_REPOSITORY https://github.com/scikit-build/scikit-build.git
-                GIT_TAG 0.14.1
-                )
 
 # Download all binary packages
 set(CPM_DOWNLOAD_ALL "OFF")
 rapids_cpm_nvcomp(USE_PROPRIETARY_BINARY ON DOWNLOAD_ONLY ON)
+
+# Print out all the packages in the cache
+get_cmake_property(cpm_packages CACHE_VARIABLES)
+set(packages)
+foreach(p ${cpm_packages})
+  if ("${p}" MATCHES "^CPM_PACKAGE_(.*)_SOURCE_DIR")
+    list(APPEND packages ${CMAKE_MATCH_1})
+  endif()
+endforeach()
+string(REPLACE ";" ", " packages "${packages}")
+message(STATUS "CPM packages in cache: {${packages}}")
