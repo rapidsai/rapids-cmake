@@ -92,7 +92,6 @@ function(rapids_cpm_package_details package_name version_var url_var tag_var sha
   set(exclude_from_all OFF)
   rapids_cpm_json_get_value(exclude_from_all)
 
-  set(always_download OFF)
   if(override_json_data AND json_data AND git_details_overridden)
     # `always_download` default value requires the package to exist in both the default and override
     # and that the git url / git tag have been modified.
