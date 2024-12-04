@@ -47,3 +47,14 @@ rapids_cpm_fmt(DOWNLOAD_ONLY ON)
 # Download all binary packages
 set(CPM_DOWNLOAD_ALL "OFF")
 rapids_cpm_nvcomp(USE_PROPRIETARY_BINARY ON DOWNLOAD_ONLY ON)
+
+# Print out all the packages in the cache
+get_cmake_property(cpm_packages CACHE_VARIABLES)
+set(packages)
+foreach(p ${cpm_packages})
+  if ("${p}" MATCHES "^CPM_PACKAGE_(.*)_SOURCE_DIR")
+    list(APPEND packages ${CMAKE_MATCH_1})
+  endif()
+endforeach()
+string(REPLACE ";" ", " packages "${packages}")
+message(STATUS "CPM packages in cache: {${packages}}")
