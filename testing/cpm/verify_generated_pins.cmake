@@ -30,7 +30,7 @@ function(verify_generated_pins target_name)
 
   # only check projects that were downloaded by CPM (ignore those already in the build environment)
   foreach(proj IN LISTS _RAPIDS_PROJECTS)
-    if(${proj}_SOURCE_DIR)
+    if(CPM_PACKAGE_${proj}_SOURCE_DIR)
       list(APPEND projects-to-verify ${proj})
     endif()
   endforeach()
