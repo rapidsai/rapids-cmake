@@ -23,9 +23,22 @@ if(possible_package_dir AND NOT DEFINED @name@_DIR)
   set(@name@_DIR "${possible_package_dir}")
 endif()
 
-CPMFindPackage(
-  "@_RAPIDS_CPM_ARGS@"
-  )
+if(NOT "@_RAPIDS_DEFAULT_DOWNLOAD_OPTION@" STREQUAL "")
+  option(@_RAPIDS_DEFAULT_DOWNLOAD_OPTION@ "Whether or not to download @name@" ON)
+  if(@_RAPIDS_DEFAULT_DOWNLOAD_OPTION@)
+    CPMAddPackage(
+      "@_RAPIDS_CPM_ARGS@"
+      )
+  else()
+    CPMFindPackage(
+      "@_RAPIDS_CPM_ARGS@"
+      )
+  endif()
+else()
+  CPMFindPackage(
+    "@_RAPIDS_CPM_ARGS@"
+    )
+endif()
 
 if(possible_package_dir)
   unset(possible_package_dir)
