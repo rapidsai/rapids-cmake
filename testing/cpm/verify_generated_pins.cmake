@@ -28,10 +28,9 @@ function(verify_generated_pins target_name)
     set(_RAPIDS_PIN_FILE "${CMAKE_CURRENT_BINARY_DIR}/rapids-cmake/pinned_versions.json")
   endif()
 
-  # only check projects that were downloaded by CPM (ignore those already in the build environment)
   foreach(proj IN LISTS _RAPIDS_PROJECTS)
-    if(${proj}_SOURCE_DIR)
-      list(APPEND projects-to-verify ${proj})
+    if(NOT CPM_PACKAGE_${proj}_SOURCE_DIR)
+      message(FATAL_ERROR "Attempting to verify a project that was not cloned as part of this build")
     endif()
   endforeach()
 
@@ -39,7 +38,7 @@ function(verify_generated_pins target_name)
     COMMAND ${CMAKE_COMMAND} "-S${CMAKE_CURRENT_FUNCTION_LIST_DIR}/verify_generated_pins/" "-B${CMAKE_BINARY_DIR}/${target_name}_verify_build"
     "-Drapids-cmake-dir=${rapids-cmake-dir}"
     "-Dpinned_versions_file=${_RAPIDS_PIN_FILE}"
-    "-Dprojects-to-verify=${projects-to-verify}"
+    "-Dprojects-to-verify=${_RAPIDS_PROJECTS}"
     "-Dprojects-not-in-list=${_RAPIDS_PROJECTS_NOT_EXIST}"
     VERBATIM
   )

@@ -30,8 +30,17 @@ function(setup_cpm_cache )
       -DCPM_SOURCE_CACHE=${CPM_SOURCE_CACHE}
       -DCPM_DOWNLOAD_LOCATION=${CPM_DOWNLOAD_LOCATION}
       WORKING_DIRECTORY ${src_dir}
+      OUTPUT_VARIABLE out_var
       )
+  # Find the line in out_var that contains "CPM packages in cache
+  set(packages)
+  foreach(line IN LISTS out_var)
+    if("${line}" MATCHES "CPM packages in cache: {(.*)}")
+      string(REPLACE ", " ";" packages "${CMAKE_MATCH_1}")
+    endif()
+  endforeach()
 
+  set(PACKAGES_IN_CPM_CACHE ${packages} PARENT_SCOPE)
   set(CPM_SOURCE_CACHE "${CPM_SOURCE_CACHE}" PARENT_SCOPE)
   set(CPM_DOWNLOAD_LOCATION "${CPM_DOWNLOAD_LOCATION}" PARENT_SCOPE)
 endfunction()
