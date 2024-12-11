@@ -1,3 +1,31 @@
+# rapids-cmake 24.12.00 (11 Dec 2024)
+
+## 🐛 Bug Fixes
+
+- Fix failures in cpm_generate_pins-nested tests ([#724](https://github.com/rapidsai/rapids-cmake/pull/724)) [@vyasr](https://github.com/vyasr)
+- Search for the normalized package name when patching ([#715](https://github.com/rapidsai/rapids-cmake/pull/715)) [@vyasr](https://github.com/vyasr)
+- rapids_export_write_language no longer generates cmake dev warnings ([#712](https://github.com/rapidsai/rapids-cmake/pull/712)) [@robertmaynard](https://github.com/robertmaynard)
+- Update rapids-cmake to support cccl 2.8 new install rules ([#711](https://github.com/rapidsai/rapids-cmake/pull/711)) [@robertmaynard](https://github.com/robertmaynard)
+- gtest_discover_tests doesn&#39;t crash rapids_test_install_relocatable ([#697](https://github.com/rapidsai/rapids-cmake/pull/697)) [@robertmaynard](https://github.com/robertmaynard)
+
+## 📖 Documentation
+
+- Fix docs warning about get_html_theme_path. ([#705](https://github.com/rapidsai/rapids-cmake/pull/705)) [@bdice](https://github.com/bdice)
+
+## 🚀 New Features
+
+- Verifies that current_json_dir placeholder works with normalized package names ([#716](https://github.com/rapidsai/rapids-cmake/pull/716)) [@robertmaynard](https://github.com/robertmaynard)
+- Allow for cpm override via file and direct calls to rapids_cpm_package_override ([#714](https://github.com/rapidsai/rapids-cmake/pull/714)) [@robertmaynard](https://github.com/robertmaynard)
+- Upgrade nvcomp to 4.1.0.6 ([#709](https://github.com/rapidsai/rapids-cmake/pull/709)) [@bdice](https://github.com/bdice)
+- Warn when override of a default package uses the incorrect case ([#708](https://github.com/rapidsai/rapids-cmake/pull/708)) [@robertmaynard](https://github.com/robertmaynard)
+- Allow CCCL 2.7 to be used in a rapids-cmake override ([#706](https://github.com/rapidsai/rapids-cmake/pull/706)) [@robertmaynard](https://github.com/robertmaynard)
+- version.json patch command supports required field ([#700](https://github.com/rapidsai/rapids-cmake/pull/700)) [@robertmaynard](https://github.com/robertmaynard)
+- Bump cuco version to fetch the Hyperloglog renaming ([#698](https://github.com/rapidsai/rapids-cmake/pull/698)) [@PointKernel](https://github.com/PointKernel)
+
+## 🛠️ Improvements
+
+- Bump cuco version to fetch the new multiset retrieve ([#707](https://github.com/rapidsai/rapids-cmake/pull/707)) [@PointKernel](https://github.com/PointKernel)
+
 # rapids-cmake 24.10.00 (9 Oct 2024)
 
 ## 🚨 Breaking Changes
