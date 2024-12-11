@@ -78,8 +78,9 @@ in the build tree of the calling project
   .. versionadded:: v24.06.00
 
   If the variable :cmake:variable:`RAPIDS_CMAKE_CPM_OVERRIDE_VERSION_FILE` is specified it will be used
-  in all calls to ``rapids_cpm_init``. Any existing explicit `OVERRIDE` files will be ignored, and
-  all other calls will be treated as if this file was specified as the override.
+  in all calls to ``rapids_cpm_init`` no matter the arguments. Any existing
+  ``rapids_cpm_init(OVERRIDE`` files will be ignored, and all other calls will be treated as if this file was specified
+  as the override.
 
 .. versionadded:: v24.04.00
   ```
@@ -118,7 +119,10 @@ function(rapids_cpm_init)
     rapids_cpm_load_preset_versions()
   endif()
 
-  if(_RAPIDS_OVERRIDE OR RAPIDS_CMAKE_CPM_OVERRIDE_VERSION_FILE)
+  if(RAPIDS_CMAKE_CPM_OVERRIDE_VERSION_FILE)
+    include("${rapids-cmake-dir}/cpm/package_override.cmake")
+    rapids_cpm_package_override("${RAPIDS_CMAKE_CPM_OVERRIDE_VERSION_FILE}")
+  elseif(_RAPIDS_OVERRIDE)
     include("${rapids-cmake-dir}/cpm/package_override.cmake")
     rapids_cpm_package_override("${_RAPIDS_OVERRIDE}")
   endif()

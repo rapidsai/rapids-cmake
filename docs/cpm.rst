@@ -220,6 +220,12 @@ as needed.
             is no longer needed in. If this patch is required for all
             versions an empty string should be supplied.
 
+        ``required``
+            An optional boolean value that represents if it is required that the patch
+            apply correctly.
+
+            The default value for this field is ``false``.
+
 ``proprietary_binary``
 
     An optional dictionary of cpu architecture and operating system keys to url values that represents a download for a pre-built proprietary version of the library. This creates a new entry in the search

@@ -35,6 +35,7 @@ adds a test for each generator:
   add_cmake_build_test( (config|build|test|install)
                          <SourceOrDir>
                          [SERIAL]
+                         [NO_DEV_ERRORS]
                          [NO_CPM_CACHE]
                          [NO_RAPIDS_CMAKE_HOOKS]
                          [SHOULD_FAIL <expected error message string>]
@@ -60,7 +61,7 @@ adds a test for each generator:
 
 #]=======================================================================]
 function(add_cmake_test mode source_or_dir)
-  set(options SERIAL NO_CPM_CACHE NO_RAPIDS_CMAKE_HOOKS)
+  set(options SERIAL NO_DEV_ERRORS NO_CPM_CACHE NO_RAPIDS_CMAKE_HOOKS)
   set(one_value SHOULD_FAIL)
   set(multi_value)
   cmake_parse_arguments(RAPIDS_TEST "${options}" "${one_value}" "${multi_value}" ${ARGN})
@@ -84,13 +85,23 @@ function(add_cmake_test mode source_or_dir)
   endif()
 
   if(NOT RAPIDS_TEST_NO_RAPIDS_CMAKE_HOOKS)
-    set(extra_configure_flags "-DCMAKE_PROJECT_INCLUDE_BEFORE=${PROJECT_SOURCE_DIR}/utils/emulate_fetching_rapids_cmake.cmake")
+    list(APPEND extra_configure_flags "-DCMAKE_PROJECT_INCLUDE_BEFORE=${PROJECT_SOURCE_DIR}/utils/emulate_fetching_rapids_cmake.cmake")
+  endif()
+  if(NOT (RAPIDS_TEST_NO_DEV_ERRORS OR RAPIDS_TEST_DISABLE_DEV_ERRORS) )
+    list(APPEND extra_configure_flags "-Werror=dev")
   endif()
   if(DEFINED CPM_SOURCE_CACHE AND NOT RAPIDS_TEST_NO_CPM_CACHE)
     list(APPEND extra_configure_flags "-DCPM_SOURCE_CACHE=${CPM_SOURCE_CACHE}")
   endif()
   if(DEFINED CPM_DOWNLOAD_LOCATION)
     list(APPEND extra_configure_flags "-DCPM_DOWNLOAD_LOCATION=${CPM_DOWNLOAD_LOCATION}")
+  endif()
+  if(PACKAGES_IN_CPM_CACHE)
+    # Prevent ever finding preexisting built packages for those that we have in
+    # the cache.
+    foreach(pkg ${PACKAGES_IN_CPM_CACHE})
+      list(APPEND extra_configure_flags "-DCPM_DOWNLOAD_${pkg}=ON")
+    endforeach()
   endif()
 
   foreach(generator gen_name IN ZIP_LISTS supported_generators nice_gen_names)

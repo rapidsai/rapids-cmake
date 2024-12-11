@@ -43,16 +43,16 @@ for that project will occur. This is done to make sure that the requested modifi
 version is used.
 
 If a project is listed in multiple override files, the first file values will be used,
-and all later calls for that packaged will be ignored.  This "first to record, wins"
+and all later calls for that package will be ignored.  This "first to record, wins"
 approach is used to match FetchContent, and allows parent projects to override child
 projects.
 
 .. versionadded:: v24.06.00
 
 If the variable :cmake:variable:`RAPIDS_CMAKE_CPM_OVERRIDE_VERSION_FILE` is specified it will be used
-in all calls to ``rapids_cpm_init``. Any existing explicit `OVERRIDE` files will be ignored, and
-all other calls will be treated as if this file was specified as the override.
-
+in all calls to ``rapids_cpm_init`` no matter the arguments. Any existing
+``rapids_cpm_init(OVERRIDE`` files will be ignored, and all other calls will be treated as if this file was specified
+as the override.
 
 .. note::
 
@@ -72,12 +72,6 @@ all other calls will be treated as if this file was specified as the override.
 function(rapids_cpm_package_override _rapids_override_filepath)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.rapids_cpm_package_override")
 
-  # The `RAPIDS_CMAKE_CPM_OVERRIDE_VERSION_FILE` must be loaded instead of any explicit file path
-  # when it is set
-  if(DEFINED RAPIDS_CMAKE_CPM_OVERRIDE_VERSION_FILE)
-    set(_rapids_override_filepath "${RAPIDS_CMAKE_CPM_OVERRIDE_VERSION_FILE}")
-  endif()
-
   if(NOT EXISTS "${_rapids_override_filepath}")
     message(FATAL_ERROR "rapids_cpm_package_override can't load '${_rapids_override_filepath}', verify it exists"
     )
@@ -94,32 +88,49 @@ function(rapids_cpm_package_override _rapids_override_filepath)
     # cmake-lint: disable=E1120
     foreach(index RANGE ${package_count})
       string(JSON package_name MEMBER "${json_data}" packages ${index})
-      get_property(override_exists GLOBAL PROPERTY rapids_cpm_${package_name}_override_json DEFINED)
-      if(NOT (override_exists OR DEFINED CPM_${package_name}_SOURCE))
-        # only add the first override for a project we encounter
-        string(JSON data GET "${json_data}" packages "${package_name}")
-        set_property(GLOBAL PROPERTY rapids_cpm_${package_name}_override_json "${data}")
-        set_property(GLOBAL PROPERTY rapids_cpm_${package_name}_override_json_file
-                                     "${_rapids_override_filepath}")
-
-        # establish the fetch content
-        include(FetchContent)
-        include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
-        rapids_cpm_package_details(${package_name} version repository tag shallow exclude)
-
-        include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
-        rapids_cpm_generate_patch_command(${package_name} ${version} patch_command)
-
-        unset(exclude_from_all)
-        if(exclude AND CMAKE_VERSION VERSION_GREATER_EQUAL 3.28.0)
-          set(exclude_from_all EXCLUDE_FROM_ALL)
-        endif()
-        FetchContent_Declare(${package_name}
-                             GIT_REPOSITORY ${repository}
-                             GIT_TAG ${tag}
-                             GIT_SHALLOW ${shallow}
-                             ${patch_command} ${exclude_from_all})
+      string(TOLOWER "${package_name}" normalized_pkg_name)
+      get_property(override_exists GLOBAL PROPERTY rapids_cpm_${normalized_pkg_name}_override_json
+                   SET)
+      if(override_exists OR DEFINED CPM_${package_name}_SOURCE)
+        continue()
       endif()
+
+      # Warn if our name all lower case matches a default package, but our case sensitive names
+      # doesn't ( ABC vs abc )
+      get_property(package_proper_name GLOBAL
+                   PROPERTY rapids_cpm_${normalized_pkg_name}_proper_name)
+      if(package_proper_name AND NOT package_proper_name STREQUAL package_name)
+        message(AUTHOR_WARNING "RAPIDS-CMake is assuming the override ${package_name} is meant for the ${package_proper_name} package. For correctness please use the correctly cased name"
+        )
+      endif()
+      if(NOT package_proper_name)
+        set(package_proper_name ${package_name}) # Required for FetchContent_Declare
+      endif()
+
+      # only add the first override for a project we encounter
+      string(JSON data GET "${json_data}" packages "${package_name}")
+      set_property(GLOBAL PROPERTY rapids_cpm_${normalized_pkg_name}_override_json "${data}")
+      set_property(GLOBAL PROPERTY rapids_cpm_${normalized_pkg_name}_override_json_file
+                                   "${_rapids_override_filepath}")
+
+      # establish the fetch content
+      include(FetchContent)
+      include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
+      rapids_cpm_package_details(${package_name} version repository tag shallow exclude)
+
+      include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
+      rapids_cpm_generate_patch_command(${package_name} ${version} patch_command)
+
+      unset(exclude_from_all)
+      if(exclude AND CMAKE_VERSION VERSION_GREATER_EQUAL 3.28.0)
+        set(exclude_from_all EXCLUDE_FROM_ALL)
+      endif()
+      FetchContent_Declare(${package_proper_name}
+                           GIT_REPOSITORY ${repository}
+                           GIT_TAG ${tag}
+                           GIT_SHALLOW ${shallow}
+                           ${patch_command} ${exclude_from_all})
+      unset(package_proper_name)
     endforeach()
   endif()
 endfunction()
