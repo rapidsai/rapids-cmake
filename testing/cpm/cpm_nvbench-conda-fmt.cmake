@@ -15,6 +15,7 @@
 #=============================================================================
 include(${rapids-cmake-dir}/cpm/init.cmake)
 include(${rapids-cmake-dir}/cpm/rmm.cmake)
+include(${rapids-cmake-dir}/cpm/spdlog.cmake)
 include(${rapids-cmake-dir}/cpm/nvbench.cmake)
 
 enable_language(CUDA)
@@ -27,6 +28,7 @@ rapids_cuda_set_architectures(RAPIDS)
 set(BUILD_SHARED_LIBS ON)
 rapids_cpm_init()
 rapids_cpm_rmm()
+rapids_cpm_spdlog()
 rapids_cpm_nvbench()
 
 file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/use_fmt.cpp" [=[
@@ -50,5 +52,5 @@ int main() { return 0; }
 
 
 add_library(uses_fmt SHARED "${CMAKE_CURRENT_BINARY_DIR}/use_fmt.cpp")
-target_link_libraries(uses_fmt PRIVATE rmm::rmm nvbench::nvbench)
+target_link_libraries(uses_fmt PRIVATE rmm::rmm nvbench::nvbench spdlog::spdlog_header_only)
 target_compile_features(uses_fmt PRIVATE cxx_std_17)

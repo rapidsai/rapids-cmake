@@ -23,11 +23,11 @@ rapids_cpm_init(GENERATE_PINNED_VERSIONS)
 rapids_cpm_rmm()
 
 # only check projects that were downloaded by CPM (ignore those already in the build environment)
-foreach(proj IN ITEMS rmm fmt spdlog)
+foreach(proj IN ITEMS rmm fmt)
   if(${proj}_SOURCE_DIR)
     list(APPEND projects-to-verify ${proj})
   endif()
 endforeach()
 
 include("${rapids-cmake-testing-dir}/cpm/verify_generated_pins.cmake")
-verify_generated_pins(verify_pins PROJECTS rmm fmt spdlog)
+verify_generated_pins(verify_pins PROJECTS rmm fmt)
