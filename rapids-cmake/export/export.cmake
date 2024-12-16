@@ -67,7 +67,7 @@ calls to :cmake:command:`find_dependency`, or :cmake:command:`CPMFindPackage`.
     rapids_export(BUILD example
       EXPORT_SET example-targets
       COMPONENTS A B
-      COMPONENTS A-export B-export
+      COMPONENTS_EXPORT_SET A-export B-export
       )
 
   This is needed so that :cmake:command:`rapids_export` can correctly
