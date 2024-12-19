@@ -197,18 +197,32 @@ as needed.
 
     The existence of a patch entry in the package definition being used will cause the `always_download` value always to be true.
 
-    .. literalinclude:: /packages/patches.json
-        :language: json
-
     Each dictionary in the array of patches contains the following fields:
 
         ``file``
-            A required string representing the git diff ( .diff ) or patch ( .patch ) to apply.
-            Absolute and relative paths are supported. Relative paths are
+
+            .. literalinclude:: /packages/patches.json
+                :language: json
+
+            Mutually exclusive string field with `inline_patch`. Only one of these fields must be provided.
+
+            Absolute or relative path to the git diff ( .diff ) or patch ( .patch ) to apply.
+            Relative paths are
             evaluated in relation to the ``rapids-cmake/cpm/patches`` directory.
 
             Supports the following placeholders:
                 - ``${current_json_dir}`` will be evaluated to the absolute path to the directory holding the current json file
+
+        ``inline_patch``
+
+            .. literalinclude:: /packages/patches_inline.json
+                :language: json
+
+            Mutually exclusive dictionary field with `file`. Only one of these fields must be provided.
+
+            Required keys for `inline_patch` are:
+                * `type` the format of the patch, either `diff` ( git diff ) or `patch` ( git format-patch ).
+                * `content` the lines of the patch file represented as an array of strings ( each element is a line ).
 
         ``issue``
             A required string that explains the need for the patch. Preference is for the

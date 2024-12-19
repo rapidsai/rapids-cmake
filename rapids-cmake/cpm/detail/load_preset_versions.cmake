@@ -49,7 +49,7 @@ function(rapids_cpm_load_preset_versions)
   endif()
 
   if(NOT EXISTS "${_rapids_preset_version_file}")
-    message(FATAL_ERROR "rapids_cpm can't load '${filepath}' to find package version information, verify it exists"
+    message(FATAL_ERROR "rapids_cpm can't load '${_rapids_preset_version_file}' to find package version information, verify it exists"
     )
   endif()
 
@@ -85,8 +85,8 @@ function(rapids_cpm_load_preset_versions)
       )
     else()
       set_property(GLOBAL PROPERTY rapids_cpm_${normalized_pkg_name}_json "${data}")
-      set_property(GLOBAL PROPERTY rapids_cpm_${normalized_pkg_name}_json_file "${filepath}")
-
+      set_property(GLOBAL PROPERTY rapids_cpm_${normalized_pkg_name}_json_file
+                                   "${_rapids_preset_version_file}")
       set_property(GLOBAL PROPERTY rapids_cpm_${normalized_pkg_name}_proper_name "${package_name}")
     endif()
   endforeach()
