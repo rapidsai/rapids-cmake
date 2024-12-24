@@ -24,9 +24,11 @@ repos:
         types_or: [c, c++, cuda]
         args: ["-fallback-style=none", "-style=file", "-i"]
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.2.2
+    rev: v2.3.0
     hooks:
       - id: codespell
+        additional_dependencies: [tomli]
+        args: ["--toml", "pyproject.toml"]
   - repo: https://github.com/rapidsai/dependency-file-generator
     rev: v1.17.0
     hooks:
