@@ -37,7 +37,7 @@ Unlike most `rapids_cpm` functions, this one does not support export sets becaus
 
 Result Functions
 ^^^^^^^^^^^^^^^^
-  :cmake:function:`rapids_make_logger` is made available
+  :cmake:command:`rapids_make_logger` is made available
 
 #]=======================================================================]
 function(rapids_cpm_logger)
