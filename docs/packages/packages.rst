@@ -7,6 +7,7 @@
    /packages/rapids_cpm_fmt
    /packages/rapids_cpm_gbench
    /packages/rapids_cpm_gtest
+   /packages/rapids_cpm_logger
    /packages/rapids_cpm_nvbench
    /packages/rapids_cpm_nvcomp
    /packages/rapids_cpm_nvtx3
