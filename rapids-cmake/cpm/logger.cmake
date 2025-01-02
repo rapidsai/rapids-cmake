@@ -49,10 +49,10 @@ function(rapids_cpm_logger)
   cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
-  rapids_cpm_package_details(logger version repository tag shallow exclude)
+  rapids_cpm_package_details(rapids_logger version repository tag shallow exclude)
 
   include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
-  rapids_cpm_generate_patch_command(logger ${version} patch_command)
+  rapids_cpm_generate_patch_command(rapids_logger ${version} patch_command)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
   rapids_cpm_find(rapids_logger ${version} ${_RAPIDS_UNPARSED_ARGUMENTS}
