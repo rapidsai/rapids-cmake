@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2022, NVIDIA CORPORATION.
+# Copyright (c) 2022-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -46,4 +46,3 @@ set(base_dir "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_INCLUDEDIR}/${logger_namespace
 check_file("${base_dir}/logger.hpp")
 check_file("${base_dir}/logger_impl/logger_impl.hpp")
 check_file("${base_dir}/logger_impl/logger.cpp")
-
