@@ -32,7 +32,7 @@ Unlike most `rapids_cpm` functions, this one does not support export sets becaus
 
   rapids_cpm_logger( [<CPM_ARGS> ...])
 
-.. |PKG_NAME| replace:: cuco
+.. |PKG_NAME| replace:: logger
 .. include:: common_package_args.txt
 
 Result Functions
@@ -63,5 +63,5 @@ function(rapids_cpm_logger)
                   EXCLUDE_FROM_ALL ON)
 
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
-  rapids_cpm_display_patch_status(cuco)
+  rapids_cpm_display_patch_status(logger)
 endfunction()
