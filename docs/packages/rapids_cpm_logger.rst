@@ -1,1 +1,1 @@
-.. cmake-module:: ../../rapids-cmake/cpm/logger.cmake
+.. cmake-module:: ../../rapids-cmake/cpm/rapids_logger.cmake
