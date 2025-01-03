@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2024, NVIDIA CORPORATION.
+# Copyright (c) 2021-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -102,6 +102,8 @@ add_cmake_config_test( cpm_gtest-export.cmake )
 add_cmake_config_test( cpm_gtest-simple.cmake )
 add_cmake_config_test( cpm_gtest-static.cmake )
 add_cmake_config_test( cpm_gtest-explicit-static.cmake )
+
+add_cmake_config_test( cpm_logger-simple.cmake )
 
 add_cmake_config_test( cpm_nvbench-export.cmake SERIAL)
 add_cmake_config_test( cpm_nvbench-simple.cmake SERIAL)
