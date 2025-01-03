@@ -14,10 +14,10 @@
 # limitations under the License.
 #=============================================================================
 include(${rapids-cmake-dir}/cpm/init.cmake)
-include(${rapids-cmake-dir}/cpm/logger.cmake)
+include(${rapids-cmake-dir}/cpm/rapids_logger.cmake)
 
 rapids_cpm_init()
-rapids_cpm_logger()
+rapids_cpm_rapids_logger()
 
 set(logger_namespace rapids)
 set(logger_target "${logger_namespace}_logger")

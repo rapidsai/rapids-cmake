@@ -16,8 +16,8 @@
 include_guard(GLOBAL)
 
 #[=======================================================================[.rst:
-rapids_cpm_logger
------------------
+rapids_cpm_rapids_logger
+------------------------
 
 .. versionadded:: v25.02.00
 
@@ -30,7 +30,7 @@ Unlike most `rapids_cpm` functions, this one does not support export sets becaus
 
 .. code-block:: cmake
 
-  rapids_cpm_logger( [<CPM_ARGS> ...])
+  rapids_cpm_rapids_logger( [<CPM_ARGS> ...])
 
 .. |PKG_NAME| replace:: logger
 .. include:: common_package_args.txt
@@ -40,8 +40,8 @@ Result Functions
   :cmake:command:`rapids_make_logger` is made available
 
 #]=======================================================================]
-function(rapids_cpm_logger)
-  list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.logger")
+function(rapids_cpm_rapids_logger)
+  list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.rapids_logger")
 
   set(options)
   set(one_value)

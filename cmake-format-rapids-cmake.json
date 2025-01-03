@@ -161,7 +161,7 @@
           "INSTALL_EXPORT_SET": 1
         }
       },
-      "rapids_cpm_logger": {
+      "rapids_cpm_rapids_logger": {
         "pargs": {
           "nargs": 0
         }
