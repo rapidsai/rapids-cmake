@@ -27,8 +27,8 @@
       "version": "0.1.0",
       "git_shallow": false,
       "always_download": true,
-      "git_url": "https://github.com/bdice/rapids-logger",
-      "git_tag": "849e2643c73778c79aeab21a8c0d8a9603acf5e2"
+      "git_url": "https://github.com/bdice/rapids-logger.git",
+      "git_tag": "logger-default-level"
     },
     "fmt": {
       "version": "11.0.2",
