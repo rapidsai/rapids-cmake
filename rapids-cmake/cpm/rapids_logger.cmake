@@ -54,6 +54,7 @@ function(rapids_cpm_rapids_logger)
 
   # TODO: Need to also support this in exported config files so that header-only libraries like rmm
   # can force their consumers to clone spdlog when a pre-built package is found.
+  include(${rapids-cmake-dir}/cpm/spdlog.cmake)
   if(RAPIDS_LOGGER_HIDE_ALL_SPDLOG_SYMBOLS)
     get_property(_already_downloaded_spdlog GLOBAL PROPERTY RAPIDS_LOGGER_DOWNLOADED_SPDLOG)
     if(NOT _already_downloaded_spdlog)
@@ -62,17 +63,29 @@ function(rapids_cpm_rapids_logger)
         )
       endif()
       set(CPM_DOWNLOAD_spdlog ON)
-      include(${rapids-cmake-dir}/cpm/spdlog.cmake)
       rapids_cpm_spdlog(FMT_OPTION "BUNDLED"
-                        INSTALL_EXPORT_SET ${_RAPIDS_INSTALL_EXPORT_SET}
-                        BUILD_EXPORT_SET ${_RAPIDS_BUILD_EXPORT_SET}
-                                         # TODO: I don't really expect this to work with the way
-                                         # that rapids_cpm_spdlog is set up right now, it's going to
-                                         # require some tweaking of argument forwarding I suspect.
-                                         CPM_ARGS EXCLUDE_FROM_ALL ON OPTIONS
-                                         "BUILD_SHARED_LIBS OFF" "SPDLOG_BUILD_SHARED OFF")
+                                   # TODO: I don't really expect this to work with the way that
+                                   # rapids_cpm_spdlog is set up right now, it's going to require
+                                   # some tweaking of argument forwarding I suspect.
+                                   CPM_ARGS EXCLUDE_FROM_ALL ON OPTIONS "BUILD_SHARED_LIBS OFF"
+                                   "SPDLOG_BUILD_SHARED OFF")
+
+      # Instead of passing build and install export sets to rapids_cpm_spdlog we call
+      # rapids_export_cpm directly for both the build and install export sets to support force
+      # downloading of spdlog in the generated config files.
+      foreach(config BUILD INSTALL)
+        rapids_export_cpm("${config}" spdlog "${_RAPIDS_BUILD_EXPORT_SET}" DEFAULT_DOWNLOAD_OPTION
+                          "RAPIDS_DOWNLOAD_SPDLOG"
+                          CPM_ARGS NAME spdlog VERSION ${version} GIT_REPOSITORY ${repository}
+                                   GIT_TAG ${tag} GIT_SHALLOW ${shallow} EXCLUDE_FROM_ALL ON
+                                   OPTIONS "BUILD_SHARED_LIBS OFF" "SPDLOG_BUILD_SHARED OFF")
+      endforeach()
+      install(TARGETS spdlog EXPORT ${_RAPIDS_INSTALL_EXPORT_SET})
       set_property(GLOBAL PROPERTY RAPIDS_LOGGER_DOWNLOADED_SPDLOG ON)
     endif()
+  else()
+    rapids_cpm_spdlog(INSTALL_EXPORT_SET ${_RAPIDS_INSTALL_EXPORT_SET}
+                      BUILD_EXPORT_SET ${_RAPIDS_BUILD_EXPORT_SET})
   endif()
 
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
