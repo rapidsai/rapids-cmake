@@ -53,6 +53,7 @@ function(rapids_cpm_rapids_logger)
         )
       endif()
       set(CPM_DOWNLOAD_spdlog ON)
+      include(${rapids-cmake-dir}/cpm/spdlog.cmake)
       rapids_cpm_spdlog(FMT_OPTION "BUNDLED"
                         # TODO: Get the export sets as input
                         INSTALL_EXPORT_SET ${_RAPIDS_EXPORT_SET}
