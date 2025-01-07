@@ -30,7 +30,9 @@ Unlike most `rapids_cpm` functions, this one does not support export sets becaus
 
 .. code-block:: cmake
 
-  rapids_cpm_rapids_logger( [<CPM_ARGS> ...])
+  rapids_cpm_rapids_logger( [BUILD_EXPORT_SET <export-name>]
+                            [INSTALL_EXPORT_SET <export-name>]
+                            [<CPM_ARGS> ...])
 
 .. |PKG_NAME| replace:: logger
 .. include:: common_package_args.txt
@@ -43,24 +45,27 @@ Result Functions
 function(rapids_cpm_rapids_logger)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.rapids_logger")
 
+  set(options)
+  # Note: BUILD_EXPORT_SET and INSTALL_EXPORT_SET are not directly used for the logger but are
+  # instead forwarded to spdlog.
+  set(one_value FMT_OPTION BUILD_EXPORT_SET INSTALL_EXPORT_SET)
+  set(multi_value)
+  cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
+
   # TODO: Need to also support this in exported config files so that header-only libraries like rmm
   # can force their consumers to clone spdlog when a pre-built package is found.
   if(RAPIDS_LOGGER_HIDE_ALL_SPDLOG_SYMBOLS)
-    message("Hiding symbols")
     get_property(_already_downloaded_spdlog GLOBAL PROPERTY RAPIDS_LOGGER_DOWNLOADED_SPDLOG)
     if(NOT _already_downloaded_spdlog)
-      message("Not downloaded")
       if(TARGET spdlog::spdlog OR TARGET spdlog::spdlog_header_only)
         message(FATAL_ERROR "Expected spdlog::spdlog not to exist before the first call to rapids_cpm_rapids_logger when RAPIDS_LOGGER_HIDE_ALL_SPDLOG_SYMBOLS is ON"
         )
       endif()
       set(CPM_DOWNLOAD_spdlog ON)
       include(${rapids-cmake-dir}/cpm/spdlog.cmake)
-      message("Calling spdlog")
       rapids_cpm_spdlog(FMT_OPTION "BUNDLED"
-                        # TODO: Get the export sets as input
-                        INSTALL_EXPORT_SET ${_RAPIDS_EXPORT_SET}
-                        BUILD_EXPORT_SET ${_RAPIDS_EXPORT_SET}
+                        INSTALL_EXPORT_SET ${_RAPIDS_INSTALL_EXPORT_SET}
+                        BUILD_EXPORT_SET ${_RAPIDS_BUILD_EXPORT_SET}
                                          # TODO: I don't really expect this to work with the way
                                          # that rapids_cpm_spdlog is set up right now, it's going to
                                          # require some tweaking of argument forwarding I suspect.
@@ -69,11 +74,6 @@ function(rapids_cpm_rapids_logger)
       set_property(GLOBAL PROPERTY RAPIDS_LOGGER_DOWNLOADED_SPDLOG ON)
     endif()
   endif()
-
-  set(options)
-  set(one_value)
-  set(multi_value)
-  cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
   rapids_cpm_package_details(rapids_logger version repository tag shallow exclude)
