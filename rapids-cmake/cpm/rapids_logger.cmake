@@ -46,14 +46,17 @@ function(rapids_cpm_rapids_logger)
   # TODO: Need to also support this in exported config files so that header-only libraries like rmm
   # can force their consumers to clone spdlog when a pre-built package is found.
   if(RAPIDS_LOGGER_HIDE_ALL_SPDLOG_SYMBOLS)
+    message("Hiding symbols")
     get_property(_already_downloaded_spdlog GLOBAL PROPERTY RAPIDS_LOGGER_DOWNLOADED_SPDLOG)
     if(NOT _already_downloaded_spdlog)
-      if(TARGET spdlog::spdlog)
+      message("Not downloaded")
+      if(TARGET spdlog::spdlog OR TARGET spdlog::spdlog_header_only)
         message(FATAL_ERROR "Expected spdlog::spdlog not to exist before the first call to rapids_cpm_rapids_logger when RAPIDS_LOGGER_HIDE_ALL_SPDLOG_SYMBOLS is ON"
         )
       endif()
       set(CPM_DOWNLOAD_spdlog ON)
       include(${rapids-cmake-dir}/cpm/spdlog.cmake)
+      message("Calling spdlog")
       rapids_cpm_spdlog(FMT_OPTION "BUNDLED"
                         # TODO: Get the export sets as input
                         INSTALL_EXPORT_SET ${_RAPIDS_EXPORT_SET}
