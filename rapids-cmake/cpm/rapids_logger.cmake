@@ -55,6 +55,7 @@ function(rapids_cpm_rapids_logger)
   # TODO: Need to also support this in exported config files so that header-only libraries like rmm
   # can force their consumers to clone spdlog when a pre-built package is found.
   include(${rapids-cmake-dir}/cpm/spdlog.cmake)
+  include(${rapids-cmake-dir}/cpm/detail/package_details.cmake)
   if(RAPIDS_LOGGER_HIDE_ALL_SPDLOG_SYMBOLS)
     get_property(_already_downloaded_spdlog GLOBAL PROPERTY RAPIDS_LOGGER_DOWNLOADED_SPDLOG)
     if(NOT _already_downloaded_spdlog)
@@ -73,6 +74,8 @@ function(rapids_cpm_rapids_logger)
       # Instead of passing build and install export sets to rapids_cpm_spdlog we call
       # rapids_export_cpm directly for both the build and install export sets to support force
       # downloading of spdlog in the generated config files.
+      rapids_cpm_package_details(spdlog version repository tag shallow exclude)
+      include(${rapids-cmake-dir}/export/cpm.cmake)
       foreach(config BUILD INSTALL)
         rapids_export_cpm("${config}" spdlog "${_RAPIDS_BUILD_EXPORT_SET}" DEFAULT_DOWNLOAD_OPTION
                           "RAPIDS_DOWNLOAD_SPDLOG"
@@ -88,7 +91,6 @@ function(rapids_cpm_rapids_logger)
                       BUILD_EXPORT_SET ${_RAPIDS_BUILD_EXPORT_SET})
   endif()
 
-  include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
   rapids_cpm_package_details(rapids_logger version repository tag shallow exclude)
 
   include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
