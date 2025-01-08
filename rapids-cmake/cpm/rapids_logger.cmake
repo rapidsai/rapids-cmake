@@ -70,6 +70,10 @@ function(rapids_cpm_rapids_logger)
                                    # some tweaking of argument forwarding I suspect.
                                    CPM_ARGS EXCLUDE_FROM_ALL ON OPTIONS "BUILD_SHARED_LIBS OFF"
                                    "SPDLOG_BUILD_SHARED OFF")
+      # TODO: Propagate the visibility settings to the export set as well.
+      set_target_properties(spdlog
+                            PROPERTIES CXX_VISIBILITY_PRESET hidden VISIBILITY_INLINES_HIDDEN ON
+                                       POSITION_INDEPENDENT_CODE ON)
 
       # Instead of passing build and install export sets to rapids_cpm_spdlog we call
       # rapids_export_cpm directly for both the build and install export sets to support force
