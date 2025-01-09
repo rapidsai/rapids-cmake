@@ -204,11 +204,10 @@ as needed.
             .. literalinclude:: /packages/patches.json
                 :language: json
 
-            Mutually exclusive string field with `inline_patch`. Only one of these fields must be provided.
+            Mutually exclusive string field with `inline_patch`. Only one of these fields may be provided.
 
             Absolute or relative path to the git diff ( .diff ) or patch ( .patch ) to apply.
-            Relative paths are
-            evaluated in relation to the ``rapids-cmake/cpm/patches`` directory.
+            Relative paths are evaluated in relation to the ``rapids-cmake/cpm/patches`` directory.
 
             Supports the following placeholders:
                 - ``${current_json_dir}`` will be evaluated to the absolute path to the directory holding the current json file
@@ -218,7 +217,7 @@ as needed.
             .. literalinclude:: /packages/patches_inline.json
                 :language: json
 
-            Mutually exclusive dictionary field with `file`. Only one of these fields must be provided.
+            Mutually exclusive dictionary field with `file`. Only one of these fields may be provided.
 
             Required keys for `inline_patch` are:
                 * `type` the format of the patch, either `diff` ( git diff ) or `patch` ( git format-patch ).

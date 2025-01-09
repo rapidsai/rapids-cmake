@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2024, NVIDIA CORPORATION.
+# Copyright (c) 2024-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -165,7 +165,7 @@ new value.
 Parameters:
 
 ``package_name``
-    Name of the project that this json object is associated too.
+    Name of the project that this json object is associated to.
 
 ``json_var``
     Variable name of the json object to both read and write too.
