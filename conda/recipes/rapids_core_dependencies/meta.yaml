@@ -16,11 +16,7 @@ build:
   number: {{ GIT_DESCRIBE_NUMBER }}
   string: cuda{{ cuda_major }}_{{ date_string }}_{{ GIT_DESCRIBE_HASH }}_{{ GIT_DESCRIBE_NUMBER }}
   ignore_run_exports_from:
-    {% if cuda_major == "11" %}
     - {{ compiler('cuda') }}
-    {% else %}
-    - {{ compiler('cuda') }}
-    {% endif %}
 
 requirements:
   build:
