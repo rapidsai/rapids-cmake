@@ -104,6 +104,8 @@ add_cmake_config_test( cpm_gtest-simple.cmake )
 add_cmake_config_test( cpm_gtest-static.cmake )
 add_cmake_config_test( cpm_gtest-explicit-static.cmake )
 
+add_cmake_config_test( cpm_logger-simple.cmake )
+
 add_cmake_config_test( cpm_nvbench-export.cmake SERIAL)
 add_cmake_config_test( cpm_nvbench-simple.cmake SERIAL)
 add_cmake_config_test( cpm_nvbench-already-found-fmt.cmake SERIAL)

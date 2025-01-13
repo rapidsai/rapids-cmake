@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2024, NVIDIA CORPORATION.
+# Copyright (c) 2021-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -39,6 +39,8 @@ for  consistency across all RAPIDS projects.
 Result Targets
 ^^^^^^^^^^^^^^
   rmm::rmm target will be created
+  rmm::rmm_logger target will be created
+  rmm::rmm_logger_impl target will be created
 
 Result Variables
 ^^^^^^^^^^^^^^^^
@@ -73,7 +75,7 @@ function(rapids_cpm_rmm)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
   rapids_cpm_find(rmm ${version} ${ARGN} ${_RAPIDS_UNPARSED_ARGUMENTS}
-                  GLOBAL_TARGETS rmm::rmm
+                  GLOBAL_TARGETS rmm::rmm rmm::rmm_logger rmm::rmm_logger_impl
                   CPM_ARGS
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
