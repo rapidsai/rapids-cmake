@@ -47,6 +47,10 @@ dependencies:
             packages:
               - gcc<12.0.0
           - matrix:
+              cuda: "12.[0123]"
+            packages:
+              - gcc<13.0.0
+          - matrix:
               cuda: "12.*"
             packages:
               - gcc<14.0.0
