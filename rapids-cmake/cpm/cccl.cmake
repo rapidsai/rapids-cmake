@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2023-2024, NVIDIA CORPORATION.
+# Copyright (c) 2023-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -102,8 +102,8 @@ function(rapids_cpm_cccl)
 
     set_property(GLOBAL PROPERTY rapids_cmake_cccl_install_rules ON)
     # CCCL < 2.8 does not currently correctly support installation of cub/thrust/libcudacxx in a
-    # subdirectory
-    if(version VERSION_LESS 2.8)
+    # subdirectory CCCL_VERSION doesn't exist when using `add_subdirectory`
+    if(LIBCUDACXX_VERSION VERSION_LESS 2.8)
       set(Thrust_SOURCE_DIR "${CCCL_SOURCE_DIR}/thrust")
       set(CUB_SOURCE_DIR "${CCCL_SOURCE_DIR}/cub")
       set(libcudacxx_SOURCE_DIR "${CCCL_SOURCE_DIR}/libcudacxx")
