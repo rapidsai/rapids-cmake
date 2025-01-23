@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (c) 2023-2024, NVIDIA CORPORATION.
+# Copyright (c) 2023-2025, NVIDIA CORPORATION.
 
 set -euo pipefail
 
@@ -16,7 +16,7 @@ conda activate docs
 
 rapids-print-env
 
-export RAPIDS_VERSION_NUMBER="25.02"
+export RAPIDS_VERSION_NUMBER="25.04"
 export RAPIDS_DOCS_DIR="$(mktemp -d)"
 
 rapids-logger "Build Sphinx docs"
