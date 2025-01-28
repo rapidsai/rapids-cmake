@@ -35,7 +35,7 @@
       "git_shallow": false,
       "always_download": true,
       "git_url": "https://github.com/rapidsai/rapids-logger.git",
-      "git_tag": "feat/library"
+      "git_tag": "feat/library_integration"
     },
     "fmt": {
       "version": "11.0.2",
