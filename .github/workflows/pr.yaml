@@ -17,26 +17,26 @@ jobs:
       - conda-cpp-tests
       - docs-build
     secrets: inherit
-    uses: rapidsai/shared-workflows/.github/workflows/pr-builder.yaml@branch-25.02
+    uses: rapidsai/shared-workflows/.github/workflows/pr-builder.yaml@cuda-12.8.0
   checks:
     secrets: inherit
-    uses: rapidsai/shared-workflows/.github/workflows/checks.yaml@branch-25.02
+    uses: rapidsai/shared-workflows/.github/workflows/checks.yaml@cuda-12.8.0
   conda-cpp-build:
     needs: checks
     secrets: inherit
-    uses: rapidsai/shared-workflows/.github/workflows/conda-cpp-build.yaml@branch-25.02
+    uses: rapidsai/shared-workflows/.github/workflows/conda-cpp-build.yaml@cuda-12.8.0
     with:
       build_type: pull-request
   conda-cpp-tests:
     needs: conda-cpp-build
     secrets: inherit
-    uses: rapidsai/shared-workflows/.github/workflows/conda-cpp-tests.yaml@branch-25.02
+    uses: rapidsai/shared-workflows/.github/workflows/conda-cpp-tests.yaml@cuda-12.8.0
     with:
       build_type: pull-request
   docs-build:
     needs: conda-cpp-build
     secrets: inherit
-    uses: rapidsai/shared-workflows/.github/workflows/custom-job.yaml@branch-25.02
+    uses: rapidsai/shared-workflows/.github/workflows/custom-job.yaml@cuda-12.8.0
     with:
       build_type: pull-request
       node_type: "cpu4"
