@@ -71,7 +71,7 @@ repos:
             ^rapids-cmake/.*$
           )
   - repo: https://github.com/rapidsai/pre-commit-hooks
-    rev: v0.4.0
+    rev: v0.6.0
     hooks:
       - id: verify-copyright
         files: |
@@ -79,6 +79,8 @@ repos:
               [.](cmake|cpp|cu|cuh|h|hpp|sh|pxd|py|pyx)$|
               CMakeLists[.]txt$|
               meta[.]yaml$
+      - id: verify-codeowners
+        args: [--fix, --project-prefix=rapids, --no-cpp, --no-python]
 
 default_language_version:
   python: python3
