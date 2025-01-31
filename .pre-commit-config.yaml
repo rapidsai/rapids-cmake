@@ -29,6 +29,10 @@ repos:
       - id: codespell
         additional_dependencies: [tomli]
         args: ["--toml", "pyproject.toml"]
+        exclude: |
+          (?x)^(
+            ^rapids-cmake/cpm/patches/.*
+          )
   - repo: https://github.com/rapidsai/dependency-file-generator
     rev: v1.17.0
     hooks:
