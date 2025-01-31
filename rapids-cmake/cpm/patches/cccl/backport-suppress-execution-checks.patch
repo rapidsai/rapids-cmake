@@ -1,0 +1,2848 @@
+From 2d0dca7c0cf687cf09a97c201d74362d353584b7 Mon Sep 17 00:00:00 2001
+From: Michael Schellenberger Costa <miscco@nvidia.com>
+Date: Wed, 29 Jan 2025 10:08:25 +0100
+Subject: [PATCH] Backport suppress execution checks for vocabulary types
+
+---
+ .../cuda/std/__expected/bad_expected_access.h |   2 +-
+ .../include/cuda/std/__expected/expected.h    |  20 ++
+ .../cuda/std/__expected/expected_base.h       |  18 ++
+ .../include/cuda/std/__expected/unexpected.h  |   7 +
+ .../include/cuda/std/__memory/construct_at.h  |   1 +
+ libcudacxx/include/cuda/std/__utility/pair.h  |  19 +-
+ .../cuda/std/detail/libcxx/include/optional   |  25 ++
+ .../cuda/std/detail/libcxx/include/tuple      |   2 +
+ .../cuda/std/detail/libcxx/include/variant    |  15 ++
+ .../expected/device_only_types.pass.cpp       | 248 ++++++++++++++++++
+ .../expected/host_only_types.pass.cpp         | 246 +++++++++++++++++
+ .../optional/device_only_types.pass.cpp       | 196 ++++++++++++++
+ .../optional/host_only_types.pass.cpp         | 194 ++++++++++++++
+ .../tuple/device_only_types.pass.cpp          |  81 ++++++
+ .../tuple/forward_as_tuple_interop.pass.cpp   |   0
+ .../utilities/tuple/host_only_types.pass.cpp  |  90 +++++++
+ .../tuple/vector_types_get.pass.cpp           |   0
+ .../vector_types_structured_bindings.pass.cpp |   0
+ .../tuple/vector_types_tuple_element.pass.cpp |   0
+ .../tuple/vector_types_tuple_size.pass.cpp    |   0
+ .../unexpected/device_only_types.pass.cpp     | 129 +++++++++
+ .../unexpected/host_only_types.pass.cpp       | 132 ++++++++++
+ .../utility/pair/device_only_types.pass.cpp   |  93 +++++++
+ .../utility/pair/host_only_types.pass.cpp     |  93 +++++++
+ .../pair/interop}/pair.assign.pass.cpp        |   0
+ .../utility/pair/interop}/pair.cons.pass.cpp  |   0
+ .../utility/pair/interop}/pair.conv.pass.cpp  |   0
+ .../variant/device_only_types.pass.cpp        | 120 +++++++++
+ .../variant/host_only_types.pass.cpp          | 129 +++++++++
+ libcudacxx/test/support/host_device_types.h   | 148 +++++++++++
+ 30 files changed, 2006 insertions(+), 2 deletions(-)
+ create mode 100644 libcudacxx/test/libcudacxx/cuda/utilities/expected/device_only_types.pass.cpp
+ create mode 100644 libcudacxx/test/libcudacxx/cuda/utilities/expected/host_only_types.pass.cpp
+ create mode 100644 libcudacxx/test/libcudacxx/cuda/utilities/optional/device_only_types.pass.cpp
+ create mode 100644 libcudacxx/test/libcudacxx/cuda/utilities/optional/host_only_types.pass.cpp
+ create mode 100644 libcudacxx/test/libcudacxx/cuda/utilities/tuple/device_only_types.pass.cpp
+ rename libcudacxx/test/libcudacxx/cuda/{ => utilities}/tuple/forward_as_tuple_interop.pass.cpp (100%)
+ create mode 100644 libcudacxx/test/libcudacxx/cuda/utilities/tuple/host_only_types.pass.cpp
+ rename libcudacxx/test/libcudacxx/cuda/{ => utilities}/tuple/vector_types_get.pass.cpp (100%)
+ rename libcudacxx/test/libcudacxx/cuda/{ => utilities}/tuple/vector_types_structured_bindings.pass.cpp (100%)
+ rename libcudacxx/test/libcudacxx/cuda/{ => utilities}/tuple/vector_types_tuple_element.pass.cpp (100%)
+ rename libcudacxx/test/libcudacxx/cuda/{ => utilities}/tuple/vector_types_tuple_size.pass.cpp (100%)
+ create mode 100644 libcudacxx/test/libcudacxx/cuda/utilities/unexpected/device_only_types.pass.cpp
+ create mode 100644 libcudacxx/test/libcudacxx/cuda/utilities/unexpected/host_only_types.pass.cpp
+ create mode 100644 libcudacxx/test/libcudacxx/cuda/utilities/utility/pair/device_only_types.pass.cpp
+ create mode 100644 libcudacxx/test/libcudacxx/cuda/utilities/utility/pair/host_only_types.pass.cpp
+ rename libcudacxx/test/libcudacxx/cuda/{pair_interop => utilities/utility/pair/interop}/pair.assign.pass.cpp (100%)
+ rename libcudacxx/test/libcudacxx/cuda/{pair_interop => utilities/utility/pair/interop}/pair.cons.pass.cpp (100%)
+ rename libcudacxx/test/libcudacxx/cuda/{pair_interop => utilities/utility/pair/interop}/pair.conv.pass.cpp (100%)
+ create mode 100644 libcudacxx/test/libcudacxx/cuda/utilities/variant/device_only_types.pass.cpp
+ create mode 100644 libcudacxx/test/libcudacxx/cuda/utilities/variant/host_only_types.pass.cpp
+ create mode 100644 libcudacxx/test/support/host_device_types.h
+
+diff --git a/libcudacxx/include/cuda/std/__expected/bad_expected_access.h b/libcudacxx/include/cuda/std/__expected/bad_expected_access.h
+index 5600402e4..36e407c93 100644
+--- a/libcudacxx/include/cuda/std/__expected/bad_expected_access.h
++++ b/libcudacxx/include/cuda/std/__expected/bad_expected_access.h
+@@ -57,7 +57,7 @@ protected:
+   _CCCL_HIDE_FROM_ABI bad_expected_access(bad_expected_access&&)                 = default;
+   _CCCL_HIDE_FROM_ABI bad_expected_access& operator=(const bad_expected_access&) = default;
+   _CCCL_HIDE_FROM_ABI bad_expected_access& operator=(bad_expected_access&&)      = default;
+-  ~bad_expected_access() noexcept override                                       = default;
++  _CCCL_HIDE_FROM_ABI virtual ~bad_expected_access() noexcept override           = default;
+ 
+ public:
+   // The way this has been designed (by using a class template below) means that we'll already
+diff --git a/libcudacxx/include/cuda/std/__expected/expected.h b/libcudacxx/include/cuda/std/__expected/expected.h
+index 42f0e5b22..a1fb34083 100644
+--- a/libcudacxx/include/cuda/std/__expected/expected.h
++++ b/libcudacxx/include/cuda/std/__expected/expected.h
+@@ -1077,6 +1077,7 @@ public:
+   }
+ 
+   // [expected.object.eq], equality operators
++  _CCCL_EXEC_CHECK_DISABLE
+   friend _LIBCUDACXX_HIDE_FROM_ABI constexpr bool operator==(const expected& __x, const expected& __y)
+   {
+     if (__x.__has_val_ != __y.has_value())
+@@ -1097,12 +1098,14 @@ public:
+   }
+ 
+ #  if _CCCL_STD_VER < 2020
++  _CCCL_EXEC_CHECK_DISABLE
+   friend _LIBCUDACXX_HIDE_FROM_ABI constexpr bool operator!=(const expected& __x, const expected& __y)
+   {
+     return !(__x == __y);
+   }
+ #  endif // _CCCL_STD_VER < 2020
+ 
++  _CCCL_EXEC_CHECK_DISABLE
+   _LIBCUDACXX_TEMPLATE(class _T2, class _E2)
+   _LIBCUDACXX_REQUIRES((!_CCCL_TRAIT(is_void, _T2)))
+   friend _LIBCUDACXX_HIDE_FROM_ABI constexpr bool operator==(const expected& __x, const expected<_T2, _E2>& __y)
+@@ -1125,6 +1128,7 @@ public:
+   }
+ 
+ #  if _CCCL_STD_VER < 2020
++  _CCCL_EXEC_CHECK_DISABLE
+   _LIBCUDACXX_TEMPLATE(class _T2, class _E2)
+   _LIBCUDACXX_REQUIRES((!_CCCL_TRAIT(is_void, _T2)))
+   friend _LIBCUDACXX_HIDE_FROM_ABI constexpr bool operator!=(const expected& __x, const expected<_T2, _E2>& __y)
+@@ -1133,6 +1137,7 @@ public:
+   }
+ #  endif // _CCCL_STD_VER < 2020
+ 
++  _CCCL_EXEC_CHECK_DISABLE
+   _LIBCUDACXX_TEMPLATE(class _T2)
+   _LIBCUDACXX_REQUIRES((!__expected::__is_expected_nonvoid<_T2>) )
+   friend _LIBCUDACXX_HIDE_FROM_ABI constexpr bool operator==(const expected& __x, const _T2& __v)
+@@ -1140,18 +1145,21 @@ public:
+     return __x.__has_val_ && static_cast<bool>(__x.__union_.__val_ == __v);
+   }
+ #  if _CCCL_STD_VER < 2020
++  _CCCL_EXEC_CHECK_DISABLE
+   _LIBCUDACXX_TEMPLATE(class _T2)
+   _LIBCUDACXX_REQUIRES((!__expected::__is_expected_nonvoid<_T2>) )
+   friend _LIBCUDACXX_HIDE_FROM_ABI constexpr bool operator==(const _T2& __v, const expected& __x)
+   {
+     return __x.__has_val_ && static_cast<bool>(__x.__union_.__val_ == __v);
+   }
++  _CCCL_EXEC_CHECK_DISABLE
+   _LIBCUDACXX_TEMPLATE(class _T2)
+   _LIBCUDACXX_REQUIRES((!__expected::__is_expected_nonvoid<_T2>) )
+   friend _LIBCUDACXX_HIDE_FROM_ABI constexpr bool operator!=(const expected& __x, const _T2& __v)
+   {
+     return !__x.__has_val_ || static_cast<bool>(__x.__union_.__val_ != __v);
+   }
++  _CCCL_EXEC_CHECK_DISABLE
+   _LIBCUDACXX_TEMPLATE(class _T2)
+   _LIBCUDACXX_REQUIRES((!__expected::__is_expected_nonvoid<_T2>) )
+   friend _LIBCUDACXX_HIDE_FROM_ABI constexpr bool operator!=(const _T2& __v, const expected& __x)
+@@ -1160,22 +1168,26 @@ public:
+   }
+ #  endif // _CCCL_STD_VER < 2020
+ 
++  _CCCL_EXEC_CHECK_DISABLE
+   template <class _E2>
+   friend _LIBCUDACXX_HIDE_FROM_ABI constexpr bool operator==(const expected& __x, const unexpected<_E2>& __e)
+   {
+     return !__x.__has_val_ && static_cast<bool>(__x.__union_.__unex_ == __e.error());
+   }
+ #  if _CCCL_STD_VER < 2020
++  _CCCL_EXEC_CHECK_DISABLE
+   template <class _E2>
+   friend _LIBCUDACXX_HIDE_FROM_ABI constexpr bool operator==(const unexpected<_E2>& __e, const expected& __x)
+   {
+     return !__x.__has_val_ && static_cast<bool>(__x.__union_.__unex_ == __e.error());
+   }
++  _CCCL_EXEC_CHECK_DISABLE
+   template <class _E2>
+   friend _LIBCUDACXX_HIDE_FROM_ABI constexpr bool operator!=(const expected& __x, const unexpected<_E2>& __e)
+   {
+     return __x.__has_val_ || static_cast<bool>(__x.__union_.__unex_ != __e.error());
+   }
++  _CCCL_EXEC_CHECK_DISABLE
+   template <class _E2>
+   friend _LIBCUDACXX_HIDE_FROM_ABI constexpr bool operator!=(const unexpected<_E2>& __e, const expected& __x)
+   {
+@@ -1916,6 +1928,7 @@ public:
+   }
+ 
+   // [expected.void.eq], equality operators
++  _CCCL_EXEC_CHECK_DISABLE
+   friend _LIBCUDACXX_HIDE_FROM_ABI constexpr bool operator==(const expected& __x, const expected& __y) noexcept
+   {
+     if (__x.__has_val_ != __y.has_value())
+@@ -1928,12 +1941,14 @@ public:
+     }
+   }
+ #  if _CCCL_STD_VER < 2020
++  _CCCL_EXEC_CHECK_DISABLE
+   friend _LIBCUDACXX_HIDE_FROM_ABI constexpr bool operator!=(const expected& __x, const expected& __y) noexcept
+   {
+     return !(__x == __y);
+   }
+ #  endif
+ 
++  _CCCL_EXEC_CHECK_DISABLE
+   template <class _E2>
+   friend _LIBCUDACXX_HIDE_FROM_ABI constexpr bool
+   operator==(const expected& __x, const expected<void, _E2>& __y) noexcept
+@@ -1948,6 +1963,7 @@ public:
+     }
+   }
+ #  if _CCCL_STD_VER < 2020
++  _CCCL_EXEC_CHECK_DISABLE
+   template <class _E2>
+   friend _LIBCUDACXX_HIDE_FROM_ABI constexpr bool
+   operator!=(const expected& __x, const expected<void, _E2>& __y) noexcept
+@@ -1956,22 +1972,26 @@ public:
+   }
+ #  endif
+ 
++  _CCCL_EXEC_CHECK_DISABLE
+   template <class _E2>
+   friend _LIBCUDACXX_HIDE_FROM_ABI constexpr bool operator==(const expected& __x, const unexpected<_E2>& __y) noexcept
+   {
+     return !__x.__has_val_ && static_cast<bool>(__x.__union_.__unex_ == __y.error());
+   }
+ #  if _CCCL_STD_VER < 2020
++  _CCCL_EXEC_CHECK_DISABLE
+   template <class _E2>
+   friend _LIBCUDACXX_HIDE_FROM_ABI constexpr bool operator==(const unexpected<_E2>& __y, const expected& __x) noexcept
+   {
+     return !__x.__has_val_ && static_cast<bool>(__x.__union_.__unex_ == __y.error());
+   }
++  _CCCL_EXEC_CHECK_DISABLE
+   template <class _E2>
+   _LIBCUDACXX_HIDE_FROM_ABI friend constexpr bool operator!=(const expected& __x, const unexpected<_E2>& __y) noexcept
+   {
+     return __x.__has_val_ || static_cast<bool>(__x.__union_.__unex_ != __y.error());
+   }
++  _CCCL_EXEC_CHECK_DISABLE
+   template <class _E2>
+   _LIBCUDACXX_HIDE_FROM_ABI friend constexpr bool operator!=(const unexpected<_E2>& __y, const expected& __x) noexcept
+   {
+diff --git a/libcudacxx/include/cuda/std/__expected/expected_base.h b/libcudacxx/include/cuda/std/__expected/expected_base.h
+index be5fd87af..c22ed8fce 100644
+--- a/libcudacxx/include/cuda/std/__expected/expected_base.h
++++ b/libcudacxx/include/cuda/std/__expected/expected_base.h
+@@ -72,30 +72,35 @@ union __expected_union_t
+   struct __empty_t
+   {};
+ 
++  _CCCL_EXEC_CHECK_DISABLE
+   _LIBCUDACXX_TEMPLATE(class _Tp2 = _Tp)
+   _LIBCUDACXX_REQUIRES(_CCCL_TRAIT(is_default_constructible, _Tp2))
+   _LIBCUDACXX_HIDE_FROM_ABI constexpr __expected_union_t() noexcept(_CCCL_TRAIT(is_nothrow_default_constructible, _Tp2))
+       : __val_()
+   {}
+ 
++  _CCCL_EXEC_CHECK_DISABLE
+   _LIBCUDACXX_TEMPLATE(class _Tp2 = _Tp)
+   _LIBCUDACXX_REQUIRES((!_CCCL_TRAIT(is_default_constructible, _Tp2)))
+   _LIBCUDACXX_HIDE_FROM_ABI constexpr __expected_union_t() noexcept
+       : __empty_()
+   {}
+ 
++  _CCCL_EXEC_CHECK_DISABLE
+   template <class... _Args>
+   _LIBCUDACXX_HIDE_FROM_ABI constexpr __expected_union_t(in_place_t, _Args&&... __args) noexcept(
+     _CCCL_TRAIT(is_nothrow_constructible, _Tp, _Args...))
+       : __val_(_CUDA_VSTD::forward<_Args>(__args)...)
+   {}
+ 
++  _CCCL_EXEC_CHECK_DISABLE
+   template <class... _Args>
+   _LIBCUDACXX_HIDE_FROM_ABI constexpr __expected_union_t(unexpect_t, _Args&&... __args) noexcept(
+     _CCCL_TRAIT(is_nothrow_constructible, _Err, _Args...))
+       : __unex_(_CUDA_VSTD::forward<_Args>(__args)...)
+   {}
+ 
++  _CCCL_EXEC_CHECK_DISABLE
+   template <class _Fun, class... _Args>
+   _LIBCUDACXX_HIDE_FROM_ABI constexpr __expected_union_t(
+     __expected_construct_from_invoke_tag,
+@@ -105,6 +110,7 @@ union __expected_union_t
+       : __val_(_CUDA_VSTD::invoke(_CUDA_VSTD::forward<_Fun>(__fun), _CUDA_VSTD::forward<_Args>(__args)...))
+   {}
+ 
++  _CCCL_EXEC_CHECK_DISABLE
+   template <class _Fun, class... _Args>
+   _LIBCUDACXX_HIDE_FROM_ABI constexpr __expected_union_t(
+     __expected_construct_from_invoke_tag,
+@@ -129,18 +135,21 @@ union __expected_union_t<_Tp, _Err, true>
+   struct __empty_t
+   {};
+ 
++  _CCCL_EXEC_CHECK_DISABLE
+   _LIBCUDACXX_TEMPLATE(class _Tp2 = _Tp)
+   _LIBCUDACXX_REQUIRES(_CCCL_TRAIT(is_default_constructible, _Tp2))
+   _LIBCUDACXX_HIDE_FROM_ABI constexpr __expected_union_t() noexcept(_CCCL_TRAIT(is_nothrow_default_constructible, _Tp2))
+       : __val_()
+   {}
+ 
++  _CCCL_EXEC_CHECK_DISABLE
+   _LIBCUDACXX_TEMPLATE(class _Tp2 = _Tp)
+   _LIBCUDACXX_REQUIRES((!_CCCL_TRAIT(is_default_constructible, _Tp2)))
+   _LIBCUDACXX_HIDE_FROM_ABI constexpr __expected_union_t() noexcept
+       : __empty_()
+   {}
+ 
++  _CCCL_EXEC_CHECK_DISABLE
+   template <class... _Args>
+   _LIBCUDACXX_HIDE_FROM_ABI constexpr __expected_union_t(in_place_t, _Args&&... __args) noexcept(
+     _CCCL_TRAIT(is_nothrow_constructible, _Tp, _Args...))
+@@ -153,6 +162,7 @@ union __expected_union_t<_Tp, _Err, true>
+       : __unex_(_CUDA_VSTD::forward<_Args>(__args)...)
+   {}
+ 
++  _CCCL_EXEC_CHECK_DISABLE
+   template <class _Fun, class... _Args>
+   _LIBCUDACXX_HIDE_FROM_ABI constexpr __expected_union_t(
+     __expected_construct_from_invoke_tag,
+@@ -162,6 +172,7 @@ union __expected_union_t<_Tp, _Err, true>
+       : __val_(_CUDA_VSTD::invoke(_CUDA_VSTD::forward<_Fun>(__fun), _CUDA_VSTD::forward<_Args>(__args)...))
+   {}
+ 
++  _CCCL_EXEC_CHECK_DISABLE
+   template <class _Fun, class... _Args>
+   _LIBCUDACXX_HIDE_FROM_ABI constexpr __expected_union_t(
+     __expected_construct_from_invoke_tag,
+@@ -437,6 +448,7 @@ struct __expected_storage : __expected_destruct<_Tp, _Err>
+ {
+   _LIBCUDACXX_DELEGATE_CONSTRUCTORS(__expected_storage, __expected_destruct, _Tp, _Err);
+ 
++  _CCCL_EXEC_CHECK_DISABLE
+   _LIBCUDACXX_TEMPLATE(class _T1, class _T2, class... _Args)
+   _LIBCUDACXX_REQUIRES(_CCCL_TRAIT(is_nothrow_constructible, _T1, _Args...))
+   static _LIBCUDACXX_HIDE_FROM_ABI _CCCL_CONSTEXPR_CXX20 void
+@@ -446,6 +458,7 @@ struct __expected_storage : __expected_destruct<_Tp, _Err>
+     _LIBCUDACXX_CONSTRUCT_AT(__newval, _CUDA_VSTD::forward<_Args>(__args)...);
+   }
+ 
++  _CCCL_EXEC_CHECK_DISABLE
+   _LIBCUDACXX_TEMPLATE(class _T1, class _T2, class... _Args)
+   _LIBCUDACXX_REQUIRES((!_CCCL_TRAIT(is_nothrow_constructible, _T1, _Args...)) _LIBCUDACXX_AND _CCCL_TRAIT(
+     is_nothrow_move_constructible, _T1))
+@@ -457,6 +470,7 @@ struct __expected_storage : __expected_destruct<_Tp, _Err>
+     _LIBCUDACXX_CONSTRUCT_AT(__newval, _CUDA_VSTD::move(__tmp));
+   }
+ 
++  _CCCL_EXEC_CHECK_DISABLE
+   _LIBCUDACXX_TEMPLATE(class _T1, class _T2, class... _Args)
+   _LIBCUDACXX_REQUIRES((!_CCCL_TRAIT(is_nothrow_constructible, _T1, _Args...)) _LIBCUDACXX_AND(
+     !_CCCL_TRAIT(is_nothrow_move_constructible, _T1)))
+@@ -476,6 +490,7 @@ struct __expected_storage : __expected_destruct<_Tp, _Err>
+     __trans.__complete();
+   }
+ 
++  _CCCL_EXEC_CHECK_DISABLE
+   _LIBCUDACXX_TEMPLATE(class _Err2 = _Err)
+   _LIBCUDACXX_REQUIRES(_CCCL_TRAIT(is_nothrow_move_constructible, _Err2))
+   static _LIBCUDACXX_HIDE_FROM_ABI _CCCL_CONSTEXPR_CXX20 void
+@@ -494,6 +509,7 @@ struct __expected_storage : __expected_destruct<_Tp, _Err>
+     __with_err.__has_val_ = true;
+   }
+ 
++  _CCCL_EXEC_CHECK_DISABLE
+   _LIBCUDACXX_TEMPLATE(class _Err2 = _Err)
+   _LIBCUDACXX_REQUIRES((!_CCCL_TRAIT(is_nothrow_move_constructible, _Err2)))
+   static _LIBCUDACXX_HIDE_FROM_ABI _CCCL_CONSTEXPR_CXX20 void
+@@ -654,6 +670,7 @@ struct __expected_copy_assign<_Tp, _Err, __smf_availability::__available> : __ex
+   _CCCL_HIDE_FROM_ABI __expected_copy_assign(const __expected_copy_assign&) = default;
+   _CCCL_HIDE_FROM_ABI __expected_copy_assign(__expected_copy_assign&&)      = default;
+ 
++  _CCCL_EXEC_CHECK_DISABLE
+   _LIBCUDACXX_HIDE_FROM_ABI _CCCL_CONSTEXPR_CXX20 __expected_copy_assign&
+   operator=(const __expected_copy_assign& __other) noexcept(
+     _CCCL_TRAIT(is_nothrow_copy_assignable, _Tp) && _CCCL_TRAIT(is_nothrow_copy_constructible, _Tp)
+@@ -918,6 +935,7 @@ struct __expected_storage<void, _Err> : __expected_destruct<void, _Err>
+ {
+   _LIBCUDACXX_DELEGATE_CONSTRUCTORS(__expected_storage, __expected_destruct, void, _Err);
+ 
++  _CCCL_EXEC_CHECK_DISABLE
+   static _LIBCUDACXX_HIDE_FROM_ABI _CCCL_CONSTEXPR_CXX20 void __swap_val_unex_impl(
+     __expected_storage& __with_val,
+     __expected_storage& __with_err) noexcept(_CCCL_TRAIT(is_nothrow_move_constructible, _Err))
+diff --git a/libcudacxx/include/cuda/std/__expected/unexpected.h b/libcudacxx/include/cuda/std/__expected/unexpected.h
+index 950ab81ef..4966c0a3c 100644
+--- a/libcudacxx/include/cuda/std/__expected/unexpected.h
++++ b/libcudacxx/include/cuda/std/__expected/unexpected.h
+@@ -73,6 +73,7 @@ public:
+   _CCCL_HIDE_FROM_ABI unexpected(const unexpected&) = default;
+   _CCCL_HIDE_FROM_ABI unexpected(unexpected&&)      = default;
+ 
++  _CCCL_EXEC_CHECK_DISABLE
+   _LIBCUDACXX_TEMPLATE(class _Error = _Err)
+   _LIBCUDACXX_REQUIRES((!_CCCL_TRAIT(is_same, remove_cvref_t<_Error>, unexpected)
+                         && !_CCCL_TRAIT(is_same, remove_cvref_t<_Error>, in_place_t)
+@@ -82,6 +83,7 @@ public:
+       : __unex_(_CUDA_VSTD::forward<_Error>(__error))
+   {}
+ 
++  _CCCL_EXEC_CHECK_DISABLE
+   _LIBCUDACXX_TEMPLATE(class... _Args)
+   _LIBCUDACXX_REQUIRES(_CCCL_TRAIT(is_constructible, _Err, _Args...))
+   _LIBCUDACXX_HIDE_FROM_ABI constexpr explicit unexpected(in_place_t, _Args&&... __args) noexcept(
+@@ -89,6 +91,7 @@ public:
+       : __unex_(_CUDA_VSTD::forward<_Args>(__args)...)
+   {}
+ 
++  _CCCL_EXEC_CHECK_DISABLE
+   _LIBCUDACXX_TEMPLATE(class _Up, class... _Args)
+   _LIBCUDACXX_REQUIRES(_CCCL_TRAIT(is_constructible, _Err, initializer_list<_Up>&, _Args...))
+   _LIBCUDACXX_HIDE_FROM_ABI constexpr explicit unexpected(
+@@ -123,6 +126,7 @@ public:
+   }
+ 
+   // [expected.un.swap]
++  _CCCL_EXEC_CHECK_DISABLE
+   _LIBCUDACXX_HIDE_FROM_ABI constexpr void swap(unexpected& __other) noexcept(_CCCL_TRAIT(is_nothrow_swappable, _Err))
+   {
+     static_assert(_CCCL_TRAIT(is_swappable, _Err), "E must be swappable");
+@@ -130,6 +134,7 @@ public:
+     swap(__unex_, __other.__unex_);
+   }
+ 
++  _CCCL_EXEC_CHECK_DISABLE
+   _LIBCUDACXX_TEMPLATE(class _Err2 = _Err)
+   _LIBCUDACXX_REQUIRES(_CCCL_TRAIT(is_swappable, _Err2))
+   friend _LIBCUDACXX_HIDE_FROM_ABI constexpr void
+@@ -140,6 +145,7 @@ public:
+   }
+ 
+   // [expected.un.eq]
++  _CCCL_EXEC_CHECK_DISABLE
+   template <class _UErr>
+   _CCCL_NODISCARD_FRIEND _LIBCUDACXX_HIDE_FROM_ABI constexpr bool
+   operator==(const unexpected& __lhs,
+@@ -148,6 +154,7 @@ public:
+     return __lhs.error() == __rhs.error();
+   }
+ #  if _CCCL_STD_VER < 2020
++  _CCCL_EXEC_CHECK_DISABLE
+   template <class _UErr>
+   _CCCL_NODISCARD_FRIEND _LIBCUDACXX_HIDE_FROM_ABI constexpr bool
+   operator!=(const unexpected& __lhs,
+diff --git a/libcudacxx/include/cuda/std/__memory/construct_at.h b/libcudacxx/include/cuda/std/__memory/construct_at.h
+index 3d01e0391..721ac23b8 100644
+--- a/libcudacxx/include/cuda/std/__memory/construct_at.h
++++ b/libcudacxx/include/cuda/std/__memory/construct_at.h
+@@ -51,6 +51,7 @@
+ #  ifndef __cpp_lib_constexpr_dynamic_alloc
+ namespace std
+ {
++_CCCL_EXEC_CHECK_DISABLE
+ template <class _Tp,
+           class... _Args,
+           class = decltype(::new(_CUDA_VSTD::declval<void*>()) _Tp(_CUDA_VSTD::declval<_Args>()...))>
+diff --git a/libcudacxx/include/cuda/std/__utility/pair.h b/libcudacxx/include/cuda/std/__utility/pair.h
+index 0a1eab554..b6c840247 100644
+--- a/libcudacxx/include/cuda/std/__utility/pair.h
++++ b/libcudacxx/include/cuda/std/__utility/pair.h
+@@ -124,6 +124,7 @@ struct __pair_base
+   _T1 first;
+   _T2 second;
+ 
++  _CCCL_EXEC_CHECK_DISABLE
+   template <class _Constraints                                                 = __pair_constraints<_T1, _T2>,
+             __enable_if_t<_Constraints::__explicit_default_constructible, int> = 0>
+   _LIBCUDACXX_HIDE_FROM_ABI explicit constexpr __pair_base() noexcept(
+@@ -132,6 +133,7 @@ struct __pair_base
+       , second()
+   {}
+ 
++  _CCCL_EXEC_CHECK_DISABLE
+   template <class _Constraints                                                 = __pair_constraints<_T1, _T2>,
+             __enable_if_t<_Constraints::__implicit_default_constructible, int> = 0>
+   _LIBCUDACXX_HIDE_FROM_ABI constexpr __pair_base() noexcept(
+@@ -140,6 +142,7 @@ struct __pair_base
+       , second()
+   {}
+ 
++  _CCCL_EXEC_CHECK_DISABLE
+   template <class _U1, class _U2>
+   _LIBCUDACXX_HIDE_FROM_ABI constexpr __pair_base(_U1&& __t1, _U2&& __t2) noexcept(
+     _CCCL_TRAIT(is_nothrow_constructible, _T1, _U1) && _CCCL_TRAIT(is_nothrow_constructible, _T2, _U2))
+@@ -163,6 +166,7 @@ struct __pair_base<_T1, _T2, true>
+   _T1 first;
+   _T2 second;
+ 
++  _CCCL_EXEC_CHECK_DISABLE
+   template <class _Constraints                                                 = __pair_constraints<_T1, _T2>,
+             __enable_if_t<_Constraints::__explicit_default_constructible, int> = 0>
+   _LIBCUDACXX_HIDE_FROM_ABI explicit constexpr __pair_base() noexcept(
+@@ -171,6 +175,7 @@ struct __pair_base<_T1, _T2, true>
+       , second()
+   {}
+ 
++  _CCCL_EXEC_CHECK_DISABLE
+   template <class _Constraints                                                 = __pair_constraints<_T1, _T2>,
+             __enable_if_t<_Constraints::__implicit_default_constructible, int> = 0>
+   _LIBCUDACXX_HIDE_FROM_ABI constexpr __pair_base() noexcept(
+@@ -179,10 +184,13 @@ struct __pair_base<_T1, _T2, true>
+       , second()
+   {}
+ 
++  _CCCL_EXEC_CHECK_DISABLE
+   _CCCL_HIDE_FROM_ABI constexpr __pair_base(const __pair_base&) = default;
+-  _CCCL_HIDE_FROM_ABI constexpr __pair_base(__pair_base&&)      = default;
++  _CCCL_EXEC_CHECK_DISABLE
++  _CCCL_HIDE_FROM_ABI constexpr __pair_base(__pair_base&&) = default;
+ 
+   // We need to ensure that a reference type, which would inhibit the implicit copy assignment still works
++  _CCCL_EXEC_CHECK_DISABLE
+   _LIBCUDACXX_HIDE_FROM_ABI _CCCL_CONSTEXPR_CXX14 __pair_base& operator=(
+     __conditional_t<_CCCL_TRAIT(is_copy_assignable, _T1) && _CCCL_TRAIT(is_copy_assignable, _T2),
+                     __pair_base,
+@@ -195,6 +203,7 @@ struct __pair_base<_T1, _T2, true>
+   }
+ 
+   // We need to ensure that a reference type, which would inhibit the implicit move assignment still works
++  _CCCL_EXEC_CHECK_DISABLE
+   _LIBCUDACXX_HIDE_FROM_ABI _CCCL_CONSTEXPR_CXX14 __pair_base& operator=(
+     __conditional_t<_CCCL_TRAIT(is_move_assignable, _T1) && _CCCL_TRAIT(is_move_assignable, _T2), __pair_base, __nat>&&
+       __p) noexcept(_CCCL_TRAIT(is_nothrow_move_assignable, _T1) && _CCCL_TRAIT(is_nothrow_move_assignable, _T2))
+@@ -204,6 +213,7 @@ struct __pair_base<_T1, _T2, true>
+     return *this;
+   }
+ 
++  _CCCL_EXEC_CHECK_DISABLE
+   template <class _U1, class _U2>
+   _LIBCUDACXX_HIDE_FROM_ABI constexpr __pair_base(_U1&& __t1, _U2&& __t2) noexcept(
+     _CCCL_TRAIT(is_nothrow_constructible, _T1, _U1) && _CCCL_TRAIT(is_nothrow_constructible, _T2, _U2))
+@@ -534,6 +544,7 @@ _CCCL_HOST_DEVICE pair(_T1, _T2) -> pair<_T1, _T2>;
+ 
+ // [pairs.spec], specialized algorithms
+ 
++_CCCL_EXEC_CHECK_DISABLE
+ template <class _T1, class _T2>
+ _LIBCUDACXX_HIDE_FROM_ABI _CCCL_CONSTEXPR_CXX14 bool operator==(const pair<_T1, _T2>& __x, const pair<_T1, _T2>& __y)
+ {
+@@ -542,6 +553,7 @@ _LIBCUDACXX_HIDE_FROM_ABI _CCCL_CONSTEXPR_CXX14 bool operator==(const pair<_T1,
+ 
+ #ifndef _LIBCUDACXX_HAS_NO_SPACESHIP_OPERATOR
+ 
++_CCCL_EXEC_CHECK_DISABLE
+ template <class _T1, class _T2>
+ _LIBCUDACXX_HIDE_FROM_ABI constexpr common_comparison_category_t<__synth_three_way_result<_T1>,
+                                                                  __synth_three_way_result<_T2>>
+@@ -556,30 +568,35 @@ operator<=>(const pair<_T1, _T2>& __x, const pair<_T1, _T2>& __y)
+ 
+ #else // _LIBCUDACXX_HAS_NO_SPACESHIP_OPERATOR
+ 
++_CCCL_EXEC_CHECK_DISABLE
+ template <class _T1, class _T2>
+ _LIBCUDACXX_HIDE_FROM_ABI _CCCL_CONSTEXPR_CXX14 bool operator!=(const pair<_T1, _T2>& __x, const pair<_T1, _T2>& __y)
+ {
+   return !(__x == __y);
+ }
+ 
++_CCCL_EXEC_CHECK_DISABLE
+ template <class _T1, class _T2>
+ _LIBCUDACXX_HIDE_FROM_ABI _CCCL_CONSTEXPR_CXX14 bool operator<(const pair<_T1, _T2>& __x, const pair<_T1, _T2>& __y)
+ {
+   return __x.first < __y.first || (!(__y.first < __x.first) && __x.second < __y.second);
+ }
+ 
++_CCCL_EXEC_CHECK_DISABLE
+ template <class _T1, class _T2>
+ _LIBCUDACXX_HIDE_FROM_ABI _CCCL_CONSTEXPR_CXX14 bool operator>(const pair<_T1, _T2>& __x, const pair<_T1, _T2>& __y)
+ {
+   return __y < __x;
+ }
+ 
++_CCCL_EXEC_CHECK_DISABLE
+ template <class _T1, class _T2>
+ _LIBCUDACXX_HIDE_FROM_ABI _CCCL_CONSTEXPR_CXX14 bool operator>=(const pair<_T1, _T2>& __x, const pair<_T1, _T2>& __y)
+ {
+   return !(__x < __y);
+ }
+ 
++_CCCL_EXEC_CHECK_DISABLE
+ template <class _T1, class _T2>
+ _LIBCUDACXX_HIDE_FROM_ABI _CCCL_CONSTEXPR_CXX14 bool operator<=(const pair<_T1, _T2>& __x, const pair<_T1, _T2>& __y)
+ {
+diff --git a/libcudacxx/include/cuda/std/detail/libcxx/include/optional b/libcudacxx/include/cuda/std/detail/libcxx/include/optional
+index 29e2d0f91..5cb07aa37 100644
+--- a/libcudacxx/include/cuda/std/detail/libcxx/include/optional
++++ b/libcudacxx/include/cuda/std/detail/libcxx/include/optional
+@@ -301,12 +301,14 @@ struct __optional_destruct_base<_Tp, false>
+       , __engaged_(false)
+   {}
+ 
++  _CCCL_EXEC_CHECK_DISABLE
+   template <class... _Args>
+   _LIBCUDACXX_HIDE_FROM_ABI constexpr explicit __optional_destruct_base(in_place_t, _Args&&... __args)
+       : __val_(_CUDA_VSTD::forward<_Args>(__args)...)
+       , __engaged_(true)
+   {}
+ 
++  _CCCL_EXEC_CHECK_DISABLE
+   template <class _Fp, class... _Args>
+   _LIBCUDACXX_HIDE_FROM_ABI constexpr __optional_destruct_base(
+     __optional_construct_from_invoke_tag, _Fp&& __f, _Args&&... __args)
+@@ -343,12 +345,14 @@ struct __optional_destruct_base<_Tp, true>
+       , __engaged_(false)
+   {}
+ 
++  _CCCL_EXEC_CHECK_DISABLE
+   template <class... _Args>
+   _LIBCUDACXX_HIDE_FROM_ABI constexpr explicit __optional_destruct_base(in_place_t, _Args&&... __args)
+       : __val_(_CUDA_VSTD::forward<_Args>(__args)...)
+       , __engaged_(true)
+   {}
+ 
++  _CCCL_EXEC_CHECK_DISABLE
+   template <class _Fp, class... _Args>
+   _LIBCUDACXX_HIDE_FROM_ABI constexpr __optional_destruct_base(
+     __optional_construct_from_invoke_tag, _Fp&& __f, _Args&&... __args)
+@@ -394,6 +398,7 @@ struct __optional_storage_base : __optional_destruct_base<_Tp>
+     return _CUDA_VSTD::move(this->__val_);
+   }
+ 
++  _CCCL_EXEC_CHECK_DISABLE
+   template <class... _Args>
+   _LIBCUDACXX_HIDE_FROM_ABI _CCCL_CONSTEXPR_CXX20 void __construct(_Args&&... __args)
+   {
+@@ -415,6 +420,7 @@ struct __optional_storage_base : __optional_destruct_base<_Tp>
+     }
+   }
+ 
++  _CCCL_EXEC_CHECK_DISABLE
+   template <class _That>
+   _LIBCUDACXX_HIDE_FROM_ABI constexpr void __assign_from(_That&& __opt)
+   {
+@@ -823,6 +829,7 @@ public:
+     return this->__get();
+   }
+ 
++  _CCCL_EXEC_CHECK_DISABLE
+   _LIBCUDACXX_HIDE_FROM_ABI constexpr void swap(optional& __opt) noexcept(
+     _CCCL_TRAIT(is_nothrow_move_constructible, value_type) && _CCCL_TRAIT(is_nothrow_swappable, value_type))
+   {
+@@ -1105,6 +1112,7 @@ _CCCL_HOST_DEVICE optional(_Tp) -> optional<_Tp>;
+ #  endif
+ 
+ // Comparisons between optionals
++_CCCL_EXEC_CHECK_DISABLE
+ template <class _Tp, class _Up>
+ _LIBCUDACXX_HIDE_FROM_ABI constexpr __enable_if_t<
+   _CCCL_TRAIT(is_convertible, decltype(declval<const _Tp&>() == declval<const _Up&>()), bool),
+@@ -1122,6 +1130,7 @@ operator==(const optional<_Tp>& __x, const optional<_Up>& __y)
+   return *__x == *__y;
+ }
+ 
++_CCCL_EXEC_CHECK_DISABLE
+ template <class _Tp, class _Up>
+ _LIBCUDACXX_HIDE_FROM_ABI constexpr __enable_if_t<
+   _CCCL_TRAIT(is_convertible, decltype(declval<const _Tp&>() != declval<const _Up&>()), bool),
+@@ -1139,6 +1148,7 @@ operator!=(const optional<_Tp>& __x, const optional<_Up>& __y)
+   return *__x != *__y;
+ }
+ 
++_CCCL_EXEC_CHECK_DISABLE
+ template <class _Tp, class _Up>
+ _LIBCUDACXX_HIDE_FROM_ABI constexpr __enable_if_t<
+   _CCCL_TRAIT(is_convertible, decltype(declval<const _Tp&>() < declval<const _Up&>()), bool),
+@@ -1156,6 +1166,7 @@ operator<(const optional<_Tp>& __x, const optional<_Up>& __y)
+   return *__x < *__y;
+ }
+ 
++_CCCL_EXEC_CHECK_DISABLE
+ template <class _Tp, class _Up>
+ _LIBCUDACXX_HIDE_FROM_ABI constexpr __enable_if_t<
+   _CCCL_TRAIT(is_convertible, decltype(declval<const _Tp&>() > declval<const _Up&>()), bool),
+@@ -1173,6 +1184,7 @@ operator>(const optional<_Tp>& __x, const optional<_Up>& __y)
+   return *__x > *__y;
+ }
+ 
++_CCCL_EXEC_CHECK_DISABLE
+ template <class _Tp, class _Up>
+ _LIBCUDACXX_HIDE_FROM_ABI constexpr __enable_if_t<
+   _CCCL_TRAIT(is_convertible, decltype(declval<const _Tp&>() <= declval<const _Up&>()), bool),
+@@ -1190,6 +1202,7 @@ operator<=(const optional<_Tp>& __x, const optional<_Up>& __y)
+   return *__x <= *__y;
+ }
+ 
++_CCCL_EXEC_CHECK_DISABLE
+ template <class _Tp, class _Up>
+ _LIBCUDACXX_HIDE_FROM_ABI constexpr __enable_if_t<
+   _CCCL_TRAIT(is_convertible, decltype(declval<const _Tp&>() >= declval<const _Up&>()), bool),
+@@ -1281,6 +1294,7 @@ _LIBCUDACXX_HIDE_FROM_ABI constexpr bool operator>=(nullopt_t, const optional<_T
+ }
+ 
+ // Comparisons with T
++_CCCL_EXEC_CHECK_DISABLE
+ template <class _Tp, class _Up>
+ _LIBCUDACXX_HIDE_FROM_ABI constexpr __enable_if_t<
+   _CCCL_TRAIT(is_convertible, decltype(declval<const _Tp&>() == declval<const _Up&>()), bool),
+@@ -1290,6 +1304,7 @@ operator==(const optional<_Tp>& __x, const _Up& __v)
+   return static_cast<bool>(__x) ? *__x == __v : false;
+ }
+ 
++_CCCL_EXEC_CHECK_DISABLE
+ template <class _Tp, class _Up>
+ _LIBCUDACXX_HIDE_FROM_ABI constexpr __enable_if_t<
+   _CCCL_TRAIT(is_convertible, decltype(declval<const _Tp&>() == declval<const _Up&>()), bool),
+@@ -1299,6 +1314,7 @@ operator==(const _Tp& __v, const optional<_Up>& __x)
+   return static_cast<bool>(__x) ? __v == *__x : false;
+ }
+ 
++_CCCL_EXEC_CHECK_DISABLE
+ template <class _Tp, class _Up>
+ _LIBCUDACXX_HIDE_FROM_ABI constexpr __enable_if_t<
+   _CCCL_TRAIT(is_convertible, decltype(declval<const _Tp&>() != declval<const _Up&>()), bool),
+@@ -1308,6 +1324,7 @@ operator!=(const optional<_Tp>& __x, const _Up& __v)
+   return static_cast<bool>(__x) ? *__x != __v : true;
+ }
+ 
++_CCCL_EXEC_CHECK_DISABLE
+ template <class _Tp, class _Up>
+ _LIBCUDACXX_HIDE_FROM_ABI constexpr __enable_if_t<
+   _CCCL_TRAIT(is_convertible, decltype(declval<const _Tp&>() != declval<const _Up&>()), bool),
+@@ -1317,6 +1334,7 @@ operator!=(const _Tp& __v, const optional<_Up>& __x)
+   return static_cast<bool>(__x) ? __v != *__x : true;
+ }
+ 
++_CCCL_EXEC_CHECK_DISABLE
+ template <class _Tp, class _Up>
+ _LIBCUDACXX_HIDE_FROM_ABI constexpr __enable_if_t<
+   _CCCL_TRAIT(is_convertible, decltype(declval<const _Tp&>() < declval<const _Up&>()), bool),
+@@ -1326,6 +1344,7 @@ operator<(const optional<_Tp>& __x, const _Up& __v)
+   return static_cast<bool>(__x) ? *__x < __v : true;
+ }
+ 
++_CCCL_EXEC_CHECK_DISABLE
+ template <class _Tp, class _Up>
+ _LIBCUDACXX_HIDE_FROM_ABI constexpr __enable_if_t<
+   _CCCL_TRAIT(is_convertible, decltype(declval<const _Tp&>() < declval<const _Up&>()), bool),
+@@ -1335,6 +1354,7 @@ operator<(const _Tp& __v, const optional<_Up>& __x)
+   return static_cast<bool>(__x) ? __v < *__x : false;
+ }
+ 
++_CCCL_EXEC_CHECK_DISABLE
+ template <class _Tp, class _Up>
+ _LIBCUDACXX_HIDE_FROM_ABI constexpr __enable_if_t<
+   _CCCL_TRAIT(is_convertible, decltype(declval<const _Tp&>() <= declval<const _Up&>()), bool),
+@@ -1344,6 +1364,7 @@ operator<=(const optional<_Tp>& __x, const _Up& __v)
+   return static_cast<bool>(__x) ? *__x <= __v : true;
+ }
+ 
++_CCCL_EXEC_CHECK_DISABLE
+ template <class _Tp, class _Up>
+ _LIBCUDACXX_HIDE_FROM_ABI constexpr __enable_if_t<
+   _CCCL_TRAIT(is_convertible, decltype(declval<const _Tp&>() <= declval<const _Up&>()), bool),
+@@ -1353,6 +1374,7 @@ operator<=(const _Tp& __v, const optional<_Up>& __x)
+   return static_cast<bool>(__x) ? __v <= *__x : false;
+ }
+ 
++_CCCL_EXEC_CHECK_DISABLE
+ template <class _Tp, class _Up>
+ _LIBCUDACXX_HIDE_FROM_ABI constexpr __enable_if_t<
+   _CCCL_TRAIT(is_convertible, decltype(declval<const _Tp&>() > declval<const _Up&>()), bool),
+@@ -1362,6 +1384,7 @@ operator>(const optional<_Tp>& __x, const _Up& __v)
+   return static_cast<bool>(__x) ? *__x > __v : false;
+ }
+ 
++_CCCL_EXEC_CHECK_DISABLE
+ template <class _Tp, class _Up>
+ _LIBCUDACXX_HIDE_FROM_ABI constexpr __enable_if_t<
+   _CCCL_TRAIT(is_convertible, decltype(declval<const _Tp&>() > declval<const _Up&>()), bool),
+@@ -1371,6 +1394,7 @@ operator>(const _Tp& __v, const optional<_Up>& __x)
+   return static_cast<bool>(__x) ? __v > *__x : true;
+ }
+ 
++_CCCL_EXEC_CHECK_DISABLE
+ template <class _Tp, class _Up>
+ _LIBCUDACXX_HIDE_FROM_ABI constexpr __enable_if_t<
+   _CCCL_TRAIT(is_convertible, decltype(declval<const _Tp&>() >= declval<const _Up&>()), bool),
+@@ -1380,6 +1404,7 @@ operator>=(const optional<_Tp>& __x, const _Up& __v)
+   return static_cast<bool>(__x) ? *__x >= __v : false;
+ }
+ 
++_CCCL_EXEC_CHECK_DISABLE
+ template <class _Tp, class _Up>
+ _LIBCUDACXX_HIDE_FROM_ABI constexpr __enable_if_t<
+   _CCCL_TRAIT(is_convertible, decltype(declval<const _Tp&>() >= declval<const _Up&>()), bool),
+diff --git a/libcudacxx/include/cuda/std/detail/libcxx/include/tuple b/libcudacxx/include/cuda/std/detail/libcxx/include/tuple
+index 11b97a1fa..dd33fbc24 100644
+--- a/libcudacxx/include/cuda/std/detail/libcxx/include/tuple
++++ b/libcudacxx/include/cuda/std/detail/libcxx/include/tuple
+@@ -1124,6 +1124,7 @@ _LIBCUDACXX_HIDE_FROM_ABI _CCCL_CONSTEXPR_CXX14 tuple<_Tp&&...> forward_as_tuple
+ template <size_t _Ip>
+ struct __tuple_equal
+ {
++  _CCCL_EXEC_CHECK_DISABLE
+   template <class _Tp, class _Up>
+   _LIBCUDACXX_HIDE_FROM_ABI _CCCL_CONSTEXPR_CXX14 bool operator()(const _Tp& __x, const _Up& __y)
+   {
+@@ -1157,6 +1158,7 @@ _LIBCUDACXX_HIDE_FROM_ABI _CCCL_CONSTEXPR_CXX14 bool operator!=(const tuple<_Tp.
+ template <size_t _Ip>
+ struct __tuple_less
+ {
++  _CCCL_EXEC_CHECK_DISABLE
+   template <class _Tp, class _Up>
+   _LIBCUDACXX_HIDE_FROM_ABI _CCCL_CONSTEXPR_CXX14 bool operator()(const _Tp& __x, const _Up& __y)
+   {
+diff --git a/libcudacxx/include/cuda/std/detail/libcxx/include/variant b/libcudacxx/include/cuda/std/detail/libcxx/include/variant
+index fccb31403..f40e91119 100644
+--- a/libcudacxx/include/cuda/std/detail/libcxx/include/variant
++++ b/libcudacxx/include/cuda/std/detail/libcxx/include/variant
+@@ -751,10 +751,22 @@ struct _CCCL_TYPE_VISIBILITY_DEFAULT __alt
+ {
+   using __value_type = _Tp;
+ 
++  _CCCL_EXEC_CHECK_DISABLE
+   template <class... _Args>
+   _LIBCUDACXX_HIDE_FROM_ABI explicit constexpr __alt(in_place_t, _Args&&... __args)
+       : __value(_CUDA_VSTD::forward<_Args>(__args)...)
+   {}
++  _CCCL_EXEC_CHECK_DISABLE
++  constexpr __alt(const __alt&) = default;
++  _CCCL_EXEC_CHECK_DISABLE
++  constexpr __alt(__alt&&) = default;
++  _CCCL_EXEC_CHECK_DISABLE
++  constexpr __alt& operator=(const __alt&) = default;
++  _CCCL_EXEC_CHECK_DISABLE
++  constexpr __alt& operator=(__alt&&) = default;
++
++  _CCCL_EXEC_CHECK_DISABLE
++  ~__alt() = default;
+ 
+   __value_type __value;
+ };
+@@ -913,6 +925,7 @@ class _CCCL_TYPE_VISIBILITY_DEFAULT __dtor<__traits<_Types...>, _Trait::_Availab
+ {
+   struct __visitor
+   {
++    _CCCL_EXEC_CHECK_DISABLE
+     template <class _Alt>
+     _LIBCUDACXX_HIDE_FROM_ABI void operator()(_Alt& __alt) const noexcept
+     {
+@@ -1152,6 +1165,7 @@ public:
+   }
+ 
+ protected:
++  _CCCL_EXEC_CHECK_DISABLE
+   template <
+     size_t _Ip,
+     class _Tp,
+@@ -1170,6 +1184,7 @@ protected:
+     }
+   }
+ 
++  _CCCL_EXEC_CHECK_DISABLE
+   template <
+     size_t _Ip,
+     class _Tp,
+diff --git a/libcudacxx/test/libcudacxx/cuda/utilities/expected/device_only_types.pass.cpp b/libcudacxx/test/libcudacxx/cuda/utilities/expected/device_only_types.pass.cpp
+new file mode 100644
+index 000000000..aeefee0ed
+--- /dev/null
++++ b/libcudacxx/test/libcudacxx/cuda/utilities/expected/device_only_types.pass.cpp
+@@ -0,0 +1,248 @@
++//===----------------------------------------------------------------------===//
++//
++// Part of the libcu++ Project, under the Apache License v2.0 with LLVM Exceptions.
++// See https://llvm.org/LICENSE.txt for license information.
++// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
++// SPDX-FileCopyrightText: Copyright (c) 2025 NVIDIA CORPORATION & AFFILIATES.
++//
++//===----------------------------------------------------------------------===//
++
++// We cannot suppress execution checks in cuda::std::construct_at
++// XFAIL: c++20 && !nvrtc
++// UNSUPPORTED: clang-14
++
++#include <cuda/std/cassert>
++#include <cuda/std/expected>
++#include <cuda/std/initializer_list>
++
++#include "test_macros.h"
++
++struct device_only_type
++{
++  int val_;
++
++  __device__ device_only_type(const int val = 0) noexcept
++      : val_(val)
++  {}
++  __device__ device_only_type(cuda::std::initializer_list<int>, const int val) noexcept
++      : val_(val)
++  {}
++
++  __device__ device_only_type(const device_only_type& other) noexcept
++      : val_(other.val_)
++  {}
++  __device__ device_only_type(device_only_type&& other) noexcept
++      : val_(cuda::std::exchange(other.val_, -1))
++  {}
++
++  __device__ device_only_type& operator=(const device_only_type& other) noexcept
++  {
++    val_ = other.val_;
++    return *this;
++  }
++
++  __device__ device_only_type& operator=(device_only_type&& other) noexcept
++
++  {
++    val_ = cuda::std::exchange(other.val_, -1);
++    return *this;
++  }
++
++  __device__ ~device_only_type() noexcept {}
++
++  __device__ friend bool operator==(const device_only_type& lhs, const device_only_type& rhs) noexcept
++  {
++    return lhs.val_ == rhs.val_;
++  }
++  __device__ friend bool operator!=(const device_only_type& lhs, const device_only_type& rhs) noexcept
++  {
++    return lhs.val_ != rhs.val_;
++  }
++
++  __device__ void swap(device_only_type& other) noexcept
++  {
++    cuda::std::swap(val_, other.val_);
++  }
++};
++
++__device__ void test()
++{
++  using expected = cuda::std::expected<device_only_type, device_only_type>;
++  { // default construction
++    expected default_constructed{};
++    assert(default_constructed.has_value());
++    assert(*default_constructed == 0);
++  }
++
++  { // in_place zero initialization
++    expected in_place_zero_initialization{cuda::std::in_place};
++    assert(in_place_zero_initialization.has_value());
++    assert(*in_place_zero_initialization == 0);
++  }
++
++  { // in_place initialization
++    expected in_place_initialization{cuda::std::in_place, 42};
++    assert(in_place_initialization.has_value());
++    assert(*in_place_initialization == 42);
++  }
++
++  { // initializer_list initialization
++    expected init_list_initialization{cuda::std::in_place, cuda::std::initializer_list<int>{}, 42};
++    assert(init_list_initialization.has_value());
++    assert(*init_list_initialization == 42);
++  }
++
++  { // unexpect zero initialization
++    expected in_place_zero_initialization{cuda::std::unexpect};
++    assert(!in_place_zero_initialization.has_value());
++    assert(in_place_zero_initialization.error() == 0);
++  }
++
++  { // unexpect initialization
++    expected in_place_initialization{cuda::std::unexpect, 42};
++    assert(!in_place_initialization.has_value());
++    assert(in_place_initialization.error() == 42);
++  }
++
++  { // initializer_list initialization
++    expected init_list_initialization{cuda::std::unexpect, cuda::std::initializer_list<int>{}, 42};
++    assert(!init_list_initialization.has_value());
++    assert(init_list_initialization.error() == 42);
++  }
++
++  { // value initialization
++    expected value_initialization{42};
++    assert(value_initialization.has_value());
++    assert(*value_initialization == 42);
++  }
++
++  { // copy construction
++    expected input{42};
++    expected dest{input};
++    assert(dest.has_value());
++    assert(*dest == 42);
++  }
++
++  { // move construction
++    expected input{42};
++    expected dest{cuda::std::move(input)};
++    assert(dest.has_value());
++    assert(*dest == 42);
++  }
++
++  { // assignment, value to value
++    expected input{42};
++    expected dest{1337};
++    dest = input;
++    assert(dest.has_value());
++    assert(*dest == 42);
++  }
++
++  { // assignment, value to empty
++    expected input{42};
++    expected dest{};
++    dest = input;
++    assert(dest.has_value());
++    assert(*dest == 42);
++  }
++
++  { // assignment, empty to value
++    expected input{};
++    expected dest{1337};
++    dest = input;
++    assert(dest.has_value());
++    assert(*dest == 0);
++  }
++
++  { // assignment, empty to empty
++    expected input{};
++    expected dest{};
++    dest = input;
++    assert(dest.has_value());
++    assert(*dest == 0);
++  }
++
++  { // assignment, error to value
++    expected input{cuda::std::unexpect, 42};
++    expected dest{1337};
++    dest = input;
++    assert(!dest.has_value());
++    assert(dest.error() == 42);
++  }
++
++  { // assignment, value to error
++    expected input{42};
++    expected dest{cuda::std::unexpect, 1337};
++    dest = input;
++    assert(dest.has_value());
++    assert(*dest == 42);
++  }
++
++  { // assignment, error to error
++    expected input{cuda::std::unexpect, 42};
++    expected dest{cuda::std::unexpect, 1337};
++    dest = input;
++    assert(!dest.has_value());
++    assert(dest.error() == 42);
++  }
++
++  { // comparison with expected with value
++    expected lhs{42};
++    expected rhs{1337};
++    assert(!(lhs == rhs));
++    assert(lhs != rhs);
++  }
++
++  { // comparison with expected with error
++    expected lhs{cuda::std::unexpect, 42};
++    expected rhs{cuda::std::unexpect, 1337};
++    assert(!(lhs == rhs));
++    assert(lhs != rhs);
++  }
++
++  { // comparison with type and value
++    expected expect{42};
++    assert(expect == device_only_type{42});
++    assert(device_only_type{42} == expect);
++    assert(expect != device_only_type{1337});
++    assert(device_only_type{1337} != expect);
++  }
++
++  { // comparison with type and error
++    expected expect{cuda::std::unexpect, 42};
++    assert(expect == cuda::std::unexpected<device_only_type>{42});
++    assert(cuda::std::unexpected<device_only_type>{42} == expect);
++    assert(expect != cuda::std::unexpected<device_only_type>{1337});
++    assert(cuda::std::unexpected<device_only_type>{1337} != expect);
++  }
++
++  { // swap
++    expected lhs{42};
++    expected rhs{1337};
++    lhs.swap(rhs);
++    assert(*lhs == 1337);
++    assert(*rhs == 42);
++
++    swap(lhs, rhs);
++    assert(*lhs == 42);
++    assert(*rhs == 1337);
++  }
++
++  { // swap cross error
++    expected lhs{42};
++    expected rhs{cuda::std::unexpect, 1337};
++    lhs.swap(rhs);
++    assert(lhs.error() == 1337);
++    assert(*rhs == 42);
++
++    swap(lhs, rhs);
++    assert(*lhs == 42);
++    assert(rhs.error() == 1337);
++  }
++}
++
++int main(int arg, char** argv)
++{
++  NV_IF_TARGET(NV_IS_DEVICE, (test();))
++  return 0;
++}
+diff --git a/libcudacxx/test/libcudacxx/cuda/utilities/expected/host_only_types.pass.cpp b/libcudacxx/test/libcudacxx/cuda/utilities/expected/host_only_types.pass.cpp
+new file mode 100644
+index 000000000..607f7435d
+--- /dev/null
++++ b/libcudacxx/test/libcudacxx/cuda/utilities/expected/host_only_types.pass.cpp
+@@ -0,0 +1,246 @@
++//===----------------------------------------------------------------------===//
++//
++// Part of the libcu++ Project, under the Apache License v2.0 with LLVM Exceptions.
++// See https://llvm.org/LICENSE.txt for license information.
++// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
++// SPDX-FileCopyrightText: Copyright (c) 2025 NVIDIA CORPORATION & AFFILIATES.
++//
++//===----------------------------------------------------------------------===//
++
++// UNSUPPORTED: nvrtc
++
++#include <cuda/std/cassert>
++#include <cuda/std/expected>
++#include <cuda/std/initializer_list>
++
++#include "test_macros.h"
++
++struct host_only_type
++{
++  int val_;
++
++  host_only_type(const int val = 0) noexcept
++      : val_(val)
++  {}
++  host_only_type(cuda::std::initializer_list<int>, const int val) noexcept
++      : val_(val)
++  {}
++
++  host_only_type(const host_only_type& other) noexcept
++      : val_(other.val_)
++  {}
++  host_only_type(host_only_type&& other) noexcept
++      : val_(cuda::std::exchange(other.val_, -1))
++  {}
++
++  host_only_type& operator=(const host_only_type& other) noexcept
++  {
++    val_ = other.val_;
++    return *this;
++  }
++
++  host_only_type& operator=(host_only_type&& other) noexcept
++
++  {
++    val_ = cuda::std::exchange(other.val_, -1);
++    return *this;
++  }
++
++  ~host_only_type() noexcept {}
++
++  friend bool operator==(const host_only_type& lhs, const host_only_type& rhs) noexcept
++  {
++    return lhs.val_ == rhs.val_;
++  }
++  friend bool operator!=(const host_only_type& lhs, const host_only_type& rhs) noexcept
++  {
++    return lhs.val_ != rhs.val_;
++  }
++
++  void swap(host_only_type& other) noexcept
++  {
++    cuda::std::swap(val_, other.val_);
++  }
++};
++
++void test()
++{
++  using expected = cuda::std::expected<host_only_type, host_only_type>;
++  { // default construction
++    expected default_constructed{};
++    assert(default_constructed.has_value());
++    assert(*default_constructed == 0);
++  }
++
++  { // in_place zero initialization
++    expected in_place_zero_initialization{cuda::std::in_place};
++    assert(in_place_zero_initialization.has_value());
++    assert(*in_place_zero_initialization == 0);
++  }
++
++  { // in_place initialization
++    expected in_place_initialization{cuda::std::in_place, 42};
++    assert(in_place_initialization.has_value());
++    assert(*in_place_initialization == 42);
++  }
++
++  { // initializer_list initialization
++    expected init_list_initialization{cuda::std::in_place, cuda::std::initializer_list<int>{}, 42};
++    assert(init_list_initialization.has_value());
++    assert(*init_list_initialization == 42);
++  }
++
++  { // unexpect zero initialization
++    expected in_place_zero_initialization{cuda::std::unexpect};
++    assert(!in_place_zero_initialization.has_value());
++    assert(in_place_zero_initialization.error() == 0);
++  }
++
++  { // unexpect initialization
++    expected in_place_initialization{cuda::std::unexpect, 42};
++    assert(!in_place_initialization.has_value());
++    assert(in_place_initialization.error() == 42);
++  }
++
++  { // initializer_list initialization
++    expected init_list_initialization{cuda::std::unexpect, cuda::std::initializer_list<int>{}, 42};
++    assert(!init_list_initialization.has_value());
++    assert(init_list_initialization.error() == 42);
++  }
++
++  { // value initialization
++    expected value_initialization{42};
++    assert(value_initialization.has_value());
++    assert(*value_initialization == 42);
++  }
++
++  { // copy construction
++    expected input{42};
++    expected dest{input};
++    assert(dest.has_value());
++    assert(*dest == 42);
++  }
++
++  { // move construction
++    expected input{42};
++    expected dest{cuda::std::move(input)};
++    assert(dest.has_value());
++    assert(*dest == 42);
++  }
++
++  { // assignment, value to value
++    expected input{42};
++    expected dest{1337};
++    dest = input;
++    assert(dest.has_value());
++    assert(*dest == 42);
++  }
++
++  { // assignment, value to empty
++    expected input{42};
++    expected dest{};
++    dest = input;
++    assert(dest.has_value());
++    assert(*dest == 42);
++  }
++
++  { // assignment, empty to value
++    expected input{};
++    expected dest{1337};
++    dest = input;
++    assert(dest.has_value());
++    assert(*dest == 0);
++  }
++
++  { // assignment, empty to empty
++    expected input{};
++    expected dest{};
++    dest = input;
++    assert(dest.has_value());
++    assert(*dest == 0);
++  }
++
++  { // assignment, error to value
++    expected input{cuda::std::unexpect, 42};
++    expected dest{1337};
++    dest = input;
++    assert(!dest.has_value());
++    assert(dest.error() == 42);
++  }
++
++  { // assignment, value to error
++    expected input{42};
++    expected dest{cuda::std::unexpect, 1337};
++    dest = input;
++    assert(dest.has_value());
++    assert(*dest == 42);
++  }
++
++  { // assignment, error to error
++    expected input{cuda::std::unexpect, 42};
++    expected dest{cuda::std::unexpect, 1337};
++    dest = input;
++    assert(!dest.has_value());
++    assert(dest.error() == 42);
++  }
++
++  { // comparison with expected with value
++    expected lhs{42};
++    expected rhs{1337};
++    assert(!(lhs == rhs));
++    assert(lhs != rhs);
++  }
++
++  { // comparison with expected with error
++    expected lhs{cuda::std::unexpect, 42};
++    expected rhs{cuda::std::unexpect, 1337};
++    assert(!(lhs == rhs));
++    assert(lhs != rhs);
++  }
++
++  { // comparison with type and value
++    expected expect{42};
++    assert(expect == host_only_type{42});
++    assert(host_only_type{42} == expect);
++    assert(expect != host_only_type{1337});
++    assert(host_only_type{1337} != expect);
++  }
++
++  { // comparison with type and error
++    expected expect{cuda::std::unexpect, 42};
++    assert(expect == cuda::std::unexpected<host_only_type>{42});
++    assert(cuda::std::unexpected<host_only_type>{42} == expect);
++    assert(expect != cuda::std::unexpected<host_only_type>{1337});
++    assert(cuda::std::unexpected<host_only_type>{1337} != expect);
++  }
++
++  { // swap
++    expected lhs{42};
++    expected rhs{1337};
++    lhs.swap(rhs);
++    assert(*lhs == 1337);
++    assert(*rhs == 42);
++
++    swap(lhs, rhs);
++    assert(*lhs == 42);
++    assert(*rhs == 1337);
++  }
++
++  { // swap cross error
++    expected lhs{42};
++    expected rhs{cuda::std::unexpect, 1337};
++    lhs.swap(rhs);
++    assert(lhs.error() == 1337);
++    assert(*rhs == 42);
++
++    swap(lhs, rhs);
++    assert(*lhs == 42);
++    assert(rhs.error() == 1337);
++  }
++}
++
++int main(int arg, char** argv)
++{
++  NV_IF_TARGET(NV_IS_HOST, (test();))
++  return 0;
++}
+diff --git a/libcudacxx/test/libcudacxx/cuda/utilities/optional/device_only_types.pass.cpp b/libcudacxx/test/libcudacxx/cuda/utilities/optional/device_only_types.pass.cpp
+new file mode 100644
+index 000000000..e7a8b50bc
+--- /dev/null
++++ b/libcudacxx/test/libcudacxx/cuda/utilities/optional/device_only_types.pass.cpp
+@@ -0,0 +1,196 @@
++//===----------------------------------------------------------------------===//
++//
++// Part of the libcu++ Project, under the Apache License v2.0 with LLVM Exceptions.
++// See https://llvm.org/LICENSE.txt for license information.
++// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
++// SPDX-FileCopyrightText: Copyright (c) 2025 NVIDIA CORPORATION & AFFILIATES.
++//
++//===----------------------------------------------------------------------===//
++
++// We cannot suppress execution checks in cuda::std::construct_at
++// XFAIL: c++20 && !nvrtc
++// UNSUPPORTED: clang-14
++
++#include <cuda/std/cassert>
++#include <cuda/std/optional>
++
++#include "test_macros.h"
++
++struct device_only_type
++{
++  int val_;
++
++  __device__ device_only_type(const int val = 0) noexcept
++      : val_(val)
++  {}
++
++  __device__ device_only_type(const device_only_type& other) noexcept
++      : val_(other.val_)
++  {}
++  __device__ device_only_type(device_only_type&& other) noexcept
++      : val_(cuda::std::exchange(other.val_, -1))
++  {}
++
++  __device__ device_only_type& operator=(const device_only_type& other) noexcept
++  {
++    val_ = other.val_;
++    return *this;
++  }
++
++  __device__ device_only_type& operator=(device_only_type&& other) noexcept
++
++  {
++    val_ = cuda::std::exchange(other.val_, -1);
++    return *this;
++  }
++
++  __device__ ~device_only_type() noexcept {}
++
++  __device__ friend bool operator==(const device_only_type& lhs, const device_only_type& rhs) noexcept
++  {
++    return lhs.val_ == rhs.val_;
++  }
++  __device__ friend bool operator!=(const device_only_type& lhs, const device_only_type& rhs) noexcept
++  {
++    return lhs.val_ != rhs.val_;
++  }
++  __device__ friend bool operator<(const device_only_type& lhs, const device_only_type& rhs) noexcept
++  {
++    return lhs.val_ < rhs.val_;
++  }
++  __device__ friend bool operator<=(const device_only_type& lhs, const device_only_type& rhs) noexcept
++  {
++    return lhs.val_ <= rhs.val_;
++  }
++  __device__ friend bool operator>(const device_only_type& lhs, const device_only_type& rhs) noexcept
++  {
++    return lhs.val_ > rhs.val_;
++  }
++  __device__ friend bool operator>=(const device_only_type& lhs, const device_only_type& rhs) noexcept
++  {
++    return lhs.val_ >= rhs.val_;
++  }
++
++  __device__ void swap(device_only_type& other) noexcept
++  {
++    cuda::std::swap(val_, other.val_);
++  }
++};
++
++__device__ void test()
++{
++  using optional = cuda::std::optional<device_only_type>;
++  { // default construction
++    optional default_constructed{};
++    assert(!default_constructed.has_value());
++  }
++
++  { // in_place zero initialization
++    optional in_place_zero_initialization{cuda::std::in_place};
++    assert(in_place_zero_initialization.has_value());
++    assert(*in_place_zero_initialization == 0);
++  }
++
++  { // in_place initialization
++    optional in_place_initialization{cuda::std::in_place, 42};
++    assert(in_place_initialization.has_value());
++    assert(*in_place_initialization == 42);
++  }
++
++  { // value initialization
++    optional value_initialization{42};
++    assert(value_initialization.has_value());
++    assert(*value_initialization == 42);
++  }
++
++  { // copy construction
++    optional input{42};
++    optional dest{input};
++    assert(dest.has_value());
++    assert(*dest == 42);
++  }
++
++  { // move construction
++    optional input{42};
++    optional dest{cuda::std::move(input)};
++    assert(dest.has_value());
++    assert(*dest == 42);
++  }
++
++  { // assignment, value to value
++    optional input{42};
++    optional dest{1337};
++    dest = input;
++    assert(dest.has_value());
++    assert(*dest == 42);
++  }
++
++  { // assignment, value to empty
++    optional input{42};
++    optional dest{};
++    dest = input;
++    assert(dest.has_value());
++    assert(*dest == 42);
++  }
++
++  { // assignment, empty to value
++    optional input{};
++    optional dest{1337};
++    dest = input;
++    assert(!dest.has_value());
++  }
++
++  { // assignment, empty to empty
++    optional input{};
++    optional dest{};
++    dest = input;
++    assert(!dest.has_value());
++  }
++
++  { // comparison with optional
++    optional lhs{42};
++    optional rhs{1337};
++    assert(!(lhs == rhs));
++    assert(lhs != rhs);
++    assert(lhs < rhs);
++    assert(lhs <= rhs);
++    assert(!(lhs > rhs));
++    assert(!(lhs >= rhs));
++  }
++
++  { // comparison with type
++    optional opt{42};
++    assert(opt == device_only_type{42});
++    assert(device_only_type{42} == opt);
++    assert(opt != device_only_type{1337});
++    assert(device_only_type{1337} != opt);
++
++    assert(opt < device_only_type{1337});
++    assert(device_only_type{7} < opt);
++    assert(opt <= device_only_type{1337});
++    assert(device_only_type{7} <= opt);
++
++    assert(opt > device_only_type{7});
++    assert(device_only_type{1337} > opt);
++    assert(opt >= device_only_type{7});
++    assert(device_only_type{1337} >= opt);
++  }
++
++  { // swap
++    optional lhs{42};
++    optional rhs{1337};
++    lhs.swap(rhs);
++    assert(*lhs == 1337);
++    assert(*rhs == 42);
++
++    swap(lhs, rhs);
++    assert(*lhs == 42);
++    assert(*rhs == 1337);
++  }
++}
++
++int main(int arg, char** argv)
++{
++  NV_IF_TARGET(NV_IS_DEVICE, (test();))
++  return 0;
++}
+diff --git a/libcudacxx/test/libcudacxx/cuda/utilities/optional/host_only_types.pass.cpp b/libcudacxx/test/libcudacxx/cuda/utilities/optional/host_only_types.pass.cpp
+new file mode 100644
+index 000000000..dff14e797
+--- /dev/null
++++ b/libcudacxx/test/libcudacxx/cuda/utilities/optional/host_only_types.pass.cpp
+@@ -0,0 +1,194 @@
++//===----------------------------------------------------------------------===//
++//
++// Part of the libcu++ Project, under the Apache License v2.0 with LLVM Exceptions.
++// See https://llvm.org/LICENSE.txt for license information.
++// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
++// SPDX-FileCopyrightText: Copyright (c) 2025 NVIDIA CORPORATION & AFFILIATES.
++//
++//===----------------------------------------------------------------------===//
++
++// UNSUPPORTED: nvrtc
++
++#include <cuda/std/cassert>
++#include <cuda/std/optional>
++
++#include "test_macros.h"
++
++struct host_only_type
++{
++  int val_;
++
++  host_only_type(const int val = 0) noexcept
++      : val_(val)
++  {}
++
++  host_only_type(const host_only_type& other) noexcept
++      : val_(other.val_)
++  {}
++  host_only_type(host_only_type&& other) noexcept
++      : val_(cuda::std::exchange(other.val_, -1))
++  {}
++
++  host_only_type& operator=(const host_only_type& other) noexcept
++  {
++    val_ = other.val_;
++    return *this;
++  }
++
++  host_only_type& operator=(host_only_type&& other) noexcept
++
++  {
++    val_ = cuda::std::exchange(other.val_, -1);
++    return *this;
++  }
++
++  ~host_only_type() noexcept {}
++
++  friend bool operator==(const host_only_type& lhs, const host_only_type& rhs) noexcept
++  {
++    return lhs.val_ == rhs.val_;
++  }
++  friend bool operator!=(const host_only_type& lhs, const host_only_type& rhs) noexcept
++  {
++    return lhs.val_ != rhs.val_;
++  }
++  friend bool operator<(const host_only_type& lhs, const host_only_type& rhs) noexcept
++  {
++    return lhs.val_ < rhs.val_;
++  }
++  friend bool operator<=(const host_only_type& lhs, const host_only_type& rhs) noexcept
++  {
++    return lhs.val_ <= rhs.val_;
++  }
++  friend bool operator>(const host_only_type& lhs, const host_only_type& rhs) noexcept
++  {
++    return lhs.val_ > rhs.val_;
++  }
++  friend bool operator>=(const host_only_type& lhs, const host_only_type& rhs) noexcept
++  {
++    return lhs.val_ >= rhs.val_;
++  }
++
++  void swap(host_only_type& other) noexcept
++  {
++    cuda::std::swap(val_, other.val_);
++  }
++};
++
++void test()
++{
++  using optional = cuda::std::optional<host_only_type>;
++  { // default construction
++    optional default_constructed{};
++    assert(!default_constructed.has_value());
++  }
++
++  { // in_place zero initialization
++    optional in_place_zero_initialization{cuda::std::in_place};
++    assert(in_place_zero_initialization.has_value());
++    assert(*in_place_zero_initialization == 0);
++  }
++
++  { // in_place initialization
++    optional in_place_initialization{cuda::std::in_place, 42};
++    assert(in_place_initialization.has_value());
++    assert(*in_place_initialization == 42);
++  }
++
++  { // value initialization
++    optional value_initialization{42};
++    assert(value_initialization.has_value());
++    assert(*value_initialization == 42);
++  }
++
++  { // copy construction
++    optional input{42};
++    optional dest{input};
++    assert(dest.has_value());
++    assert(*dest == 42);
++  }
++
++  { // move construction
++    optional input{42};
++    optional dest{cuda::std::move(input)};
++    assert(dest.has_value());
++    assert(*dest == 42);
++  }
++
++  { // assignment, value to value
++    optional input{42};
++    optional dest{1337};
++    dest = input;
++    assert(dest.has_value());
++    assert(*dest == 42);
++  }
++
++  { // assignment, value to empty
++    optional input{42};
++    optional dest{};
++    dest = input;
++    assert(dest.has_value());
++    assert(*dest == 42);
++  }
++
++  { // assignment, empty to value
++    optional input{};
++    optional dest{1337};
++    dest = input;
++    assert(!dest.has_value());
++  }
++
++  { // assignment, empty to empty
++    optional input{};
++    optional dest{};
++    dest = input;
++    assert(!dest.has_value());
++  }
++
++  { // comparison with optional
++    optional lhs{42};
++    optional rhs{1337};
++    assert(!(lhs == rhs));
++    assert(lhs != rhs);
++    assert(lhs < rhs);
++    assert(lhs <= rhs);
++    assert(!(lhs > rhs));
++    assert(!(lhs >= rhs));
++  }
++
++  { // comparison with type
++    optional opt{42};
++    assert(opt == host_only_type{42});
++    assert(host_only_type{42} == opt);
++    assert(opt != host_only_type{1337});
++    assert(host_only_type{1337} != opt);
++
++    assert(opt < host_only_type{1337});
++    assert(host_only_type{7} < opt);
++    assert(opt <= host_only_type{1337});
++    assert(host_only_type{7} <= opt);
++
++    assert(opt > host_only_type{7});
++    assert(host_only_type{1337} > opt);
++    assert(opt >= host_only_type{7});
++    assert(host_only_type{1337} >= opt);
++  }
++
++  { // swap
++    optional lhs{42};
++    optional rhs{1337};
++    lhs.swap(rhs);
++    assert(*lhs == 1337);
++    assert(*rhs == 42);
++
++    swap(lhs, rhs);
++    assert(*lhs == 42);
++    assert(*rhs == 1337);
++  }
++}
++
++int main(int arg, char** argv)
++{
++  NV_IF_TARGET(NV_IS_HOST, (test();))
++  return 0;
++}
+diff --git a/libcudacxx/test/libcudacxx/cuda/utilities/tuple/device_only_types.pass.cpp b/libcudacxx/test/libcudacxx/cuda/utilities/tuple/device_only_types.pass.cpp
+new file mode 100644
+index 000000000..d8820409d
+--- /dev/null
++++ b/libcudacxx/test/libcudacxx/cuda/utilities/tuple/device_only_types.pass.cpp
+@@ -0,0 +1,81 @@
++//===----------------------------------------------------------------------===//
++//
++// Part of the libcu++ Project, under the Apache License v2.0 with LLVM Exceptions.
++// See https://llvm.org/LICENSE.txt for license information.
++// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
++// SPDX-FileCopyrightText: Copyright (c) 2025 NVIDIA CORPORATION & AFFILIATES.
++//
++//===----------------------------------------------------------------------===//
++
++#include <cuda/std/cassert>
++#include <cuda/std/tuple>
++
++#include "host_device_types.h"
++#include "test_macros.h"
++
++__device__ void test()
++{
++  using tuple = cuda::std::tuple<device_only_type>;
++  { // default construction
++    tuple default_constructed{};
++    assert(cuda::std::get<0>(default_constructed) == 0);
++  }
++
++  { // value initialization
++    tuple value_initialization{device_only_type{42}};
++    assert(cuda::std::get<0>(value_initialization) == 42);
++  }
++
++  { // value initialization
++    tuple value_initialization{42};
++    assert(cuda::std::get<0>(value_initialization) == 42);
++  }
++
++  { // copy construction
++    tuple input{42};
++    tuple dest{input};
++    assert(cuda::std::get<0>(dest) == 42);
++  }
++
++  { // move construction
++    tuple input{42};
++    tuple dest{cuda::std::move(input)};
++    assert(cuda::std::get<0>(dest) == 42);
++  }
++
++  { // assignment, value to value
++    tuple input{42};
++    tuple dest{1337};
++    dest = input;
++    assert(cuda::std::get<0>(dest) == 42);
++  }
++
++  { // comparison with tuple
++    tuple lhs{42};
++    tuple rhs{1337};
++    assert(!(lhs == rhs));
++    assert(lhs != rhs);
++    assert(lhs < rhs);
++    assert(lhs <= rhs);
++    assert(!(lhs > rhs));
++    assert(!(lhs >= rhs));
++  }
++
++  { // swap
++    tuple lhs{42};
++    tuple rhs{1337};
++    lhs.swap(rhs);
++    assert(cuda::std::get<0>(lhs) == 1337);
++    assert(cuda::std::get<0>(rhs) == 42);
++
++    swap(lhs, rhs);
++    assert(cuda::std::get<0>(lhs) == 42);
++    assert(cuda::std::get<0>(rhs) == 1337);
++  }
++}
++
++int main(int arg, char** argv)
++{
++  NV_IF_TARGET(NV_IS_DEVICE, (test();))
++  return 0;
++}
+diff --git a/libcudacxx/test/libcudacxx/cuda/tuple/forward_as_tuple_interop.pass.cpp b/libcudacxx/test/libcudacxx/cuda/utilities/tuple/forward_as_tuple_interop.pass.cpp
+similarity index 100%
+rename from libcudacxx/test/libcudacxx/cuda/tuple/forward_as_tuple_interop.pass.cpp
+rename to libcudacxx/test/libcudacxx/cuda/utilities/tuple/forward_as_tuple_interop.pass.cpp
+diff --git a/libcudacxx/test/libcudacxx/cuda/utilities/tuple/host_only_types.pass.cpp b/libcudacxx/test/libcudacxx/cuda/utilities/tuple/host_only_types.pass.cpp
+new file mode 100644
+index 000000000..4942d051b
+--- /dev/null
++++ b/libcudacxx/test/libcudacxx/cuda/utilities/tuple/host_only_types.pass.cpp
+@@ -0,0 +1,90 @@
++//===----------------------------------------------------------------------===//
++//
++// Part of the libcu++ Project, under the Apache License v2.0 with LLVM Exceptions.
++// See https://llvm.org/LICENSE.txt for license information.
++// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
++// SPDX-FileCopyrightText: Copyright (c) 2025 NVIDIA CORPORATION & AFFILIATES.
++//
++//===----------------------------------------------------------------------===//
++
++// UNSUPPORTED: nvrtc
++
++#include <cuda/std/cassert>
++#include <cuda/std/tuple>
++
++#include "host_device_types.h"
++#include "test_macros.h"
++
++void test()
++{
++  using tuple = cuda::std::tuple<host_only_type>;
++  { // default construction
++    tuple default_constructed{};
++    assert(cuda::std::get<0>(default_constructed) == 0);
++  }
++
++  { // value initialization
++    tuple value_initialization{host_only_type{42}};
++    assert(cuda::std::get<0>(value_initialization) == 42);
++  }
++
++  { // value initialization
++    tuple value_initialization{42};
++    assert(cuda::std::get<0>(value_initialization) == 42);
++  }
++
++  { // copy construction
++    tuple input{42};
++    tuple dest{input};
++    assert(cuda::std::get<0>(dest) == 42);
++  }
++
++  { // move construction
++    tuple input{42};
++    tuple dest{cuda::std::move(input)};
++    assert(cuda::std::get<0>(dest) == 42);
++  }
++
++  { // assignment, value to value
++    tuple input{42};
++    tuple dest{1337};
++    dest = input;
++    assert(cuda::std::get<0>(dest) == 42);
++  }
++
++  { // assignment, value to empty
++    tuple input{42};
++    tuple dest{};
++    dest = input;
++    assert(cuda::std::get<0>(dest) == 42);
++  }
++
++  { // comparison with tuple
++    tuple lhs{42};
++    tuple rhs{1337};
++    assert(!(lhs == rhs));
++    assert(lhs != rhs);
++    assert(lhs < rhs);
++    assert(lhs <= rhs);
++    assert(!(lhs > rhs));
++    assert(!(lhs >= rhs));
++  }
++
++  { // swap
++    tuple lhs{42};
++    tuple rhs{1337};
++    lhs.swap(rhs);
++    assert(cuda::std::get<0>(lhs) == 1337);
++    assert(cuda::std::get<0>(rhs) == 42);
++
++    swap(lhs, rhs);
++    assert(cuda::std::get<0>(lhs) == 42);
++    assert(cuda::std::get<0>(rhs) == 1337);
++  }
++}
++
++int main(int arg, char** argv)
++{
++  NV_IF_TARGET(NV_IS_HOST, (test();))
++  return 0;
++}
+diff --git a/libcudacxx/test/libcudacxx/cuda/tuple/vector_types_get.pass.cpp b/libcudacxx/test/libcudacxx/cuda/utilities/tuple/vector_types_get.pass.cpp
+similarity index 100%
+rename from libcudacxx/test/libcudacxx/cuda/tuple/vector_types_get.pass.cpp
+rename to libcudacxx/test/libcudacxx/cuda/utilities/tuple/vector_types_get.pass.cpp
+diff --git a/libcudacxx/test/libcudacxx/cuda/tuple/vector_types_structured_bindings.pass.cpp b/libcudacxx/test/libcudacxx/cuda/utilities/tuple/vector_types_structured_bindings.pass.cpp
+similarity index 100%
+rename from libcudacxx/test/libcudacxx/cuda/tuple/vector_types_structured_bindings.pass.cpp
+rename to libcudacxx/test/libcudacxx/cuda/utilities/tuple/vector_types_structured_bindings.pass.cpp
+diff --git a/libcudacxx/test/libcudacxx/cuda/tuple/vector_types_tuple_element.pass.cpp b/libcudacxx/test/libcudacxx/cuda/utilities/tuple/vector_types_tuple_element.pass.cpp
+similarity index 100%
+rename from libcudacxx/test/libcudacxx/cuda/tuple/vector_types_tuple_element.pass.cpp
+rename to libcudacxx/test/libcudacxx/cuda/utilities/tuple/vector_types_tuple_element.pass.cpp
+diff --git a/libcudacxx/test/libcudacxx/cuda/tuple/vector_types_tuple_size.pass.cpp b/libcudacxx/test/libcudacxx/cuda/utilities/tuple/vector_types_tuple_size.pass.cpp
+similarity index 100%
+rename from libcudacxx/test/libcudacxx/cuda/tuple/vector_types_tuple_size.pass.cpp
+rename to libcudacxx/test/libcudacxx/cuda/utilities/tuple/vector_types_tuple_size.pass.cpp
+diff --git a/libcudacxx/test/libcudacxx/cuda/utilities/unexpected/device_only_types.pass.cpp b/libcudacxx/test/libcudacxx/cuda/utilities/unexpected/device_only_types.pass.cpp
+new file mode 100644
+index 000000000..441169e87
+--- /dev/null
++++ b/libcudacxx/test/libcudacxx/cuda/utilities/unexpected/device_only_types.pass.cpp
+@@ -0,0 +1,129 @@
++//===----------------------------------------------------------------------===//
++//
++// Part of the libcu++ Project, under the Apache License v2.0 with LLVM Exceptions.
++// See https://llvm.org/LICENSE.txt for license information.
++// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
++// SPDX-FileCopyrightText: Copyright (c) 2025 NVIDIA CORPORATION & AFFILIATES.
++//
++//===----------------------------------------------------------------------===//
++
++#include <cuda/std/cassert>
++#include <cuda/std/expected>
++
++#include "test_macros.h"
++
++struct device_only_type
++{
++  int val_;
++
++  __device__ device_only_type(const int val = 0) noexcept
++      : val_(val)
++  {}
++  __device__ device_only_type(cuda::std::initializer_list<int>, const int val) noexcept
++      : val_(val)
++  {}
++
++  __device__ device_only_type(const device_only_type& other) noexcept
++      : val_(other.val_)
++  {}
++  __device__ device_only_type(device_only_type&& other) noexcept
++      : val_(cuda::std::exchange(other.val_, -1))
++  {}
++
++  __device__ device_only_type& operator=(const device_only_type& other) noexcept
++  {
++    val_ = other.val_;
++    return *this;
++  }
++
++  __device__ device_only_type& operator=(device_only_type&& other) noexcept
++
++  {
++    val_ = cuda::std::exchange(other.val_, -1);
++    return *this;
++  }
++
++  __device__ ~device_only_type() noexcept {}
++
++  __device__ friend bool operator==(const device_only_type& lhs, const device_only_type& rhs) noexcept
++  {
++    return lhs.val_ == rhs.val_;
++  }
++  __device__ friend bool operator!=(const device_only_type& lhs, const device_only_type& rhs) noexcept
++  {
++    return lhs.val_ != rhs.val_;
++  }
++
++  __device__ void swap(device_only_type& other) noexcept
++  {
++    cuda::std::swap(val_, other.val_);
++  }
++};
++
++__device__ void test()
++{
++  using unexpected = cuda::std::unexpected<device_only_type>;
++  { // in_place zero initialization
++    unexpected in_place_zero_initialization{cuda::std::in_place};
++    assert(in_place_zero_initialization.error() == 0);
++  }
++
++  { // in_place initialization
++    unexpected in_place_initialization{cuda::std::in_place, 42};
++    assert(in_place_initialization.error() == 42);
++  }
++
++  { // value initialization
++    unexpected value_initialization{42};
++    assert(value_initialization.error() == 42);
++  }
++
++  { // initializer_list initialization
++    unexpected init_list_initialization{cuda::std::in_place, cuda::std::initializer_list<int>{}, 42};
++    assert(init_list_initialization.error() == 42);
++  }
++
++  { // copy construction
++    unexpected input{42};
++    unexpected dest{input};
++    assert(dest.error() == 42);
++  }
++
++  { // move construction
++    unexpected input{42};
++    unexpected dest{cuda::std::move(input)};
++    assert(dest.error() == 42);
++  }
++
++  { // assignment
++    unexpected input{42};
++    unexpected dest{1337};
++    dest = input;
++    assert(dest.error() == 42);
++  }
++
++  { // comparison with unexpected
++    unexpected lhs{42};
++    unexpected rhs{1337};
++    assert(!(lhs == rhs));
++    assert(lhs != rhs);
++  }
++
++  { // swap
++    unexpected lhs{42};
++    unexpected rhs{1337};
++    lhs.swap(rhs);
++    assert(lhs.error() == 1337);
++    assert(rhs.error() == 42);
++
++    swap(lhs, rhs);
++    assert(lhs.error() == 42);
++    assert(rhs.error() == 1337);
++  }
++}
++
++int main(int arg, char** argv)
++{
++  NV_IF_TARGET(NV_IS_DEVICE, (test();))
++  return 0;
++}
+diff --git a/libcudacxx/test/libcudacxx/cuda/utilities/unexpected/host_only_types.pass.cpp b/libcudacxx/test/libcudacxx/cuda/utilities/unexpected/host_only_types.pass.cpp
+new file mode 100644
+index 000000000..151aa8590
+--- /dev/null
++++ b/libcudacxx/test/libcudacxx/cuda/utilities/unexpected/host_only_types.pass.cpp
+@@ -0,0 +1,132 @@
++//===----------------------------------------------------------------------===//
++//
++// Part of the libcu++ Project, under the Apache License v2.0 with LLVM Exceptions.
++// See https://llvm.org/LICENSE.txt for license information.
++// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
++// SPDX-FileCopyrightText: Copyright (c) 2025 NVIDIA CORPORATION & AFFILIATES.
++//
++//===----------------------------------------------------------------------===//
++
++// UNSUPPORTED: nvrtc
++
++#include <cuda/std/cassert>
++#include <cuda/std/expected>
++#include <cuda/std/initializer_list>
++
++#include "test_macros.h"
++
++struct host_only_type
++{
++  int val_;
++
++  host_only_type(const int val = 0) noexcept
++      : val_(val)
++  {}
++  host_only_type(cuda::std::initializer_list<int>, const int val) noexcept
++      : val_(val)
++  {}
++
++  host_only_type(const host_only_type& other) noexcept
++      : val_(other.val_)
++  {}
++  host_only_type(host_only_type&& other) noexcept
++      : val_(cuda::std::exchange(other.val_, -1))
++  {}
++
++  host_only_type& operator=(const host_only_type& other) noexcept
++  {
++    val_ = other.val_;
++    return *this;
++  }
++
++  host_only_type& operator=(host_only_type&& other) noexcept
++
++  {
++    val_ = cuda::std::exchange(other.val_, -1);
++    return *this;
++  }
++
++  ~host_only_type() noexcept {}
++
++  friend bool operator==(const host_only_type& lhs, const host_only_type& rhs) noexcept
++  {
++    return lhs.val_ == rhs.val_;
++  }
++  friend bool operator!=(const host_only_type& lhs, const host_only_type& rhs) noexcept
++  {
++    return lhs.val_ != rhs.val_;
++  }
++
++  void swap(host_only_type& other) noexcept
++  {
++    cuda::std::swap(val_, other.val_);
++  }
++};
++
++void test()
++{
++  using unexpected = cuda::std::unexpected<host_only_type>;
++  { // in_place zero initialization
++    unexpected in_place_zero_initialization{cuda::std::in_place};
++    assert(in_place_zero_initialization.error() == 0);
++  }
++
++  { // in_place initialization
++    unexpected in_place_initialization{cuda::std::in_place, 42};
++    assert(in_place_initialization.error() == 42);
++  }
++
++  { // value initialization
++    unexpected value_initialization{42};
++    assert(value_initialization.error() == 42);
++  }
++
++  { // initializer_list initialization
++    unexpected init_list_initialization{cuda::std::in_place, cuda::std::initializer_list<int>{}, 42};
++    assert(init_list_initialization.error() == 42);
++  }
++
++  { // copy construction
++    unexpected input{42};
++    unexpected dest{input};
++    assert(dest.error() == 42);
++  }
++
++  { // move construction
++    unexpected input{42};
++    unexpected dest{cuda::std::move(input)};
++    assert(dest.error() == 42);
++  }
++
++  { // assignment
++    unexpected input{42};
++    unexpected dest{1337};
++    dest = input;
++    assert(dest.error() == 42);
++  }
++
++  { // comparison with unexpected
++    unexpected lhs{42};
++    unexpected rhs{1337};
++    assert(!(lhs == rhs));
++    assert(lhs != rhs);
++  }
++
++  { // swap
++    unexpected lhs{42};
++    unexpected rhs{1337};
++    lhs.swap(rhs);
++    assert(lhs.error() == 1337);
++    assert(rhs.error() == 42);
++
++    swap(lhs, rhs);
++    assert(lhs.error() == 42);
++    assert(rhs.error() == 1337);
++  }
++}
++
++int main(int arg, char** argv)
++{
++  NV_IF_TARGET(NV_IS_HOST, (test();))
++  return 0;
++}
+diff --git a/libcudacxx/test/libcudacxx/cuda/utilities/utility/pair/device_only_types.pass.cpp b/libcudacxx/test/libcudacxx/cuda/utilities/utility/pair/device_only_types.pass.cpp
+new file mode 100644
+index 000000000..aebdd6e12
+--- /dev/null
++++ b/libcudacxx/test/libcudacxx/cuda/utilities/utility/pair/device_only_types.pass.cpp
+@@ -0,0 +1,93 @@
++//===----------------------------------------------------------------------===//
++//
++// Part of the libcu++ Project, under the Apache License v2.0 with LLVM Exceptions.
++// See https://llvm.org/LICENSE.txt for license information.
++// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
++// SPDX-FileCopyrightText: Copyright (c) 2025 NVIDIA CORPORATION & AFFILIATES.
++//
++//===----------------------------------------------------------------------===//
++
++// UNSUPPORTED: nvrtc
++
++#include <cuda/std/cassert>
++#include <cuda/std/utility>
++
++#include "host_device_types.h"
++#include "test_macros.h"
++
++__device__ void test()
++{
++  using pair = cuda::std::pair<device_only_type, device_only_type>;
++  { // default construction
++    pair default_constructed{};
++    assert(default_constructed.first == 0);
++    assert(default_constructed.second == 0);
++  }
++
++  { // value initialization
++    pair value_initialization{device_only_type{42}, device_only_type{1337}};
++    assert(value_initialization.first == 42);
++    assert(value_initialization.second == 1337);
++  }
++
++  { // value initialization
++    pair value_initialization{42, 1337};
++    assert(value_initialization.first == 42);
++    assert(value_initialization.second == 1337);
++  }
++
++  { // copy construction
++    pair input{42, 1337};
++    pair dest{input};
++    assert(dest.first == 42);
++    assert(dest.second == 1337);
++  }
++
++  { // move construction
++    pair input{42, 1337};
++    pair dest{cuda::std::move(input)};
++    assert(dest.first == 42);
++    assert(dest.second == 1337);
++  }
++
++  { // assignment, value to value
++    pair input{42, 1337};
++    pair dest{1337, 42};
++    dest = input;
++    assert(dest.first == 42);
++    assert(dest.second == 1337);
++  }
++
++  { // comparison with pair
++    pair lhs{42, 1337};
++    pair rhs{1337, 42};
++    assert(!(lhs == rhs));
++    assert(lhs != rhs);
++    assert(lhs < rhs);
++    assert(lhs <= rhs);
++    assert(!(lhs > rhs));
++    assert(!(lhs >= rhs));
++  }
++
++  { // swap
++    pair lhs{42, 1337};
++    pair rhs{1337, 42};
++    lhs.swap(rhs);
++    assert(lhs.first == 1337);
++    assert(lhs.second == 42);
++    assert(rhs.first == 42);
++    assert(rhs.second == 1337);
++
++    swap(lhs, rhs);
++    assert(lhs.first == 42);
++    assert(lhs.second == 1337);
++    assert(rhs.first == 1337);
++    assert(rhs.second == 42);
++  }
++}
++
++int main(int arg, char** argv)
++{
++  NV_IF_TARGET(NV_IS_DEVICE, (test();))
++  return 0;
++}
+diff --git a/libcudacxx/test/libcudacxx/cuda/utilities/utility/pair/host_only_types.pass.cpp b/libcudacxx/test/libcudacxx/cuda/utilities/utility/pair/host_only_types.pass.cpp
+new file mode 100644
+index 000000000..cf1195f20
+--- /dev/null
++++ b/libcudacxx/test/libcudacxx/cuda/utilities/utility/pair/host_only_types.pass.cpp
+@@ -0,0 +1,93 @@
++//===----------------------------------------------------------------------===//
++//
++// Part of the libcu++ Project, under the Apache License v2.0 with LLVM Exceptions.
++// See https://llvm.org/LICENSE.txt for license information.
++// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
++// SPDX-FileCopyrightText: Copyright (c) 2025 NVIDIA CORPORATION & AFFILIATES.
++//
++//===----------------------------------------------------------------------===//
++
++// UNSUPPORTED: nvrtc
++
++#include <cuda/std/cassert>
++#include <cuda/std/utility>
++
++#include "host_device_types.h"
++#include "test_macros.h"
++
++void test()
++{
++  using pair = cuda::std::pair<host_only_type, host_only_type>;
++  { // default construction
++    pair default_constructed{};
++    assert(default_constructed.first == 0);
++    assert(default_constructed.second == 0);
++  }
++
++  { // value initialization
++    pair value_initialization{host_only_type{42}, host_only_type{1337}};
++    assert(value_initialization.first == 42);
++    assert(value_initialization.second == 1337);
++  }
++
++  { // value initialization
++    pair value_initialization{42, 1337};
++    assert(value_initialization.first == 42);
++    assert(value_initialization.second == 1337);
++  }
++
++  { // copy construction
++    pair input{42, 1337};
++    pair dest{input};
++    assert(dest.first == 42);
++    assert(dest.second == 1337);
++  }
++
++  { // move construction
++    pair input{42, 1337};
++    pair dest{cuda::std::move(input)};
++    assert(dest.first == 42);
++    assert(dest.second == 1337);
++  }
++
++  { // assignment, value to value
++    pair input{42, 1337};
++    pair dest{1337, 42};
++    dest = input;
++    assert(dest.first == 42);
++    assert(dest.second == 1337);
++  }
++
++  { // comparison with pair
++    pair lhs{42, 1337};
++    pair rhs{1337, 42};
++    assert(!(lhs == rhs));
++    assert(lhs != rhs);
++    assert(lhs < rhs);
++    assert(lhs <= rhs);
++    assert(!(lhs > rhs));
++    assert(!(lhs >= rhs));
++  }
++
++  { // swap
++    pair lhs{42, 1337};
++    pair rhs{1337, 42};
++    lhs.swap(rhs);
++    assert(lhs.first == 1337);
++    assert(lhs.second == 42);
++    assert(rhs.first == 42);
++    assert(rhs.second == 1337);
++
++    swap(lhs, rhs);
++    assert(lhs.first == 42);
++    assert(lhs.second == 1337);
++    assert(rhs.first == 1337);
++    assert(rhs.second == 42);
++  }
++}
++
++int main(int arg, char** argv)
++{
++  NV_IF_TARGET(NV_IS_HOST, (test();))
++  return 0;
++}
+diff --git a/libcudacxx/test/libcudacxx/cuda/pair_interop/pair.assign.pass.cpp b/libcudacxx/test/libcudacxx/cuda/utilities/utility/pair/interop/pair.assign.pass.cpp
+similarity index 100%
+rename from libcudacxx/test/libcudacxx/cuda/pair_interop/pair.assign.pass.cpp
+rename to libcudacxx/test/libcudacxx/cuda/utilities/utility/pair/interop/pair.assign.pass.cpp
+diff --git a/libcudacxx/test/libcudacxx/cuda/pair_interop/pair.cons.pass.cpp b/libcudacxx/test/libcudacxx/cuda/utilities/utility/pair/interop/pair.cons.pass.cpp
+similarity index 100%
+rename from libcudacxx/test/libcudacxx/cuda/pair_interop/pair.cons.pass.cpp
+rename to libcudacxx/test/libcudacxx/cuda/utilities/utility/pair/interop/pair.cons.pass.cpp
+diff --git a/libcudacxx/test/libcudacxx/cuda/pair_interop/pair.conv.pass.cpp b/libcudacxx/test/libcudacxx/cuda/utilities/utility/pair/interop/pair.conv.pass.cpp
+similarity index 100%
+rename from libcudacxx/test/libcudacxx/cuda/pair_interop/pair.conv.pass.cpp
+rename to libcudacxx/test/libcudacxx/cuda/utilities/utility/pair/interop/pair.conv.pass.cpp
+diff --git a/libcudacxx/test/libcudacxx/cuda/utilities/variant/device_only_types.pass.cpp b/libcudacxx/test/libcudacxx/cuda/utilities/variant/device_only_types.pass.cpp
+new file mode 100644
+index 000000000..38ee416a8
+--- /dev/null
++++ b/libcudacxx/test/libcudacxx/cuda/utilities/variant/device_only_types.pass.cpp
+@@ -0,0 +1,120 @@
++//===----------------------------------------------------------------------===//
++//
++// Part of the libcu++ Project, under the Apache License v2.0 with LLVM Exceptions.
++// See https://llvm.org/LICENSE.txt for license information.
++// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
++// SPDX-FileCopyrightText: Copyright (c) 2025 NVIDIA CORPORATION & AFFILIATES.
++//
++//===----------------------------------------------------------------------===//
++
++#include <cuda/std/cassert>
++#include <cuda/std/variant>
++
++#include "host_device_types.h"
++#include "test_macros.h"
++
++__device__ void test()
++{
++  using variant = cuda::std::variant<device_only_type>;
++  { // default construction
++    variant default_constructed{};
++    assert(cuda::std::get<0>(default_constructed) == 0);
++  }
++
++  { // value initialization
++    variant value_initialization{device_only_type{42}};
++    assert(cuda::std::get<0>(value_initialization) == 42);
++  }
++
++  { // value initialization
++    variant value_initialization{42};
++    assert(cuda::std::get<0>(value_initialization) == 42);
++  }
++
++  { // in_place_type_t initialization
++    variant in_place_initialization{cuda::std::in_place_type_t<device_only_type>{}, 42};
++    assert(cuda::std::get<0>(in_place_initialization) == 42);
++  }
++
++  { // in_place_index_t initialization
++    variant in_place_initialization{cuda::std::in_place_index_t<0>{}, 42};
++    assert(cuda::std::get<0>(in_place_initialization) == 42);
++  }
++
++  { // in_place_type_t initializer_list initialization
++    variant init_list_initialization{
++      cuda::std::in_place_type_t<device_only_type>{}, cuda::std::initializer_list<int>{}, 42};
++    assert(cuda::std::get<0>(init_list_initialization) == 42);
++  }
++
++  { // in_place_type_t initializer_list initialization
++    variant init_list_initialization{cuda::std::in_place_index_t<0>{}, cuda::std::initializer_list<int>{}, 42};
++    assert(cuda::std::get<0>(init_list_initialization) == 42);
++  }
++
++  { // copy construction
++    variant input{42};
++    variant dest{input};
++    assert(cuda::std::get<0>(dest) == 42);
++  }
++
++  { // move construction
++    variant input{42};
++    variant dest{cuda::std::move(input)};
++    assert(cuda::std::get<0>(dest) == 42);
++  }
++
++  { // assignment, value to value
++    variant input{42};
++    variant dest{1337};
++    dest = input;
++    assert(cuda::std::get<0>(dest) == 42);
++  }
++
++  { // emplace
++    variant var{42};
++    var.emplace<device_only_type>(42);
++    assert(cuda::std::get<0>(var) == 42);
++  }
++
++  { // emplace
++    variant var{42};
++    var.emplace<0>(42);
++    assert(cuda::std::get<0>(var) == 42);
++  }
++
++  { // emplace init list
++    variant var{42};
++    var.emplace<device_only_type>(cuda::std::initializer_list<int>{}, 42);
++    assert(cuda::std::get<0>(var) == 42);
++  }
++
++  { // comparison with variant
++    variant lhs{42};
++    variant rhs{1337};
++    assert(!(lhs == rhs));
++    assert(lhs != rhs);
++    assert(lhs < rhs);
++    assert(lhs <= rhs);
++    assert(!(lhs > rhs));
++    assert(!(lhs >= rhs));
++  }
++
++  { // swap
++    variant lhs{42};
++    variant rhs{1337};
++    lhs.swap(rhs);
++    assert(cuda::std::get<0>(lhs) == 1337);
++    assert(cuda::std::get<0>(rhs) == 42);
++
++    swap(lhs, rhs);
++    assert(cuda::std::get<0>(lhs) == 42);
++    assert(cuda::std::get<0>(rhs) == 1337);
++  }
++}
++
++int main(int arg, char** argv)
++{
++  NV_IF_TARGET(NV_IS_DEVICE, (test();))
++  return 0;
++}
+diff --git a/libcudacxx/test/libcudacxx/cuda/utilities/variant/host_only_types.pass.cpp b/libcudacxx/test/libcudacxx/cuda/utilities/variant/host_only_types.pass.cpp
+new file mode 100644
+index 000000000..5f12da607
+--- /dev/null
++++ b/libcudacxx/test/libcudacxx/cuda/utilities/variant/host_only_types.pass.cpp
+@@ -0,0 +1,129 @@
++//===----------------------------------------------------------------------===//
++//
++// Part of the libcu++ Project, under the Apache License v2.0 with LLVM Exceptions.
++// See https://llvm.org/LICENSE.txt for license information.
++// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
++// SPDX-FileCopyrightText: Copyright (c) 2025 NVIDIA CORPORATION & AFFILIATES.
++//
++//===----------------------------------------------------------------------===//
++
++// UNSUPPORTED: nvrtc
++
++#include <cuda/std/cassert>
++#include <cuda/std/variant>
++
++#include "host_device_types.h"
++#include "test_macros.h"
++
++void test()
++{
++  using variant = cuda::std::variant<host_only_type>;
++  { // default construction
++    variant default_constructed{};
++    assert(cuda::std::get<0>(default_constructed) == 0);
++  }
++
++  { // value initialization
++    variant value_initialization{host_only_type{42}};
++    assert(cuda::std::get<0>(value_initialization) == 42);
++  }
++
++  { // value initialization
++    variant value_initialization{42};
++    assert(cuda::std::get<0>(value_initialization) == 42);
++  }
++
++  { // in_place_type_t initialization
++    variant in_place_initialization{cuda::std::in_place_type_t<host_only_type>{}, 42};
++    assert(cuda::std::get<0>(in_place_initialization) == 42);
++  }
++
++  { // in_place_index_t initialization
++    variant in_place_initialization{cuda::std::in_place_index_t<0>{}, 42};
++    assert(cuda::std::get<0>(in_place_initialization) == 42);
++  }
++
++  { // in_place_type_t initializer_list initialization
++    variant init_list_initialization{
++      cuda::std::in_place_type_t<host_only_type>{}, cuda::std::initializer_list<int>{}, 42};
++    assert(cuda::std::get<0>(init_list_initialization) == 42);
++  }
++
++  { // in_place_type_t initializer_list initialization
++    variant init_list_initialization{cuda::std::in_place_index_t<0>{}, cuda::std::initializer_list<int>{}, 42};
++    assert(cuda::std::get<0>(init_list_initialization) == 42);
++  }
++
++  { // copy construction
++    variant input{42};
++    variant dest{input};
++    assert(cuda::std::get<0>(dest) == 42);
++  }
++
++  { // move construction
++    variant input{42};
++    variant dest{cuda::std::move(input)};
++    assert(cuda::std::get<0>(dest) == 42);
++  }
++
++  { // assignment, value to value
++    variant input{42};
++    variant dest{1337};
++    dest = input;
++    assert(cuda::std::get<0>(dest) == 42);
++  }
++
++  { // assignment, value to empty
++    variant input{42};
++    variant dest{};
++    dest = input;
++    assert(cuda::std::get<0>(dest) == 42);
++  }
++
++  { // emplace
++    variant var{42};
++    var.emplace<host_only_type>(42);
++    assert(cuda::std::get<0>(var) == 42);
++  }
++
++  { // emplace
++    variant var{42};
++    var.emplace<0>(42);
++    assert(cuda::std::get<0>(var) == 42);
++  }
++
++  { // emplace init list
++    variant var{42};
++    var.emplace<host_only_type>(cuda::std::initializer_list<int>{}, 42);
++    assert(cuda::std::get<0>(var) == 42);
++  }
++
++  { // comparison with variant
++    variant lhs{42};
++    variant rhs{1337};
++    assert(!(lhs == rhs));
++    assert(lhs != rhs);
++    assert(lhs < rhs);
++    assert(lhs <= rhs);
++    assert(!(lhs > rhs));
++    assert(!(lhs >= rhs));
++  }
++
++  { // swap
++    variant lhs{42};
++    variant rhs{1337};
++    lhs.swap(rhs);
++    assert(cuda::std::get<0>(lhs) == 1337);
++    assert(cuda::std::get<0>(rhs) == 42);
++
++    swap(lhs, rhs);
++    assert(cuda::std::get<0>(lhs) == 42);
++    assert(cuda::std::get<0>(rhs) == 1337);
++  }
++}
++
++int main(int arg, char** argv)
++{
++  NV_IF_TARGET(NV_IS_HOST, (test();))
++  return 0;
++}
+diff --git a/libcudacxx/test/support/host_device_types.h b/libcudacxx/test/support/host_device_types.h
+new file mode 100644
+index 000000000..e8fa21b85
+--- /dev/null
++++ b/libcudacxx/test/support/host_device_types.h
+@@ -0,0 +1,148 @@
++//===----------------------------------------------------------------------===//
++//
++// Part of the libcu++ Project, under the Apache License v2.0 with LLVM Exceptions.
++// See https://llvm.org/LICENSE.txt for license information.
++// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
++// SPDX-FileCopyrightText: Copyright (c) 2025 NVIDIA CORPORATION & AFFILIATES.
++//
++//===----------------------------------------------------------------------===//
++
++#ifndef TEST_SUPPORT_HOST_DEVICE_TYPES
++#define TEST_SUPPORT_HOST_DEVICE_TYPES
++
++#include <cuda/std/initializer_list>
++#include <cuda/std/utility>
++
++#if !_CCCL_COMPILER(NVRTC)
++struct host_only_type
++{
++  int val_;
++
++  host_only_type(const int val = 0) noexcept
++      : val_(val)
++  {}
++  host_only_type(cuda::std::initializer_list<int>, const int val) noexcept
++      : val_(val)
++  {}
++
++  host_only_type(const host_only_type& other) noexcept
++      : val_(other.val_)
++  {}
++  host_only_type(host_only_type&& other) noexcept
++      : val_(cuda::std::exchange(other.val_, -1))
++  {}
++
++  host_only_type& operator=(const host_only_type& other) noexcept
++  {
++    val_ = other.val_;
++    return *this;
++  }
++
++  host_only_type& operator=(host_only_type&& other) noexcept
++
++  {
++    val_ = cuda::std::exchange(other.val_, -1);
++    return *this;
++  }
++
++  ~host_only_type() noexcept {}
++
++  _CCCL_NODISCARD_FRIEND bool operator==(const host_only_type& lhs, const host_only_type& rhs) noexcept
++  {
++    return lhs.val_ == rhs.val_;
++  }
++  _CCCL_NODISCARD_FRIEND bool operator!=(const host_only_type& lhs, const host_only_type& rhs) noexcept
++  {
++    return lhs.val_ != rhs.val_;
++  }
++  _CCCL_NODISCARD_FRIEND bool operator<(const host_only_type& lhs, const host_only_type& rhs) noexcept
++  {
++    return lhs.val_ < rhs.val_;
++  }
++  _CCCL_NODISCARD_FRIEND bool operator<=(const host_only_type& lhs, const host_only_type& rhs) noexcept
++  {
++    return lhs.val_ <= rhs.val_;
++  }
++  _CCCL_NODISCARD_FRIEND bool operator>(const host_only_type& lhs, const host_only_type& rhs) noexcept
++  {
++    return lhs.val_ > rhs.val_;
++  }
++  _CCCL_NODISCARD_FRIEND bool operator>=(const host_only_type& lhs, const host_only_type& rhs) noexcept
++  {
++    return lhs.val_ >= rhs.val_;
++  }
++
++  void swap(host_only_type& other) noexcept
++  {
++    cuda::std::swap(val_, other.val_);
++  }
++};
++#endif // !_CCCL_COMPILER(NVRTC)
++
++#if _CCCL_HAS_CUDA_COMPILER
++struct device_only_type
++{
++  int val_;
++
++  __device__ device_only_type(const int val = 0) noexcept
++      : val_(val)
++  {}
++  __device__ device_only_type(cuda::std::initializer_list<int>, const int val) noexcept
++      : val_(val)
++  {}
++
++  __device__ device_only_type(const device_only_type& other) noexcept
++      : val_(other.val_)
++  {}
++  __device__ device_only_type(device_only_type&& other) noexcept
++      : val_(cuda::std::exchange(other.val_, -1))
++  {}
++
++  __device__ device_only_type& operator=(const device_only_type& other) noexcept
++  {
++    val_ = other.val_;
++    return *this;
++  }
++
++  __device__ device_only_type& operator=(device_only_type&& other) noexcept
++
++  {
++    val_ = cuda::std::exchange(other.val_, -1);
++    return *this;
++  }
++
++  __device__ ~device_only_type() noexcept {}
++
++  __device__ _CCCL_NODISCARD_FRIEND bool operator==(const device_only_type& lhs, const device_only_type& rhs) noexcept
++  {
++    return lhs.val_ == rhs.val_;
++  }
++  __device__ _CCCL_NODISCARD_FRIEND bool operator!=(const device_only_type& lhs, const device_only_type& rhs) noexcept
++  {
++    return lhs.val_ != rhs.val_;
++  }
++  __device__ _CCCL_NODISCARD_FRIEND bool operator<(const device_only_type& lhs, const device_only_type& rhs) noexcept
++  {
++    return lhs.val_ < rhs.val_;
++  }
++  __device__ _CCCL_NODISCARD_FRIEND bool operator<=(const device_only_type& lhs, const device_only_type& rhs) noexcept
++  {
++    return lhs.val_ <= rhs.val_;
++  }
++  __device__ _CCCL_NODISCARD_FRIEND bool operator>(const device_only_type& lhs, const device_only_type& rhs) noexcept
++  {
++    return lhs.val_ > rhs.val_;
++  }
++  __device__ _CCCL_NODISCARD_FRIEND bool operator>=(const device_only_type& lhs, const device_only_type& rhs) noexcept
++  {
++    return lhs.val_ >= rhs.val_;
++  }
++
++  __device__ void swap(device_only_type& other) noexcept
++  {
++    cuda::std::swap(val_, other.val_);
++  }
++};
++#endif // _CCCL_HAS_CUDA_COMPILER
++
++#endif // TEST_SUPPORT_HOST_DEVICE_TYPES
+-- 
+2.43.0
+
