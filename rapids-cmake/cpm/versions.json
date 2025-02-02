@@ -33,7 +33,7 @@
     "rapids_logger": {
       "version": "0.1.0",
       "git_shallow": false,
-      "git_url": "https://github.com/vyasr/rapids-logger.git",
+      "git_url": "https://github.com/rapidsai/rapids-logger.git",
       "git_tag": "main"
     },
     "fmt": {
