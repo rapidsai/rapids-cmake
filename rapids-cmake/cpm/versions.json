@@ -78,8 +78,8 @@
     },
     "rmm": {
       "version": "${rapids-cmake-version}",
-      "git_url": "https://github.com/vyasr/rmm.git",
-      "git_tag": "feat/rapids_logger_library"
+      "git_url": "https://github.com/rapidsai/rmm.git",
+      "git_tag": "branch-${version}"
     },
     "spdlog": {
       "version": "1.14.1",
