@@ -69,6 +69,9 @@ function(rapids_cpm_convert_patch_json)
   elseif(_RAPIDS_FROM_FILE_TO_JSON)
     # extract contents from `file`
     file(STRINGS "${${_RAPIDS_FILE_VAR}}" file_content)
+    # Work around https://github.com/rapidsai/rapids-cmake/issues/769
+    string(REPLACE "]" "~&93~" file_content "${file_content}")
+    string(REPLACE "[" "~&92~" file_content "${file_content}")
     list(LENGTH file_content content_length)
 
     # Get the file extension
@@ -78,6 +81,8 @@ function(rapids_cpm_convert_patch_json)
     # add each line as a json array element
     set(inline_patch [=[ [ ] ]=])
     foreach(line IN LISTS file_content)
+      string(REPLACE "~&93~" "]" line "${line}")
+      string(REPLACE "~&92~" "[" line "${line}")
       string(JSON inline_patch SET "${inline_patch}" ${content_length} "\"${line}\"")
     endforeach()
 
