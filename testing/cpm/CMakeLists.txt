@@ -42,6 +42,7 @@ add_cmake_build_test( cpm_generate_pins-pure-cpm )
 add_cmake_build_test( cpm_generate_pins-simple )
 add_cmake_build_test( cpm_generate_pins-simple-via-variable )
 add_cmake_build_test( cpm_generate_pins-var-and-arg )
+add_cmake_config_test( cpm_convert_patch_json-special-chars.cmake )
 
 add_cmake_config_test( cpm_init-bad-default-path.cmake SHOULD_FAIL "rapids_cpm_init can't load")
 add_cmake_config_test( cpm_init-bad-default-cmake-var.cmake SHOULD_FAIL "rapids_cpm_init can't load")
