@@ -27,6 +27,7 @@
 # Enforce the minimum required CMake version for all users
 cmake_minimum_required(VERSION 3.26.4 FATAL_ERROR)
 
+
 set(rapids-cmake-dir "${CMAKE_CURRENT_LIST_DIR}/rapids-cmake")
 if(NOT DEFINED CACHE{rapids-cmake-dir})
   set(rapids-cmake-dir "${rapids-cmake-dir}" CACHE INTERNAL "" FORCE)
