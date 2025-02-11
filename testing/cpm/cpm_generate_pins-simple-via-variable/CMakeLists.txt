@@ -27,5 +27,5 @@ rapids_cpm_rmm()
 
 include("${rapids-cmake-testing-dir}/cpm/verify_generated_pins.cmake")
 verify_generated_pins(verify_pins
-    PROJECTS rmm fmt spdlog
+    PROJECTS rmm spdlog
     PIN_FILE "${RAPIDS_CMAKE_CPM_PINNED_VERSIONS_FILE}")
