@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2023, NVIDIA CORPORATION.
+# Copyright (c) 2021-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,10 +21,22 @@ rapids_cpm_init()
 if(TARGET rmm::rmm)
   message(FATAL_ERROR "Expected rmm::rmm not to exist")
 endif()
+if(TARGET rmm::rmm_logger)
+  message(FATAL_ERROR "Expected rmm::rmm_logger not to exist")
+endif()
+if(TARGET rmm::rmm_logger_impl)
+  message(FATAL_ERROR "Expected rmm::rmm_logger_impl not to exist")
+endif()
 
 rapids_cpm_rmm()
 if(NOT TARGET rmm::rmm)
   message(FATAL_ERROR "Expected rmm::rmm target to exist")
+endif()
+if(NOT TARGET rmm::rmm_logger)
+  message(FATAL_ERROR "Expected rmm::rmm_logger target to exist")
+endif()
+if(NOT TARGET rmm::rmm_logger_impl)
+  message(FATAL_ERROR "Expected rmm::rmm_logger_impl target to exist")
 endif()
 
 rapids_cpm_rmm()

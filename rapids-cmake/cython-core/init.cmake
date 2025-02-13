@@ -51,7 +51,7 @@ macro(rapids_cython_init)
     endif()
 
     find_package(Python COMPONENTS Interpreter Development.Module REQUIRED)
-    find_program(CYTHON "cython")
+    find_program(CYTHON "cython" REQUIRED)
 
     if(NOT CYTHON_FLAGS)
       set(CYTHON_FLAGS "--directive binding=True,embedsignature=True,always_allow_keywords=True")

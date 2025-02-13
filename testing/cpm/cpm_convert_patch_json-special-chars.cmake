@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2024, NVIDIA CORPORATION.
+# Copyright (c) 2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,9 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-# can't have an include guard on this file
-# that breaks its usage by cpm/detail/package_details
+include(${rapids-cmake-dir}/cpm/detail/convert_patch_json.cmake)
 
-if(NOT DEFINED rapids-cmake-version)
-  set(rapids-cmake-version 25.02)
+set(bug
+  [=[
+int function(not_parsed[
+N], properly ) {
+}]=])
+
+set(file_path "${CMAKE_BINARY_DIR}/bug.txt")
+file(WRITE ${file_path} "${bug}" )
+
+rapids_cpm_convert_patch_json(FROM_FILE_TO_JSON json FILE_VAR file_path)
+
+set(expected_output [==[[ "int function(not_parsed[", "N], properly ) {", "}" ]]==])
+string(JSON json_content GET "${json}" "content")
+if(NOT (expected_output STREQUAL json_content))
+  message(FATAL_ERROR "exp: `${expected_output}`\ngot: `${json_content}`")
 endif()

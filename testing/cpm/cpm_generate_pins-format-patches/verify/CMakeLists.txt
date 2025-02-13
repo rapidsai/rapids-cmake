@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2024, NVIDIA CORPORATION.
+# Copyright (c) 2024-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -33,3 +33,33 @@ endif()
 if(NOT pin_cuco_tag STREQUAL "f823d30d6b08a60383266db25821074dbdbe5822")
   message(FATAL_ERROR "pinned cuco tag (${pin_cuco_tag}) doesn't match hardcoded SHA1(f823d30...)")
 endif()
+
+# Verify that the json file has the inline patches.
+
+function(validate_has_inline_patches package_name)
+  include("${rapids-cmake-dir}/cpm/detail/get_override_json.cmake")
+  get_override_json(${package_name} json_data)
+
+  string(TOLOWER "${package_name}" normalized_pkg_name)
+  get_property(override_json_path GLOBAL
+             PROPERTY rapids_cpm_${normalized_pkg_name}_override_json_file)
+  string(JSON json_data ERROR_VARIABLE no_override_patch GET "${json_data}" patches)
+
+  # Gather number of patches
+  string(JSON patch_count LENGTH "${json_data}")
+  if(patch_count GREATER_EQUAL 1)
+    math(EXPR patch_count "${patch_count} - 1")
+    foreach(index RANGE ${patch_count})
+      string(JSON patch_data GET "${json_data}" ${index})
+      string(JSON value ERROR_VARIABLE have_error GET "${patch_data}" "inline_patch")
+      if(have_error)
+        message(FATAL_ERROR "${package_name} patch entry ${patch_count} wasn't an inline patch")
+      endif()
+    endforeach()
+  else()
+    message(FATAL_ERROR "Was expecting patches to exist, but none found for ${package_name}")
+  endif()
+endfunction()
+
+validate_has_inline_patches(rmm)
+validate_has_inline_patches(cuco)

@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2024, NVIDIA CORPORATION.
+# Copyright (c) 2024-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,17 +17,19 @@ cmake_minimum_required(VERSION 3.26.4)
 project(rapids-test-project LANGUAGES CXX)
 
 include(${rapids-cmake-dir}/cpm/init.cmake)
+include(${rapids-cmake-dir}/cpm/fmt.cmake)
 include(${rapids-cmake-dir}/cpm/rmm.cmake)
 
 rapids_cpm_init(GENERATE_PINNED_VERSIONS)
-rapids_cpm_rmm()
+rapids_cpm_fmt(DOWNLOAD_ONLY ON)
+rapids_cpm_rmm(DOWNLOAD_ONLY ON)
 
 # only check projects that were downloaded by CPM (ignore those already in the build environment)
-foreach(proj IN ITEMS rmm fmt spdlog)
+foreach(proj IN ITEMS rmm fmt)
   if(${proj}_SOURCE_DIR)
     list(APPEND projects-to-verify ${proj})
   endif()
 endforeach()
 
 include("${rapids-cmake-testing-dir}/cpm/verify_generated_pins.cmake")
-verify_generated_pins(verify_pins PROJECTS rmm fmt spdlog)
+verify_generated_pins(verify_pins PROJECTS rmm fmt)

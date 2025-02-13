@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2024, NVIDIA CORPORATION.
+# Copyright (c) 2021-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ add_cmake_config_test( cpm_find-existing-target-to-export-sets )
 add_cmake_config_test( cpm_find-gtest-no-gmock )
 add_cmake_config_test( cpm_find-options-escaped )
 add_cmake_config_test( cpm_find-patch-command NO_CPM_CACHE )
+add_cmake_config_test( cpm_find-patch-command-embedded NO_CPM_CACHE )
 add_cmake_config_test( cpm_find-patch-command-required NO_CPM_CACHE )
 add_cmake_config_test( cpm_find-patch-command-required-fails NO_CPM_CACHE SHOULD_FAIL "rapids-cmake [fmt]: failed to apply patch")
 add_cmake_config_test( cpm_find-restore-cpm-vars )
@@ -41,6 +42,7 @@ add_cmake_build_test( cpm_generate_pins-pure-cpm )
 add_cmake_build_test( cpm_generate_pins-simple )
 add_cmake_build_test( cpm_generate_pins-simple-via-variable )
 add_cmake_build_test( cpm_generate_pins-var-and-arg )
+add_cmake_config_test( cpm_convert_patch_json-special-chars.cmake )
 
 add_cmake_config_test( cpm_init-bad-default-path.cmake SHOULD_FAIL "rapids_cpm_init can't load")
 add_cmake_config_test( cpm_init-bad-default-cmake-var.cmake SHOULD_FAIL "rapids_cpm_init can't load")
@@ -82,9 +84,9 @@ add_cmake_build_test( cpm_bs_thread_pool-install-config-works.cmake )
 
 add_cmake_config_test( cpm_cccl-simple.cmake )
 add_cmake_config_test( cpm_cccl-export.cmake )
-add_cmake_build_test( cpm_cccl-version-2-5.cmake )
-add_cmake_build_test( cpm_cccl-version-2-7.cmake )
-add_cmake_build_test( cpm_cccl-version-2-8.cmake )
+add_cmake_build_test( cpm_cccl-version-2-5.cmake NO_CPM_CACHE )
+add_cmake_build_test( cpm_cccl-version-2-7.cmake NO_CPM_CACHE )
+add_cmake_build_test( cpm_cccl-version-2-8.cmake NO_CPM_CACHE )
 add_cmake_build_test( cpm_cccl-preserve-custom-install-loc )
 
 add_cmake_config_test( cpm_cuco-simple.cmake )
@@ -102,6 +104,8 @@ add_cmake_config_test( cpm_gtest-export.cmake )
 add_cmake_config_test( cpm_gtest-simple.cmake )
 add_cmake_config_test( cpm_gtest-static.cmake )
 add_cmake_config_test( cpm_gtest-explicit-static.cmake )
+
+add_cmake_config_test( cpm_logger-simple.cmake )
 
 add_cmake_config_test( cpm_nvbench-export.cmake SERIAL)
 add_cmake_config_test( cpm_nvbench-simple.cmake SERIAL)

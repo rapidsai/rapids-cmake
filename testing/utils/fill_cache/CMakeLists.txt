@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2024, NVIDIA CORPORATION.
+# Copyright (c) 2021-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ include(${rapids-cmake-dir}/cpm/cccl.cmake)
 include(${rapids-cmake-dir}/cpm/cuco.cmake)
 include(${rapids-cmake-dir}/cpm/gbench.cmake)
 include(${rapids-cmake-dir}/cpm/gtest.cmake)
+include(${rapids-cmake-dir}/cpm/rapids_logger.cmake)
 include(${rapids-cmake-dir}/cpm/nvbench.cmake)
 include(${rapids-cmake-dir}/cpm/nvcomp.cmake)
 include(${rapids-cmake-dir}/cpm/nvtx3.cmake)
@@ -38,6 +39,7 @@ rapids_cpm_cccl(DOWNLOAD_ONLY ON)
 rapids_cpm_cuco(DOWNLOAD_ONLY ON)
 rapids_cpm_gbench(DOWNLOAD_ONLY ON)
 rapids_cpm_gtest(DOWNLOAD_ONLY ON)
+rapids_cpm_rapids_logger(DOWNLOAD_ONLY ON)
 rapids_cpm_nvbench(DOWNLOAD_ONLY ON)
 rapids_cpm_nvtx3(DOWNLOAD_ONLY ON)
 rapids_cpm_rmm(DOWNLOAD_ONLY ON)
