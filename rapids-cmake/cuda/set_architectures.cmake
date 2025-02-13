@@ -88,7 +88,7 @@ function(rapids_cuda_set_architectures mode)
     # for RAPIDS architectures.
     if(CMAKE_CUDA_COMPILER_ID STREQUAL "NVIDIA" AND CMAKE_CUDA_COMPILER_VERSION
                                                     VERSION_GREATER_EQUAL 12.8.0)
-      set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -Wno-deprecated-gpu-targets")
+      string(APPEND CMAKE_CUDA_FLAGS " -Wno-deprecated-gpu-targets")
     endif()
   endif()
 
@@ -110,5 +110,6 @@ function(rapids_cuda_set_architectures mode)
 
   # Set as a local variable to maintain comp
   set(CMAKE_CUDA_ARCHITECTURES ${CMAKE_CUDA_ARCHITECTURES} PARENT_SCOPE)
+  set(CMAKE_CUDA_FLAGS ${CMAKE_CUDA_FLAGS} PARENT_SCOPE)
 
 endfunction()
