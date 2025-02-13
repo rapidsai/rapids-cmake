@@ -1,3 +1,45 @@
+# rapids-cmake 25.02.00 (13 Feb 2025)
+
+## 🚨 Breaking Changes
+
+- Update to CCCL 2.7.0-rc2. ([#710](https://github.com/rapidsai/rapids-cmake/pull/710)) [@bdice](https://github.com/bdice)
+
+## 🐛 Bug Fixes
+
+- Sanitize patch input to protect against CMake Language limitations ([#773](https://github.com/rapidsai/rapids-cmake/pull/773)) [@robertmaynard](https://github.com/robertmaynard)
+- Backport cccl PR 3578 to v2.7 to unblock CUDA 12.8 builds ([#756](https://github.com/rapidsai/rapids-cmake/pull/756)) [@robertmaynard](https://github.com/robertmaynard)
+- Use sysroot 2.17 on CUDA &lt; 11.8. ([#745](https://github.com/rapidsai/rapids-cmake/pull/745)) [@bdice](https://github.com/bdice)
+- rapids_cpm_cccl use proper CCCL version value to compute install rules ([#742](https://github.com/rapidsai/rapids-cmake/pull/742)) [@robertmaynard](https://github.com/robertmaynard)
+- Correct nvbench + conda test to explicitly pull spdlog ([#733](https://github.com/rapidsai/rapids-cmake/pull/733)) [@robertmaynard](https://github.com/robertmaynard)
+
+## 📖 Documentation
+
+- fix signature in rapids_export() docs ([#732](https://github.com/rapidsai/rapids-cmake/pull/732)) [@jameslamb](https://github.com/jameslamb)
+
+## 🚀 New Features
+
+- Add support for new architectures in CUDA 12.8 ([#746](https://github.com/rapidsai/rapids-cmake/pull/746)) [@robertmaynard](https://github.com/robertmaynard)
+- Update logger hash ([#738](https://github.com/rapidsai/rapids-cmake/pull/738)) [@vyasr](https://github.com/vyasr)
+- Add rapids-logger ([#737](https://github.com/rapidsai/rapids-cmake/pull/737)) [@vyasr](https://github.com/vyasr)
+- Fea/support embedded patch content ([#728](https://github.com/rapidsai/rapids-cmake/pull/728)) [@robertmaynard](https://github.com/robertmaynard)
+- Update to CCCL 2.7.0-rc2. ([#710](https://github.com/rapidsai/rapids-cmake/pull/710)) [@bdice](https://github.com/bdice)
+
+## 🛠️ Improvements
+
+- Revert CUDA 12.8 shared workflow branch changes ([#759](https://github.com/rapidsai/rapids-cmake/pull/759)) [@vyasr](https://github.com/vyasr)
+- Build and test with CUDA 12.8.0 ([#754](https://github.com/rapidsai/rapids-cmake/pull/754)) [@bdice](https://github.com/bdice)
+- Allow sysroot 2.28 in CUDA 11 jobs. ([#749](https://github.com/rapidsai/rapids-cmake/pull/749)) [@bdice](https://github.com/bdice)
+- Fetch cuco filter alignment fix to unblock RAPIDS CI ([#744](https://github.com/rapidsai/rapids-cmake/pull/744)) [@PointKernel](https://github.com/PointKernel)
+- Use CCCL v2.7.0 final tag. ([#743](https://github.com/rapidsai/rapids-cmake/pull/743)) [@bdice](https://github.com/bdice)
+- Use GCC 13 in CUDA 12 conda builds. ([#741](https://github.com/rapidsai/rapids-cmake/pull/741)) [@bdice](https://github.com/bdice)
+- Add new global targets for rmm ([#739](https://github.com/rapidsai/rapids-cmake/pull/739)) [@vyasr](https://github.com/vyasr)
+- remove setup.cfg, use pyproject.toml ([#736](https://github.com/rapidsai/rapids-cmake/pull/736)) [@jameslamb](https://github.com/jameslamb)
+- Bump cuco by one commit to include `cuco::arrow_filter_policy` updates ([#735](https://github.com/rapidsai/rapids-cmake/pull/735)) [@mhaseeb123](https://github.com/mhaseeb123)
+- Require Cython to be found ([#734](https://github.com/rapidsai/rapids-cmake/pull/734)) [@vyasr](https://github.com/vyasr)
+- Update version references in workflow ([#729](https://github.com/rapidsai/rapids-cmake/pull/729)) [@AyodeAwe](https://github.com/AyodeAwe)
+- Bump cuco version to fetch various fixes and new features ([#723](https://github.com/rapidsai/rapids-cmake/pull/723)) [@PointKernel](https://github.com/PointKernel)
+- Add breaking change workflow trigger ([#719](https://github.com/rapidsai/rapids-cmake/pull/719)) [@AyodeAwe](https://github.com/AyodeAwe)
+
 # rapids-cmake 24.12.00 (11 Dec 2024)
 
 ## 🐛 Bug Fixes
