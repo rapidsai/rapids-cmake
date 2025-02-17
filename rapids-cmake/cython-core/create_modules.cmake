@@ -63,6 +63,11 @@ $ORIGIN.
   useful when multiple Cython modules in different subpackages of the the same
   project have the same name. The default prefix is the empty string.
 
+``COMPONENT``
+  The name of the component to which the generated Python modules should be
+  installed. This allows for more granular control over the installation of
+  different components of the project.
+
 ``ASSOCIATED_TARGETS``
   A list of targets that are associated with the Cython targets created in this
   function. The target to associated target mapping is stored and may be
