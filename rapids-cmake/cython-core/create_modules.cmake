@@ -84,7 +84,7 @@ function(rapids_cython_create_modules)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cython.create_modules")
 
   set(_rapids_cython_options CXX)
-  set(_rapids_cython_one_value INSTALL_DIR MODULE_PREFIX)
+  set(_rapids_cython_one_value INSTALL_DIR MODULE_PREFIX COMPONENT)
   set(_rapids_cython_multi_value SOURCE_FILES LINKED_LIBRARIES ASSOCIATED_TARGETS)
   cmake_parse_arguments(_RAPIDS_CYTHON "${_rapids_cython_options}" "${_rapids_cython_one_value}"
                         "${_rapids_cython_multi_value}" ${ARGN})
@@ -142,7 +142,11 @@ function(rapids_cython_create_modules)
       cmake_path(RELATIVE_PATH CMAKE_CURRENT_SOURCE_DIR BASE_DIRECTORY "${PROJECT_SOURCE_DIR}"
                  OUTPUT_VARIABLE _RAPIDS_CYTHON_INSTALL_DIR)
     endif()
-    install(TARGETS ${cython_module} DESTINATION ${_RAPIDS_CYTHON_INSTALL_DIR})
+    if(DEFINED _RAPIDS_CYTHON_COMPONENT)
+      install(TARGETS ${cython_module} DESTINATION ${_RAPIDS_CYTHON_INSTALL_DIR} COMPONENT ${_RAPIDS_CYTHON_COMPONENT})
+    else()
+      install(TARGETS ${cython_module} DESTINATION ${_RAPIDS_CYTHON_INSTALL_DIR})
+    endif()
 
     # Default the INSTALL_RPATH for all modules to $ORIGIN.
     if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
