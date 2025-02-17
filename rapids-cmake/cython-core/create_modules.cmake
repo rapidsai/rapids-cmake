@@ -29,6 +29,7 @@ Generate C(++) from Cython and create Python modules.
                                [LINKED_LIBRARIES <lib1> <lib2> ... ]
                                [INSTALL_DIR <install_path>]
                                [MODULE_PREFIX <module_prefix>]
+                               [COMPONENT <component_name>]
                                [ASSOCIATED_TARGETS <target1> <target2> ...])
 
 Creates a Cython target for each provided source file, then adds a
