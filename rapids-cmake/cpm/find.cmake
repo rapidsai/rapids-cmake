@@ -147,6 +147,12 @@ modified version is used.
 # cmake-lint: disable=R0912,R0915
 function(rapids_cpm_find name version)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.find")
+
+  if(POLICY CMP0169)
+    cmake_policy(PUSH)
+    cmake_policy(SET CMP0169 NEW)
+  endif()
+
   set(options CPM_ARGS)
   set(one_value BUILD_EXPORT_SET INSTALL_EXPORT_SET)
   set(multi_value COMPONENTS GLOBAL_TARGETS)
@@ -225,5 +231,9 @@ function(rapids_cpm_find name version)
   set(${name}_SOURCE_DIR "${${name}_SOURCE_DIR}" PARENT_SCOPE)
   set(${name}_BINARY_DIR "${${name}_BINARY_DIR}" PARENT_SCOPE)
   set(${name}_ADDED "${${name}_ADDED}" PARENT_SCOPE)
+
+if(POLICY CMP0169)
+  cmake_policy(POP)
+endif()
 
 endfunction()
