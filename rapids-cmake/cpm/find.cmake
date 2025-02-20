@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2020-2024, NVIDIA CORPORATION.
+# Copyright (c) 2020-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -150,7 +150,7 @@ function(rapids_cpm_find name version)
 
   if(POLICY CMP0169)
     cmake_policy(PUSH)
-    cmake_policy(SET CMP0169 NEW)
+    cmake_policy(SET CMP0169 OLD)
   endif()
 
   set(options CPM_ARGS)
