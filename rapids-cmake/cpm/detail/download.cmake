@@ -52,8 +52,8 @@ function(rapids_cpm_download)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.download")
 
   # When changing version verify no new variables needs to be propagated
-  set(CPM_DOWNLOAD_VERSION 0.40.5)
-  set(CPM_DOWNLOAD_MD5_HASH 19cbb284c7b175d239670d47dd9d0e9e)
+  set(CPM_DOWNLOAD_VERSION 0.40.2)
+  set(CPM_DOWNLOAD_MD5_HASH 4d51aa9dab6104fad39c5b7a692d5e1c)
 
   if(NOT DEFINED CPM_DOWNLOAD_LOCATION)
     if(CPM_SOURCE_CACHE)
