@@ -29,6 +29,10 @@ repos:
       - id: codespell
         additional_dependencies: [tomli]
         args: ["--toml", "pyproject.toml"]
+        exclude: |
+          (?x)^(
+            ^rapids-cmake/cpm/patches/.*
+          )
   - repo: https://github.com/rapidsai/dependency-file-generator
     rev: v1.17.0
     hooks:
@@ -67,7 +71,7 @@ repos:
             ^rapids-cmake/.*$
           )
   - repo: https://github.com/rapidsai/pre-commit-hooks
-    rev: v0.4.0
+    rev: v0.6.0
     hooks:
       - id: verify-copyright
         files: |
@@ -75,6 +79,14 @@ repos:
               [.](cmake|cpp|cu|cuh|h|hpp|sh|pxd|py|pyx)$|
               CMakeLists[.]txt$|
               meta[.]yaml$
+      - id: verify-codeowners
+        args: [--fix, --project-prefix=rapids, --no-cpp, --no-python]
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.10.0.1
+    hooks:
+      - id: shellcheck
+        args: ["--severity=warning"]
+        files: ^ci/
 
 default_language_version:
   python: python3

@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2024-2025, NVIDIA CORPORATION.
+# Copyright (c) 2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,16 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-cmake_minimum_required(VERSION 3.30.4)
-project(rapids-test-project LANGUAGES CXX)
+include(${rapids-cmake-dir}/cpm/detail/convert_patch_json.cmake)
 
-add_subdirectory(a)
-add_subdirectory(b)
+set(bug
+  [=[
+int function(not_parsed[
+N], properly ) {
+}]=])
 
-# Turn on pin generation after cpm dependencies have been added
-# to make sure it is order invariant
-include(${rapids-cmake-dir}/cpm/init.cmake)
-rapids_cpm_init(GENERATE_PINNED_VERSIONS)
+set(file_path "${CMAKE_BINARY_DIR}/bug.txt")
+file(WRITE ${file_path} "${bug}" )
 
-include("${rapids-cmake-testing-dir}/cpm/verify_generated_pins.cmake")
-verify_generated_pins(verify_pins PROJECTS rmm spdlog)
+rapids_cpm_convert_patch_json(FROM_FILE_TO_JSON json FILE_VAR file_path)
+
+set(expected_output [==[[ "int function(not_parsed[", "N], properly ) {", "}" ]]==])
+string(JSON json_content GET "${json}" "content")
+if(NOT (expected_output STREQUAL json_content))
+  message(FATAL_ERROR "exp: `${expected_output}`\ngot: `${json_content}`")
+endif()

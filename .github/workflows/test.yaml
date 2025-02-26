@@ -12,13 +12,16 @@ on:
       sha:
         required: true
         type: string
+      build_type:
+        type: string
+        default: nightly
 
 jobs:
   cpp-tests:
     secrets: inherit
     uses: rapidsai/shared-workflows/.github/workflows/conda-cpp-tests.yaml@branch-25.04
     with:
-      build_type: nightly
+      build_type: ${{ inputs.build_type }}
       branch: ${{ inputs.branch }}
       date: ${{ inputs.date }}
       sha: ${{ inputs.sha }}
