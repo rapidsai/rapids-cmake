@@ -19,7 +19,6 @@ include(${rapids-cmake-dir}/cpm/find.cmake)
 cmake_minimum_required(VERSION 3.26.4)
 project(rapids-test-project LANGUAGES CXX)
 
-message(STATUS "CMAKE_FIND_PACKAGE_REDIRECTS_DIR: ${CMAKE_FIND_PACKAGE_REDIRECTS_DIR}")
 set(CPM_cucxx_SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/mock_cucxx_source_dir")
 
 rapids_cpm_init()
