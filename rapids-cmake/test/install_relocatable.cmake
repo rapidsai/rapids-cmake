@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2022-2023, NVIDIA CORPORATION.
+# Copyright (c) 2022-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -104,10 +104,9 @@ function(rapids_test_install_relocatable)
   # We need to install the rapids-test gpu detector, and the json script we also need to write out /
   # install the new CTestTestfile.cmake
   include(${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/default_names.cmake)
-  if(EXISTS "${PROJECT_BINARY_DIR}/rapids-cmake/${rapids_test_generate_exe_name}")
-    install(PROGRAMS "${PROJECT_BINARY_DIR}/rapids-cmake/${rapids_test_generate_exe_name}"
-            COMPONENT ${_RAPIDS_TEST_INSTALL_COMPONENT_SET} DESTINATION ${_RAPIDS_TEST_DESTINATION}
-            ${to_exclude})
+  if(TARGET generate_ctest_json)
+    install(TARGETS generate_ctest_json COMPONENT ${_RAPIDS_TEST_INSTALL_COMPONENT_SET}
+            DESTINATION ${_RAPIDS_TEST_DESTINATION} ${to_exclude})
   endif()
   if(EXISTS "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/run_gpu_test.cmake")
     install(FILES "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/run_gpu_test.cmake"

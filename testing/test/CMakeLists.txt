@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2022-2024, NVIDIA CORPORATION.
+# Copyright (c) 2022-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 #=============================================================================
 add_cmake_config_test( rapids-test.cmake )
 
-add_cmake_config_test(generate_resource_spec-no-gpus.cmake)
+add_cmake_build_test(generate_resource_spec-no-gpus)
 add_cmake_config_test(generate_resource_spec-simple.cmake)
 
 set(percent_error_message "rapids_test_gpu_requirements requires a numeric PERCENT value [1-100].")

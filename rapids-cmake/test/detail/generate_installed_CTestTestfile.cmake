@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2023-2024, NVIDIA CORPORATION.
+# Copyright (c) 2023-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -267,8 +267,12 @@ set(test_file_content
     "
 set(CTEST_SCRIPT_DIRECTORY \".\")
 set(CMAKE_INSTALL_PREFIX \"./${_RAPIDS_INSTALL_PREFIX}\")
-set(CTEST_RESOURCE_SPEC_FILE \"./${rapids_test_json_file_name}\")
-execute_process(COMMAND ./${rapids_test_generate_exe_name} OUTPUT_FILE \"\${CTEST_RESOURCE_SPEC_FILE}\" COMMAND_ERROR_IS_FATAL ANY)
+add_test(generate_resource_spec ./${rapids_test_generate_exe_name} \"./${rapids_test_json_file_name}\")
+execute_process(COMMAND ./${rapids_test_generate_exe_name} --cwd COMMAND_ERROR_IS_FATAL ANY OUTPUT_VARIABLE _cwd)
+set_tests_properties(generate_resource_spec PROPERTIES
+  FIXTURES_SETUP resource_spec
+  GENERATED_RESOURCE_SPEC_FILE \"\${_cwd}/${rapids_test_json_file_name}\"
+)
 \n\n
 ")
 
