@@ -61,7 +61,7 @@ as the override.
     When the variable `CPM_<package_name>_SOURCE` exists, any override entries
     for `package_name` will be parsed but ignored.
 
-    For versions v24.02 and v23.10 ( inclusive ) the variable `CPM_<package_name>_SOURCE`
+    For versions between v25.02 and v23.10 ( inclusive ) the variable `CPM_<package_name>_SOURCE`
     will cause any override entries for `package_name` to be ignored and not parsed.
 
 
