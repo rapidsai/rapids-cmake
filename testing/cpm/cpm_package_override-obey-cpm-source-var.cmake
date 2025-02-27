@@ -65,14 +65,12 @@ if(NOT (version AND repository AND tag))
   message(FATAL_ERROR "rapids_cpm_package_details should still have details for package that doesn't exist")
 endif()
 
-get_property(override_ignored GLOBAL PROPERTY rapids_cpm_rmm_override_ignored
-             SET)
+get_property(override_ignored GLOBAL PROPERTY rapids_cpm_rmm_override_ignored)
 if(NOT override_ignored)
   message(FATAL_ERROR "rapids_cpm_package override for `not_in_base` isn't being ignored")
 endif()
 
-get_property(override_ignored GLOBAL PROPERTY rapids_cpm_not_in_base_override_ignored
-             SET)
+get_property(override_ignored GLOBAL PROPERTY rapids_cpm_not_in_base_override_ignored)
 if(NOT override_ignored)
   message(FATAL_ERROR "rapids_cpm_package override for `not_in_base` isn't being ignored")
 endif()
