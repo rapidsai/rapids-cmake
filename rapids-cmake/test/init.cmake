@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2022-2023, NVIDIA CORPORATION.
+# Copyright (c) 2022-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -58,10 +58,8 @@ function(rapids_test_init)
   include(${CMAKE_CURRENT_FUNCTION_LIST_DIR}/generate_resource_spec.cmake)
   set(rapids_test_spec_file "${PROJECT_BINARY_DIR}/${rapids_test_json_file_name}")
 
-  rapids_test_generate_resource_spec(DESTINATION "${rapids_test_spec_file}")
-
   if(NOT CTEST_RESOURCE_SPEC_FILE)
-    set(CTEST_RESOURCE_SPEC_FILE "${rapids_test_spec_file}" PARENT_SCOPE)
+    rapids_test_generate_resource_spec(DESTINATION "${rapids_test_spec_file}")
   endif()
 
 endfunction()
