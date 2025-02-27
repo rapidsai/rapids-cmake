@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2024, NVIDIA CORPORATION.
+# Copyright (c) 2021-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -122,7 +122,7 @@ function(rapids_cpm_package_override _rapids_override_filepath)
       rapids_cpm_generate_patch_command(${package_name} ${version} patch_command)
 
       unset(exclude_from_all)
-      if(exclude AND CMAKE_VERSION VERSION_GREATER_EQUAL 3.28.0)
+      if(exclude)
         set(exclude_from_all EXCLUDE_FROM_ALL)
       endif()
       FetchContent_Declare(${package_proper_name}

@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2024, NVIDIA CORPORATION.
+# Copyright (c) 2024-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -62,7 +62,7 @@ set(expected_install_dir "${CMAKE_BINARY_DIR}/check_nvcomp_lib_dir/install/")
 # Add a custom command that verifies that the expect files have
 # been installed for each component
 file(WRITE "${CMAKE_BINARY_DIR}/check_nvcomp_lib_dir/CMakeLists.txt" "
-cmake_minimum_required(VERSION 3.26.4)
+cmake_minimum_required(VERSION 3.30.4)
 project(verify_install_targets LANGUAGES CXX)
 
 message(\"Checking for ${CMAKE_INSTALL_LIBDIR} directory in ${expected_install_dir}\")

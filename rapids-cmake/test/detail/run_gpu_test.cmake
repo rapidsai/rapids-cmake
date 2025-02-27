@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-cmake_minimum_required(VERSION 3.26.4)
+cmake_minimum_required(VERSION 3.30.4)
 
 if(DEFINED ENV{CTEST_RESOURCE_GROUP_COUNT})
   math(EXPR max_index "$ENV{CTEST_RESOURCE_GROUP_COUNT}-1")

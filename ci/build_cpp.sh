@@ -16,7 +16,7 @@ rapids-print-env
 rapids-logger "Begin cpp build"
 conda config --set path_conflict prevent
 
-RAPIDS_PACKAGE_VERSION=$(rapids-generate-version) rapids-conda-retry mambabuild \
+RAPIDS_PACKAGE_VERSION=$(rapids-generate-version) rapids-conda-retry build \
   conda/recipes/rapids_core_dependencies
 
 rapids-upload-conda-to-s3 cpp
