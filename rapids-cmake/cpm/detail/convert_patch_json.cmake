@@ -81,6 +81,7 @@ function(rapids_cpm_convert_patch_json)
     # add each line as a json array element
     set(inline_patch [=[ [ ] ]=])
     foreach(line IN LISTS file_content)
+      string(REPLACE "\"" "\\\"" line "${line}")
       string(REPLACE "~&93~" "]" line "${line}")
       string(REPLACE "~&92~" "[" line "${line}")
       string(JSON inline_patch SET "${inline_patch}" ${content_length} "\"${line}\"")
