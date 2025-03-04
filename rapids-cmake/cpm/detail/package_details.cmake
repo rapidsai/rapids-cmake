@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2024, NVIDIA CORPORATION.
+# Copyright (c) 2021-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -95,10 +95,17 @@ function(rapids_cpm_package_details package_name version_var url_var tag_var sha
   # Ensure that always_download is not set by default so that the if(DEFINED always_download) check
   # below works as expected in the default case.
   unset(always_download)
+  unset(override_ignored)
   if(override_json_data AND json_data AND git_details_overridden)
     # `always_download` default value requires the package to exist in both the default and override
-    # and that the git url / git tag have been modified.
-    set(always_download ON)
+    # and that the git url / git tag have been modified. We also need to make sure that when using
+    # an override that it isn't disabled due to `CPM_<pkg>_SOURCE`
+    string(TOLOWER "${package_name}" normalized_pkg_name)
+    get_property(override_ignored GLOBAL
+                 PROPERTY rapids_cpm_${normalized_pkg_name}_override_ignored)
+    if(NOT (override_ignored OR DEFINED CPM_${package_name}_SOURCE))
+      set(always_download ON)
+    endif()
   endif()
   rapids_cpm_json_get_value(always_download)
 
