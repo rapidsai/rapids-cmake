@@ -56,7 +56,7 @@ as the override.
 
 .. note::
 
-  .. versionadded:: v24.04.00
+  .. versionadded:: v25.04.00
 
     When the variable `CPM_<package_name>_SOURCE` exists, any override entries
     for `package_name` will be parsed but ignored.
