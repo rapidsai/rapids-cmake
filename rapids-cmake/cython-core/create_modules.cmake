@@ -1,5 +1,5 @@
 # =============================================================================
-# Copyright (c) 2023-2024, NVIDIA CORPORATION.
+# Copyright (c) 2023-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 # in compliance with the License. You may obtain a copy of the License at
@@ -83,6 +83,8 @@ Result Variables
   targets created by this function.
 
 #]=======================================================================]
+
+# cmake-lint: disable=R0915
 function(rapids_cython_create_modules)
   include(${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/verify_init.cmake)
   rapids_cython_verify_init()
@@ -148,11 +150,11 @@ function(rapids_cython_create_modules)
       cmake_path(RELATIVE_PATH CMAKE_CURRENT_SOURCE_DIR BASE_DIRECTORY "${PROJECT_SOURCE_DIR}"
                  OUTPUT_VARIABLE _RAPIDS_CYTHON_INSTALL_DIR)
     endif()
+    set(component_arg)
     if(DEFINED _RAPIDS_CYTHON_COMPONENT)
-      install(TARGETS ${cython_module} DESTINATION ${_RAPIDS_CYTHON_INSTALL_DIR} COMPONENT ${_RAPIDS_CYTHON_COMPONENT})
-    else()
-      install(TARGETS ${cython_module} DESTINATION ${_RAPIDS_CYTHON_INSTALL_DIR})
+      set(component_arg COMPONENT ${_RAPIDS_CYTHON_COMPONENT})
     endif()
+    install(TARGETS ${cython_module} DESTINATION ${_RAPIDS_CYTHON_INSTALL_DIR} ${component_arg})
 
     # Default the INSTALL_RPATH for all modules to $ORIGIN.
     if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
