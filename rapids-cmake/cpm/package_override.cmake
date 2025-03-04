@@ -139,7 +139,7 @@ function(rapids_cpm_package_override _rapids_override_filepath)
       rapids_cpm_generate_patch_command(${package_name} ${version} patch_command)
 
       unset(exclude_from_all)
-      if(exclude AND CMAKE_VERSION VERSION_GREATER_EQUAL 3.28.0)
+      if(exclude)
         set(exclude_from_all EXCLUDE_FROM_ALL)
       endif()
       FetchContent_Declare(${package_proper_name}

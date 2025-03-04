@@ -85,6 +85,13 @@ function(rapids_cuda_set_architectures mode)
     list(TRANSFORM CMAKE_CUDA_ARCHITECTURES APPEND "-real")
   endif()
 
+  # CUDA 12.8.0 and later warns when compiling for arch 70. We ignore this warning when compiling
+  # for RAPIDS architectures.
+  if(CMAKE_CUDA_COMPILER_ID STREQUAL "NVIDIA" AND CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL
+                                                  12.8.0)
+    string(APPEND CMAKE_CUDA_FLAGS " -Wno-deprecated-gpu-targets")
+  endif()
+
   # cache the cuda archs.
   get_property(cached_value GLOBAL PROPERTY rapids_cuda_architectures)
   if(NOT cached_value)
@@ -103,5 +110,6 @@ function(rapids_cuda_set_architectures mode)
 
   # Set as a local variable to maintain comp
   set(CMAKE_CUDA_ARCHITECTURES ${CMAKE_CUDA_ARCHITECTURES} PARENT_SCOPE)
+  set(CMAKE_CUDA_FLAGS ${CMAKE_CUDA_FLAGS} PARENT_SCOPE)
 
 endfunction()

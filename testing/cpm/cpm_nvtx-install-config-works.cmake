@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2024, NVIDIA CORPORATION.
+# Copyright (c) 2024-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ rapids_cpm_nvtx3(INSTALL_EXPORT_SET test)
 # Add a custom command that verifies that the expect files have
 # been installed for each component
 file(WRITE "${CMAKE_BINARY_DIR}/check_nvtx_dir/CMakeLists.txt" "
-cmake_minimum_required(VERSION 3.26.4)
+cmake_minimum_required(VERSION 3.30.4)
 project(verify_nvtx LANGUAGES CXX)
 
 set(CMAKE_PREFIX_PATH \"${CMAKE_BINARY_DIR}/install/\")
