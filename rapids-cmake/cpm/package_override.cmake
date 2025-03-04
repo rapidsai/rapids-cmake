@@ -126,9 +126,8 @@ function(rapids_cpm_package_override _rapids_override_filepath)
       if(DEFINED CPM_${package_name}_SOURCE)
         set_property(GLOBAL PROPERTY rapids_cpm_${normalized_pkg_name}_override_ignored "ON")
         continue()
-      else()
-        set_property(GLOBAL PROPERTY rapids_cpm_${normalized_pkg_name}_override_ignored "OFF")
       endif()
+      set_property(GLOBAL PROPERTY rapids_cpm_${normalized_pkg_name}_override_ignored "OFF")
 
       # establish the fetch content
       include(FetchContent)
