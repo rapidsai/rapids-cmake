@@ -1,5 +1,5 @@
 # =============================================================================
-# Copyright (c) 2023-2024, NVIDIA CORPORATION.
+# Copyright (c) 2023-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 # in compliance with the License. You may obtain a copy of the License at
@@ -29,6 +29,7 @@ Generate C(++) from Cython and create Python modules.
                                [LINKED_LIBRARIES <lib1> <lib2> ... ]
                                [INSTALL_DIR <install_path>]
                                [MODULE_PREFIX <module_prefix>]
+                               [COMPONENT <component_name>]
                                [ASSOCIATED_TARGETS <target1> <target2> ...])
 
 Creates a Cython target for each provided source file, then adds a
@@ -62,6 +63,11 @@ $ORIGIN.
   useful when multiple Cython modules in different subpackages of the the same
   project have the same name. The default prefix is the empty string.
 
+``COMPONENT``
+  The name of the component to which the generated Python modules should be
+  installed. This allows for more granular control over the installation of
+  different components of the project.
+
 ``ASSOCIATED_TARGETS``
   A list of targets that are associated with the Cython targets created in this
   function. The target to associated target mapping is stored and may be
@@ -77,6 +83,8 @@ Result Variables
   targets created by this function.
 
 #]=======================================================================]
+
+# cmake-lint: disable=R0915
 function(rapids_cython_create_modules)
   include(${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/verify_init.cmake)
   rapids_cython_verify_init()
@@ -84,7 +92,7 @@ function(rapids_cython_create_modules)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cython.create_modules")
 
   set(_rapids_cython_options CXX)
-  set(_rapids_cython_one_value INSTALL_DIR MODULE_PREFIX)
+  set(_rapids_cython_one_value INSTALL_DIR MODULE_PREFIX COMPONENT)
   set(_rapids_cython_multi_value SOURCE_FILES LINKED_LIBRARIES ASSOCIATED_TARGETS)
   cmake_parse_arguments(_RAPIDS_CYTHON "${_rapids_cython_options}" "${_rapids_cython_one_value}"
                         "${_rapids_cython_multi_value}" ${ARGN})
@@ -142,7 +150,11 @@ function(rapids_cython_create_modules)
       cmake_path(RELATIVE_PATH CMAKE_CURRENT_SOURCE_DIR BASE_DIRECTORY "${PROJECT_SOURCE_DIR}"
                  OUTPUT_VARIABLE _RAPIDS_CYTHON_INSTALL_DIR)
     endif()
-    install(TARGETS ${cython_module} DESTINATION ${_RAPIDS_CYTHON_INSTALL_DIR})
+    set(component_arg)
+    if(DEFINED _RAPIDS_CYTHON_COMPONENT)
+      set(component_arg COMPONENT ${_RAPIDS_CYTHON_COMPONENT})
+    endif()
+    install(TARGETS ${cython_module} DESTINATION ${_RAPIDS_CYTHON_INSTALL_DIR} ${component_arg})
 
     # Default the INSTALL_RPATH for all modules to $ORIGIN.
     if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
