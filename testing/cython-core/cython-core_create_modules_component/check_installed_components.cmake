@@ -14,14 +14,18 @@
 # limitations under the License.
 #=============================================================================
 
-add_cmake_config_test(rapids-cython-core.cmake)
+file(GLOB _install_component1_files ${CMAKE_CURRENT_BINARY_DIR}/install-component1/*.so)
+file(GLOB _install_component2_files ${CMAKE_CURRENT_BINARY_DIR}/install-component2/*.so)
 
-add_cmake_config_test(cython-core_init.cmake)
-add_cmake_config_test(cython-core_create_modules_errors.cmake SHOULD_FAIL "You must call rapids_cython_init before calling this function")
-
-add_cmake_build_test(cython-core_create_modules)
-add_cmake_config_test(cython-core_create_modules_with_library)
-add_cmake_config_test(cython-core_create_modules_with_prefix)
-add_cmake_build_test(cython-core_create_modules_component)
-
-add_cmake_config_test(cython-core_add_rpath_entries)
+if(NOT _install_component1_files MATCHES "test1")
+  message(FATAL_ERROR "test1 was not installed into install-component1")
+endif()
+if(_install_component1_files MATCHES "test2")
+  message(FATAL_ERROR "test2 was installed into install-component1")
+endif()
+if(_install_component2_files MATCHES "test1")
+  message(FATAL_ERROR "test1 was installed into install-component2")
+endif()
+if(NOT _install_component2_files MATCHES "test2")
+  message(FATAL_ERROR "test2 was not installed into install-component2")
+endif()
