@@ -39,13 +39,7 @@
     "fmt": {
       "version": "11.0.2",
       "git_url": "https://github.com/fmtlib/fmt.git",
-      "git_tag": "${version}",
-      "patches": [
-        {
-          "file": "fmt/fix_11_0_2_unreachable_loop.diff",
-          "issue": "fmt 11.0.2 produces a warning about an unreachable loop when compiled with nvcc"
-        }
-      ]
+      "git_tag": "${version}"
     },
     "GTest": {
       "version": "1.13.0",
