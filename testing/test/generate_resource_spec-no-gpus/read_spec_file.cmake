@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2022-2023, NVIDIA CORPORATION.
+# Copyright (c) 2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,22 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-include(${rapids-cmake-dir}/test/generate_resource_spec.cmake)
-
-enable_language(CUDA)
-
-# Set the visible device list to invalid device ids so we have zero visible
-set(ENV{CUDA_VISIBLE_DEVICES} -1)
-
-set(CTEST_RESOURCE_SPEC_FILE "sentinel file")
-rapids_test_generate_resource_spec(DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/spec.json )
-
-if(NOT CTEST_RESOURCE_SPEC_FILE STREQUAL "sentinel file")
-  message(FATAL_ERROR "CTEST_RESOURCE_SPEC_FILE shouldn't be modified by calling rapids_test_generate_resource_spec")
-endif()
-
 if(NOT EXISTS "${CMAKE_CURRENT_BINARY_DIR}/spec.json")
-  message(FATAL_ERROR "rapids_test_ll generate_resource_spec failed to write out the requested spec file")
+  message(FATAL_ERROR "rapids_test_generate_resource_spec failed to write out the requested spec file")
 endif()
 
 file(READ "${CMAKE_CURRENT_BINARY_DIR}/spec.json" content)
