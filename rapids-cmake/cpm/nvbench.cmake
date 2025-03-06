@@ -104,6 +104,11 @@ function(rapids_cpm_nvbench)
                           "NVBench_ENABLE_INSTALL_RULES ${to_install}"
                           "BUILD_SHARED_LIBS ${build_shared}")
 
+  if(nvbench_ADDED)
+    # nvcc incorrectly sees some loops in fmt as unreachable.
+    target_compile_options(nvbench PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:--diag-suppress 128>)
+  endif()
+
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
   rapids_cpm_display_patch_status(nvbench)
 
