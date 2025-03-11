@@ -19,7 +19,7 @@
         {
           "file": "cccl/backport-suppress-execution-checks.patch",
           "issue": "backport suppression for execution types for vocabulary types https://github.com/NVIDIA/cccl/pull/3578",
-          "fixed_in": "3.0.0"
+          "fixed_in": "2.8.0"
         }
       ]
     },
