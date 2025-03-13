@@ -16,7 +16,7 @@ conda activate docs
 
 rapids-print-env
 
-export RAPIDS_VERSION_NUMBER="25.04"
+export RAPIDS_VERSION_NUMBER="25.06"
 RAPIDS_DOCS_DIR="$(mktemp -d)"
 export RAPIDS_DOCS_DIR
 
