@@ -25,7 +25,7 @@ Applies any relevant patches to the provided CPM package
 
 .. code-block:: cmake
 
-  rapids_cpm_generate_patch_command(<pkg> <version> patch_command)
+  rapids_cpm_generate_patch_command(<pkg> <version> patch_command build_patch_only)
 
 #]=======================================================================]
 # cmake-lint: disable=R0915,E1120
