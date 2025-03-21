@@ -21,6 +21,7 @@ set(RAPIDS_TEST_DISABLE_DEV_ERRORS ON)
 
 add_cmake_config_test( cpm_find-add-pkg-source )
 add_cmake_config_test( cpm_find-and-find_package )
+add_cmake_config_test( cpm_find-build-patch )
 add_cmake_config_test( cpm_find-components )
 add_cmake_config_test( cpm_find-existing-build-dir )
 add_cmake_config_test( cpm_find-existing-target )
