@@ -29,7 +29,7 @@ Applies any relevant patches to the provided CPM package
 
 #]=======================================================================]
 # cmake-lint: disable=R0915,E1120
-function(rapids_cpm_generate_patch_command package_name version patch_command)
+function(rapids_cpm_generate_patch_command package_name version patch_command build_patch_only)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.generate_patch_command")
 
   include("${rapids-cmake-dir}/cpm/detail/load_preset_versions.cmake")
@@ -78,6 +78,7 @@ function(rapids_cpm_generate_patch_command package_name version patch_command)
   set(patch_files_to_run)
   set(patch_issues_to_ref)
   set(patch_required_to_apply)
+  set(${build_patch_only} BUILD_PATCH_ONLY PARENT_SCOPE)
 
   # Gather number of patches
   string(JSON patch_count LENGTH "${json_data}")
@@ -87,15 +88,22 @@ function(rapids_cpm_generate_patch_command package_name version patch_command)
       string(JSON patch_data GET "${json_data}" ${index})
       rapids_cpm_json_get_value(${patch_data} fixed_in)
       if(NOT fixed_in OR version VERSION_LESS fixed_in)
+        set(build)
+
         rapids_cpm_json_get_value(${patch_data} file)
         rapids_cpm_json_get_value(${patch_data} inline_patch)
         rapids_cpm_json_get_value(${patch_data} issue)
+        rapids_cpm_json_get_value(${patch_data} build)
 
         # Convert any embedded patch to a file.
         if(inline_patch)
           include("${rapids-cmake-dir}/cpm/detail/convert_patch_json.cmake")
           rapids_cpm_convert_patch_json(FROM_JSON_TO_FILE inline_patch FILE_VAR file PACKAGE_NAME
                                         ${package_name} INDEX ${index})
+        endif()
+
+        if(NOT build)
+          set(${build_patch_only} PARENT_SCOPE)
         endif()
 
         if(file AND issue)

@@ -42,7 +42,7 @@ include(${rapids-cmake-dir}/cpm/init.cmake)
 rapids_cpm_init(OVERRIDE ${CMAKE_CURRENT_BINARY_DIR}/override.json)
 
 include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
-rapids_cpm_generate_patch_command(GTest ${version} patch_command)
+rapids_cpm_generate_patch_command(GTest ${version} patch_command build_patch_only)
 message(STATUS "patch_command: ${patch_command}")
 if(NOT patch_command)
   message(FATAL_ERROR "rapids_cpm_package_override failed to load patch step for `GTest` from package `gtest`")

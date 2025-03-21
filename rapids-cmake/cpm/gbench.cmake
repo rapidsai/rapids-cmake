@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2022-2024, NVIDIA CORPORATION.
+# Copyright (c) 2022-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -66,13 +66,13 @@ function(rapids_cpm_gbench)
   rapids_cpm_package_details(benchmark version repository tag shallow exclude)
 
   include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
-  rapids_cpm_generate_patch_command(benchmark ${version} patch_command)
+  rapids_cpm_generate_patch_command(benchmark ${version} patch_command build_patch_only)
 
   include("${rapids-cmake-dir}/cmake/install_lib_dir.cmake")
   rapids_cmake_install_lib_dir(lib_dir)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
-  rapids_cpm_find(benchmark ${version} ${ARGN}
+  rapids_cpm_find(benchmark ${version} ${ARGN} ${build_patch_only}
                   GLOBAL_TARGETS benchmark::benchmark benchmark::benchmark_main
                   CPM_ARGS
                   GIT_REPOSITORY ${repository}
