@@ -50,12 +50,14 @@ function(rapids_test_generate_resource_spec DESTINATION filepath)
   get_property(rapids_languages GLOBAL PROPERTY ENABLED_LANGUAGES)
   if("CXX" IN_LIST rapids_languages)
     set(rapids_lang CXX)
+    set(rapids_lang_lower cxx)
     # Even when the CUDA language is disabled we want to pass this since it is used by
     # find_package(CUDAToolkit) to find the location
     set(CMAKE_TRY_COMPILE_PLATFORM_VARIABLES CMAKE_CUDA_COMPILER)
   endif()
   if("CUDA" IN_LIST rapids_languages)
     set(rapids_lang CUDA)
+    set(rapids_lang_lower cuda)
   endif()
 
   if(NOT rapids_lang)
@@ -80,7 +82,7 @@ function(rapids_test_generate_resource_spec DESTINATION filepath)
     set_target_properties(generate_ctest_json
                           PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/rapids-cmake/"
                                      OUTPUT_NAME ${rapids_test_generate_exe_name})
-    target_compile_features(generate_ctest_json PRIVATE cxx_std_17)
+    target_compile_features(generate_ctest_json PRIVATE ${rapids_lang_lower}_std_17)
 
     add_test(NAME generate_resource_spec COMMAND generate_ctest_json "${filepath}")
     set_tests_properties(generate_resource_spec
