@@ -71,10 +71,10 @@ function(rapids_cpm_rmm)
   endif()
 
   include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
-  rapids_cpm_generate_patch_command(rmm ${version} patch_command)
+  rapids_cpm_generate_patch_command(rmm ${version} patch_command build_patch_only)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
-  rapids_cpm_find(rmm ${version} ${ARGN} ${_RAPIDS_UNPARSED_ARGUMENTS}
+  rapids_cpm_find(rmm ${version} ${ARGN} ${_RAPIDS_UNPARSED_ARGUMENTS} ${build_patch_only}
                   GLOBAL_TARGETS rmm::rmm rmm::rmm_logger rmm::rmm_logger_impl
                   CPM_ARGS
                   GIT_REPOSITORY ${repository}

@@ -75,10 +75,10 @@ function(rapids_cpm_cccl)
   endif()
 
   include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
-  rapids_cpm_generate_patch_command(CCCL ${version} patch_command)
+  rapids_cpm_generate_patch_command(CCCL ${version} patch_command build_patch_only)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
-  rapids_cpm_find(CCCL ${version} ${ARGN}
+  rapids_cpm_find(CCCL ${version} ${ARGN} ${build_patch_only}
                   GLOBAL_TARGETS CCCL CCCL::CCCL CCCL::CUB CCCL::libcudacxx
                   CPM_ARGS FIND_PACKAGE_ARGUMENTS EXACT
                   GIT_REPOSITORY ${repository}
