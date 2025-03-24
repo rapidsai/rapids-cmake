@@ -30,6 +30,7 @@ set_tests_properties(
       "STREAM_MODE=new_mode;LD_PRELOAD=$<TARGET_FILE:preload>"
       PASS_REGULAR_EXPRESSION "found a resource file"
   )
+target_compile_features(verify_alloc PRIVATE cuda_std_17)
 
 rapids_test_install_relocatable(INSTALL_COMPONENT_SET testing
                                 DESTINATION bin/testing
