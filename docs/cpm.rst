@@ -239,6 +239,15 @@ as needed.
 
             The default value for this field is ``false``.
 
+        ``build``
+            An optional boolean value that specifies whether or not this patch is a
+            build patch. Build patches only affect the build process, not the runtime
+            functionality or exported headers. If all patches are build patches, the
+            project is not required to be downloaded and can be found with
+            ``find_package()``.
+
+            The default value for this field is ``false``.
+
 ``proprietary_binary``
 
     An optional dictionary of cpu architecture and operating system keys to url values that represents a download for a pre-built proprietary version of the library. This creates a new entry in the search
