@@ -47,10 +47,10 @@ function(rapids_cpm_rapids_logger)
   rapids_cpm_package_details(rapids_logger version repository tag shallow exclude)
 
   include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
-  rapids_cpm_generate_patch_command(rapids_logger ${version} patch_command)
+  rapids_cpm_generate_patch_command(rapids_logger ${version} patch_command build_patch_only)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
-  rapids_cpm_find(rapids_logger ${version} ${ARGN}
+  rapids_cpm_find(rapids_logger ${version} ${ARGN} ${build_patch_only}
                   CPM_ARGS
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}

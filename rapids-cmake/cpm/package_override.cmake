@@ -135,7 +135,7 @@ function(rapids_cpm_package_override _rapids_override_filepath)
       rapids_cpm_package_details(${package_name} version repository tag shallow exclude)
 
       include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
-      rapids_cpm_generate_patch_command(${package_name} ${version} patch_command)
+      rapids_cpm_generate_patch_command(${package_name} ${version} patch_command build_patch_only)
 
       unset(exclude_from_all)
       if(exclude)

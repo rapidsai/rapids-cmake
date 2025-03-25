@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2024, NVIDIA CORPORATION.
+# Copyright (c) 2024-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -43,13 +43,13 @@ include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
 include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
 
 rapids_cpm_package_details(rmm version repository tag shallow exclude)
-rapids_cpm_generate_patch_command(rmm ${version} patch_command)
+rapids_cpm_generate_patch_command(rmm ${version} patch_command build_patch_only)
 if(patch_command)
   message(FATAL_ERROR "no patch command expected for rmm")
 endif()
 
 rapids_cpm_package_details(CCCL version repository tag shallow exclude)
-rapids_cpm_generate_patch_command(CCCL ${version} patch_command)
+rapids_cpm_generate_patch_command(CCCL ${version} patch_command build_patch_only)
 if(patch_command)
   message(FATAL_ERROR "no patch command expected for cccl")
 endif()
