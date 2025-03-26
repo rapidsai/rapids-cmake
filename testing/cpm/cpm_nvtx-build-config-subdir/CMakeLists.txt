@@ -21,7 +21,9 @@ include(${rapids-cmake-dir}/cpm/nvtx3.cmake)
 
 rapids_cpm_init()
 
+# Commenting out this add_subdirectory() causes the test to pass
 add_subdirectory(subdir1)
+
 add_subdirectory(subdir2)
 
 # Add a custom command that verifies that we can use targets that link to nvtx3
