@@ -18,6 +18,7 @@ project(cpm_nvtx-build-config-subdir)
 
 include(${rapids-cmake-dir}/cpm/init.cmake)
 include(${rapids-cmake-dir}/cpm/nvtx3.cmake)
+include(${rapids-cmake-dir}/export/export.cmake)
 
 rapids_cpm_init()
 
@@ -33,6 +34,9 @@ project(verify_nvtx LANGUAGES CXX)
 
 set(CMAKE_PREFIX_PATH \"${CMAKE_BINARY_DIR}/\")
 find_package(uses-nvtx3 REQUIRED)
+if(nvtx3_ADDED)
+  message(FATAL_ERROR \"nvtx3 should not have been added\")
+endif()
 
 file(WRITE \"\${CMAKE_CURRENT_BINARY_DIR}/stub.cpp\" \" \")
 add_library(uses_nvtx SHARED stub.cpp)
