@@ -83,13 +83,12 @@ function(rapids_cpm_download)
 
   if(NOT (EXISTS ${CPM_DOWNLOAD_LOCATION}))
     message(VERBOSE "Downloading CPM.cmake to ${CPM_DOWNLOAD_LOCATION}")
-    file(DOWNLOAD
-         https://github.com/cpm-cmake/CPM.cmake/releases/download/v${CPM_DOWNLOAD_VERSION}/CPM.cmake
-         ${CPM_DOWNLOAD_LOCATION} LOG download_log)
+    rapids_download_with_retry(https://github.com/cpm-cmake/CPM.cmake/releases/download/v${CPM_DOWNLOAD_VERSION}/CPM.cmake
+                               ${CPM_DOWNLOAD_LOCATION})
 
     file(MD5 ${CPM_DOWNLOAD_LOCATION} cpm_hash)
     if(NOT cpm_hash STREQUAL CPM_DOWNLOAD_MD5_HASH)
-      message(FATAL_ERROR "CPM.cmake hash mismatch [got=${cpm_hash} expected=${CPM_DOWNLOAD_MD5_HASH}] to download details below\n ${download_log}"
+      message(FATAL_ERROR "CPM.cmake hash mismatch [got=${cpm_hash} expected=${CPM_DOWNLOAD_MD5_HASH}]"
       )
     endif()
   endif()
