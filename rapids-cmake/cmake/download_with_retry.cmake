@@ -25,10 +25,10 @@ retries fail, it will raise a fatal error.
 ``output_file``
   The path where the downloaded file should be saved.
 
-``max_retries``
+``MAX_RETRIES``
   Maximum number of retry attempts. Defaults to 3.
 
-``retry_delay``
+``RETRY_DELAY``
   Delay between retries in seconds. Defaults to 5.
 
 #]=======================================================================]
