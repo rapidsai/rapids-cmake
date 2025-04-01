@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2023, NVIDIA CORPORATION.
+# Copyright (c) 2021-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,6 +29,9 @@ add_cmake_config_test( conda_env-cross-build-x86-envvar.cmake )
 add_cmake_config_test( conda_env-invalid.cmake )
 add_cmake_config_test( conda_env-prefix.cmake )
 add_cmake_config_test( conda_env-prefix-envvar.cmake )
+
+add_cmake_config_test( download_with_retry-basic.cmake )
+add_cmake_config_test( download_with_retry-overwrite.cmake )
 
 add_cmake_config_test( install_lib_dir-after-gnuinstalldir-include.cmake )
 add_cmake_config_test( install_lib_dir-build.cmake )
