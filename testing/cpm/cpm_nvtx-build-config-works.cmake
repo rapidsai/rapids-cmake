@@ -25,7 +25,7 @@ file(WRITE "${CMAKE_BINARY_DIR}/check_nvtx_dir/CMakeLists.txt" "
 cmake_minimum_required(VERSION 3.30.4)
 project(verify_nvtx LANGUAGES CXX)
 
-set(CMAKE_PREFIX_PATH \"${CMAKE_BINARY_DIR}/\")
+set(CMAKE_PREFIX_PATH \"${CMAKE_BINARY_DIR}/_deps/nvtx3-build/\")
 find_package(nvtx3 REQUIRED)
 
 file(WRITE \"\${CMAKE_CURRENT_BINARY_DIR}/stub.cpp\" \" \")
