@@ -13,10 +13,10 @@ Downloads a file from a URL with retry logic for handling network issues.
 
   .. code-block:: cmake
 
-    rapids_download_with_retry(url output_file [max_retries] [retry_delay])
+    rapids_download_with_retry(url output_file md5 [max_retries] [retry_delay])
 
 This function will attempt to download the file multiple times if network issues occur.
-It verifies the download by checking that the file exists and has content. If all
+It verifies the download by checking the MD5 checksum of the downloaded file. If all
 retries fail, it will raise a fatal error.
 
 ``url``
@@ -25,6 +25,9 @@ retries fail, it will raise a fatal error.
 ``output_file``
   The path where the downloaded file should be saved.
 
+``md5``
+  The expected MD5 checksum of the file.
+
 ``MAX_RETRIES``
   Maximum number of retry attempts. Defaults to 3.
 
@@ -32,7 +35,7 @@ retries fail, it will raise a fatal error.
   Delay between retries in seconds. Defaults to 5.
 
 #]=======================================================================]
-function(rapids_download_with_retry url output_file)
+function(rapids_download_with_retry url output_file md5)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cmake.download_with_retry")
 
   set(options)
@@ -66,13 +69,14 @@ function(rapids_download_with_retry url output_file)
 
     file(DOWNLOAD "${url}" "${output_file}" LOG download_log)
 
-    # Check if file exists and has content
+    # Check if file exists and validate MD5
     if(EXISTS "${output_file}")
-      file(SIZE "${output_file}" file_size)
-      if(file_size GREATER 0)
+      file(MD5 "${output_file}" downloaded_md5)
+      if(downloaded_md5 STREQUAL "${md5}")
         set(download_success TRUE)
       else()
-        message(WARNING "Downloaded file is empty")
+        message(WARNING "Downloaded file MD5 checksum mismatch. Expected: ${md5}, Got: ${downloaded_md5}"
+        )
         file(REMOVE "${output_file}")
       endif()
     endif()
