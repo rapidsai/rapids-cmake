@@ -18,13 +18,18 @@ include(${rapids-cmake-dir}/cmake/download_with_retry.cmake)
 # Create a test directory
 file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/download_test")
 
-# Test URLs - using different files from reliable sources
-set(test_url1 "https://raw.githubusercontent.com/rapidsai/rapids-cmake/main/README.md")
-set(test_url2 "https://raw.githubusercontent.com/rapidsai/rapids-cmake/main/LICENSE")
+# Test URLs - using static test files with known contents
+set(test_url1 "https://raw.githubusercontent.com/rapidsai/rapids-cmake/main/testing/cmake/test_files/test1.txt")
+set(test_url2 "https://raw.githubusercontent.com/rapidsai/rapids-cmake/main/testing/cmake/test_files/test2.txt")
 set(output_file "${CMAKE_CURRENT_BINARY_DIR}/download_test/overwrite_test.txt")
+# Expected MD5 values for the test files
+# test1.txt content: "This is a test file for rapids-cmake download tests."
+# test2.txt content: "This is a different test file for rapids-cmake download tests."
+set(expected_md5_1 "f0e432e65af059cf9305832d1c58220d")
+set(expected_md5_2 "b735729d59ba218c74eccc1b9e1b8748")
 
 # Test 1: Create initial file with first URL
-rapids_download_with_retry("${test_url1}" "${output_file}")
+rapids_download_with_retry("${test_url1}" "${output_file}" "${expected_md5_1}")
 if(NOT EXISTS "${output_file}")
   message(FATAL_ERROR "Initial download failed - file does not exist")
 endif()
@@ -33,7 +38,7 @@ endif()
 file(SIZE "${output_file}" initial_size)
 
 # Test 2: Download different file to same location
-rapids_download_with_retry("${test_url2}" "${output_file}")
+rapids_download_with_retry("${test_url2}" "${output_file}" "${expected_md5_2}")
 if(NOT EXISTS "${output_file}")
   message(FATAL_ERROR "Overwrite download failed - file does not exist")
 endif()

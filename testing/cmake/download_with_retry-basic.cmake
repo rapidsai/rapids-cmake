@@ -18,12 +18,14 @@ include(${rapids-cmake-dir}/cmake/download_with_retry.cmake)
 # Create a test directory
 file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/download_test")
 
-# Test URL - using a small file from a reliable source
-set(test_url "https://raw.githubusercontent.com/rapidsai/rapids-cmake/main/README.md")
+# Test URL - using a static test file with known contents
+set(test_url "https://raw.githubusercontent.com/rapidsai/rapids-cmake/main/testing/cmake/test_files/test1.txt")
 set(output_file "${CMAKE_CURRENT_BINARY_DIR}/download_test/test_file.txt")
+# Expected MD5 of the test file (content: "This is a test file for rapids-cmake download tests.")
+set(expected_md5 "f0e432e65af059cf9305832d1c58220d")
 
 # Test 1: Basic download
-rapids_download_with_retry("${test_url}" "${output_file}")
+rapids_download_with_retry("${test_url}" "${output_file}" "${expected_md5}")
 if(NOT EXISTS "${output_file}")
   message(FATAL_ERROR "Download failed - file does not exist")
 endif()
@@ -36,7 +38,7 @@ endif()
 
 # Test 2: Download with custom retry parameters
 set(output_file2 "${CMAKE_CURRENT_BINARY_DIR}/download_test/test_file2.txt")
-rapids_download_with_retry("${test_url}" "${output_file2}" MAX_RETRIES 2 RETRY_DELAY 1)
+rapids_download_with_retry("${test_url}" "${output_file2}" "${expected_md5}" MAX_RETRIES 2 RETRY_DELAY 1)
 if(NOT EXISTS "${output_file2}")
   message(FATAL_ERROR "Download with custom parameters failed - file does not exist")
 endif()
