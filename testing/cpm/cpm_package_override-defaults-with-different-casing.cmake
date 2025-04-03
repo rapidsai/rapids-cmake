@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2024, NVIDIA CORPORATION.
+# Copyright (c) 2024-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,7 +30,8 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
       "exclude_from_all": "ON"
     },
     "gtest": {
-      "version": "3.00.A1"
+      "version": "3.00.A1",
+      "git_tag": "v${version}"
     }
   }
 }
