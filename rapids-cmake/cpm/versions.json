@@ -67,8 +67,8 @@
     },
     "nvtx3": {
       "version": "3.1.0",
-      "git_url": "https://github.com/bdice/NVTX.git",
-      "git_tag": "cmake-relocatable"
+      "git_url": "https://github.com/NVIDIA/NVTX.git",
+      "git_tag": "4808eeda29bb6dcfd38291d1a8ea280b48562c57"
     },
     "rmm": {
       "version": "${rapids-cmake-version}",
