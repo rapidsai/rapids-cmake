@@ -7,6 +7,7 @@
     },
     "bs_thread_pool": {
       "version": "4.1.0",
+      "git_shallow": false,
       "git_url": "https://github.com/bshoshany/thread-pool.git",
       "git_tag": "097aa718f25d44315cadb80b407144ad455ee4f9"
     },
@@ -67,6 +68,7 @@
     },
     "nvtx3": {
       "version": "3.1.0",
+      "git_shallow": false,
       "git_url": "https://github.com/NVIDIA/NVTX.git",
       "git_tag": "4808eeda29bb6dcfd38291d1a8ea280b48562c57"
     },
