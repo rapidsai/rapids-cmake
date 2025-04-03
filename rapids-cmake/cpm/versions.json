@@ -67,6 +67,7 @@
     },
     "nvtx3": {
       "version": "3.1.0",
+      "git_shallow": false,
       "git_url": "https://github.com/NVIDIA/NVTX.git",
       "git_tag": "4808eeda29bb6dcfd38291d1a8ea280b48562c57"
     },
