@@ -74,6 +74,14 @@ function(rapids_export_write_dependencies type export_set file_path)
   # Do we need a Template header?
   set(_RAPIDS_EXPORT_CONTENTS)
   if(uses_cpm)
+    # Include download_with_retry.cmake in the exported dependencies first
+    file(READ "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/../cmake/download_with_retry.cmake"
+         download_with_retry_logic)
+    string(APPEND _RAPIDS_EXPORT_CONTENTS ${download_with_retry_logic})
+    string(APPEND _RAPIDS_EXPORT_CONTENTS
+           "\n# Guard to prevent including download_with_retry.cmake again\n")
+    string(APPEND _RAPIDS_EXPORT_CONTENTS "set(rapids_download_with_retry_included TRUE)\n\n")
+
     file(READ "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/../cpm/detail/download.cmake" cpm_logic)
     string(APPEND _RAPIDS_EXPORT_CONTENTS ${cpm_logic})
     string(APPEND _RAPIDS_EXPORT_CONTENTS "rapids_cpm_download()\n\n")
@@ -88,11 +96,6 @@ if(NOT DEFINED CPM_SOURCE_CACHE)
 endif()\n")
     endif()
   endif()
-
-  # Include download_with_retry.cmake in the exported dependencies
-  file(READ "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/../cmake/download_with_retry.cmake"
-       download_with_retry_logic)
-  string(APPEND _RAPIDS_EXPORT_CONTENTS ${download_with_retry_logic})
 
   foreach(package IN LISTS find_root_dirs)
     get_property(root_dir_path TARGET rapids_export_${type}_${export_set}
