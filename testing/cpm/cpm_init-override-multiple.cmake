@@ -26,7 +26,32 @@ function(expect_fetch_content_details project expected)
   endif()
 endfunction()
 
-rapids_cpm_init()
+# Need to write out a default file
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/default.json
+  [=[
+{
+  "packages": {
+    "nvbench": {
+      "version": "0.0",
+      "git_shallow": false,
+      "git_url": "https://github.com/NVIDIA/nvbench.git",
+      "git_tag": "555d628e9b250868c9da003e4407087ff1982e8e"
+    },
+    "rmm": {
+      "version": "${rapids-cmake-version}",
+      "git_url": "https://github.com/rapidsai/rmm.git",
+      "git_tag": "branch-${version}"
+    },
+    "GTest": {
+      "version": "1.16.0",
+      "git_url": "https://github.com/google/googletest.git",
+      "git_tag": "v${version}"
+    }
+  }
+}
+  ]=])
+
+rapids_cpm_init(CUSTOM_DEFAULT_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/default.json")
 
 # Load the default values for nvbench and GTest projects
 include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
@@ -51,14 +76,13 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
       "git_tag": "my_tag"
     },
     "GTest": {
-      "version": "2.99",
-      "git_tag": "v${version}"
+      "version": "2.99"
     }
   }
 }
   ]=])
 
-rapids_cpm_init(OVERRIDE "${CMAKE_CURRENT_BINARY_DIR}/override.json")
+rapids_cpm_init(CUSTOM_DEFAULT_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/default.json" OVERRIDE "${CMAKE_CURRENT_BINARY_DIR}/override.json")
 expect_fetch_content_details(nvbench YES)
 expect_fetch_content_details(rmm YES)
 expect_fetch_content_details(GTest YES)
