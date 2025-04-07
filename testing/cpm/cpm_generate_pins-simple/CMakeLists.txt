@@ -27,11 +27,11 @@ rapids_cpm_nvtx3(DOWNLOAD_ONLY ON)
 rapids_cpm_rmm(DOWNLOAD_ONLY ON)
 
 # only check projects that were downloaded by CPM (ignore those already in the build environment)
-foreach(proj IN ITEMS rmm fmt nvtx3)
+foreach(proj IN ITEMS fmt nvtx3 rmm)
   if(${proj}_SOURCE_DIR)
     list(APPEND projects-to-verify ${proj})
   endif()
 endforeach()
 
 include("${rapids-cmake-testing-dir}/cpm/verify_generated_pins.cmake")
-verify_generated_pins(verify_pins PROJECTS rmm fmt nvtx3)
+verify_generated_pins(verify_pins PROJECTS ${projects-to-verify})
