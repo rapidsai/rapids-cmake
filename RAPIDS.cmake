@@ -16,6 +16,8 @@
 #
 # This is the preferred entry point for projects using rapids-cmake
 #
+# Enforce the minimum required CMake version for all users
+cmake_minimum_required(VERSION 3.30.4 FATAL_ERROR)
 
 # Allow users to control which version is used
 if(NOT rapids-cmake-version)
@@ -66,10 +68,6 @@ if(NOT rapids-cmake-url)
   endif()
 endif()
 
-if(POLICY CMP0135)
-  cmake_policy(PUSH)
-  cmake_policy(SET CMP0135 NEW)
-endif()
 include(FetchContent)
 if(rapids-cmake-fetch-via-git)
   FetchContent_Declare(rapids-cmake
@@ -78,9 +76,6 @@ if(rapids-cmake-fetch-via-git)
 else()
   string(APPEND rapids-cmake-url "${rapids-cmake-value-to-clone}")
   FetchContent_Declare(rapids-cmake URL "${rapids-cmake-url}")
-endif()
-if(POLICY CMP0135)
-  cmake_policy(POP)
 endif()
 FetchContent_GetProperties(rapids-cmake)
 if(rapids-cmake_POPULATED)
