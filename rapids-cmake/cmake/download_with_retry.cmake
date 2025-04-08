@@ -14,7 +14,7 @@ Downloads a file from a URL with retry logic for handling network issues.
 
   .. code-block:: cmake
 
-    rapids_cmake_download_with_retry(url output_file sha256 [MAX_RETRIES] [RETRY_DELAY])
+    rapids_cmake_download_with_retry(url output_file sha256 [MAX_RETRIES <max_retries>] [RETRY_DELAY <retry_delay>])
 
 This function will attempt to download the file multiple times if network issues occur.
 It verifies the download by checking the SHA256 checksum of the downloaded file. If all
