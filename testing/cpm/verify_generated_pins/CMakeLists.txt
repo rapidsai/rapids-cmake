@@ -50,6 +50,9 @@ foreach(proj IN LISTS projects-to-verify)
   if(pin_${proj}_tag STREQUAL ${proj}_tag AND NOT (${proj}_tag MATCHES "^[0-9a-f]+$" AND (tag_length EQUAL 40 OR tag_length EQUAL 64)))
     _get_json_data()
     message(FATAL_ERROR "pinned ${proj} tag (${pin_${proj}_tag}) should differ compared to baseline ${${proj}_tag}\npinned_versions.json:\n${pinned_versions}\nversions.json:\n${default_versions}")
+  elseif(NOT pin_${proj}_tag STREQUAL ${proj}_tag AND (${proj}_tag MATCHES "^[0-9a-f]+$" AND (tag_length EQUAL 40 OR tag_length EQUAL 64)))
+    _get_json_data()
+    message(FATAL_ERROR "pinned ${proj} tag (${pin_${proj}_tag}) should be the same as baseline ${${proj}_tag}\npinned_versions.json:\n${pinned_versions}\nversions.json:\n${default_versions}")
   endif()
 
   # Everything should have shallow marked as false

@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2023, NVIDIA CORPORATION.
+# Copyright (c) 2023-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,11 +31,6 @@ function(rapids_cpm_download_proprietary_binary package_name url)
   # download and extract the binaries since they don't exist on the machine
   include(FetchContent)
   set(pkg_name "${package_name}_proprietary_binary")
-
-  if(POLICY CMP0135)
-    cmake_policy(SET CMP0135 NEW)
-    set(CMAKE_POLICY_DEFAULT_CMP0135 NEW)
-  endif()
 
   FetchContent_Declare(${pkg_name} URL ${url})
   FetchContent_MakeAvailable(${pkg_name})
