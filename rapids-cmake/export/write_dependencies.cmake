@@ -77,9 +77,12 @@ function(rapids_export_write_dependencies type export_set file_path)
     # Include download_with_retry.cmake in the exported dependencies first
     file(READ "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/../cmake/download_with_retry.cmake"
          download_with_retry_logic)
+    string(REPLACE "include_guard(GLOBAL)\n" "" download_with_retry_logic
+                   "${download_with_retry_logic}")
     string(APPEND _RAPIDS_EXPORT_CONTENTS ${download_with_retry_logic})
 
     file(READ "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/../cpm/detail/download.cmake" cpm_logic)
+    string(REPLACE "include_guard(GLOBAL)\n" "" cpm_logic "${cpm_logic}")
     string(APPEND _RAPIDS_EXPORT_CONTENTS ${cpm_logic})
     string(APPEND _RAPIDS_EXPORT_CONTENTS "rapids_cpm_download()\n\n")
 
