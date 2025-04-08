@@ -13,7 +13,7 @@ Downloads a file from a URL with retry logic for handling network issues.
 
   .. code-block:: cmake
 
-    rapids_download_with_retry(url output_file sha256 [max_retries] [retry_delay])
+    rapids_download_with_retry(url output_file sha256 [MAX_RETRIES] [RETRY_DELAY])
 
 This function will attempt to download the file multiple times if network issues occur.
 It verifies the download by checking the SHA256 checksum of the downloaded file. If all
@@ -29,7 +29,7 @@ retries fail, it will raise a fatal error.
   The expected SHA256 checksum of the file.
 
 ``MAX_RETRIES``
-  Maximum number of retry attempts. Defaults to 3.
+  Maximum number of retry attempts. Defaults to 10.
 
 ``RETRY_DELAY``
   Delay between retries in seconds. Defaults to 5.

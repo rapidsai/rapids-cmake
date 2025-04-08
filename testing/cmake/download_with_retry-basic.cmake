@@ -16,6 +16,7 @@
 include(${rapids-cmake-dir}/cmake/download_with_retry.cmake)
 
 # Create a test directory
+file(REMOVE_RECURSE "${CMAKE_CURRENT_BINARY_DIR}/download_test")
 file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/download_test")
 
 # Test URL - using a static test file with known contents
