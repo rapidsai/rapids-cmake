@@ -45,7 +45,7 @@ function(rapids_download_with_retry url output_file sha256)
 
   # Set default values for optional arguments
   if(NOT DEFINED _RAPIDS_MAX_RETRIES)
-    set(_RAPIDS_MAX_RETRIES 3)
+    set(_RAPIDS_MAX_RETRIES 10)
   endif()
   if(NOT DEFINED _RAPIDS_RETRY_DELAY)
     set(_RAPIDS_RETRY_DELAY 5)
