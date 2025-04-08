@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2024, NVIDIA CORPORATION.
+# Copyright (c) 2021-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -163,6 +163,17 @@ function(rapids_cmake_support_conda_env target)
         target_link_options(${target} INTERFACE
                             "$<HOST_LINK:SHELL:LINKER:-rpath-link=$ENV{BUILD_PREFIX}/lib>")
       endif()
+
+      # Make all paths like `$PREFIX/<path>` relative to `$PREFIX` so `<path>`.
+      target_compile_options(${target}
+                             INTERFACE "$<$<COMPILE_LANGUAGE:C>:-ffile-prefix-map=$ENV{PREFIX}/=''>"
+      )
+      target_compile_options(${target}
+                             INTERFACE "$<$<COMPILE_LANGUAGE:CXX>:-ffile-prefix-map=$ENV{PREFIX}/=''>"
+      )
+      target_compile_options(${target}
+                             INTERFACE "$<$<COMPILE_LANGUAGE:CUDA>:-Xcompiler=-ffile-prefix-map=$ENV{PREFIX}/=''>"
+      )
 
       if(modify_prefix_path)
         message(VERBOSE "Conda build detected")
