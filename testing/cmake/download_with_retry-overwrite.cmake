@@ -30,7 +30,7 @@ set(expected_sha256_1 "7a90fe28cdb40b030ad3323af3fd9292d849db0be1d79a7000f9ff150
 set(expected_sha256_2 "d3d4925f1a6596154ddd957ea16d5350f229a369ef24574563ceecca2ac8c66c")
 
 # Test 1: Create initial file with first URL
-rapids_download_with_retry("${test_url1}" "${output_file}" "${expected_sha256_1}")
+rapids_cmake_download_with_retry("${test_url1}" "${output_file}" "${expected_sha256_1}")
 if(NOT EXISTS "${output_file}")
   message(FATAL_ERROR "Initial download failed - file does not exist")
 endif()
@@ -39,7 +39,7 @@ endif()
 file(SIZE "${output_file}" initial_size)
 
 # Test 2: Download different file to same location
-rapids_download_with_retry("${test_url2}" "${output_file}" "${expected_sha256_2}")
+rapids_cmake_download_with_retry("${test_url2}" "${output_file}" "${expected_sha256_2}")
 if(NOT EXISTS "${output_file}")
   message(FATAL_ERROR "Overwrite download failed - file does not exist")
 endif()

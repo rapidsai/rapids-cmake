@@ -83,12 +83,12 @@ function(rapids_cpm_download)
 
   if(NOT (EXISTS ${CPM_DOWNLOAD_LOCATION}))
     message(VERBOSE "Downloading CPM.cmake to ${CPM_DOWNLOAD_LOCATION}")
-    if(NOT COMMAND rapids_download_with_retry)
+    if(NOT COMMAND rapids_cmake_download_with_retry)
       include("${rapids-cmake-dir}/cmake/download_with_retry.cmake")
     endif()
-    rapids_download_with_retry(https://github.com/cpm-cmake/CPM.cmake/releases/download/v${CPM_DOWNLOAD_VERSION}/CPM.cmake
-                               ${CPM_DOWNLOAD_LOCATION}
-                               ${CPM_DOWNLOAD_SHA256_HASH})
+    rapids_cmake_download_with_retry(
+      https://github.com/cpm-cmake/CPM.cmake/releases/download/v${CPM_DOWNLOAD_VERSION}/CPM.cmake
+      ${CPM_DOWNLOAD_LOCATION} ${CPM_DOWNLOAD_SHA256_HASH})
   endif()
 
   include(${CPM_DOWNLOAD_LOCATION})

@@ -5,7 +5,7 @@
 include_guard(GLOBAL)
 
 #[=======================================================================[.rst:
-rapids_download_with_retry
+rapids_cmake_download_with_retry
 --------------------------
 
 .. versionadded:: v25.06.00
@@ -14,7 +14,7 @@ Downloads a file from a URL with retry logic for handling network issues.
 
   .. code-block:: cmake
 
-    rapids_download_with_retry(url output_file sha256 [MAX_RETRIES] [RETRY_DELAY])
+    rapids_cmake_download_with_retry(url output_file sha256 [MAX_RETRIES] [RETRY_DELAY])
 
 This function will attempt to download the file multiple times if network issues occur.
 It verifies the download by checking the SHA256 checksum of the downloaded file. If all
@@ -36,7 +36,7 @@ retries fail, it will raise a fatal error.
   Delay between retries in seconds. Defaults to 5.
 
 #]=======================================================================]
-function(rapids_download_with_retry url output_file sha256)
+function(rapids_cmake_download_with_retry url output_file sha256)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cmake.download_with_retry")
 
   set(options)

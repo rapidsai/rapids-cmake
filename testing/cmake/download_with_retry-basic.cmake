@@ -26,7 +26,7 @@ set(output_file "${CMAKE_CURRENT_BINARY_DIR}/download_test/test_file.txt")
 set(expected_sha256 "7a90fe28cdb40b030ad3323af3fd9292d849db0be1d79a7000f9ff150c00161f")
 
 # Test 1: Basic download
-rapids_download_with_retry("${test_url}" "${output_file}" "${expected_sha256}")
+rapids_cmake_download_with_retry("${test_url}" "${output_file}" "${expected_sha256}")
 if(NOT EXISTS "${output_file}")
   message(FATAL_ERROR "Download failed - file does not exist")
 endif()
@@ -39,7 +39,7 @@ endif()
 
 # Test 2: Download with custom retry parameters
 set(output_file2 "${CMAKE_CURRENT_BINARY_DIR}/download_test/test_file2.txt")
-rapids_download_with_retry("${test_url}" "${output_file2}" "${expected_sha256}" MAX_RETRIES 2 RETRY_DELAY 1)
+rapids_cmake_download_with_retry("${test_url}" "${output_file2}" "${expected_sha256}" MAX_RETRIES 2 RETRY_DELAY 1)
 if(NOT EXISTS "${output_file2}")
   message(FATAL_ERROR "Download with custom parameters failed - file does not exist")
 endif()
