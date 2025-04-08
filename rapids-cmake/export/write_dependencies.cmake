@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2024, NVIDIA CORPORATION.
+# Copyright (c) 2021-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -74,6 +74,11 @@ function(rapids_export_write_dependencies type export_set file_path)
   # Do we need a Template header?
   set(_RAPIDS_EXPORT_CONTENTS)
   if(uses_cpm)
+    # Include download_with_retry.cmake in the exported dependencies first
+    file(READ "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/../cmake/download_with_retry.cmake"
+         download_with_retry_logic)
+    string(APPEND _RAPIDS_EXPORT_CONTENTS ${download_with_retry_logic})
+
     file(READ "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/../cpm/detail/download.cmake" cpm_logic)
     string(APPEND _RAPIDS_EXPORT_CONTENTS ${cpm_logic})
     string(APPEND _RAPIDS_EXPORT_CONTENTS "rapids_cpm_download()\n\n")

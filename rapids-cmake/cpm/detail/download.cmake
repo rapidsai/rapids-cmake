@@ -53,7 +53,7 @@ function(rapids_cpm_download)
 
   # When changing version verify no new variables needs to be propagated
   set(CPM_DOWNLOAD_VERSION 0.40.0)
-  set(CPM_DOWNLOAD_MD5_HASH 6c9866a0aa0f804a36fe8c3866fb8a2c)
+  set(CPM_DOWNLOAD_SHA256_HASH 7b354f3a5976c4626c876850c93944e52c83ec59a159ae5de5be7983f0e17a2a)
 
   if(NOT DEFINED CPM_DOWNLOAD_LOCATION)
     if(CPM_SOURCE_CACHE)
@@ -83,15 +83,12 @@ function(rapids_cpm_download)
 
   if(NOT (EXISTS ${CPM_DOWNLOAD_LOCATION}))
     message(VERBOSE "Downloading CPM.cmake to ${CPM_DOWNLOAD_LOCATION}")
-    file(DOWNLOAD
-         https://github.com/cpm-cmake/CPM.cmake/releases/download/v${CPM_DOWNLOAD_VERSION}/CPM.cmake
-         ${CPM_DOWNLOAD_LOCATION} LOG download_log)
-
-    file(MD5 ${CPM_DOWNLOAD_LOCATION} cpm_hash)
-    if(NOT cpm_hash STREQUAL CPM_DOWNLOAD_MD5_HASH)
-      message(FATAL_ERROR "CPM.cmake hash mismatch [got=${cpm_hash} expected=${CPM_DOWNLOAD_MD5_HASH}] to download details below\n ${download_log}"
-      )
+    if(NOT COMMAND rapids_cmake_download_with_retry)
+      include("${rapids-cmake-dir}/cmake/download_with_retry.cmake")
     endif()
+    rapids_cmake_download_with_retry(
+      https://github.com/cpm-cmake/CPM.cmake/releases/download/v${CPM_DOWNLOAD_VERSION}/CPM.cmake
+      ${CPM_DOWNLOAD_LOCATION} ${CPM_DOWNLOAD_SHA256_HASH})
   endif()
 
   include(${CPM_DOWNLOAD_LOCATION})
