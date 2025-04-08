@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2024, NVIDIA CORPORATION.
+# Copyright (c) 2021-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,26 @@
 include(${rapids-cmake-dir}/cpm/init.cmake)
 include(${rapids-cmake-dir}/cpm/package_override.cmake)
 
-rapids_cpm_init()
+# Need to write out a default file
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/default.json
+  [=[
+{
+  "packages": {
+    "rmm": {
+      "version": "${rapids-cmake-version}",
+      "git_url": "https://github.com/rapidsai/rmm.git",
+      "git_tag": "branch-${version}"
+    },
+    "GTest": {
+      "version": "1.16.0",
+      "git_url": "https://github.com/google/googletest.git",
+      "git_tag": "v${version}"
+    }
+  }
+}
+  ]=])
+
+rapids_cpm_init(CUSTOM_DEFAULT_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/default.json")
 
 # Need to write out an override file
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json

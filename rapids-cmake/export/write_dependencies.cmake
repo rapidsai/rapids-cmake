@@ -78,9 +78,6 @@ function(rapids_export_write_dependencies type export_set file_path)
     file(READ "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/../cmake/download_with_retry.cmake"
          download_with_retry_logic)
     string(APPEND _RAPIDS_EXPORT_CONTENTS ${download_with_retry_logic})
-    string(APPEND _RAPIDS_EXPORT_CONTENTS
-           "\n# Guard to prevent including download_with_retry.cmake again\n")
-    string(APPEND _RAPIDS_EXPORT_CONTENTS "set(rapids_download_with_retry_included TRUE)\n\n")
 
     file(READ "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/../cpm/detail/download.cmake" cpm_logic)
     string(APPEND _RAPIDS_EXPORT_CONTENTS ${cpm_logic})
