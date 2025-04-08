@@ -13,6 +13,7 @@ require.
    :titlesonly:
 
    /command/rapids_cmake_build_type
+   /command/rapids_cmake_download_with_retry
    /command/rapids_cmake_install_lib_dir
    /command/rapids_cmake_make_global
    /command/rapids_cmake_parse_version
