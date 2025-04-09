@@ -21,16 +21,12 @@ project(rapids-existing-target LANGUAGES CXX)
 
 include("${rapids-cmake-testing-dir}/cpm/make_fake_project_build_dir_with_config.cmake")
 
-make_fake_project_build_dir_with_config(RapidsTestFind 2021.01.02
-    RapidsTestFindConfig.cmake
-    RapidsTestFindConfigVersion.cmake)
+make_fake_project_build_dir_with_config(RapidsTestFind 2021.01.02 RapidsTestFindConfig.cmake
+                                        RapidsTestFindConfigVersion.cmake)
 
 rapids_cpm_init()
 
-set(CMAKE_PREFIX_PATH
-  "${CMAKE_CURRENT_BINARY_DIR}/RapidsTestFind-build/"
-  )
-
+set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_BINARY_DIR}/RapidsTestFind-build/")
 
 add_library(RapidsTest::RapidsTest IMPORTED INTERFACE)
 

@@ -16,10 +16,9 @@
 cmake_minimum_required(VERSION 3.30.4)
 project(rapids-cpm_find-patch-command-project LANGUAGES CXX)
 
-
 # Need to write out an override file
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
-  [=[
+     [=[
 {
   "packages": {
     "gtest": {
@@ -45,11 +44,12 @@ include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
 rapids_cpm_generate_patch_command(GTest ${version} patch_command build_patch_only)
 message(STATUS "patch_command: ${patch_command}")
 if(NOT patch_command)
-  message(FATAL_ERROR "rapids_cpm_package_override failed to load patch step for `GTest` from package `gtest`")
+  message(FATAL_ERROR "rapids_cpm_package_override failed to load patch step for `GTest` from package `gtest`"
+  )
 endif()
 
-# Need to load ${build_dir}/rapids-cmake/patches/GTest/patch.cmake
-# and verify that the `files` variable has properly resolved `current_json_dir`
+# Need to load ${build_dir}/rapids-cmake/patches/GTest/patch.cmake and verify that the `files`
+# variable has properly resolved `current_json_dir`
 set(patch_script "${CMAKE_BINARY_DIR}/rapids-cmake/patches/GTest/patch.cmake")
 include("${patch_script}")
 if(files STREQUAL "/patches/0001-move-git-sha1.patch")

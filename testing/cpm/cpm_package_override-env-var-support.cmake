@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2024, NVIDIA CORPORATION.
+# Copyright (c) 2024-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ set(ENV{rapids_user} custom_env_user)
 
 # Need to write out an override file
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
-  [=[
+     [=[
 {
   "packages": {
     "nvbench": {
@@ -39,10 +39,12 @@ include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
 rapids_cpm_package_details(nvbench version repository tag shallow exclude)
 
 if(NOT version STREQUAL "custom_env_version")
-  message(FATAL_ERROR "custom version field was ignored. ${version} found instead of custom_env_version")
+  message(FATAL_ERROR "custom version field was ignored. ${version} found instead of custom_env_version"
+  )
 endif()
 if(NOT repository STREQUAL "custom_env_user@gitlab.private.com")
-  message(FATAL_ERROR "custom git_url field was ignored. ${repository} found instead of custom_env_user@gitlab.private.com")
+  message(FATAL_ERROR "custom git_url field was ignored. ${repository} found instead of custom_env_user@gitlab.private.com"
+  )
 endif()
 if(NOT DEFINED CPM_DOWNLOAD_ALL)
   message(FATAL_ERROR "CPM_DOWNLOAD_ALL should be defined when an override exists")

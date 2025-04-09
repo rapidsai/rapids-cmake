@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021, NVIDIA CORPORATION.
+# Copyright (c) 2021-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,28 +21,26 @@ rapids_export_package(BUILD DifferingPkgNameDuplicateTargets test_set GLOBAL_TAR
 rapids_export_package(BUILD DifferingPkgNameV2DuplicateTargets test_set GLOBAL_TARGETS PST::PST)
 rapids_export_package(build ExactlyDuplicate test_set GLOBAL_TARGETS EDT::EDT)
 
-
 rapids_export_write_dependencies(build test_set "${CMAKE_CURRENT_BINARY_DIR}/export_set.cmake")
 
-# Parse the `export_set.cmake` file for correct number of `find_dependency` calls
-# and entries in `rapids_global_targets`
+# Parse the `export_set.cmake` file for correct number of `find_dependency` calls and entries in
+# `rapids_global_targets`
 
 file(STRINGS "${CMAKE_CURRENT_BINARY_DIR}/export_set.cmake" text)
 
 foreach(line IN LISTS text)
   # message(STATUS "1. line: ${line}")
-  if( line MATCHES "find_dependency\\(ExactlyDuplicate\\)" )
-    if(NOT DEFINED duplicate_package_parsed )
+  if(line MATCHES "find_dependency\\(ExactlyDuplicate\\)")
+    if(NOT DEFINED duplicate_package_parsed)
       set(duplicate_package_parsed TRUE)
     else()
-      #We parsed a duplicate package
+      # We parsed a duplicate package
       message(FATAL_ERROR "Detected duplicate `find_dependency` calls for the same package")
     endif()
   endif()
 
-  if( line MATCHES "set\\(rapids_global_targets" AND NOT line MATCHES "unset")
-    # execute this line so we can check how many targets
-    # exist
+  if(line MATCHES "set\\(rapids_global_targets" AND NOT line MATCHES "unset")
+    # execute this line so we can check how many targets exist
     cmake_language(EVAL CODE "${line}")
 
     if(NOT "PST::PST" IN_LIST rapids_global_targets)

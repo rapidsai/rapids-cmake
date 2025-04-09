@@ -28,8 +28,8 @@ rapids_cpm_rmm(DOWNLOAD_ONLY ON)
 include(${rapids-cmake-dir}/cpm/cuco.cmake)
 rapids_cpm_cuco(DOWNLOAD_ONLY ON)
 
-# Verify that the two files that we inserted into the RMM source tree exist
-# Which proves the patches in the override are properly applied
+# Verify that the two files that we inserted into the RMM source tree exist which proves the patches
+# in the override are properly applied
 if(NOT EXISTS "${rmm_SOURCE_DIR}/git_file_1.txt")
   message(FATAL_ERROR "failed to apply rmm first patch")
 endif()
@@ -44,5 +44,7 @@ if(NOT EXISTS "${cuco_SOURCE_DIR}/git_file_1.txt")
 endif()
 
 add_custom_target(verify_generated_pins ALL
-  COMMAND ${CMAKE_COMMAND} "-S${CMAKE_SOURCE_DIR}/verify/" "-B${CMAKE_BINARY_DIR}/verify_build" "-Drapids-cmake-dir=${rapids-cmake-dir}" "-DCPM_DOWNLOAD_LOCATION=${CPM_DOWNLOAD_LOCATION}"
-)
+                  COMMAND ${CMAKE_COMMAND} "-S${CMAKE_SOURCE_DIR}/verify/"
+                          "-B${CMAKE_BINARY_DIR}/verify_build"
+                          "-Drapids-cmake-dir=${rapids-cmake-dir}"
+                          "-DCPM_DOWNLOAD_LOCATION=${CPM_DOWNLOAD_LOCATION}")

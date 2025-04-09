@@ -16,14 +16,15 @@
 include(${rapids-cmake-dir}/cpm/detail/convert_patch_json.cmake)
 
 set(bug
-  [=[#include "file.h"
+    [=[#include "file.h"
 int function(not_parsed[
 N], properly ) {
 }]=])
 set(file_path "${CMAKE_BINARY_DIR}/bug.txt")
-file(WRITE ${file_path} "${bug}" )
+file(WRITE ${file_path} "${bug}")
 
-set(expected_output [==[[
+set(expected_output
+    [==[[
 "#include \"file.h\"",
 "int function(not_parsed[",
 "N], properly ) {",
@@ -39,6 +40,6 @@ foreach(index RANGE ${content_length})
   string(JSON computed_line GET "${json_content}" ${index})
   string(JSON expected_line GET "${expected_output}" ${index})
   if(NOT (computed_line STREQUAL expected_line))
-  message(FATAL_ERROR "exp: `${expected_line}`\ngot: `${computed_line}`")
-endif()
+    message(FATAL_ERROR "exp: `${expected_line}`\ngot: `${computed_line}`")
+  endif()
 endforeach()

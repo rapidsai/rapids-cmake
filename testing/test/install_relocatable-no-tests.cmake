@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2023, NVIDIA CORPORATION.
+# Copyright (c) 2023-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,14 +20,13 @@ enable_language(CUDA)
 enable_testing()
 
 rapids_test_add(NAME verify_ COMMAND ls GPUS 1 INSTALL_COMPONENT_SET testing)
-rapids_test_install_relocatable(INSTALL_COMPONENT_SET testing
-                                DESTINATION bin/testing)
+rapids_test_install_relocatable(INSTALL_COMPONENT_SET testing DESTINATION bin/testing)
 
 file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/verify_cmake_install.cmake"
-"set(install_rules_file \"${CMAKE_CURRENT_BINARY_DIR}/cmake_install.cmake\")")
+     "set(install_rules_file \"${CMAKE_CURRENT_BINARY_DIR}/cmake_install.cmake\")")
 
 file(APPEND "${CMAKE_CURRENT_BINARY_DIR}/verify_cmake_install.cmake"
-[=[
+     [=[
 
 file(READ "${install_rules_file}" contents)
 set(bad_install_rule_match_string [===[rapids-cmake/generate_ctest_json")]===])
@@ -37,4 +36,5 @@ if(NOT is_found EQUAL -1)
 endif()
 ]=])
 add_custom_target(verify_install_files_valid ALL
-  COMMAND ${CMAKE_COMMAND} -P "${CMAKE_CURRENT_BINARY_DIR}/verify_cmake_install.cmake")
+                  COMMAND ${CMAKE_COMMAND} -P
+                          "${CMAKE_CURRENT_BINARY_DIR}/verify_cmake_install.cmake")

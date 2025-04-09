@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2023-2024, NVIDIA CORPORATION.
+# Copyright (c) 2023-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,9 +19,6 @@ if(NOT DEFINED DEPFILE)
 endif()
 
 if(NOT EXISTS "${DEPFILE}")
-  message(
-    FATAL_ERROR
-    "rapids_cython_create_modules didn't create the dependency file. "
-    "Expected dependency file: ${DEPFILE}"
-  )
+  message(FATAL_ERROR "rapids_cython_create_modules didn't create the dependency file. "
+                      "Expected dependency file: ${DEPFILE}")
 endif()

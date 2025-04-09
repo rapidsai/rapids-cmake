@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2023, NVIDIA CORPORATION.
+# Copyright (c) 2023-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,7 +23,8 @@ rapids_cpm_init()
 set(CMAKE_BUILD_SHARED_LIBS OFF)
 rapids_cpm_fmt()
 
-file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/use_fmt.cpp" [=[
+file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/use_fmt.cpp"
+     [=[
 #include <fmt/core.h>
 
 std::string make_error_string() {

@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2023-2024, NVIDIA CORPORATION.
+# Copyright (c) 2023-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,7 +31,8 @@ rapids_cpm_rmm()
 rapids_cpm_spdlog()
 rapids_cpm_nvbench()
 
-file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/use_fmt.cpp" [=[
+file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/use_fmt.cpp"
+     [=[
 #include <spdlog/spdlog.h>
 #include <nvbench/nvbench.cuh>
 
@@ -49,7 +50,6 @@ NVBENCH_BENCH_TYPES(nvbench_distinct, NVBENCH_TYPE_AXES(data_type))
 
 int main() { return 0; }
 ]=])
-
 
 add_library(uses_fmt SHARED "${CMAKE_CURRENT_BINARY_DIR}/use_fmt.cpp")
 target_link_libraries(uses_fmt PRIVATE rmm::rmm nvbench::nvbench spdlog::spdlog_header_only)

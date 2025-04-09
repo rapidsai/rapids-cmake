@@ -28,7 +28,8 @@ rapids_cpm_package_details(rmm rmm_version rmm_repository pin_rmm_tag rmm_shallo
 rapids_cpm_package_details(cuco cuco_version cuco_repository pin_cuco_tag cuco_shallow cuco_exclude)
 
 if(NOT pin_rmm_tag STREQUAL "e3e32150d1bef13480ede4b2df1f0b38e43108a4")
-  message(FATAL_ERROR "pinned rmm tag (${pin_rmm_tag}) doesn't match pre-computed SHA1 for the 22.02 tag")
+  message(FATAL_ERROR "pinned rmm tag (${pin_rmm_tag}) doesn't match pre-computed SHA1 for the 22.02 tag"
+  )
 endif()
 if(NOT pin_cuco_tag STREQUAL "f823d30d6b08a60383266db25821074dbdbe5822")
   message(FATAL_ERROR "pinned cuco tag (${pin_cuco_tag}) doesn't match hardcoded SHA1(f823d30...)")
@@ -42,7 +43,7 @@ function(validate_has_inline_patches package_name)
 
   string(TOLOWER "${package_name}" normalized_pkg_name)
   get_property(override_json_path GLOBAL
-             PROPERTY rapids_cpm_${normalized_pkg_name}_override_json_file)
+               PROPERTY rapids_cpm_${normalized_pkg_name}_override_json_file)
   string(JSON json_data ERROR_VARIABLE no_override_patch GET "${json_data}" patches)
 
   # Gather number of patches

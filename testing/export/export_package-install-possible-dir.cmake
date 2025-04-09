@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021, NVIDIA CORPORATION.
+# Copyright (c) 2021-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ include(${rapids-cmake-dir}/export/package.cmake)
 
 # Verify valid dir is picked up
 set(FAKE_PACKAGE_DIR "/valid/looking/path")
-rapids_export_package( install FAKE_PACKAGE test_export_set)
+rapids_export_package(install FAKE_PACKAGE test_export_set)
 
 # Verify that package configuration files exist
 set(path "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/install/package_FAKE_PACKAGE.cmake")
