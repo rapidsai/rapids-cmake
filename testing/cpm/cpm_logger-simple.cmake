@@ -17,32 +17,20 @@ include(${rapids-cmake-dir}/cpm/init.cmake)
 include(${rapids-cmake-dir}/cpm/rapids_logger.cmake)
 
 rapids_cpm_init()
+if(TARGET rapids_logger::rapids_logger)
+  message(FATAL_ERROR "Expected rapids_logger::rapids_logger not to exist")
+endif()
+
+if(COMMAND create_logger_macros)
+  message(FATAL_ERROR "Expected create_logger_macros function not to exist")
+endif()
+
 rapids_cpm_rapids_logger()
 
-set(logger_namespace rapids)
-set(logger_target "${logger_namespace}_logger")
-set(logger_impl_target "${logger_namespace}_logger_impl")
+if(NOT TARGET rapids_logger::rapids_logger)
+  message(FATAL_ERROR "Expected rapids_logger::rapids_logger to exist")
+endif()
 
-rapids_make_logger("${logger_namespace}")
-
-function(check_target target)
-  if(NOT TARGET "${target}")
-    message(FATAL_ERROR "Target ${target} was not created.")
-  endif()
-endfunction()
-
-function(check_file fn)
-  if(NOT EXISTS "${fn}")
-    message(FATAL_ERROR "File ${fn} was not created.")
-  endif()
-endfunction()
-
-check_target("${logger_target}")
-check_target("${logger_impl_target}")
-check_target("${logger_namespace}::${logger_target}")
-check_target("${logger_namespace}::${logger_impl_target}")
-
-set(base_dir "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_INCLUDEDIR}/${logger_namespace}")
-check_file("${base_dir}/logger.hpp")
-check_file("${base_dir}/logger_impl/logger_impl.hpp")
-check_file("${base_dir}/logger_impl/logger.cpp")
+if(NOT COMMAND create_logger_macros)
+  message(FATAL_ERROR "Expected create_logger_macros function to exist")
+endif()

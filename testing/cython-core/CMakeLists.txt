@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2023-2024, NVIDIA CORPORATION.
+# Copyright (c) 2023-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,5 +22,6 @@ add_cmake_config_test(cython-core_create_modules_errors.cmake SHOULD_FAIL "You m
 add_cmake_build_test(cython-core_create_modules)
 add_cmake_config_test(cython-core_create_modules_with_library)
 add_cmake_config_test(cython-core_create_modules_with_prefix)
+add_cmake_build_test(cython-core_create_modules_component)
 
 add_cmake_config_test(cython-core_add_rpath_entries)

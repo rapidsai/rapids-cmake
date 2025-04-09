@@ -21,6 +21,7 @@ set(RAPIDS_TEST_DISABLE_DEV_ERRORS ON)
 
 add_cmake_config_test( cpm_find-add-pkg-source )
 add_cmake_config_test( cpm_find-and-find_package )
+add_cmake_config_test( cpm_find-build-patch )
 add_cmake_config_test( cpm_find-components )
 add_cmake_config_test( cpm_find-existing-build-dir )
 add_cmake_config_test( cpm_find-existing-target )
@@ -76,6 +77,7 @@ add_cmake_config_test( cpm_generate_patch_command-override-case-insensitive.cmak
 add_cmake_config_test( cpm_generate_patch_command-override.cmake )
 add_cmake_config_test( cpm_generate_patch_command-current_json_dir.cmake )
 add_cmake_config_test( cpm_generate_patch_command-verify-copyright-header.cmake )
+add_cmake_config_test( cpm_generate_patch_command-build.cmake )
 
 add_cmake_config_test( cpm_bs_thread_pool-simple.cmake )
 add_cmake_config_test( cpm_bs_thread_pool-export.cmake )

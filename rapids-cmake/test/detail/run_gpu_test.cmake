@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2022-2024, NVIDIA CORPORATION.
+# Copyright (c) 2022-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,11 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-cmake_minimum_required(VERSION 3.26.4)
+cmake_minimum_required(VERSION 3.30.4)
 
 if(DEFINED ENV{CTEST_RESOURCE_GROUP_COUNT})
+  math(EXPR max_index "$ENV{CTEST_RESOURCE_GROUP_COUNT}-1")
   # cmake-lint: disable=E1120
-  foreach(index RANGE 0 ${CTEST_RESOURCE_GROUP_COUNT})
+  foreach(index RANGE 0 "${max_index}")
     set(allocation $ENV{CTEST_RESOURCE_GROUP_${index}_GPUS})
     if(DEFINED allocation)
       # strings look like "id:value,slots:value" so let's make a super lazy parser by deleting `id:`

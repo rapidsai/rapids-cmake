@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022-2024, NVIDIA CORPORATION.
+ * Copyright (c) 2022-2025, NVIDIA CORPORATION.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,8 @@
 #include <cuda_runtime_api.h>
 #endif
 
+#include <filesystem>
+#include <fstream>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -47,7 +49,7 @@ void to_json(std::ostream& buffer, gpu const& g)
   buffer << "\t\t{\"id\": \"" << g.id << "\", \"slots\": " << g.slots << "}";
 }
 
-int main()
+int main(int argc, char** argv)
 {
   std::vector<gpu> gpus;
   int nDevices = 0;
@@ -67,19 +69,36 @@ int main()
   gpus.push_back(gpu(0));
 #endif
 
-  version v;
-  std::cout << "{\n";
-  to_json(std::cout, v);
-  std::cout << ",\n";
-  std::cout << "\"local\": [{\n";
-  std::cout << "\t\"gpus\": [\n";
-  for (int i = 0; i < gpus.size(); ++i) {
-    to_json(std::cout, gpus[i]);
-    if (i != (gpus.size() - 1)) { std::cout << ","; }
-    std::cout << "\n";
+  if (argc != 2) {
+    std::cout << "Usage: " << argv[0] << " <filename>\n";
+    return 1;
   }
-  std::cout << "\t]\n";
-  std::cout << "}]\n";
-  std::cout << "}" << std::endl;
+
+  // GENERATED_RESOURCE_SPEC_FILE requires an absolute path, and CMake does
+  // not have a "give me the current working directory" command, so we have to
+  // get it from here.
+  std::string arg = argv[1];
+  if (arg == "--cwd") {
+    std::cout << std::filesystem::current_path().string();
+    std::cout.flush();
+    return 0;
+  }
+
+  std::ofstream fout(argv[1]);
+
+  version v;
+  fout << "{\n";
+  to_json(fout, v);
+  fout << ",\n";
+  fout << "\"local\": [{\n";
+  fout << "\t\"gpus\": [\n";
+  for (int i = 0; i < gpus.size(); ++i) {
+    to_json(fout, gpus[i]);
+    if (i != (gpus.size() - 1)) { fout << ","; }
+    fout << "\n";
+  }
+  fout << "\t]\n";
+  fout << "}]\n";
+  fout << "}" << std::endl;
   return 0;
 }

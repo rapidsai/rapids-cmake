@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2024, NVIDIA CORPORATION.
+# Copyright (c) 2021-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -73,6 +73,7 @@ function(rapids_cpm_nvbench)
   if(BUILD_STATIC IN_LIST ARGN)
     set(build_shared OFF)
     set(CPM_DOWNLOAD_nvbench ON) # Since we need static we build from source
+    set(CPM_DOWNLOAD_fmt ON) # Make sure we don't link to a preexisting shared fmt
   endif()
 
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
@@ -86,10 +87,10 @@ function(rapids_cpm_nvbench)
   endif()
 
   include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
-  rapids_cpm_generate_patch_command(nvbench ${version} patch_command)
+  rapids_cpm_generate_patch_command(nvbench ${version} patch_command build_patch_only)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
-  rapids_cpm_find(nvbench ${version} ${ARGN}
+  rapids_cpm_find(nvbench ${version} ${ARGN} ${build_patch_only}
                   GLOBAL_TARGETS nvbench::nvbench nvbench::main
                   CPM_ARGS
                   GIT_REPOSITORY ${repository}
@@ -102,6 +103,11 @@ function(rapids_cpm_nvbench)
                           "NVBench_ENABLE_TESTING OFF"
                           "NVBench_ENABLE_INSTALL_RULES ${to_install}"
                           "BUILD_SHARED_LIBS ${build_shared}")
+
+  if(nvbench_ADDED)
+    # nvcc incorrectly sees some loops in fmt as unreachable.
+    target_compile_options(nvbench PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:--diag-suppress 128>)
+  endif()
 
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
   rapids_cpm_display_patch_status(nvbench)

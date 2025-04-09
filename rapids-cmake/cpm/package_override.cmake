@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2024, NVIDIA CORPORATION.
+# Copyright (c) 2021-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -56,10 +56,14 @@ as the override.
 
 .. note::
 
-  .. versionadded:: v23.10.00
+  .. versionadded:: v25.04.00
 
     When the variable `CPM_<package_name>_SOURCE` exists, any override entries
-    for `package_name` will be ignored.
+    for `package_name` will be parsed but ignored.
+
+    For versions between v23.10 and v25.02 ( inclusive both sides ) the variable
+    `CPM_<package_name>_SOURCE` will cause any override entries for `package_name`
+    to be ignored and not parsed.
 
 
 .. note::
@@ -91,7 +95,8 @@ function(rapids_cpm_package_override _rapids_override_filepath)
       string(TOLOWER "${package_name}" normalized_pkg_name)
       get_property(override_exists GLOBAL PROPERTY rapids_cpm_${normalized_pkg_name}_override_json
                    SET)
-      if(override_exists OR DEFINED CPM_${package_name}_SOURCE)
+      if(override_exists)
+        # Early terminate if this project already has an override
         continue()
       endif()
 
@@ -107,11 +112,22 @@ function(rapids_cpm_package_override _rapids_override_filepath)
         set(package_proper_name ${package_name}) # Required for FetchContent_Declare
       endif()
 
-      # only add the first override for a project we encounter
+      # Always load overrides into our internal properties even when CPM_${package_name}_SOURCE is
+      # set. We add the override_ignored so that `package_details` can maintain behavior around
+      # `CPM_DOWNLOAD_ALL` when an override is loaded but not used
+      #
+      # We are using this behavior so that advanced users can retrieve the contents of an override
+      # even when not in use
       string(JSON data GET "${json_data}" packages "${package_name}")
       set_property(GLOBAL PROPERTY rapids_cpm_${normalized_pkg_name}_override_json "${data}")
       set_property(GLOBAL PROPERTY rapids_cpm_${normalized_pkg_name}_override_json_file
                                    "${_rapids_override_filepath}")
+
+      if(DEFINED CPM_${package_name}_SOURCE)
+        set_property(GLOBAL PROPERTY rapids_cpm_${normalized_pkg_name}_override_ignored "ON")
+        continue()
+      endif()
+      set_property(GLOBAL PROPERTY rapids_cpm_${normalized_pkg_name}_override_ignored "OFF")
 
       # establish the fetch content
       include(FetchContent)
@@ -119,10 +135,10 @@ function(rapids_cpm_package_override _rapids_override_filepath)
       rapids_cpm_package_details(${package_name} version repository tag shallow exclude)
 
       include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
-      rapids_cpm_generate_patch_command(${package_name} ${version} patch_command)
+      rapids_cpm_generate_patch_command(${package_name} ${version} patch_command build_patch_only)
 
       unset(exclude_from_all)
-      if(exclude AND CMAKE_VERSION VERSION_GREATER_EQUAL 3.28.0)
+      if(exclude)
         set(exclude_from_all EXCLUDE_FROM_ALL)
       endif()
       FetchContent_Declare(${package_proper_name}

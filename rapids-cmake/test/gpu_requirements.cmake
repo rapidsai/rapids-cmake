@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2022-2024, NVIDIA CORPORATION.
+# Copyright (c) 2022-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -87,6 +87,7 @@ function(rapids_test_gpu_requirements test_name)
 
   if(gpus AND percent)
     set_property(TEST ${test_name} PROPERTY RESOURCE_GROUPS "${gpus},gpus:${percent}")
+    set_property(TEST ${test_name} PROPERTY FIXTURES_REQUIRED resource_spec)
   endif()
 
 endfunction()

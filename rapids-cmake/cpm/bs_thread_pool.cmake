@@ -1,5 +1,5 @@
 # =============================================================================
-# Copyright (c) 2024, NVIDIA CORPORATION.
+# Copyright (c) 2024-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 # in compliance with the License. You may obtain a copy of the License at
@@ -68,10 +68,10 @@ function(rapids_cpm_bs_thread_pool)
   rapids_cpm_package_details(bs_thread_pool version repository tag shallow exclude)
 
   include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
-  rapids_cpm_generate_patch_command(bs_thread_pool ${version} patch_command)
+  rapids_cpm_generate_patch_command(bs_thread_pool ${version} patch_command build_patch_only)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
-  rapids_cpm_find(bs_thread_pool ${version} ${ARGN}
+  rapids_cpm_find(bs_thread_pool ${version} ${ARGN} ${build_patch_only}
                   GLOBAL_TARGETS rapids_bs_thread_pool
                   CPM_ARGS
                   GIT_REPOSITORY ${repository}

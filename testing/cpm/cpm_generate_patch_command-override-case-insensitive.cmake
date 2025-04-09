@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2024, NVIDIA CORPORATION.
+# Copyright (c) 2024-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-cmake_minimum_required(VERSION 3.26.4)
+cmake_minimum_required(VERSION 3.30.4)
 project(rapids-cpm_find-patch-command-project LANGUAGES CXX)
 
 
@@ -42,7 +42,7 @@ include(${rapids-cmake-dir}/cpm/init.cmake)
 rapids_cpm_init(OVERRIDE ${CMAKE_CURRENT_BINARY_DIR}/override.json)
 
 include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
-rapids_cpm_generate_patch_command(GTest ${version} patch_command)
+rapids_cpm_generate_patch_command(GTest ${version} patch_command build_patch_only)
 message(STATUS "patch_command: ${patch_command}")
 if(NOT patch_command)
   message(FATAL_ERROR "rapids_cpm_package_override failed to load patch step for `GTest` from package `gtest`")

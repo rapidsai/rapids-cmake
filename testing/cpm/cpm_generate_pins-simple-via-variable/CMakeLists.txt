@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2024, NVIDIA CORPORATION.
+# Copyright (c) 2024-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 # limitations under the License.
 #=============================================================================
 
-cmake_minimum_required(VERSION 3.26.4)
+cmake_minimum_required(VERSION 3.30.4)
 project(rapids-test-project LANGUAGES CXX)
 
 set(RAPIDS_CMAKE_CPM_PINNED_VERSIONS_FILE "${CMAKE_CURRENT_BINARY_DIR}/custom_path/pinned_versions.json")
@@ -27,5 +27,5 @@ rapids_cpm_rmm()
 
 include("${rapids-cmake-testing-dir}/cpm/verify_generated_pins.cmake")
 verify_generated_pins(verify_pins
-    PROJECTS rmm fmt spdlog
+    PROJECTS rmm spdlog
     PIN_FILE "${RAPIDS_CMAKE_CPM_PINNED_VERSIONS_FILE}")

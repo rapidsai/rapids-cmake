@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2024, NVIDIA CORPORATION.
+# Copyright (c) 2021-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 include(${rapids-cmake-dir}/cmake/write_version_file.cmake)
 include(${rapids-cmake-testing-dir}/utils/check_copyright_header.cmake)
 
-cmake_minimum_required(VERSION 3.26.4)
+cmake_minimum_required(VERSION 3.30.4)
 
 project(DEMO VERSION 3.2.0 LANGUAGES NONE)
 rapids_cmake_write_version_file(demo_version.hpp)

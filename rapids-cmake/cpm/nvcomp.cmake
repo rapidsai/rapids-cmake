@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2024, NVIDIA CORPORATION.
+# Copyright (c) 2021-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -179,7 +179,7 @@ function(rapids_cpm_nvcomp)
   endif()
 
   include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
-  rapids_cpm_generate_patch_command(nvcomp ${version} patch_command)
+  rapids_cpm_generate_patch_command(nvcomp ${version} patch_command build_patch_only)
 
   # Apply any patch commands to the proprietary binary
   if(nvcomp_proprietary_binary AND patch_command)
@@ -187,7 +187,7 @@ function(rapids_cpm_nvcomp)
   endif()
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
-  rapids_cpm_find(nvcomp ${version} ${_RAPIDS_UNPARSED_ARGUMENTS}
+  rapids_cpm_find(nvcomp ${version} ${_RAPIDS_UNPARSED_ARGUMENTS} ${build_patch_only}
                   GLOBAL_TARGETS nvcomp::nvcomp
                   CPM_ARGS
                   GIT_REPOSITORY ${repository}

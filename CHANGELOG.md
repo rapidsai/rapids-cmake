@@ -1,3 +1,47 @@
+# rapids-cmake 25.04.00 (9 Apr 2025)
+
+## 🚨 Breaking Changes
+
+- Backport build patch functionality ([#805](https://github.com/rapidsai/rapids-cmake/pull/805)) [@KyleFromNVIDIA](https://github.com/KyleFromNVIDIA)
+- Update gtest version ([#795](https://github.com/rapidsai/rapids-cmake/pull/795)) [@vyasr](https://github.com/vyasr)
+- Remove now superfluous fmt patch ([#790](https://github.com/rapidsai/rapids-cmake/pull/790)) [@vyasr](https://github.com/vyasr)
+- Use CTest dynamic resource spec generation ([#786](https://github.com/rapidsai/rapids-cmake/pull/786)) [@KyleFromNVIDIA](https://github.com/KyleFromNVIDIA)
+- Switch to using rapids-logger as a library ([#765](https://github.com/rapidsai/rapids-cmake/pull/765)) [@vyasr](https://github.com/vyasr)
+- Require CMake 3.30.4, and latest CPM ([#753](https://github.com/rapidsai/rapids-cmake/pull/753)) [@robertmaynard](https://github.com/robertmaynard)
+
+## 🐛 Bug Fixes
+
+- Set correct compiler feature for `generate_ctest_json` ([#802](https://github.com/rapidsai/rapids-cmake/pull/802)) [@KyleFromNVIDIA](https://github.com/KyleFromNVIDIA)
+- Also download fmt when building nvbench statically ([#792](https://github.com/rapidsai/rapids-cmake/pull/792)) [@vyasr](https://github.com/vyasr)
+- Rollback to CPM 0.40.0 ([#789](https://github.com/rapidsai/rapids-cmake/pull/789)) [@robertmaynard](https://github.com/robertmaynard)
+- Sanitize patch inputs so that quotes are properly escaped ([#787](https://github.com/rapidsai/rapids-cmake/pull/787)) [@robertmaynard](https://github.com/robertmaynard)
+- Fix tests broken by rapids-logger changes ([#775](https://github.com/rapidsai/rapids-cmake/pull/775)) [@vyasr](https://github.com/vyasr)
+
+## 🚀 New Features
+
+- Backport build patch functionality ([#805](https://github.com/rapidsai/rapids-cmake/pull/805)) [@KyleFromNVIDIA](https://github.com/KyleFromNVIDIA)
+- Add support for components in Cython `rapids_cython_create_modules` ([#783](https://github.com/rapidsai/rapids-cmake/pull/783)) [@pentschev](https://github.com/pentschev)
+- rapids_cpm_package_override: Always load overrides ([#778](https://github.com/rapidsai/rapids-cmake/pull/778)) [@robertmaynard](https://github.com/robertmaynard)
+- Require CMake 3.30.4, and latest CPM ([#753](https://github.com/rapidsai/rapids-cmake/pull/753)) [@robertmaynard](https://github.com/robertmaynard)
+
+## 🛠️ Improvements
+
+- Update gtest version ([#795](https://github.com/rapidsai/rapids-cmake/pull/795)) [@vyasr](https://github.com/vyasr)
+- Remove now superfluous fmt patch ([#790](https://github.com/rapidsai/rapids-cmake/pull/790)) [@vyasr](https://github.com/vyasr)
+- Use CTest dynamic resource spec generation ([#786](https://github.com/rapidsai/rapids-cmake/pull/786)) [@KyleFromNVIDIA](https://github.com/KyleFromNVIDIA)
+- Use conda-build instead of conda-mambabuild ([#784](https://github.com/rapidsai/rapids-cmake/pull/784)) [@bdice](https://github.com/bdice)
+- Set `-Wno-deprecated-gpu-targets` when compiling for RAPIDS architectures ([#776](https://github.com/rapidsai/rapids-cmake/pull/776)) [@bdice](https://github.com/bdice)
+- Add shellcheck to pre-commit and fix warnings ([#772](https://github.com/rapidsai/rapids-cmake/pull/772)) [@gforsyth](https://github.com/gforsyth)
+- Update `cuCollection` to not rely on `thrust::identity` ([#771](https://github.com/rapidsai/rapids-cmake/pull/771)) [@miscco](https://github.com/miscco)
+- Use rapids-generate-version for package versions ([#770](https://github.com/rapidsai/rapids-cmake/pull/770)) [@bdice](https://github.com/bdice)
+- Use shared-workflows branch-25.04 ([#768](https://github.com/rapidsai/rapids-cmake/pull/768)) [@bdice](https://github.com/bdice)
+- add telemetry ([#767](https://github.com/rapidsai/rapids-cmake/pull/767)) [@msarahan](https://github.com/msarahan)
+- Add build_type input field for `test.yaml` ([#766](https://github.com/rapidsai/rapids-cmake/pull/766)) [@gforsyth](https://github.com/gforsyth)
+- Switch to using rapids-logger as a library ([#765](https://github.com/rapidsai/rapids-cmake/pull/765)) [@vyasr](https://github.com/vyasr)
+- Add `verify-codeowners` hook ([#762](https://github.com/rapidsai/rapids-cmake/pull/762)) [@KyleFromNVIDIA](https://github.com/KyleFromNVIDIA)
+- Forward-merge branch-25.02 to branch-25.04 ([#760](https://github.com/rapidsai/rapids-cmake/pull/760)) [@bdice](https://github.com/bdice)
+- Migrate to NVKS for amd64 CI runners ([#758](https://github.com/rapidsai/rapids-cmake/pull/758)) [@bdice](https://github.com/bdice)
+
 # rapids-cmake 25.02.00 (13 Feb 2025)
 
 ## 🚨 Breaking Changes

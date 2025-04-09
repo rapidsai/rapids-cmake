@@ -26,42 +26,43 @@ Allow projects to build `rapids-logger` via `CPM`.
 Uses the version of rapids-logger :ref:`specified in the version file <cpm_versions>` for consistency
 across all RAPIDS projects.
 
-Unlike most `rapids_cpm` functions, this one does not support export sets because rapids-logger adds targets directly to the calling project's own export set and does not require its own exporting or to be found at all by consuming projects once the first project's call to rapids_make_logger has completed.
-
 .. code-block:: cmake
 
-  rapids_cpm_rapids_logger( [<CPM_ARGS> ...])
+  rapids_cpm_rapids_logger( [BUILD_EXPORT_SET <export-name>]
+                            [INSTALL_EXPORT_SET <export-name>]
+                            [<CPM_ARGS> ...])
 
 .. |PKG_NAME| replace:: logger
 .. include:: common_package_args.txt
 
-Result Functions
-^^^^^^^^^^^^^^^^
-  :cmake:command:`rapids_make_logger` is made available
+Result Targets
+^^^^^^^^^^^^^^
+  rapids_logger::rapids_logger target will be created
 
 #]=======================================================================]
 function(rapids_cpm_rapids_logger)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.rapids_logger")
 
-  set(options)
-  set(one_value)
-  set(multi_value)
-  cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
-
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
   rapids_cpm_package_details(rapids_logger version repository tag shallow exclude)
 
   include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
-  rapids_cpm_generate_patch_command(rapids_logger ${version} patch_command)
+  rapids_cpm_generate_patch_command(rapids_logger ${version} patch_command build_patch_only)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
-  rapids_cpm_find(rapids_logger ${version} ${_RAPIDS_UNPARSED_ARGUMENTS}
+  rapids_cpm_find(rapids_logger ${version} ${ARGN} ${build_patch_only}
                   CPM_ARGS
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
                   GIT_SHALLOW ${shallow} ${patch_command}
-                  EXCLUDE_FROM_ALL ON)
+                  OPTIONS "BUILD_TESTS OFF")
 
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
   rapids_cpm_display_patch_status(logger)
+
+  # Propagate up variables that CPMFindPackage provide
+  set(rapids_logger_SOURCE_DIR "${rapids_logger_SOURCE_DIR}" PARENT_SCOPE)
+  set(rapids_logger_BINARY_DIR "${rapids_logger_BINARY_DIR}" PARENT_SCOPE)
+  set(rapids_logger_ADDED "${rapids_logger_ADDED}" PARENT_SCOPE)
+  set(rapids_logger_VERSION ${version} PARENT_SCOPE)
 endfunction()
