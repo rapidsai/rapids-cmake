@@ -51,10 +51,6 @@ repos:
           - cmakelang==0.6.13
         verbose: true
         require_serial: true
-        files: |
-          (?x)^(
-            ^rapids-cmake/.*$
-          )
       - id: cmake-lint
         name: cmake-lint
         entry: ./ci/checks/run-cmake-format.sh cmake-lint
@@ -66,9 +62,9 @@ repos:
           - cmakelang==0.6.13
         verbose: true
         require_serial: true
-        files: |
+        exclude: |
           (?x)^(
-            ^rapids-cmake/.*$
+            ^testing/.*$
           )
   - repo: https://github.com/rapidsai/pre-commit-hooks
     rev: v0.6.0
