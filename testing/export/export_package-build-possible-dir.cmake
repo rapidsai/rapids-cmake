@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2018-2021, NVIDIA CORPORATION.
+# Copyright (c) 2018-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ include(${rapids-cmake-dir}/export/package.cmake)
 
 # Verify valid dir is picked up
 set(FAKE_PACKAGE_DIR "/valid/looking/path")
-rapids_export_package( build FAKE_PACKAGE test_export_set)
+rapids_export_package(build FAKE_PACKAGE test_export_set)
 
 # Verify that package configuration files exist
 set(path "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/build/package_FAKE_PACKAGE.cmake")
@@ -35,7 +35,7 @@ endif()
 
 # Verify in-valid dir is ignored
 set(also_fake_package_DIR OFF)
-rapids_export_package( BUILD also_fake_package test_export_set)
+rapids_export_package(BUILD also_fake_package test_export_set)
 set(path "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/build/package_also_fake_package.cmake")
 if(NOT EXISTS "${path}")
   message(FATAL_ERROR "rapids_export_package failed to generate a find_package configuration")

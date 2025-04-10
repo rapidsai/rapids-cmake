@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2024, NVIDIA CORPORATION.
+# Copyright (c) 2021-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 # limitations under the License.
 #=============================================================================
 
-function(setup_cpm_cache )
+function(setup_cpm_cache)
   set(CPM_SOURCE_CACHE "${CMAKE_BINARY_DIR}")
   cmake_path(APPEND_STRING CPM_SOURCE_CACHE "/cache")
 
@@ -23,15 +23,12 @@ function(setup_cpm_cache )
   set(src_dir "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/fill_cache/")
   set(build_dir "${CPM_SOURCE_CACHE}")
 
-  #download all pre-configured rapids-cmake packages
-  execute_process(COMMAND ${CMAKE_COMMAND}
-      -Drapids-cmake-dir=${PROJECT_SOURCE_DIR}/../rapids-cmake
-      -S ${src_dir} -B ${build_dir}
-      -DCPM_SOURCE_CACHE=${CPM_SOURCE_CACHE}
-      -DCPM_DOWNLOAD_LOCATION=${CPM_DOWNLOAD_LOCATION}
-      WORKING_DIRECTORY ${src_dir}
-      OUTPUT_VARIABLE out_var
-      )
+  # download all pre-configured rapids-cmake packages
+  execute_process(COMMAND ${CMAKE_COMMAND} -Drapids-cmake-dir=${PROJECT_SOURCE_DIR}/../rapids-cmake
+                          -S ${src_dir} -B ${build_dir} -DCPM_SOURCE_CACHE=${CPM_SOURCE_CACHE}
+                          -DCPM_DOWNLOAD_LOCATION=${CPM_DOWNLOAD_LOCATION}
+                  WORKING_DIRECTORY ${src_dir}
+                  OUTPUT_VARIABLE out_var)
   # Find the line in out_var that contains "CPM packages in cache
   set(packages)
   foreach(line IN LISTS out_var)

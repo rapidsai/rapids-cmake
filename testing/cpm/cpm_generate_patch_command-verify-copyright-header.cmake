@@ -22,7 +22,7 @@ rapids_cpm_init()
 
 # Need to write out an override file
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
-  [=[
+     [=[
 {
   "packages": {
     "pkg_with_patch": {

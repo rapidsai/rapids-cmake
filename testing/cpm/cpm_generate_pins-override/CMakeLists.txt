@@ -21,7 +21,7 @@ rapids_cpm_init(GENERATE_PINNED_VERSIONS)
 
 # Need to write out an override file
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
-  [=[
+     [=[
 {
   "packages" : {
     "rmm" : {
@@ -38,5 +38,7 @@ include(${rapids-cmake-dir}/cpm/rmm.cmake)
 rapids_cpm_rmm(DOWNLOAD_ONLY ON)
 
 add_custom_target(verify_generated_pins ALL
-  COMMAND ${CMAKE_COMMAND} "-S${CMAKE_SOURCE_DIR}/verify/" "-B${CMAKE_BINARY_DIR}/verify_build" "-Drapids-cmake-dir=${rapids-cmake-dir}" "-DCPM_DOWNLOAD_LOCATION=${CPM_DOWNLOAD_LOCATION}"
-)
+                  COMMAND ${CMAKE_COMMAND} "-S${CMAKE_SOURCE_DIR}/verify/"
+                          "-B${CMAKE_BINARY_DIR}/verify_build"
+                          "-Drapids-cmake-dir=${rapids-cmake-dir}"
+                          "-DCPM_DOWNLOAD_LOCATION=${CPM_DOWNLOAD_LOCATION}")

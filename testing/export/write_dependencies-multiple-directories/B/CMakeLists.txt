@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021, NVIDIA CORPORATION.
+# Copyright (c) 2021-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,10 +13,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-rapids_export_cpm( BUILD
-                   SECOND_FAKE_CPM_PACKAGE
-                   test_export_set
-                   CPM_ARGS
-                    VERSION 2.0
-                   GLOBAL_TARGETS ABC::ABC ABC::CBA
-                   )
+rapids_export_cpm(BUILD SECOND_FAKE_CPM_PACKAGE test_export_set CPM_ARGS VERSION 2.0
+                  GLOBAL_TARGETS ABC::ABC ABC::CBA)

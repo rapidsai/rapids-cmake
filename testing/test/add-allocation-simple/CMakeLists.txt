@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2022-2023, NVIDIA CORPORATION.
+# Copyright (c) 2022-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -26,6 +26,4 @@ enable_testing()
 rapids_test_add(NAME simple_test COMMAND verify_alloc GPUS 1)
 
 # Validate that the test runs correctly
-set_tests_properties(simple_test
-  PROPERTIES PASS_REGULAR_EXPRESSION "Seeing 1 GPU devices"
-  )
+set_tests_properties(simple_test PROPERTIES PASS_REGULAR_EXPRESSION "Seeing 1 GPU devices")

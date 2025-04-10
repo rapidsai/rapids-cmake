@@ -19,7 +19,6 @@ cmake_minimum_required(VERSION 3.30.4)
 
 project(DEMO VERSION 2.4 LANGUAGES CXX)
 
-
 add_subdirectory(gen_header)
 
 add_executable(verify_no_git main.cpp)

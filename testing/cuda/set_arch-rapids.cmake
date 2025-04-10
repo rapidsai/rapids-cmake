@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2023, NVIDIA CORPORATION.
+# Copyright (c) 2021-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,7 +18,8 @@ include(${rapids-cmake-dir}/cuda/set_architectures.cmake)
 rapids_cuda_set_architectures(RAPIDS)
 
 if(NOT DEFINED CMAKE_CUDA_ARCHITECTURES)
-  message(FATAL_ERROR "CMAKE_CUDA_ARCHITECTURES should exist after calling rapids_cuda_set_architectures()")
+  message(FATAL_ERROR "CMAKE_CUDA_ARCHITECTURES should exist after calling rapids_cuda_set_architectures()"
+  )
 endif()
 
 include("${rapids-cmake-testing-dir}/cuda/validate-cuda-rapids.cmake")

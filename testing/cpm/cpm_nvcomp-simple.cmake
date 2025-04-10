@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2023, NVIDIA CORPORATION.
+# Copyright (c) 2021-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,7 +25,8 @@ endif()
 rapids_cpm_nvcomp()
 
 if(nvcomp_proprietary_binary)
-  message(FATAL_ERROR "Ignored no explicit enabling of `USE_PROPRIETARY_BINARY` and brought in the binary version")
+  message(FATAL_ERROR "Ignored no explicit enabling of `USE_PROPRIETARY_BINARY` and brought in the binary version"
+  )
 endif()
 
 # Make sure we can be called multiple times

@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2018-2023, NVIDIA CORPORATION.
+# Copyright (c) 2018-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 #=============================================================================
 include(${rapids-cmake-dir}/export/package.cmake)
 
-rapids_export_package( build FAKE_PACKAGE test_export_set VERSION 22.08 COMPONENTS comp1)
+rapids_export_package(build FAKE_PACKAGE test_export_set VERSION 22.08 COMPONENTS comp1)
 
 # Verify that package configuration files exist
 set(path "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/build/package_FAKE_PACKAGE.cmake")
@@ -28,12 +28,14 @@ set(to_match_string [=[22.08 QUIET]=])
 file(READ "${path}" contents)
 string(FIND "${contents}" "${to_match_string}" is_found)
 if(is_found EQUAL -1)
-  message(FATAL_ERROR "rapids_export_package failed to generate a find_package configuration with version")
+  message(FATAL_ERROR "rapids_export_package failed to generate a find_package configuration with version"
+  )
 endif()
 
 # verify that the expected components is in FAKE_PACKAGE.cmake
 set(to_match_string [=[COMPONENTS comp1)]=])
 string(FIND "${contents}" "${to_match_string}" is_found)
 if(is_found EQUAL -1)
-  message(FATAL_ERROR "rapids_export_package failed to generate a find_package configuration with COMPONENTS")
+  message(FATAL_ERROR "rapids_export_package failed to generate a find_package configuration with COMPONENTS"
+  )
 endif()

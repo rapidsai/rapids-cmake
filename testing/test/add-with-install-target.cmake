@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2022-2024, NVIDIA CORPORATION.
+# Copyright (c) 2022-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,7 +24,8 @@ file(WRITE "${CMAKE_BINARY_DIR}/main.cu" "int main(){return 0;}")
 add_executable(verify_alloc "${CMAKE_BINARY_DIR}/main.cu")
 
 enable_testing()
-rapids_test_add(NAME simple_test COMMAND ${CMAKE_COMMAND} -E env verify_alloc GPUS 1 INSTALL_COMPONENT_SET testing INSTALL_TARGET verify_alloc)
+rapids_test_add(NAME simple_test COMMAND ${CMAKE_COMMAND} -E env verify_alloc GPUS 1
+                INSTALL_COMPONENT_SET testing INSTALL_TARGET verify_alloc)
 
 # Verify that we have recorded `simple_test` as part of the `testing` component
 get_target_property(names rapids_test_install_testing TESTS_TO_RUN)
@@ -35,5 +36,6 @@ endif()
 # Verify that `verify_alloc` is marked as to be installed
 get_target_property(names rapids_test_install_testing TARGETS_TO_INSTALL)
 if(NOT "verify_alloc" IN_LIST names)
-  message(FATAL_ERROR "Failed to record `verify_alloc` as a target to be installed in the testing component")
+  message(FATAL_ERROR "Failed to record `verify_alloc` as a target to be installed in the testing component"
+  )
 endif()

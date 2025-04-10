@@ -19,12 +19,10 @@ project(rapids-test-project LANGUAGES CXX)
 cmake_path(GET rapids-cmake-dir PARENT_PATH rapids.cmake-location)
 cmake_path(APPEND rapids.cmake-location "RAPIDS.cmake")
 
-# Remove this cache variable so we can properly test
-# fetching rapids-cmake work as intended
+# Remove this cache variable so we can properly test fetching rapids-cmake work as intended
 unset(rapids-cmake-dir CACHE)
 
-# Remove this cache variable so we can properly test
-# fetching rapids-cmake work as intended
+# Remove this cache variable so we can properly test fetching rapids-cmake work as intended
 unset(rapids-cmake-dir CACHE)
 
 add_subdirectory(A)

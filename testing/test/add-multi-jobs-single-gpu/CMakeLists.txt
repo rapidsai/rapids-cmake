@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2022-2023, NVIDIA CORPORATION.
+# Copyright (c) 2022-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,5 +31,6 @@ enable_testing()
 
 foreach(v RANGE 5)
   # this way all our tests can reside on the same gpu
-  rapids_test_add(NAME concurrent_test_${v} COMMAND verify_multi_concurrent ${v} GPUS 1 PERCENT 1${v})
+  rapids_test_add(NAME concurrent_test_${v} COMMAND verify_multi_concurrent ${v} GPUS 1
+                  PERCENT 1${v})
 endforeach()

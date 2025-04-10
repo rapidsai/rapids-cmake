@@ -14,8 +14,7 @@
 # limitations under the License.
 #=============================================================================
 
-# The only thing we can test is that everything comes
-# back appended with -real
+# The only thing we can test is that everything comes back appended with -real
 foreach(value IN LISTS CMAKE_CUDA_ARCHITECTURES)
 
   # verify it ends with `-real`
@@ -26,11 +25,12 @@ foreach(value IN LISTS CMAKE_CUDA_ARCHITECTURES)
 
 endforeach()
 
-if(NOT DEFINED CACHE{CMAKE_CUDA_ARCHITECTURES} )
-  message(FATAL_ERROR "rapids_cuda_set_architectures didn't make CMAKE_CUDA_ARCHITECTURES a cache variable")
+if(NOT DEFINED CACHE{CMAKE_CUDA_ARCHITECTURES})
+  message(FATAL_ERROR "rapids_cuda_set_architectures didn't make CMAKE_CUDA_ARCHITECTURES a cache variable"
+  )
 endif()
 
-if(CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL 12.8.0 )
+if(CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL 12.8.0)
   if(NOT CMAKE_CUDA_FLAGS MATCHES "Wno-deprecated-gpu-targets")
     message(FATAL_ERROR "CMAKE_CUDA_FLAGS should have -Wno-deprecated-gpu-targets")
   endif()
