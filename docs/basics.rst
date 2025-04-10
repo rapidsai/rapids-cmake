@@ -89,7 +89,3 @@ A few notes:
 - ``rapids-cmake-tag`` takes precedence over ``rapids-cmake-branch``
 - The CMake variable ``rapids-cmake-version`` must be set to a rapids-cmake version, formatted as ``MAJOR.MINOR``
 - ``RAPIDS.cmake`` should be copied in and placed next to the above file
-
-An incorrect approach that people try is to modify the ``file(DOWNLOAD)`` line to point to the
-custom ``rapids-cmake`` branch. That doesn't work as the downloaded ``RAPIDS.cmake`` contains
-which version of the rapids-cmake repository to clone.
