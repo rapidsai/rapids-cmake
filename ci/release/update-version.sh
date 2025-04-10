@@ -32,7 +32,6 @@ sed_runner 's/'"rapids-cmake-version .*)"'/'"rapids-cmake-version ${NEXT_SHORT_T
 
 sed_runner 's/'"version =.*"'/'"version = \"${NEXT_SHORT_TAG}\""'/g' docs/conf.py
 sed_runner 's/'"release =.*"'/'"release = \"${NEXT_FULL_TAG}\""'/g' docs/conf.py
-sed_runner 's/'"branch-.*\/RAPIDS.cmake"'/'"branch-${NEXT_SHORT_TAG}\/RAPIDS.cmake"'/g' docs/basics.rst
 
 for FILE in .github/workflows/*.yaml; do
   sed_runner "/shared-workflows/ s/@.*/@branch-${NEXT_SHORT_TAG}/g" "${FILE}"
