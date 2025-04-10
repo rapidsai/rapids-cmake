@@ -6,18 +6,15 @@ Installation
 ************
 
 The ``rapids-cmake`` module is designed to be acquired at configure time in your project.
-Download the ``RAPIDS.cmake`` script, which handles fetching the rest of the module's content
-via CMake's `FetchContent <https://cmake.org/cmake/help/latest/module/FetchContent.html>`_.
+Put the ``RAPIDS.cmake`` script, which handles fetching the rest of the module's content
+via CMake's `FetchContent <https://cmake.org/cmake/help/latest/module/FetchContent.html>`_,
+into your repository.
 
 .. code-block:: cmake
 
   cmake_minimum_required(...)
 
-  if(NOT EXISTS ${CMAKE_CURRENT_BINARY_DIR}/<PROJ>_RAPIDS.cmake)
-    file(DOWNLOAD https://raw.githubusercontent.com/rapidsai/rapids-cmake/branch-25.06/RAPIDS.cmake
-      ${CMAKE_CURRENT_BINARY_DIR}/<PROJ>_RAPIDS.cmake)
-  endif()
-  include(${CMAKE_CURRENT_BINARY_DIR}/<PROJ>_RAPIDS.cmake)
+  include(${CMAKE_CURRENT_LIST_DIR}/RAPIDS.cmake)
   include(rapids-cmake)
   include(rapids-cpm)
   include(rapids-cuda)
