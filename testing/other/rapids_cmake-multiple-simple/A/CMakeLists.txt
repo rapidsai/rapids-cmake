@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# Copyright (c) 2021, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ if(DEFINED rapids-cmake_SOURCE_DIR)
   message(FATAL_ERROR "")
 endif()
 
-include("${rapids-cmake-dir}/rapids-version.cmake")
 include("${rapids.cmake-location}")
 
 if(NOT DEFINED rapids-cmake_SOURCE_DIR)

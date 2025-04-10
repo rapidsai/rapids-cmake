@@ -16,11 +16,11 @@
 cmake_minimum_required(VERSION 3.30.4)
 project(rapids-test-project LANGUAGES CXX)
 
+include("${rapids-cmake-dir}/rapids-version.cmake")
 cmake_path(GET rapids-cmake-dir PARENT_PATH rapids.cmake-location)
 cmake_path(APPEND rapids.cmake-location "RAPIDS.cmake")
 
 set(rapids-cmake-fetch-via-git ON)
-include("${rapids-cmake-dir}/rapids-version.cmake")
 include("${rapids.cmake-location}")
 
 if(NOT DEFINED rapids-cmake_SOURCE_DIR)
