@@ -27,12 +27,8 @@ function sed_runner() {
     sed -i.bak ''"$1"'' "$2" && rm -f "${2}".bak
 }
 
-sed_runner 's/'"rapids-cmake-version .*)"'/'"rapids-cmake-version ${NEXT_SHORT_TAG})"'/g' rapids-cmake/rapids-version.cmake
-
-sed_runner 's/'"version =.*"'/'"version = \"${NEXT_SHORT_TAG}\""'/g' docs/conf.py
-sed_runner 's/'"release =.*"'/'"release = \"${NEXT_FULL_TAG}\""'/g' docs/conf.py
+echo "${NEXT_FULL_TAG}" > VERSION
 
 for FILE in .github/workflows/*.yaml; do
   sed_runner "/shared-workflows/ s/@.*/@branch-${NEXT_SHORT_TAG}/g" "${FILE}"
 done
-sed_runner "s/RAPIDS_VERSION_NUMBER=\".*/RAPIDS_VERSION_NUMBER=\"${NEXT_SHORT_TAG}\"/g" ci/build_docs.sh
