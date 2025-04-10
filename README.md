@@ -162,8 +162,8 @@ A few notes:
 - An explicitly defined ``rapids-cmake-url`` will always be used
 - `rapids-cmake-sha` takes precedence over `rapids-cmake-tag`
 - `rapids-cmake-tag` takes precedence over `rapids-cmake-branch`
-- It is required to always set `rapids-cmake-version` to the version expected by the repo your modifications will pull
-- `RAPIDS.cmake` should be placed in the repo next to the above file
+- The CMake variable `rapids-cmake-version` must be set to a rapids-cmake version, formatted as `MAJOR.MINOR`
+- `RAPIDS.cmake` should be copied in and placed next to the above file
 
 ## Contributing
 
