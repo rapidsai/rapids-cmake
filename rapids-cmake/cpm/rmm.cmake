@@ -73,13 +73,23 @@ function(rapids_cpm_rmm)
   include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
   rapids_cpm_generate_patch_command(rmm ${version} patch_command build_patch_only)
 
+  # Use `SOURCE_SUBDIR cpp` if RMM version is 25.06 or higher
+  string(REGEX MATCH "([0-9]+)\\.([0-9]+).*" version_parts ${version})
+  set(major_version ${CMAKE_MATCH_1})
+  set(minor_version ${CMAKE_MATCH_2})
+  if(major_version GREATER 25 OR (major_version EQUAL 25 AND minor_version GREATER_EQUAL 6))
+    set(source_subdir_arg "SOURCE_SUBDIR cpp")
+  else()
+    set(source_subdir_arg "")
+  endif()
+
   include("${rapids-cmake-dir}/cpm/find.cmake")
   rapids_cpm_find(rmm ${version} ${ARGN} ${_RAPIDS_UNPARSED_ARGUMENTS} ${build_patch_only}
                   GLOBAL_TARGETS rmm::rmm rmm::rmm_logger rmm::rmm_logger_impl
                   CPM_ARGS
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
-                  GIT_SHALLOW ${shallow} ${patch_command} SOURCE_SUBDIR cpp
+                  GIT_SHALLOW ${shallow} ${source_subdir_arg} ${patch_command}
                   EXCLUDE_FROM_ALL ${to_exclude}
                   OPTIONS "BUILD_TESTS OFF" "BUILD_BENCHMARKS OFF")
 
