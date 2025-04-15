@@ -26,6 +26,7 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
   "packages" : {
     "rmm" : {
       "version" : "22.02",
+      "git_url" : "https://github.com/rapidsai/rmm.git",
       "git_tag" : "v22.02.00"
     }
   }
