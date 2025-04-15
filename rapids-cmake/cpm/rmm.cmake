@@ -74,9 +74,9 @@ function(rapids_cpm_rmm)
   rapids_cpm_generate_patch_command(rmm ${version} patch_command build_patch_only)
 
   # Use `SOURCE_SUBDIR cpp` if RMM version is 25.06 or higher
-  string(REGEX MATCH "([0-9]+)\\.([0-9]+).*" version_parts ${version})
-  set(major_version ${CMAKE_MATCH_1})
-  set(minor_version ${CMAKE_MATCH_2})
+  include("${rapids-cmake-dir}/cmake/parse_version.cmake")
+  rapids_cmake_parse_version(MAJOR ${version} major_version)
+  rapids_cmake_parse_version(MINOR ${version} minor_version)
   if(major_version GREATER 25 OR (major_version EQUAL 25 AND minor_version GREATER_EQUAL 6))
     set(source_subdir_arg "SOURCE_SUBDIR cpp")
   else()
