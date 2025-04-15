@@ -81,6 +81,11 @@ function(rapids_cpm_rmm)
     set(source_subdir_arg "SOURCE_SUBDIR cpp")
   else()
     set(source_subdir_arg "")
+    include("${rapids-cmake-dir}/cmake/detail/policy.cmake")
+    rapids_cmake_policy(DEPRECATED_IN 25.06
+                        REMOVED_IN 25.08
+                        MESSAGE "Using RMM versions below 25.06 is deprecated in rapids-cmake. Please upgrade to RMM 25.06 or higher."
+    )
   endif()
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
