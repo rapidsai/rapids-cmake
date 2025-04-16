@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2024, NVIDIA CORPORATION.
+# Copyright (c) 2021-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 include(${rapids-cmake-dir}/export/write_language.cmake)
 
 function(enable_nested_language file_path)
-  #replicates CPM including the file
+  # replicates CPM including the file
   include("${file_path}")
 endfunction()
 

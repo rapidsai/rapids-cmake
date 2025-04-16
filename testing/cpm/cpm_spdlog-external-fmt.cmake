@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2023, NVIDIA CORPORATION.
+# Copyright (c) 2023-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,8 +21,8 @@ enable_language(CXX)
 rapids_cpm_init()
 rapids_cpm_spdlog(FMT_OPTION "EXTERNAL_FMT_HO")
 
-
-file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/use_external_fmt.cpp" [=[
+file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/use_external_fmt.cpp"
+     [=[
 
 #ifndef SPDLOG_FMT_EXTERNAL
 #error "SPDLOG_FMT_EXTERNAL not defined"

@@ -25,7 +25,7 @@ endif()
 
 # Need to write out an override file
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
-  [=[
+     [=[
 {
   "packages": {
     "pkg_with_patch": {
@@ -69,5 +69,6 @@ endif()
 unset(patch_command)
 rapids_cpm_generate_patch_command(pkg_patch_not_applied 10.2 patch_command build_patch_only)
 if(patch_command)
-  message(FATAL_ERROR "rapids_cpm_package_override patch step for `pkg_patch_not_applied` shouldn't apply due to version values")
+  message(FATAL_ERROR "rapids_cpm_package_override patch step for `pkg_patch_not_applied` shouldn't apply due to version values"
+  )
 endif()

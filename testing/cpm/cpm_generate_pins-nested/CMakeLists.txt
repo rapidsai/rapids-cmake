@@ -19,8 +19,7 @@ project(rapids-test-project LANGUAGES CXX)
 add_subdirectory(a)
 add_subdirectory(b)
 
-# Turn on pin generation after cpm dependencies have been added
-# to make sure it is order invariant
+# Turn on pin generation after cpm dependencies have been added to make sure it is order invariant
 include(${rapids-cmake-dir}/cpm/init.cmake)
 rapids_cpm_init(GENERATE_PINNED_VERSIONS)
 

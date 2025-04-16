@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021, NVIDIA CORPORATION.
+# Copyright (c) 2021-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,11 +19,11 @@ set(user_value "fake-value")
 set(CMAKE_CUDA_RUNTIME_LIBRARY ${user_value})
 
 rapids_cuda_init_runtime(USE_STATIC TRUE)
-if( NOT CMAKE_CUDA_RUNTIME_LIBRARY STREQUAL user_value)
+if(NOT CMAKE_CUDA_RUNTIME_LIBRARY STREQUAL user_value)
   message(FATAL_ERROR "rapids_cuda_init_runtime shouldn't override user value")
 endif()
 
 rapids_cuda_init_runtime(USE_STATIC FALSE)
-if( NOT CMAKE_CUDA_RUNTIME_LIBRARY STREQUAL user_value)
+if(NOT CMAKE_CUDA_RUNTIME_LIBRARY STREQUAL user_value)
   message(FATAL_ERROR "rapids_cuda_init_runtime shouldn't override user value")
 endif()

@@ -23,9 +23,8 @@ set(deps_dir "${CMAKE_CURRENT_BINARY_DIR}/_fmt_dep")
 if(NOT EXISTS "${deps_dir}")
   file(MAKE_DIRECTORY "${deps_dir}")
   find_package(Git)
-  execute_process(
-    COMMAND ${GIT_EXECUTABLE} clone --depth 1 --branch "${tag}" "${repository}"
-    WORKING_DIRECTORY "${deps_dir}")
+  execute_process(COMMAND ${GIT_EXECUTABLE} clone --depth 1 --branch "${tag}" "${repository}"
+                  WORKING_DIRECTORY "${deps_dir}")
 endif()
 
 set(fmt_dir "${deps_dir}/fmt")
@@ -41,11 +40,11 @@ include(${rapids-cmake-dir}/cpm/fmt.cmake)
 rapids_cpm_fmt()
 
 if(NOT "${fmt_ADDED}")
-    message(FATAL_ERROR "The found repo was used rather than downloading and patching a new version")
+  message(FATAL_ERROR "The found repo was used rather than downloading and patching a new version")
 endif()
 
-# Verify that the two files that we inserted into the CCCL source tree exist
-# Which proves the patches in the override are properly applied
+# Verify that the two files that we inserted into the CCCL source tree exist which proves the
+# patches in the override are properly applied
 if(NOT EXISTS "${fmt_SOURCE_DIR}/git_file_1.txt")
   message(FATAL_ERROR "failed to apply fmt first patch")
 endif()
@@ -54,11 +53,9 @@ if(NOT EXISTS "${fmt_SOURCE_DIR}/git_file_2.txt")
   message(FATAL_ERROR "failed to apply fmt second patch")
 endif()
 
-execute_process(
-    COMMAND ${GIT_EXECUTABLE} diff --quiet ${tag}
-    RESULT_VARIABLE REPO_IS_PATCHED
-    WORKING_DIRECTORY "${fmt_SOURCE_DIR}")
+execute_process(COMMAND ${GIT_EXECUTABLE} diff --quiet ${tag} RESULT_VARIABLE REPO_IS_PATCHED
+                WORKING_DIRECTORY "${fmt_SOURCE_DIR}")
 
 if(NOT ${REPO_IS_PATCHED})
-    message(FATAL_ERROR "The repo was downloaded to ${fmt_SOURCE_DIR} but not patched.")
+  message(FATAL_ERROR "The repo was downloaded to ${fmt_SOURCE_DIR} but not patched.")
 endif()

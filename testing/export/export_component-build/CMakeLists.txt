@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2023, NVIDIA CORPORATION.
+# Copyright (c) 2023-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,20 +16,20 @@
 include(${rapids-cmake-dir}/export/detail/component.cmake)
 include(${rapids-cmake-dir}/export/package.cmake)
 
-
 cmake_minimum_required(VERSION 3.20)
 project(FakEProJecT LANGUAGES CXX VERSION 3.1.4)
 
 add_library(fakeLib INTERFACE)
 install(TARGETS fakeLib EXPORT fake_set)
 
-rapids_export_package( build CUDAToolkit fake_set )
+rapids_export_package(build CUDAToolkit fake_set)
 
 rapids_export_component(BUILD fakeproject component1 fake_set fake_set test::c1::)
 
-# Add a custom command that generates a second project
-# that verifies our component targets are exported correctly
-file(WRITE "${CMAKE_BINARY_DIR}/verify-1/CMakeLists.txt" [=[
+# Add a custom command that generates a second project that verifies our component targets are
+# exported correctly
+file(WRITE "${CMAKE_BINARY_DIR}/verify-1/CMakeLists.txt"
+     [=[
 cmake_minimum_required(VERSION 3.20)
 project(verify_build_targets LANGUAGES CXX)
 
@@ -56,6 +56,6 @@ endif()
 ]=])
 
 add_custom_target(verify_target_component_files ALL
-  COMMAND ${CMAKE_COMMAND} -E rm -rf "${CMAKE_BINARY_DIR}/verify-1/build"
-  COMMAND ${CMAKE_COMMAND} -S="${CMAKE_BINARY_DIR}/verify-1" -B="${CMAKE_BINARY_DIR}/verify-1/build"
-  )
+                  COMMAND ${CMAKE_COMMAND} -E rm -rf "${CMAKE_BINARY_DIR}/verify-1/build"
+                  COMMAND ${CMAKE_COMMAND} -S="${CMAKE_BINARY_DIR}/verify-1"
+                          -B="${CMAKE_BINARY_DIR}/verify-1/build")

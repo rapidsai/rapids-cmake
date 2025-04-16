@@ -33,9 +33,8 @@ add_subdirectory(test)
 
 option(RAPIDS_CMAKE_ENABLE_DOWNLOAD_TESTS "Enable tests that require downloads" ON)
 if(RAPIDS_CMAKE_ENABLE_DOWNLOAD_TESTS)
-  # Setup and fill the cpm cache, and specify CPM_SOURCE_CACHE
-  # so that all subsequent tests in this directory use the
-  # shared CPM_SOURCE_CACHE
+  # Setup and fill the cpm cache, and specify CPM_SOURCE_CACHE so that all subsequent tests in this
+  # directory use the shared CPM_SOURCE_CACHE
   include("${CMAKE_CURRENT_SOURCE_DIR}/utils/setup_cpm_cache.cmake")
   setup_cpm_cache()
 

@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2023-2024, NVIDIA CORPORATION.
+# Copyright (c) 2023-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,10 +23,12 @@ rapids_cpm_bs_thread_pool(INSTALL_EXPORT_SET test2)
 
 get_target_property(packages rapids_export_build_test PACKAGE_NAMES)
 if(NOT bs_thread_pool IN_LIST packages)
-  message(FATAL_ERROR "rapids_cpm_bs_thread_pool failed to record bs_thread_pool needs to be exported")
+  message(FATAL_ERROR "rapids_cpm_bs_thread_pool failed to record bs_thread_pool needs to be exported"
+  )
 endif()
 
 get_target_property(packages rapids_export_install_test2 PACKAGE_NAMES)
 if(NOT bs_thread_pool IN_LIST packages)
-  message(FATAL_ERROR "rapids_cpm_bs_thread_pool failed to record bs_thread_pool needs to be exported")
+  message(FATAL_ERROR "rapids_cpm_bs_thread_pool failed to record bs_thread_pool needs to be exported"
+  )
 endif()

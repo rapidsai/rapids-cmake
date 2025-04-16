@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2024, NVIDIA CORPORATION.
+# Copyright (c) 2024-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ rapids_cpm_init()
 
 # Need to write out an override file
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
-  [=[
+     [=[
 {
   "packages": {
     "custom_package_never_in_rapids" : {
@@ -45,6 +45,5 @@ if(NOT version STREQUAL "3.1.0")
   message(FATAL_ERROR "expected version field wasn't found. ${version} was found instead")
 endif()
 
-# Make sure we can clone without getting an error when
-# parsing the EXCLUDE_FROM_ALL tag
+# Make sure we can clone without getting an error when parsing the EXCLUDE_FROM_ALL tag
 rapids_cpm_find(custom_package_never_in_rapids 3.1)

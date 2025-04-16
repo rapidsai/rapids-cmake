@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2023, NVIDIA CORPORATION.
+# Copyright (c) 2023-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,7 +25,4 @@ rapids_cython_init()
 
 # Test that we can specify a (fake) library.
 add_library(rapids_cython_test_library test)
-rapids_cython_create_modules(
-    SOURCE_FILES test.pyx
-    LINKED_LIBRARIES rapids_cython_test_library
-    )
+rapids_cython_create_modules(SOURCE_FILES test.pyx LINKED_LIBRARIES rapids_cython_test_library)

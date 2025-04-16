@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2022-2024, NVIDIA CORPORATION.
+# Copyright (c) 2022-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,7 +20,8 @@ rapids_cuda_init_architectures(rapids-project)
 project(rapids-project LANGUAGES CUDA)
 
 if(NOT DEFINED CMAKE_CUDA_ARCHITECTURES)
-  message(FATAL_ERROR "CMAKE_CUDA_ARCHITECTURES should exist after calling rapids_cuda_init_architectures()")
+  message(FATAL_ERROR "CMAKE_CUDA_ARCHITECTURES should exist after calling rapids_cuda_init_architectures()"
+  )
 endif()
 
 if(CMAKE_CUDA_ARCHITECTURES STREQUAL "NATIVE")

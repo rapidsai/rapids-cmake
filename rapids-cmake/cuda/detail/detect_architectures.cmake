@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2024, NVIDIA CORPORATION.
+# Copyright (c) 2021-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ include_guard(GLOBAL)
 function(rapids_cuda_detect_architectures possible_archs_var gpu_archs)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cuda.detect_architectures")
 
-  # Unset this first in case it's set to <empty_string> Which can happen inside rapids
+  # Unset this first in case it's set to <empty_string> which can happen inside rapids
   set(CMAKE_CUDA_ARCHITECTURES OFF)
   set(__gpu_archs ${${possible_archs_var}})
 

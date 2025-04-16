@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2023, NVIDIA CORPORATION.
+# Copyright (c) 2023-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,5 +20,6 @@ rapids_cuda_set_runtime(uses_cuda USE_STATIC TRUE)
 
 get_target_property(linked_libs uses_cuda INTERFACE_LINK_LIBRARIES)
 if(NOT "$<TARGET_NAME_IF_EXISTS:CUDA::cudart_static>" IN_LIST linked_libs)
-  message(FATAL_ERROR "rapids_cuda_set_runtime shouldn't set CUDA::cudart_static in target linked libraries correctly")
+  message(FATAL_ERROR "rapids_cuda_set_runtime shouldn't set CUDA::cudart_static in target linked libraries correctly"
+  )
 endif()

@@ -26,7 +26,8 @@ add_subdirectory(subdir1)
 add_subdirectory(subdir2)
 
 # Add a custom command that verifies that we can use targets that link to nvtx3
-file(WRITE "${CMAKE_BINARY_DIR}/check_uses_nvtx_dir/CMakeLists.txt" "
+file(WRITE "${CMAKE_BINARY_DIR}/check_uses_nvtx_dir/CMakeLists.txt"
+     "
 cmake_minimum_required(VERSION 3.30.4)
 project(verify_nvtx LANGUAGES CXX)
 
@@ -42,6 +43,6 @@ target_link_libraries(uses_nvtx PRIVATE uses-nvtx3::uses-nvtx3-cpp)
 ")
 
 add_custom_target(verify_build_config ALL
-  COMMAND ${CMAKE_COMMAND} -E rm -rf "${CMAKE_BINARY_DIR}/check_uses_nvtx_dir/build"
-  COMMAND ${CMAKE_COMMAND} -S="${CMAKE_BINARY_DIR}/check_uses_nvtx_dir" -B="${CMAKE_BINARY_DIR}/check_uses_nvtx_dir/build"
-)
+                  COMMAND ${CMAKE_COMMAND} -E rm -rf "${CMAKE_BINARY_DIR}/check_uses_nvtx_dir/build"
+                  COMMAND ${CMAKE_COMMAND} -S="${CMAKE_BINARY_DIR}/check_uses_nvtx_dir"
+                          -B="${CMAKE_BINARY_DIR}/check_uses_nvtx_dir/build")

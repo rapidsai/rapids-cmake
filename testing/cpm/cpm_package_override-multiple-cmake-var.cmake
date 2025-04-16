@@ -18,7 +18,7 @@ include(${rapids-cmake-dir}/cpm/package_override.cmake)
 
 # Need to write out an override file
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override1.json
-  [=[
+     [=[
 {
   "packages": {
     "nvbench": {
@@ -33,7 +33,7 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override1.json
   ]=])
 
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override2.json
-  [=[
+     [=[
 {
   "packages": {
     "rmm": {
@@ -62,10 +62,12 @@ if(NOT version STREQUAL "2.99")
   message(FATAL_ERROR "custom version field was removed. ${version} was found instead")
 endif()
 if(NOT tag MATCHES "2.99")
-  message(FATAL_ERROR "custom version field not used when computing git_tag value. ${tag} was found instead")
+  message(FATAL_ERROR "custom version field not used when computing git_tag value. ${tag} was found instead"
+  )
 endif()
 
 rapids_cpm_package_details(rmm version repository tag shallow exclude)
 if(NOT tag MATCHES "new_rmm_tag")
-  message(FATAL_ERROR "custom version field not used when computing git_tag value. ${tag} was found instead")
+  message(FATAL_ERROR "custom version field not used when computing git_tag value. ${tag} was found instead"
+  )
 endif()

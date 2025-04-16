@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2024, NVIDIA CORPORATION.
+# Copyright (c) 2021-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -78,7 +78,7 @@ function(rapids_export_find_package_root type name dir_path)
     add_library(rapids_export_${type}_${export_set} INTERFACE)
   endif()
 
-  # Don't remove duplicates here as that cost should only be paid Once per export set. So that
+  # Don't remove duplicates here as that cost should only be paid once per export set. So that
   # should occur in `write_dependencies`
   set_property(TARGET rapids_export_${type}_${export_set} APPEND PROPERTY "FIND_ROOT_PACKAGES"
                                                                           ${name})

@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2023, NVIDIA CORPORATION.
+# Copyright (c) 2021-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,8 +31,7 @@ if(NOT CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
   get_directory_property(parent_dir PARENT_DIRECTORY)
   cmake_language(DEFER DIRECTORY "${parent_dir}" GET_CALL_IDS rapids_existing_calls)
   if(NOT rapids_init_hook IN_LIST rapids_existing_calls)
-    cmake_language(DEFER DIRECTORY "${parent_dir}"
-      ID rapids_init_hook
-      CALL include "${rapids-cmake-dir}/../init.cmake")
+    cmake_language(DEFER DIRECTORY "${parent_dir}" ID rapids_init_hook CALL include
+                   "${rapids-cmake-dir}/../init.cmake")
   endif()
 endif()
