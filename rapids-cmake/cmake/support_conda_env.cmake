@@ -48,7 +48,6 @@ with `$ENV{PREFIX}` to paths relative to it. This ensures paths baked
 into binaries are relative to the environment prefix a usually
 reasonable default. It also bypasses the need to rewrite these paths.
 
-
 Also offers the ability to modify :cmake:variable:`CMAKE_PREFIX_PATH <cmake:variable:CMAKE_PREFIX_PATH>` to
 include the following paths based on the current conda environment:
 
