@@ -174,8 +174,8 @@ function(rapids_cmake_support_conda_env target)
       # Make all paths like `$PREFIX/<path>` relative to `$PREFIX` so `<path>`.
       target_compile_options(${target}
                              INTERFACE "$<$<COMPILE_LANGUAGE:C>:-ffile-prefix-map=$ENV{PREFIX}/=''>"
-                             "$<$<COMPILE_LANGUAGE:CXX>:-ffile-prefix-map=$ENV{PREFIX}/=''>"
-                             "$<$<COMPILE_LANGUAGE:CUDA>:-Xcompiler=-ffile-prefix-map=$ENV{PREFIX}/=''>"
+                                       "$<$<COMPILE_LANGUAGE:CXX>:-ffile-prefix-map=$ENV{PREFIX}/=''>"
+                                       "$<$<COMPILE_LANGUAGE:CUDA>:-Xcompiler=-ffile-prefix-map=$ENV{PREFIX}/=''>"
       )
 
       if(modify_prefix_path)
