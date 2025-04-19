@@ -43,10 +43,11 @@ are generated with `-O0` instead of the conda env default of `-O2`.
 
 .. versionadded:: v25.06.00
 
-The `-ffile-prefix-map` is now passes to remap absolute paths starting
-with `$ENV{PREFIX}` to paths relative to it. This ensures paths baked
-into binaries are relative to the environment prefix a usually
-reasonable default. It also bypasses the need to rewrite these paths.
+The flag `-ffile-prefix-map` is now passed to remap absolute paths
+starting with `$ENV{PREFIX}` to paths relative to it. This ensures
+paths baked into binaries are relative to the environment prefix.
+This prevents Conda from rewriting these paths when the package is
+installed.
 
 Also offers the ability to modify :cmake:variable:`CMAKE_PREFIX_PATH <cmake:variable:CMAKE_PREFIX_PATH>` to
 include the following paths based on the current conda environment:
