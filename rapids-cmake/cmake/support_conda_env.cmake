@@ -172,8 +172,8 @@ function(rapids_cmake_support_conda_env target)
                             "$<HOST_LINK:SHELL:LINKER:-rpath-link=$ENV{BUILD_PREFIX}/lib>")
       endif()
 
-      # For built binaries (like shared objects), remap environment absolute paths (like `$PREFIX/<path>`)
-      # to paths relative to the environment `$PREFIX` (so `<path>`).
+      # For built binaries (like libraries), remap environment absolute paths (`$PREFIX/<path>`)
+      # to paths relative to the environment `$PREFIX` (`<path>`).
       target_compile_options(${target}
                              INTERFACE "$<$<COMPILE_LANGUAGE:C>:-ffile-prefix-map=$ENV{PREFIX}/=''>"
                                        "$<$<COMPILE_LANGUAGE:CXX>:-ffile-prefix-map=$ENV{PREFIX}/=''>"
