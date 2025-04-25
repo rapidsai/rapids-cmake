@@ -43,6 +43,8 @@ Parameters:
 
 #]=======================================================================]
 function(rapids_cpm_pinning_extract_source_git_info package git_url_var git_sha_var)
+  cmake_parse_arguments(_RAPIDS "" "REQUESTED_GIT_TAG" "" ${ARGN})
+
   set(source_dir "${CPM_PACKAGE_${package}_SOURCE_DIR}")
   set(_RAPIDS_URL)
   set(_RAPIDS_SHA)
@@ -58,6 +60,7 @@ function(rapids_cpm_pinning_extract_source_git_info package git_url_var git_sha_
     # Find all commits on our branch back to the common parent ( what we cloned )
     #
     execute_process(COMMAND ${GIT_EXECUTABLE} show-branch --current --sha1-name
+                            ${_RAPIDS_REQUESTED_GIT_TAG}
                     WORKING_DIRECTORY ${source_dir}
                     ERROR_QUIET
                     OUTPUT_VARIABLE _rapids_commit_stack
@@ -226,7 +229,22 @@ function(rapids_cpm_pinning_add_json_entry package_name json_var)
   unset(git_sha)
   unset(url_string)
   unset(sha_string)
-  rapids_cpm_pinning_extract_source_git_info(${package} git_url git_sha)
+
+  include("${rapids-cmake-dir}/cpm/detail/get_default_json.cmake")
+  include("${rapids-cmake-dir}/cpm/detail/get_override_json.cmake")
+  get_default_json(${package_name} json_data)
+  get_override_json(${package_name} override_json_data)
+
+  set(baseline_arg)
+  string(JSON value ERROR_VARIABLE have_error GET "${override_json_data}" git_tag)
+  if(have_error)
+    string(JSON value ERROR_VARIABLE have_error GET "${json_data}" git_tag)
+  endif()
+  if(NOT have_error)
+    set(baseline_arg REQUESTED_GIT_TAG "${value}")
+  endif()
+
+  rapids_cpm_pinning_extract_source_git_info(${package} git_url git_sha ${baseline_arg})
   if(git_url)
     string(CONFIGURE [=["git_url": "${git_url}",]=] url_string)
   endif()
@@ -242,11 +260,6 @@ function(rapids_cpm_pinning_add_json_entry package_name json_var)
   "always_download": true
   }]=]
                    pinned_json_entry)
-
-  include("${rapids-cmake-dir}/cpm/detail/get_default_json.cmake")
-  include("${rapids-cmake-dir}/cpm/detail/get_override_json.cmake")
-  get_default_json(${package_name} json_data)
-  get_override_json(${package_name} override_json_data)
 
   set(override_exclusion_list "")
   set(json_exclusion_list "")

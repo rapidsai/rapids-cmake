@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021, NVIDIA CORPORATION.
+# Copyright (c) 2021-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,19 +18,12 @@ include(${rapids-cmake-dir}/export/export.cmake)
 
 project(FakEProJecT LANGUAGES CXX VERSION 3.1.4)
 
-
-rapids_export_cpm(BUILD RaFT fake_set
-                  CPM_ARGS
-                    FAKE_PACKAGE_ARGS TRUE
-                  )
+rapids_export_cpm(BUILD RaFT fake_set CPM_ARGS FAKE_PACKAGE_ARGS TRUE)
 
 add_library(fakeLib INTERFACE)
 install(TARGETS fakeLib EXPORT fake_set)
 
-rapids_export(BUILD FakEProJecT
-  EXPORT_SET fake_set
-  LANGUAGES CXX
-  )
+rapids_export(BUILD FakEProJecT EXPORT_SET fake_set LANGUAGES CXX)
 
 # Verify that build files have correct names
 if(NOT EXISTS "${CMAKE_BINARY_DIR}/fakeproject-config.cmake")

@@ -26,7 +26,7 @@ if(DEFINED ENV{CTEST_RESOURCE_GROUP_COUNT})
       string(REPLACE "id:" "" allocation "${allocation}")
       string(REPLACE ",slots:" ";" allocation "${allocation}")
       list(GET allocation 0 device_ids)
-      # slots are the cmake test requirements term for what we call percent. So we can ignore the
+      # slots are the cmake test requirements term for what we call percent, so we can ignore the
       # second item in the list
       set(ENV{CUDA_VISIBLE_DEVICES} ${device_ids})
     endif()

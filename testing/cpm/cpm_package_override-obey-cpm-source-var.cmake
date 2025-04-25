@@ -20,7 +20,7 @@ rapids_cpm_init()
 
 # Need to write out an override file
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
-  [=[
+     [=[
 {
   "packages": {
     "rmm": {
@@ -62,7 +62,8 @@ unset(repository)
 unset(tag)
 rapids_cpm_package_details(not_in_base version repository tag shallow exclude)
 if(NOT (version AND repository AND tag))
-  message(FATAL_ERROR "rapids_cpm_package_details should still have details for package that doesn't exist")
+  message(FATAL_ERROR "rapids_cpm_package_details should still have details for package that doesn't exist"
+  )
 endif()
 
 get_property(override_ignored GLOBAL PROPERTY rapids_cpm_rmm_override_ignored)

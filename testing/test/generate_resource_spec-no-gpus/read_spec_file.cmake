@@ -14,7 +14,8 @@
 # limitations under the License.
 #=============================================================================
 if(NOT EXISTS "${CMAKE_CURRENT_BINARY_DIR}/spec.json")
-  message(FATAL_ERROR "rapids_test_generate_resource_spec failed to write out the requested spec file")
+  message(FATAL_ERROR "rapids_test_generate_resource_spec failed to write out the requested spec file"
+  )
 endif()
 
 file(READ "${CMAKE_CURRENT_BINARY_DIR}/spec.json" content)

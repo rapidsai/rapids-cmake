@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2024, NVIDIA CORPORATION.
+# Copyright (c) 2024-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,7 +24,8 @@ if(NOT type STREQUAL STATIC_LIBRARY)
   message(FATAL_ERROR "rapids_cpm_gtest failed to get a static version of gtest")
 endif()
 
-file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/use_gtest.cpp" [=[
+file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/use_gtest.cpp"
+     [=[
 #include <gtest/gtest.h>
 
 // The fixture for testing class Foo.

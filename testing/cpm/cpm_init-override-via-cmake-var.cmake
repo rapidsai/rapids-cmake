@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2024, NVIDIA CORPORATION.
+# Copyright (c) 2024-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 include(${rapids-cmake-dir}/cpm/init.cmake)
 
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override_ignored.json
-  [=[
+     [=[
 {
   "packages": {
     "nvbench": {
@@ -30,7 +30,7 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override_ignored.json
 
 # Need to write out an override file
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
-  [=[
+     [=[
 {
   "packages": {
     "nvbench": {
@@ -50,7 +50,8 @@ include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
 rapids_cpm_package_details(nvbench version repository tag shallow exclude)
 
 if(NOT version STREQUAL "custom_version")
-  message(FATAL_ERROR "custom version field was ignored. ${version} found instead of custom_version")
+  message(FATAL_ERROR "custom version field was ignored. ${version} found instead of custom_version"
+  )
 endif()
 if(NOT repository STREQUAL "my_url")
   message(FATAL_ERROR "custom git_url field was ignored. ${repository} found instead of my_url")

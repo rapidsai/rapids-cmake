@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2020-2024, NVIDIA CORPORATION.
+# Copyright (c) 2020-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -76,13 +76,17 @@ consistency. List all targets used by your project in `GLOBAL_TARGET`.
   Record a :cmake:command:`find_dependency(<PackageName> ...) <cmake:module:CMakeFindDependencyMacro>` call needs to occur as part of
   our install directory export set.
 
+``BUILD_PATCH_ONLY``
+  Do not require the package to be downloaded even if a patch command is present. This is to enable patches that only affect
+  the build process and not runtime functionality.
+
 ``CPM_ARGS``
   Required placeholder to be provided before any extra arguments that need to
   be passed down to :cmake:command:`CPMFindPackage`.
 
   .. note::
-    A ``PATCH_COMMAND`` will always trigger usage of :cmake:command:`CPMAddPackage` instead of :cmake:command:`CPMFindPackage`. *This is true even
-    if the patch command is empty.*
+    A ``PATCH_COMMAND`` will always trigger usage of :cmake:command:`CPMAddPackage` instead of :cmake:command:`CPMFindPackage`,
+    unless ``BUILD_PATCH_ONLY`` is specified. *This is true even if the patch command is empty.*
 
 Result Variables
 ^^^^^^^^^^^^^^^^
@@ -147,7 +151,7 @@ modified version is used.
 # cmake-lint: disable=R0912,R0915
 function(rapids_cpm_find name version)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.find")
-  set(options CPM_ARGS)
+  set(options CPM_ARGS BUILD_PATCH_ONLY)
   set(one_value BUILD_EXPORT_SET INSTALL_EXPORT_SET)
   set(multi_value COMPONENTS GLOBAL_TARGETS)
   cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
@@ -156,13 +160,15 @@ function(rapids_cpm_find name version)
     message(FATAL_ERROR "rapids_cpm_find requires you to specify CPM_ARGS before any CPM arguments")
   endif()
 
-  set(has_patch FALSE)
-  foreach(unparsed_arg IN LISTS _RAPIDS_UNPARSED_ARGUMENTS)
-    if(unparsed_arg MATCHES "PATCH_COMMAND")
-      set(has_patch TRUE)
-      break()
-    endif()
-  endforeach()
+  set(has_non_build_patch FALSE)
+  if(NOT _RAPIDS_BUILD_PATCH_ONLY)
+    foreach(unparsed_arg IN LISTS _RAPIDS_UNPARSED_ARGUMENTS)
+      if(unparsed_arg STREQUAL "PATCH_COMMAND")
+        set(has_non_build_patch TRUE)
+        break()
+      endif()
+    endforeach()
+  endif()
 
   set(package_needs_to_be_added TRUE)
   if(_RAPIDS_GLOBAL_TARGETS)
@@ -182,8 +188,8 @@ function(rapids_cpm_find name version)
   endif()
 
   if(package_needs_to_be_added)
-    # Any patch command triggers CPMAddPackage.
-    if(CPM_${name}_SOURCE OR has_patch)
+    # Any non-build patch command triggers CPMAddPackage.
+    if(CPM_${name}_SOURCE OR has_non_build_patch)
       CPMAddPackage(NAME ${name} VERSION ${version} ${_RAPIDS_UNPARSED_ARGUMENTS})
     else()
       CPMFindPackage(NAME ${name} VERSION ${version} ${_RAPIDS_UNPARSED_ARGUMENTS})

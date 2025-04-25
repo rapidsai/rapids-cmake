@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2024, NVIDIA CORPORATION.
+# Copyright (c) 2021-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -91,7 +91,7 @@ function(rapids_cpm_spdlog)
   rapids_cpm_package_details(spdlog version repository tag shallow exclude)
 
   include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
-  rapids_cpm_generate_patch_command(spdlog ${version} patch_command)
+  rapids_cpm_generate_patch_command(spdlog ${version} patch_command build_patch_only)
 
   # If the option wasn't passed to the command, default to header only fmt
   if(NOT _RAPIDS_FMT_OPTION)
@@ -124,7 +124,7 @@ function(rapids_cpm_spdlog)
   endif()
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
-  rapids_cpm_find(spdlog ${version} ${_RAPIDS_UNPARSED_ARGUMENTS}
+  rapids_cpm_find(spdlog ${version} ${_RAPIDS_UNPARSED_ARGUMENTS} ${build_patch_only}
                   GLOBAL_TARGETS spdlog::spdlog spdlog::spdlog_header_only
                   CPM_ARGS
                   GIT_REPOSITORY ${repository}

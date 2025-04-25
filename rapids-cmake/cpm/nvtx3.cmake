@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2024, NVIDIA CORPORATION.
+# Copyright (c) 2024-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -69,10 +69,10 @@ function(rapids_cpm_nvtx3)
   rapids_cpm_package_details(nvtx3 version repository tag shallow exclude)
 
   include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
-  rapids_cpm_generate_patch_command(nvtx3 ${version} patch_command)
+  rapids_cpm_generate_patch_command(nvtx3 ${version} patch_command build_patch_only)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
-  rapids_cpm_find(nvtx3 ${version} ${ARGN}
+  rapids_cpm_find(nvtx3 ${version} ${ARGN} ${build_patch_only}
                   GLOBAL_TARGETS nvtx3-c nvtx3-cpp
                   CPM_ARGS
                   GIT_REPOSITORY ${repository}
@@ -82,44 +82,6 @@ function(rapids_cpm_nvtx3)
 
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
   rapids_cpm_display_patch_status(nvtx3)
-
-  # Extract the major version value of nvtx3 to use with `rapids-export` to setup compatibility
-  # rules
-  include("${rapids-cmake-dir}/cmake/parse_version.cmake")
-  rapids_cmake_parse_version(MAJOR ${version} ${version})
-
-  # Set up install rules Need to be re-entrant safe so only call when `nvtx3_ADDED`
-  if(nvtx3_ADDED AND TARGET nvtx3-c)
-    install(TARGETS nvtx3-c nvtx3-cpp EXPORT nvtx3-targets)
-    if(_RAPIDS_BUILD_EXPORT_SET)
-      include("${rapids-cmake-dir}/export/export.cmake")
-      rapids_export(BUILD nvtx3
-                    VERSION ${version}
-                    EXPORT_SET nvtx3-targets
-                    GLOBAL_TARGETS nvtx3-c nvtx3-cpp
-                    NAMESPACE nvtx3::)
-      include("${rapids-cmake-dir}/export/find_package_root.cmake")
-      rapids_export_find_package_root(BUILD nvtx3 [=[${CMAKE_CURRENT_LIST_DIR}]=]
-                                      EXPORT_SET ${_RAPIDS_BUILD_EXPORT_SET})
-    endif()
-    if(_RAPIDS_INSTALL_EXPORT_SET AND NOT exclude)
-      include(GNUInstallDirs)
-      install(DIRECTORY "${nvtx3_SOURCE_DIR}/c/include/" DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
-      include("${rapids-cmake-dir}/export/export.cmake")
-      rapids_export(INSTALL nvtx3
-                    VERSION ${version}
-                    EXPORT_SET nvtx3-targets
-                    GLOBAL_TARGETS nvtx3-c nvtx3-cpp
-                    NAMESPACE nvtx3::)
-    endif()
-  endif()
-
-  if(NOT TARGET nvtx3::nvtx3-c AND TARGET nvtx3-c)
-    add_library(nvtx3::nvtx3-c ALIAS nvtx3-c)
-  endif()
-  if(NOT TARGET nvtx3::nvtx3-cpp AND TARGET nvtx3-cpp)
-    add_library(nvtx3::nvtx3-cpp ALIAS nvtx3-cpp)
-  endif()
 
   # Propagate up variables that CPMFindPackage provide
   set(nvtx3_SOURCE_DIR "${nvtx3_SOURCE_DIR}" PARENT_SCOPE)

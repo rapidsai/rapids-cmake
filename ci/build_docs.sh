@@ -3,6 +3,8 @@
 
 set -euo pipefail
 
+RAPIDS_VERSION_MAJOR_MINOR="$(rapids-version-major-minor)"
+
 rapids-logger "Create test conda environment"
 . /opt/conda/etc/profile.d/conda.sh
 
@@ -16,7 +18,7 @@ conda activate docs
 
 rapids-print-env
 
-export RAPIDS_VERSION_NUMBER="25.04"
+export RAPIDS_VERSION_NUMBER="${RAPIDS_VERSION_MAJOR_MINOR}"
 RAPIDS_DOCS_DIR="$(mktemp -d)"
 export RAPIDS_DOCS_DIR
 

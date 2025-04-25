@@ -24,23 +24,15 @@ project(FakEProJecT LANGUAGES CXX VERSION 3.1.4)
 add_library(fakeLib INTERFACE)
 install(TARGETS fakeLib EXPORT fake_set)
 
-rapids_export_cpm(BUILD RaFT FakEProJecT
-                  CPM_ARGS
-                    FAKE_PACKAGE_ARGS TRUE
-                  )
+rapids_export_cpm(BUILD RaFT FakEProJecT CPM_ARGS FAKE_PACKAGE_ARGS TRUE)
 
 rapids_export_write_dependencies(BUILD FakEProJecT dependencies.cmake)
 
-rapids_export(BUILD FakEProJecT
-  EXPORT_SET fake_set
-  NAMESPACE test::
-  )
-rapids_export(INSTALL FakEProJecT
-  EXPORT_SET fake_set
-  NAMESPACE test::
-  )
+rapids_export(BUILD FakEProJecT EXPORT_SET fake_set NAMESPACE test::)
+rapids_export(INSTALL FakEProJecT EXPORT_SET fake_set NAMESPACE test::)
 
 check_copyright_header("${CMAKE_BINARY_DIR}/fakeproject-config.cmake")
-check_copyright_header("${CMAKE_BINARY_DIR}/rapids-cmake/fakeproject/export/fakeproject/fakeproject-config.cmake")
+check_copyright_header("${CMAKE_BINARY_DIR}/rapids-cmake/fakeproject/export/fakeproject/fakeproject-config.cmake"
+)
 check_copyright_header("${CMAKE_BINARY_DIR}/rapids-cmake/FakEProJecT/build/cpm_RaFT.cmake")
 check_copyright_header("${CMAKE_BINARY_DIR}/dependencies.cmake")

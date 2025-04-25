@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2024, NVIDIA CORPORATION.
+# Copyright (c) 2024-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,28 +18,30 @@ include(${rapids-cmake-dir}/cpm/package_override.cmake)
 
 # Need to write out an override file
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override1.json
-  [=[
+     [=[
 {
   "packages": {
     "nvbench": {
       "git_tag": "my_tag"
     },
     "gtest": {
-      "version": "2.99"
+      "version": "2.99",
+      "git_tag": "v${version}"
     }
   }
 }
   ]=])
 
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override2.json
-  [=[
+     [=[
 {
   "packages": {
     "rmm": {
       "git_tag": "new_rmm_tag"
     },
     "GTest": {
-      "version": "3.99"
+      "version": "3.99",
+      "git_tag": "v${version}"
     }
   }
 }
@@ -60,10 +62,12 @@ if(NOT version STREQUAL "2.99")
   message(FATAL_ERROR "custom version field was removed. ${version} was found instead")
 endif()
 if(NOT tag MATCHES "2.99")
-  message(FATAL_ERROR "custom version field not used when computing git_tag value. ${tag} was found instead")
+  message(FATAL_ERROR "custom version field not used when computing git_tag value. ${tag} was found instead"
+  )
 endif()
 
 rapids_cpm_package_details(rmm version repository tag shallow exclude)
 if(NOT tag MATCHES "new_rmm_tag")
-  message(FATAL_ERROR "custom version field not used when computing git_tag value. ${tag} was found instead")
+  message(FATAL_ERROR "custom version field not used when computing git_tag value. ${tag} was found instead"
+  )
 endif()

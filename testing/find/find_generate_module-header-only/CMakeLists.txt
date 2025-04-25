@@ -21,10 +21,8 @@ project(rapids-test-project LANGUAGES CXX)
 set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}")
 
 # Generate the find module
-rapids_find_generate_module( RapidsTest
-    HEADER_NAMES rapids-cmake-test-header_only.hpp
-    INSTALL_EXPORT_SET test_set
-    )
+rapids_find_generate_module(RapidsTest HEADER_NAMES rapids-cmake-test-header_only.hpp
+                            INSTALL_EXPORT_SET test_set)
 
 find_package(RapidsTest REQUIRED)
 
@@ -44,9 +42,11 @@ get_target_property(release_lib RapidsTest::RapidsTest IMPORTED_LOCATION_RELEASE
 get_target_property(debug_lib RapidsTest::RapidsTest IMPORTED_LOCATION_DEBUG)
 
 if(NOT IS_DIRECTORY "${include_dir}")
-  message(FATAL_ERROR "rapids_find_generate_module failed to generate correct include dir search logic")
+  message(FATAL_ERROR "rapids_find_generate_module failed to generate correct include dir search logic"
+  )
 endif()
 
 if(release_lib OR debug_lib)
-  message(FATAL_ERROR "rapids_find_generate_module incorrectly found libraries for a header only package")
+  message(FATAL_ERROR "rapids_find_generate_module incorrectly found libraries for a header only package"
+  )
 endif()

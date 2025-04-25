@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2024, NVIDIA CORPORATION.
+# Copyright (c) 2024-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,5 +28,6 @@ if(CMAKE_CUDA_ARCHITECTURES STREQUAL "9000")
 endif()
 
 if(NOT CMAKE_CUDA_ARCHITECTURES STREQUAL "80-real")
-  message(FATAL_ERROR "rapids_cuda_init_architectures didn't preserve users CUDA_ARCHITECTURES value")
+  message(FATAL_ERROR "rapids_cuda_init_architectures didn't preserve users CUDA_ARCHITECTURES value"
+  )
 endif()

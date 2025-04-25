@@ -19,8 +19,8 @@ cmake_minimum_required(VERSION 3.30.4 FATAL_ERROR)
 
 project(write_language-multiple-nested-enable LANGUAGES NONE)
 
-# verify that enabling langues CXX && CUDA in A/B/D and A/C
-# only installs one hook in `A` and `CMAKE_SOURCE_DIR`
+# verify that enabling langues CXX && CUDA in A/B/D and A/C only installs one hook in `A` and
+# `CMAKE_SOURCE_DIR`
 add_subdirectory(A)
 
 # Verify number of hooks is equal to 3 (2 langs, 1 rapids init hook)

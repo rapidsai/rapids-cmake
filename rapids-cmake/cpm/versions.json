@@ -2,11 +2,13 @@
   "packages": {
     "benchmark": {
       "version": "1.8.0",
+      "git_shallow": false,
       "git_url": "https://github.com/google/benchmark.git",
-      "git_tag": "v${version}"
+      "git_tag": "2dd015dfef425c866d9a43f2c67d8b52d709acb6"
     },
     "bs_thread_pool": {
       "version": "4.1.0",
+      "git_shallow": false,
       "git_url": "https://github.com/bshoshany/thread-pool.git",
       "git_tag": "097aa718f25d44315cadb80b407144ad455ee4f9"
     },
@@ -21,7 +23,7 @@
       "git_shallow": false,
       "always_download": true,
       "git_url": "https://github.com/NVIDIA/cuCollections.git",
-      "git_tag": "7b422c00f3541e2472e8d1047b7c3bb4e83c7e2c"
+      "git_tag": "2303a7a2a03e38385dbe1bbc91c55007a94a9192"
     },
     "rapids_logger": {
       "version": "0.1.0",
@@ -31,13 +33,15 @@
     },
     "fmt": {
       "version": "11.0.2",
+      "git_shallow": false,
       "git_url": "https://github.com/fmtlib/fmt.git",
-      "git_tag": "${version}"
+      "git_tag": "0c9fce2ffefecfdce794e1859584e25877b7b592"
     },
     "GTest": {
-      "version": "1.13.0",
+      "version": "1.16.0",
+      "git_shallow": false,
       "git_url": "https://github.com/google/googletest.git",
-      "git_tag": "v${version}"
+      "git_tag": "6910c9d9165801d8827d628cb72eb7ea9dd538c5"
     },
     "nvbench": {
       "version": "0.0",
@@ -47,8 +51,9 @@
     },
     "nvcomp": {
       "version": "4.2.0.11",
+      "git_shallow": false,
       "git_url": "https://github.com/NVIDIA/nvcomp.git",
-      "git_tag": "v2.2.0",
+      "git_tag": "a6e4e64a177e07cd2e5c8c5e07bb66ffefceae84",
       "proprietary_binary_cuda_version_mapping": {
         "11": "11",
         "12": "12"
@@ -60,8 +65,9 @@
     },
     "nvtx3": {
       "version": "3.1.0",
+      "git_shallow": false,
       "git_url": "https://github.com/NVIDIA/NVTX.git",
-      "git_tag": "v${version}"
+      "git_tag": "4808eeda29bb6dcfd38291d1a8ea280b48562c57"
     },
     "rmm": {
       "version": "${rapids-cmake-version}",
@@ -70,8 +76,9 @@
     },
     "spdlog": {
       "version": "1.14.1",
+      "git_shallow": false,
       "git_url": "https://github.com/gabime/spdlog.git",
-      "git_tag": "v${version}"
+      "git_tag": "27cb4c76708608465c413f6d0e6b8d99a4d84302"
     }
   }
 }

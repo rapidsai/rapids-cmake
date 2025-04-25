@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2024, NVIDIA CORPORATION.
+# Copyright (c) 2024-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ rapids_cpm_init()
 
 # Need to write out an override file
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
-  [=[
+     [=[
 {
   "packages": {
     "pkg_with_patch": {
@@ -44,7 +44,7 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
   ]=])
 rapids_cpm_package_override(${CMAKE_CURRENT_BINARY_DIR}/override.json)
 
-rapids_cpm_generate_patch_command(pkg_with_patch 10.2 patch_command)
+rapids_cpm_generate_patch_command(pkg_with_patch 10.2 patch_command build_patch_only)
 if(NOT patch_command)
   message(FATAL_ERROR "rapids_cpm_package_override specified a patch step for `pkg_with_patch`")
 endif()

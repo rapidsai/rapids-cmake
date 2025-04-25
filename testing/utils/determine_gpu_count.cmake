@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2022-2023, NVIDIA CORPORATION.
+# Copyright (c) 2022-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,12 +14,12 @@
 # limitations under the License.
 #=============================================================================
 
-function(determine_gpu_count )
-  #run nvidia-smi and extract gpu details
+function(determine_gpu_count)
+  # run nvidia-smi and extract gpu details
   execute_process(COMMAND nvidia-smi --list-gpus OUTPUT_VARIABLE smi_output)
 
   string(REPLACE "\n" ";" smi_output "${smi_output}")
-  list(POP_BACK smi_output) #remove the trailing `;` entry
+  list(POP_BACK smi_output) # remove the trailing `;` entry
   list(LENGTH smi_output gpu_count)
   set(RAPIDS_CMAKE_TESTING_GPU_COUNT ${gpu_count} PARENT_SCOPE)
 endfunction()
