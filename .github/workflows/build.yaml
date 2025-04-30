@@ -29,7 +29,7 @@ jobs:
   docs-build:
     if: github.ref_type == 'branch'
     secrets: inherit
-    uses: rapidsai/shared-workflows/.github/workflows/custom-job.yaml@branch-25.06
+    uses: rapidsai/shared-workflows/.github/workflows/custom-job.yaml@branch-25.08
     with:
       arch: "amd64"
       branch: ${{ inputs.branch }}
