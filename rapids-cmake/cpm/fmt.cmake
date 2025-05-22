@@ -50,6 +50,10 @@ Result Variables
 #]=======================================================================]
 function(rapids_cpm_fmt)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.fmt")
+  rapids_cmake_policy(DEPRECATED_IN 25.08
+                      REMOVED_IN 26.04
+                      MESSAGE [=[`rapids_cpm_fmt` is deprecated. If you need to fetch fmt, please use rapids_cpm_find directly.]=]
+  )
 
   set(to_install OFF)
   if(INSTALL_EXPORT_SET IN_LIST ARGN)

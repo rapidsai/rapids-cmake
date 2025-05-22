@@ -67,6 +67,10 @@ Result Variables
 #]=======================================================================]
 function(rapids_cpm_spdlog)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.spdlog")
+  rapids_cmake_policy(DEPRECATED_IN 25.08
+                      REMOVED_IN 26.04
+                      MESSAGE [=[`rapids_cpm_spdlog` is deprecated. If you need to fetch spdlog, please use rapids_cpm_find directly.]=]
+  )
 
   set(options)
   set(one_value FMT_OPTION BUILD_EXPORT_SET INSTALL_EXPORT_SET)
