@@ -70,7 +70,7 @@ function(rapids_cpm_spdlog)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.spdlog")
   include("${rapids-cmake-dir}/cmake/detail/policy.cmake")
   rapids_cmake_policy(DEPRECATED_IN 25.08
-                      REMOVED_IN 26.04
+                      REMOVED_IN 25.12
                       MESSAGE [=[`rapids_cpm_spdlog` is deprecated. If you need to fetch spdlog, please use rapids_cpm_find directly.]=]
   )
 
