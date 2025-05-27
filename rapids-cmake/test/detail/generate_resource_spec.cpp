@@ -31,7 +31,7 @@ struct version {
 };
 
 struct gpu {
-  gpu(int i) : id(i), memory(0), slots(0){};
+  gpu(int i) : id(i), memory(0), slots(0) {};
   gpu(int i, size_t mem) : id(i), memory(mem), slots(100) {}
   int id;
   size_t memory;
