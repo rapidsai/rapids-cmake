@@ -17,7 +17,7 @@ jobs:
       - docs-build
       - telemetry-setup
     secrets: inherit
-    uses: rapidsai/shared-workflows/.github/workflows/pr-builder.yaml@branch-25.06
+    uses: rapidsai/shared-workflows/.github/workflows/pr-builder.yaml@branch-25.08
   telemetry-setup:
     runs-on: ubuntu-latest
     continue-on-error: true
@@ -32,18 +32,18 @@ jobs:
   checks:
     secrets: inherit
     needs: telemetry-setup
-    uses: rapidsai/shared-workflows/.github/workflows/checks.yaml@branch-25.06
+    uses: rapidsai/shared-workflows/.github/workflows/checks.yaml@branch-25.08
     with:
       ignored_pr_jobs: telemetry-summarize
   conda-cpp-tests:
     secrets: inherit
-    uses: rapidsai/shared-workflows/.github/workflows/conda-cpp-tests.yaml@branch-25.06
+    uses: rapidsai/shared-workflows/.github/workflows/conda-cpp-tests.yaml@branch-25.08
     with:
       build_type: pull-request
       script: ci/test_cpp.sh
   docs-build:
     secrets: inherit
-    uses: rapidsai/shared-workflows/.github/workflows/custom-job.yaml@branch-25.06
+    uses: rapidsai/shared-workflows/.github/workflows/custom-job.yaml@branch-25.08
     with:
       build_type: pull-request
       node_type: "cpu4"

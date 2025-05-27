@@ -73,25 +73,13 @@ function(rapids_cpm_rmm)
   include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
   rapids_cpm_generate_patch_command(rmm ${version} patch_command build_patch_only)
 
-  # Use `SOURCE_SUBDIR cpp` if RMM version is 25.06 or higher
-  if(version VERSION_GREATER_EQUAL 25.06)
-    set(source_subdir_arg SOURCE_SUBDIR cpp)
-  else()
-    set(source_subdir_arg "")
-    include("${rapids-cmake-dir}/cmake/detail/policy.cmake")
-    rapids_cmake_policy(DEPRECATED_IN 25.06
-                        REMOVED_IN 25.08
-                        MESSAGE "Using RMM versions below 25.06 is deprecated in rapids-cmake. Please upgrade to RMM 25.06 or higher."
-    )
-  endif()
-
   include("${rapids-cmake-dir}/cpm/find.cmake")
   rapids_cpm_find(rmm ${version} ${ARGN} ${_RAPIDS_UNPARSED_ARGUMENTS} ${build_patch_only}
                   GLOBAL_TARGETS rmm::rmm rmm::rmm_logger rmm::rmm_logger_impl
                   CPM_ARGS
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
-                  GIT_SHALLOW ${shallow} ${source_subdir_arg} ${patch_command}
+                  GIT_SHALLOW ${shallow} SOURCE_SUBDIR cpp ${patch_command}
                   EXCLUDE_FROM_ALL ${to_exclude}
                   OPTIONS "BUILD_TESTS OFF" "BUILD_BENCHMARKS OFF")
 
