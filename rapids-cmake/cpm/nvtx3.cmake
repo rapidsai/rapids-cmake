@@ -78,7 +78,8 @@ function(rapids_cpm_nvtx3)
                   GIT_REPOSITORY ${repository}
                   GIT_TAG ${tag}
                   GIT_SHALLOW ${shallow} ${patch_command} SOURCE_SUBDIR c
-                  EXCLUDE_FROM_ALL ${exclude})
+                  EXCLUDE_FROM_ALL ${exclude}
+                  OPTIONS "NVTX3_INSTALL ON")
 
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
   rapids_cpm_display_patch_status(nvtx3)
