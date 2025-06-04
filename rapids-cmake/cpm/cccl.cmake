@@ -147,9 +147,9 @@ function(rapids_cpm_cccl)
   cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
   if(CCCL_SOURCE_DIR)
-    # Store where CMake can find the Thrust-config.cmake that comes part of Thrust source code
+    # Store where CMake can find the cccl-config.cmake
     include("${rapids-cmake-dir}/export/find_package_root.cmake")
-    rapids_export_find_package_root(BUILD CCCL "${CCCL_SOURCE_DIR}/cmake"
+    rapids_export_find_package_root(BUILD CCCL "${CCCL_SOURCE_DIR}/lib/cmake/cccl"
                                     EXPORT_SET ${_RAPIDS_BUILD_EXPORT_SET})
     rapids_export_find_package_root(INSTALL CCCL
                                     [=[${CMAKE_CURRENT_LIST_DIR}/../../rapids/cmake/cccl]=]
