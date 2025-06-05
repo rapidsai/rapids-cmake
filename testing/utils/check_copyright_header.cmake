@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2024, NVIDIA CORPORATION.
+# Copyright (c) 2024-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -34,7 +34,9 @@ function(check_copyright_header file)
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-]=] expected_header @ONLY)
+]=]
+                     expected_header
+           @ONLY)
   else()
     string(CONFIGURE [=[/*
  * Copyright (c) @current_year@, NVIDIA CORPORATION.
@@ -51,7 +53,9 @@ function(check_copyright_header file)
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-]=] expected_header @ONLY)
+]=]
+                     expected_header
+           @ONLY)
   endif()
   string(LENGTH "${expected_header}" expected_header_length)
 

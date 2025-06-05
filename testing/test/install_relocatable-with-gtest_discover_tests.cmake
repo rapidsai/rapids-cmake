@@ -28,7 +28,7 @@ enable_testing()
 rapids_test_init()
 
 file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/main.cpp"
-[=[
+     [=[
 #include <gtest/gtest.h>
 
 using Foo = ::testing::Test;
@@ -46,18 +46,16 @@ add_executable(main ${CMAKE_CURRENT_BINARY_DIR}/main.cpp)
 
 target_link_libraries(main PRIVATE GTest::gtest)
 
-
 gtest_discover_tests(main DISCOVERY_MODE PRE_TEST)
 rapids_test_add(NAME main COMMAND main INSTALL_COMPONENT_SET testing)
 
-rapids_test_install_relocatable(INSTALL_COMPONENT_SET testing
-                                DESTINATION bin/testing)
-
+rapids_test_install_relocatable(INSTALL_COMPONENT_SET testing DESTINATION bin/testing)
 
 file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/verify_installed_CTestTestfile.cmake"
-  "set(installed_test_file \"${CMAKE_CURRENT_BINARY_DIR}/install/bin/testing/CTestTestfile.cmake\")")
+     "set(installed_test_file \"${CMAKE_CURRENT_BINARY_DIR}/install/bin/testing/CTestTestfile.cmake\")"
+)
 file(APPEND "${CMAKE_CURRENT_BINARY_DIR}/verify_installed_CTestTestfile.cmake"
-[==[
+     [==[
 
 file(READ "${installed_test_file}" contents)
 set(add_test_match_string [===[add_test(generate_resource_spec ./generate_ctest_json "./resource_spec.json")]===])
@@ -73,7 +71,8 @@ endif()
 ]==])
 
 add_custom_target(install_testing_component ALL
-  COMMAND ${CMAKE_COMMAND} --install "${CMAKE_CURRENT_BINARY_DIR}" --component testing --prefix install/ --config Debug
-  COMMAND ${CMAKE_COMMAND} -P "${CMAKE_CURRENT_BINARY_DIR}/verify_installed_CTestTestfile.cmake"
-  )
+                  COMMAND ${CMAKE_COMMAND} --install "${CMAKE_CURRENT_BINARY_DIR}" --component
+                          testing --prefix install/ --config Debug
+                  COMMAND ${CMAKE_COMMAND} -P
+                          "${CMAKE_CURRENT_BINARY_DIR}/verify_installed_CTestTestfile.cmake")
 add_dependencies(install_testing_component main)

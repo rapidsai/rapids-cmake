@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021, NVIDIA CORPORATION.
+# Copyright (c) 2021-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,5 +22,5 @@ rapids_cuda_set_architectures(invalid-mode)
 message(STATUS "CMAKE_CUDA_ARCHITECTURES: ${CMAKE_CUDA_ARCHITECTURES}")
 if(NOT CMAKE_CUDA_ARCHITECTURES STREQUAL user_value)
   message(FATAL_ERROR "CMAKE_CUDA_ARCHITECTURES shouldn't be modified by "
-          "rapids_cuda_set_architectures() when past an invalid mode")
+                      "rapids_cuda_set_architectures() when past an invalid mode")
 endif()

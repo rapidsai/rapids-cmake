@@ -6,6 +6,15 @@
           "nargs": 1
         }
       },
+      "rapids_cmake_download_with_retry": {
+        "pargs": {
+          "nargs": 3
+        },
+        "kwargs": {
+          "MAX_RETRIES": 1,
+          "RETRY_DELAY": 1
+        }
+      },
       "rapids_cmake_install_lib_dir": {
         "pargs": {
           "nargs": 1,
@@ -57,6 +66,12 @@
         "kwargs": {
           "PREFIX": 1
         }
+      },
+      "rapids_cpm_download": {
+        "pargs": {
+          "nargs": 0
+        },
+        "kwargs": {}
       },
       "rapids_cpm_find": {
         "pargs": {

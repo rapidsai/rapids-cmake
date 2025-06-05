@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2022, NVIDIA CORPORATION.
+# Copyright (c) 2022-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,12 +17,11 @@ include(${rapids-cmake-dir}/find/package.cmake)
 
 set(CMAKE_PREFIX_PATH "${rapids-cmake-testing-dir}/find/find_package-components/")
 
-rapids_find_package(FakeDependency 11 COMPONENTS AAAAA
-                    BUILD_EXPORT_SET test_export_set
-                    )
+rapids_find_package(FakeDependency 11 COMPONENTS AAAAA BUILD_EXPORT_SET test_export_set)
 
 if(FakeDependency_FOUND)
-  message(FATAL_ERROR "rapids_find_package recorded incorrect FOUND state for a failed find_package request")
+  message(FATAL_ERROR "rapids_find_package recorded incorrect FOUND state for a failed find_package request"
+  )
 endif()
 
 set(path "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/build/package_FakeDependency.cmake")

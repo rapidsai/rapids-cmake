@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2024, NVIDIA CORPORATION.
+# Copyright (c) 2021-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ include(${rapids-cmake-dir}/cpm/init.cmake)
 
 # Need to write out multiple default files
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/defaultsA.json
-  [=[
+     [=[
 {
   "packages": {
     "nvbench": {
@@ -30,7 +30,7 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/defaultsA.json
   ]=])
 
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/defaultsB.json
-  [=[
+     [=[
 {
   "packages": {
     "nvbench": {
@@ -48,7 +48,7 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/defaultsB.json
   ]=])
 
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/defaultsC.json
-  [=[
+     [=[
 {
   "packages": {
     "GTest": {
@@ -79,7 +79,8 @@ foreach(proj IN ITEMS rmm nvbench GTest)
     message(FATAL_ERROR "${proj} default tag field was removed.")
   endif()
   if(CPM_DOWNLOAD_ALL)
-    message(FATAL_ERROR "CPM_DOWNLOAD_ALL should be false since since we just specified a defaults version file'")
+    message(FATAL_ERROR "CPM_DOWNLOAD_ALL should be false since since we just specified a defaults version file'"
+    )
   endif()
   unset(CPM_DOWNLOAD_ALL)
 endforeach()

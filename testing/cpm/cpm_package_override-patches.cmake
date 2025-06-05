@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2023-2024, NVIDIA CORPORATION.
+# Copyright (c) 2023-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ rapids_cpm_init()
 
 # Need to write out an override file
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
-  [=[
+     [=[
 {
   "packages": {
     "rmm": {
@@ -43,5 +43,6 @@ include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
 
 rapids_cpm_package_details(rmm version repository tag shallow exclude)
 if(NOT CPM_DOWNLOAD_ALL)
-  message(FATAL_ERROR "CPM_DOWNLOAD_ALL should be set to true when an override exists with a patches entry")
+  message(FATAL_ERROR "CPM_DOWNLOAD_ALL should be set to true when an override exists with a patches entry"
+  )
 endif()

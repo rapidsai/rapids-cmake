@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2024, NVIDIA CORPORATION.
+# Copyright (c) 2024-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,9 +16,7 @@
 include(${rapids-cmake-dir}/find/generate_module.cmake)
 include(${rapids-cmake-testing-dir}/utils/check_copyright_header.cmake)
 
-rapids_find_generate_module( RapidsTest
-  HEADER_NAMES rapids-cmake-test-header_only.hpp
-  INSTALL_EXPORT_SET test_set
-  )
+rapids_find_generate_module(RapidsTest HEADER_NAMES rapids-cmake-test-header_only.hpp
+                            INSTALL_EXPORT_SET test_set)
 
 check_copyright_header("${CMAKE_BINARY_DIR}/cmake/find_modules/FindRapidsTest.cmake")

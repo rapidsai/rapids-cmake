@@ -21,8 +21,8 @@ if(NOT location EQUAL -1)
   message(FATAL_ERROR "CMAKE_CUDA_ARCHITECTURES last value shouldn't have `-real`")
 endif()
 
-# Each item should be `number-real` and should be ordered from low to high.
-# In addition the values should map to Volta+ GPU arch ( 70+ )
+# Each item should be `number-real` and should be ordered from low to high. In addition the values
+# should map to Volta+ GPU arch ( 70+ )
 set(previous_value 69)
 foreach(value IN LISTS CMAKE_CUDA_ARCHITECTURES)
   # verify it ends with `-real`
@@ -32,24 +32,25 @@ foreach(value IN LISTS CMAKE_CUDA_ARCHITECTURES)
   endif()
 
   string(REPLACE "-real" "" value "${value}")
-  if( value LESS previous_value )
-      message(FATAL_ERROR "CMAKE_CUDA_ARCHITECTURES values should be ordered lowest to highest."
-                          "with lowest >= 70")
+  if(value LESS previous_value)
+    message(FATAL_ERROR "CMAKE_CUDA_ARCHITECTURES values should be ordered lowest to highest."
+                        "with lowest >= 70")
   endif()
 endforeach()
 
-if( last_value LESS previous_value )
+if(last_value LESS previous_value)
   message(FATAL_ERROR "CMAKE_CUDA_ARCHITECTURES values should be ordered lowest to highest."
                       "with lowest >= 70")
 endif()
 
 list(APPEND CMAKE_CUDA_ARCHITECTURES ${last_value})
 
-if(NOT DEFINED CACHE{CMAKE_CUDA_ARCHITECTURES} )
-  message(FATAL_ERROR "rapids_cuda_set_architectures didn't make CMAKE_CUDA_ARCHITECTURES a cache variable")
+if(NOT DEFINED CACHE{CMAKE_CUDA_ARCHITECTURES})
+  message(FATAL_ERROR "rapids_cuda_set_architectures didn't make CMAKE_CUDA_ARCHITECTURES a cache variable"
+  )
 endif()
 
-if(CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL 12.8.0 )
+if(CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL 12.8.0)
   if(NOT CMAKE_CUDA_FLAGS MATCHES "Wno-deprecated-gpu-targets")
     message(FATAL_ERROR "CMAKE_CUDA_FLAGS should have -Wno-deprecated-gpu-targets")
   endif()

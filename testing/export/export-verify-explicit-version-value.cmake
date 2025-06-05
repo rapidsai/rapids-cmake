@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021, NVIDIA CORPORATION.
+# Copyright (c) 2021-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,11 +21,7 @@ project(test LANGUAGES CXX VERSION 08.06.04)
 add_library(fakeLib INTERFACE)
 install(TARGETS fakeLib EXPORT fake_set)
 
-rapids_export(BUILD test
-  VERSION 21.09.03
-  EXPORT_SET fake_set
-  LANGUAGES CXX
-  )
+rapids_export(BUILD test VERSION 21.09.03 EXPORT_SET fake_set LANGUAGES CXX)
 
 # Verify that build files have correct names
 if(NOT EXISTS "${CMAKE_BINARY_DIR}/test-config.cmake")

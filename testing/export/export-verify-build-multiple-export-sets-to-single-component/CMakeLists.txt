@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2023, NVIDIA CORPORATION.
+# Copyright (c) 2023-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,15 +28,15 @@ add_library(fakeLib_c1-lib INTERFACE)
 install(TARGETS fakeLib_c1-lib EXPORT fake-c1-lib-exports)
 
 rapids_export(BUILD fake
-  EXPORT_SET fake_set
-  COMPONENTS  c1 c1
-  COMPONENTS_EXPORT_SET fake_c1-export fake-c1-lib-exports
-  NAMESPACE test::
-  )
+              EXPORT_SET fake_set
+              COMPONENTS c1 c1
+              COMPONENTS_EXPORT_SET fake_c1-export fake-c1-lib-exports
+              NAMESPACE test::)
 
-# Add a custom command that generates a second project
-# that verifies our component targets are exported correctly
-file(WRITE "${CMAKE_BINARY_DIR}/verify-1/CMakeLists.txt" [=[
+# Add a custom command that generates a second project that verifies our component targets are
+# exported correctly
+file(WRITE "${CMAKE_BINARY_DIR}/verify-1/CMakeLists.txt"
+     [=[
 cmake_minimum_required(VERSION 3.20)
 project(verify_build_targets LANGUAGES CXX)
 
@@ -50,13 +50,14 @@ endforeach()
 ]=])
 
 add_custom_target(verify_target_component_files ALL
-  COMMAND ${CMAKE_COMMAND} -E rm -rf "${CMAKE_BINARY_DIR}/verify-1/build"
-  COMMAND ${CMAKE_COMMAND} -S="${CMAKE_BINARY_DIR}/verify-1" -B="${CMAKE_BINARY_DIR}/verify-1/build"
-  )
+                  COMMAND ${CMAKE_COMMAND} -E rm -rf "${CMAKE_BINARY_DIR}/verify-1/build"
+                  COMMAND ${CMAKE_COMMAND} -S="${CMAKE_BINARY_DIR}/verify-1"
+                          -B="${CMAKE_BINARY_DIR}/verify-1/build")
 
-# Add a custom command that generates a second project
-# that verifies our component aren't brought in with `find_package()`
-file(WRITE "${CMAKE_BINARY_DIR}/verify-2/CMakeLists.txt" [=[
+# Add a custom command that generates a second project that verifies our component aren't brought in
+# with `find_package()`
+file(WRITE "${CMAKE_BINARY_DIR}/verify-2/CMakeLists.txt"
+     [=[
 cmake_minimum_required(VERSION 3.20)
 project(verify_build_targets LANGUAGES CXX)
 
@@ -68,14 +69,14 @@ endif()
 ]=])
 
 add_custom_target(verify_target_find_package ALL
-  COMMAND ${CMAKE_COMMAND} -E rm -rf "${CMAKE_BINARY_DIR}/verify-2/build"
-  COMMAND ${CMAKE_COMMAND} -S="${CMAKE_BINARY_DIR}/verify-2" -B="${CMAKE_BINARY_DIR}/verify-2/build"
-  )
+                  COMMAND ${CMAKE_COMMAND} -E rm -rf "${CMAKE_BINARY_DIR}/verify-2/build"
+                  COMMAND ${CMAKE_COMMAND} -S="${CMAKE_BINARY_DIR}/verify-2"
+                          -B="${CMAKE_BINARY_DIR}/verify-2/build")
 
-
-# Add a custom command that generates a second project
-# that verifies our component are brought in with `find_package( COMPONENTS)`
-file(WRITE "${CMAKE_BINARY_DIR}/verify-3/CMakeLists.txt" [=[
+# Add a custom command that generates a second project that verifies our component are brought in
+# with `find_package(COMPONENTS)`
+file(WRITE "${CMAKE_BINARY_DIR}/verify-3/CMakeLists.txt"
+     [=[
 cmake_minimum_required(VERSION 3.20)
 project(verify_build_targets LANGUAGES CXX)
 
@@ -87,6 +88,6 @@ endif()
 ]=])
 
 add_custom_target(verify_target_find_components ALL
-  COMMAND ${CMAKE_COMMAND} -E rm -rf "${CMAKE_BINARY_DIR}/verify-3/build"
-  COMMAND ${CMAKE_COMMAND} -S="${CMAKE_BINARY_DIR}/verify-3" -B="${CMAKE_BINARY_DIR}/verify-3/build"
-)
+                  COMMAND ${CMAKE_COMMAND} -E rm -rf "${CMAKE_BINARY_DIR}/verify-3/build"
+                  COMMAND ${CMAKE_COMMAND} -S="${CMAKE_BINARY_DIR}/verify-3"
+                          -B="${CMAKE_BINARY_DIR}/verify-3/build")

@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2022-2025, NVIDIA CORPORATION.
+# Copyright (c) 2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,16 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-cmake_minimum_required(VERSION 3.30.4)
 
-project(rapids-dependencies LANGUAGES CXX)
+project(subdir1)
 
-set(rapids-cmake-dir "${PROJECT_SOURCE_DIR}/../../../rapids-cmake/")
-
-include(${rapids-cmake-dir}/cpm/init.cmake)
-rapids_cpm_init()
-
-# Download all source packages
-include(${rapids-cmake-dir}/cpm/cccl.cmake)
-set(CPM_DOWNLOAD_ALL "ON")
-rapids_cpm_cccl(NAMESPACE temp INSTALL_EXPORT_SET rapids-dependencies)
+rapids_cpm_nvtx3(BUILD_EXPORT_SET other-exports)

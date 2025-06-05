@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021, NVIDIA CORPORATION.
+# Copyright (c) 2021-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,10 +15,8 @@
 #=============================================================================
 include(${rapids-cmake-dir}/find/package.cmake)
 
-
 function(track_normal_find_package count_var)
-  # We need to establish CMAKE_MESSAGE_CONTEXT before we count
-  # as it is expected to leak
+  # We need to establish CMAKE_MESSAGE_CONTEXT before we count as it is expected to leak
   set(CMAKE_MESSAGE_CONTEXT "test")
 
   find_package(${ARGN})
@@ -29,8 +27,7 @@ function(track_normal_find_package count_var)
 endfunction()
 
 function(track_rapids_find_package count_var)
-  # We need to establish CMAKE_MESSAGE_CONTEXT before we count
-  # as it is expected to leak
+  # We need to establish CMAKE_MESSAGE_CONTEXT before we count as it is expected to leak
   set(CMAKE_MESSAGE_CONTEXT "test")
   rapids_find_package(${ARGN})
 
@@ -45,9 +42,8 @@ function(track_rapids_find_package count_var)
   endif()
 endfunction()
 
-
-# Need to create both of the length variables ahead of time so
-# that they are included in the counts and track_rapids_find_package
+# Need to create both of the length variables ahead of time so that they are included in the counts
+# and track_rapids_find_package
 set(normal_len 0)
 set(rapids_len 0)
 track_normal_find_package(normal_len PNG)
@@ -58,11 +54,8 @@ if(NOT normal_len EQUAL rapids_len)
 endif()
 
 track_normal_find_package(normal_len ZLIB)
-track_rapids_find_package(rapids_len ZLIB
-  INSTALL_EXPORT_SET test_export_set
-  BUILD_EXPORT_SET test_export_set
-  GLOBAL_TARGETS ZLIB::ZLIB
-  )
+track_rapids_find_package(rapids_len ZLIB INSTALL_EXPORT_SET test_export_set BUILD_EXPORT_SET
+                          test_export_set GLOBAL_TARGETS ZLIB::ZLIB)
 
 if(NOT normal_len EQUAL rapids_len)
   message(FATAL_ERROR "A complex rapids_find_package leaked variables!")

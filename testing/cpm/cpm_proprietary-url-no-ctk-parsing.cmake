@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2023-2024, NVIDIA CORPORATION.
+# Copyright (c) 2023-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ rapids_cpm_init()
 
 # Need to write out an override file with a proprietary blob url
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
-  [=[
+     [=[
 {
   "packages": {
     "test_binary": {
@@ -44,5 +44,6 @@ rapids_cpm_get_proprietary_binary_url(test_binary ${version} nvcomp_url)
 
 # Verify that we didn't go searching for the CUDAToolkit
 if(TARGET CUDA::cudart_static OR TARGET CUDA::cudart)
-  message(FATAL_ERROR "test_binary didn't use the cuda toolkit placeholder, but searching for it still occurred")
+  message(FATAL_ERROR "test_binary didn't use the cuda toolkit placeholder, but searching for it still occurred"
+  )
 endif()

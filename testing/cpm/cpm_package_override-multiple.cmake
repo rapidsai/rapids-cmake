@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2024, NVIDIA CORPORATION.
+# Copyright (c) 2021-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,34 +20,38 @@ rapids_cpm_init()
 
 # Load the default values for nvbench and GTest projects
 include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
-rapids_cpm_package_details(nvbench nvbench_version nvbench_repository nvbench_tag nvbench_shallow nvbench_exclude)
-rapids_cpm_package_details(GTest GTest_version GTest_repository GTest_tag GTest_shallow GTest_exclude)
+rapids_cpm_package_details(nvbench nvbench_version nvbench_repository nvbench_tag nvbench_shallow
+                           nvbench_exclude)
+rapids_cpm_package_details(GTest GTest_version GTest_repository GTest_tag GTest_shallow
+                           GTest_exclude)
 rapids_cpm_package_details(rmm rmm_version rmm_repository rmm_tag rmm_shallow rmm_exclude)
 
 # Need to write out an override file
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override1.json
-  [=[
+     [=[
 {
   "packages": {
     "nvbench": {
       "git_tag": "my_tag"
     },
     "GTest": {
-      "version": "2.99"
+      "version": "2.99",
+      "git_tag": "v${version}"
     }
   }
 }
   ]=])
 
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override2.json
-  [=[
+     [=[
 {
   "packages": {
     "rmm": {
       "git_tag": "new_rmm_tag"
     },
     "GTest": {
-      "version": "3.99"
+      "version": "3.99",
+      "git_tag": "v${version}"
     }
   }
 }
@@ -73,10 +77,12 @@ if(NOT version STREQUAL "2.99")
   message(FATAL_ERROR "custom version field was removed. ${version} was found instead")
 endif()
 if(NOT tag MATCHES "2.99")
-  message(FATAL_ERROR "custom version field not used when computing git_tag value. ${tag} was found instead")
+  message(FATAL_ERROR "custom version field not used when computing git_tag value. ${tag} was found instead"
+  )
 endif()
 
 rapids_cpm_package_details(rmm version repository tag shallow exclude)
 if(NOT tag MATCHES "new_rmm_tag")
-  message(FATAL_ERROR "custom version field not used when computing git_tag value. ${tag} was found instead")
+  message(FATAL_ERROR "custom version field not used when computing git_tag value. ${tag} was found instead"
+  )
 endif()

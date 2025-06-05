@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2024, NVIDIA CORPORATION.
+# Copyright (c) 2024-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 set(rmm_string "RAPIDS-CMake is assuming the override rMm is meant for the rmm package")
 set(gtest_string "RAPIDS-CMake is assuming the override gtest is meant for the GTest package")
 
-function(message mode content )
+function(message mode content)
   if(mode STREQUAL "AUTHOR_WARNING")
     if(content MATCHES "${rmm_string}")
       message(STATUS "==rmm warned==")
@@ -39,7 +39,7 @@ rapids_cpm_init()
 
 # Need to write out an override file
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
-  [=[
+     [=[
 {
   "packages": {
     "rMm": {

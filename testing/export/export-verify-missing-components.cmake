@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2023, NVIDIA CORPORATION.
+# Copyright (c) 2023-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,8 +24,5 @@ install(TARGETS fakeLib EXPORT fake_set)
 add_library(fakeLib_c1 INTERFACE)
 install(TARGETS fakeLib_c1 EXPORT fake_set_c1)
 
-rapids_export(BUILD FakEProJecT
-  EXPORT_SET fake_set
-  COMPONENTS_EXPORT_SET fake_set_c1
-  NAMESPACE test::
-  )
+rapids_export(BUILD FakEProJecT EXPORT_SET fake_set COMPONENTS_EXPORT_SET fake_set_c1
+              NAMESPACE test::)

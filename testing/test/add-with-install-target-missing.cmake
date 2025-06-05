@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2022-2024, NVIDIA CORPORATION.
+# Copyright (c) 2022-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,4 +24,5 @@ file(WRITE "${CMAKE_BINARY_DIR}/main.cu" "int main(){return 0;}")
 add_executable(verify_alloc "${CMAKE_BINARY_DIR}/main.cu")
 
 enable_testing()
-rapids_test_add(NAME simple_test COMMAND verify_alloc GPUS 1 INSTALL_COMPONENT_SET testing INSTALL_TARGET noexist)
+rapids_test_add(NAME simple_test COMMAND verify_alloc GPUS 1
+                INSTALL_COMPONENT_SET testing INSTALL_TARGET noexist)

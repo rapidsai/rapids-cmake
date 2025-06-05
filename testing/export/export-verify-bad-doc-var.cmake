@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021, NVIDIA CORPORATION.
+# Copyright (c) 2021-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,8 +21,4 @@ project(test LANGUAGES CXX VERSION 3.1.4)
 add_library(fakeLib INTERFACE)
 install(TARGETS fakeLib EXPORT fake_set)
 
-rapids_export(BUILD test
-  EXPORT_SET fake_set
-  LANGUAGES CXX
-  DOCUMENTATION var_doesn't_exist
-  )
+rapids_export(BUILD test EXPORT_SET fake_set LANGUAGES CXX DOCUMENTATION var_doesn't_exist)

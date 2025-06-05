@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2023, NVIDIA CORPORATION.
+# Copyright (c) 2023-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -34,23 +34,23 @@ install(TARGETS fakeLib_c2_lib EXPORT fake_c2-lib_exports)
 
 set(CMAKE_INSTALL_LIBDIR "lib64")
 rapids_export(INSTALL fake
-  EXPORT_SET fake_set
-  COMPONENTS c1 c2 c2
-  COMPONENTS_EXPORT_SET fake_c1_export fake_c2_exports fake_c2-lib_exports
-  NAMESPACE test::
-  )
+              EXPORT_SET fake_set
+              COMPONENTS c1 c2 c2
+              COMPONENTS_EXPORT_SET fake_c1_export fake_c2_exports fake_c2-lib_exports
+              NAMESPACE test::)
 
-# Add a custom command that install each component into
-# a different temp location
+# Add a custom command that install each component into a different temp location
 add_custom_target(install_each_component_files ALL
-  COMMAND ${CMAKE_COMMAND} --install "${CMAKE_BINARY_DIR}" --component fake --prefix install/fake/
-  COMMAND ${CMAKE_COMMAND} --install "${CMAKE_BINARY_DIR}" --component c1 --prefix install/c1/
-  COMMAND ${CMAKE_COMMAND} --install "${CMAKE_BINARY_DIR}" --component c2 --prefix install/c2/
-  )
+                  COMMAND ${CMAKE_COMMAND} --install "${CMAKE_BINARY_DIR}" --component fake --prefix
+                          install/fake/
+                  COMMAND ${CMAKE_COMMAND} --install "${CMAKE_BINARY_DIR}" --component c1 --prefix
+                          install/c1/
+                  COMMAND ${CMAKE_COMMAND} --install "${CMAKE_BINARY_DIR}" --component c2 --prefix
+                          install/c2/)
 
-# Add a custom command that verifies that the expect files have
-# been installed for each component
-file(WRITE "${CMAKE_BINARY_DIR}/install/CMakeLists.txt" [=[
+# Add a custom command that verifies that the expect files have been installed for each component
+file(WRITE "${CMAKE_BINARY_DIR}/install/CMakeLists.txt"
+     [=[
 cmake_minimum_required(VERSION 3.20)
 project(verify_install_targets LANGUAGES CXX)
 
@@ -76,7 +76,7 @@ endforeach()
 ]=])
 
 add_custom_target(verify_install_components ALL
-  COMMAND ${CMAKE_COMMAND} -E rm -rf "${CMAKE_BINARY_DIR}/install/build"
-  COMMAND ${CMAKE_COMMAND} -S="${CMAKE_BINARY_DIR}/install" -B="${CMAKE_BINARY_DIR}/install/build"
-)
+                  COMMAND ${CMAKE_COMMAND} -E rm -rf "${CMAKE_BINARY_DIR}/install/build"
+                  COMMAND ${CMAKE_COMMAND} -S="${CMAKE_BINARY_DIR}/install"
+                          -B="${CMAKE_BINARY_DIR}/install/build")
 add_dependencies(verify_install_components install_each_component_files)

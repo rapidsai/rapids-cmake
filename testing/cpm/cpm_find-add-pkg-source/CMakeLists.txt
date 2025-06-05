@@ -24,6 +24,6 @@ set(CPM_ZLIB_SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/mock_zlib_source_dir")
 rapids_cpm_init()
 rapids_cpm_find(ZLIB 1.0)
 
-if (NOT TARGET MOCK_ZLIB)
+if(NOT TARGET MOCK_ZLIB)
   message(FATAL_ERROR "rapids_cpm_find failed to add ZLIB source dir ${CPM_ZLIB_SOURCE}")
 endif()

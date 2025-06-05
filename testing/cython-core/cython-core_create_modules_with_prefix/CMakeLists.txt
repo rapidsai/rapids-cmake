@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2023, NVIDIA CORPORATION.
+# Copyright (c) 2023-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,11 +27,9 @@ rapids_cython_init()
 rapids_cython_create_modules()
 
 # Test that we can use a prefix to generate a different library target.
-rapids_cython_create_modules(
-    SOURCE_FILES test.pyx
-    MODULE_PREFIX "test_"
-    )
+rapids_cython_create_modules(SOURCE_FILES test.pyx MODULE_PREFIX "test_")
 
 if(NOT TARGET test_test)
-  message(FATAL_ERROR "rapids_cython_create_modules didn't create the prefixed library target `test_test`")
+  message(FATAL_ERROR "rapids_cython_create_modules didn't create the prefixed library target `test_test`"
+  )
 endif()

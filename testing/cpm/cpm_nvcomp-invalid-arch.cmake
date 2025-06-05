@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2022-2023, NVIDIA CORPORATION.
+# Copyright (c) 2022-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -26,5 +26,6 @@ set(CMAKE_SYSTEM_PROCESSOR "i686") # Don't do this outside of tests
 rapids_cpm_nvcomp(USE_PROPRIETARY_BINARY ON)
 
 if(nvcomp_proprietary_binary)
-  message(FATAL_ERROR "Shouldn't have found a pre-built version of nvcomp for a non-existent CMAKE_SYSTEM_PROCESSOR key")
+  message(FATAL_ERROR "Shouldn't have found a pre-built version of nvcomp for a non-existent CMAKE_SYSTEM_PROCESSOR key"
+  )
 endif()
