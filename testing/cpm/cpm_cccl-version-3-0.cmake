@@ -29,10 +29,10 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
 {
   "packages": {
     "CCCL": {
-      "version": "2.7.0",
+      "version": "3.0.0",
       "git_shallow": false,
       "git_url": "https://github.com/NVIDIA/cccl.git",
-      "git_tag": "v2.7.0"
+      "git_tag": "dc1db8aefcfe52c66c26c6038fef58da37a46ae9"
     }
   }
 }
@@ -54,8 +54,8 @@ project(verify_install_targets LANGUAGES CXX)
 
 # Verify include dirs
 set(include_dirs_to_verify include/rapids/cub
-                           include/rapids/libcudacxx/cuda
-                           include/rapids/libcudacxx/nv
+                           include/rapids/cuda
+                           include/rapids/nv
                            include/rapids/thrust)
 
 # Verify lib/cmake dirs
