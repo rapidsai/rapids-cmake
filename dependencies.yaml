@@ -39,14 +39,6 @@ dependencies:
       - output_types: conda
         matrices:
           - matrix:
-              cuda: "11.[245]"
-            packages:
-              - gcc<11.0.0
-          - matrix:
-              cuda: "11.[68]"
-            packages:
-              - gcc<12.0.0
-          - matrix:
               cuda: "12.[0123]"
             packages:
               - gcc<13.0.0
@@ -67,46 +59,6 @@ dependencies:
       - output_types: conda
         matrices:
           - matrix:
-              arch: x86_64
-              cuda: "11.2"
-            packages:
-              - nvcc_linux-64=11.2
-          - matrix:
-              arch: aarch64
-              cuda: "11.2"
-            packages:
-              - nvcc_linux-aarch64=11.2
-          - matrix:
-              arch: x86_64
-              cuda: "11.4"
-            packages:
-              - nvcc_linux-64=11.4
-          - matrix:
-              arch: aarch64
-              cuda: "11.4"
-            packages:
-              - nvcc_linux-aarch64=11.4
-          - matrix:
-              arch: x86_64
-              cuda: "11.5"
-            packages:
-              - nvcc_linux-64=11.5
-          - matrix:
-              arch: aarch64
-              cuda: "11.5"
-            packages:
-              - nvcc_linux-aarch64=11.5
-          - matrix:
-              arch: x86_64
-              cuda: "11.8"
-            packages:
-              - nvcc_linux-64=11.8
-          - matrix:
-              arch: aarch64
-              cuda: "11.8"
-            packages:
-              - nvcc_linux-aarch64=11.8
-          - matrix:
               cuda: "12.*"
             packages:
               - cuda-nvcc
@@ -114,26 +66,6 @@ dependencies:
     specific:
       - output_types: conda
         matrices:
-          - matrix:
-              cuda: "11.2"
-            packages:
-              - cuda-version=11.2
-          - matrix:
-              cuda: "11.4"
-            packages:
-              - cuda-version=11.4
-          - matrix:
-              cuda: "11.5"
-            packages:
-              - cuda-version=11.5
-          - matrix:
-              cuda: "11.6"
-            packages:
-              - cuda-version=11.6
-          - matrix:
-              cuda: "11.8"
-            packages:
-              - cuda-version=11.8
           - matrix:
               cuda: "12.0"
             packages:
@@ -158,10 +90,6 @@ dependencies:
     specific:
       - output_types: conda
         matrices:
-          - matrix:
-              cuda: "11.*"
-            packages:
-              - cudatoolkit
           - matrix:
               cuda: "12.*"
             packages:
