@@ -54,8 +54,8 @@ project(verify_install_targets LANGUAGES CXX)
 
 # Verify include dirs
 set(include_dirs_to_verify include/rapids/cub
-                           include/rapids/libcudacxx/cuda
-                           include/rapids/libcudacxx/nv
+                           include/rapids/cuda
+                           include/rapids/nv
                            include/rapids/thrust)
 
 # Verify lib/cmake dirs
