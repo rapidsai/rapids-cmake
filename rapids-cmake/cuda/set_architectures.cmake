@@ -58,6 +58,12 @@ function(rapids_cuda_set_architectures mode)
 
   set(supported_archs "70" "75" "80" "86" "90" "100" "120")
 
+  if(CMAKE_CUDA_COMPILER_ID STREQUAL "NVIDIA" AND CMAKE_CUDA_COMPILER_VERSION VERSION_LESS 11.1.0)
+    list(REMOVE_ITEM supported_archs "86")
+  endif()
+  if(CMAKE_CUDA_COMPILER_ID STREQUAL "NVIDIA" AND CMAKE_CUDA_COMPILER_VERSION VERSION_LESS 11.8.0)
+    list(REMOVE_ITEM supported_archs "90")
+  endif()
   if(CMAKE_CUDA_COMPILER_ID STREQUAL "NVIDIA" AND CMAKE_CUDA_COMPILER_VERSION VERSION_LESS 12.8.0)
     list(REMOVE_ITEM supported_archs "120")
     list(REMOVE_ITEM supported_archs "100")
