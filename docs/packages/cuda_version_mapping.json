@@ -1,5 +1,6 @@
 {
   "proprietary_binary_cuda_version_mapping": {
+    "11": "11.8",
     "12": "12.3"
   },
   "proprietary_binary": {

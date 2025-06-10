@@ -58,6 +58,10 @@ function(rapids_cuda_set_architectures mode)
 
   set(supported_archs "70" "75" "80" "86" "90" "100" "120")
 
+  if(CMAKE_CUDA_COMPILER_ID STREQUAL "NVIDIA" AND CMAKE_CUDA_COMPILER_VERSION VERSION_LESS 12.0.0)
+    rapids_cmake_policy(DEPRECATED_IN 25.08 REMOVED_IN 25.12
+                        MESSAGE "Support for CUDA versions below 12 has been deprecated")
+  endif()
   if(CMAKE_CUDA_COMPILER_ID STREQUAL "NVIDIA" AND CMAKE_CUDA_COMPILER_VERSION VERSION_LESS 11.1.0)
     list(REMOVE_ITEM supported_archs "86")
   endif()
