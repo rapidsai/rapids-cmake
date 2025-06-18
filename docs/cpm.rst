@@ -156,6 +156,7 @@ as needed.
     installed copy of the project can't be found.
 
     Supports the following placeholders:
+        - ``${rapids-cmake-checkout-tag}`` will be evaluated to 'main` when using rapids-cmake `main` branch, or `branch-<major>.<minor>' when not on the 'main' branch, using the rapids-cmake cal-ver values.
         - ``${rapids-cmake-version}`` will be evaluated to 'major.minor' of the current rapids-cmake cal-ver value.
         - ``${version}`` will be evaluated to the contents of the ``version`` field.
         - ``$ENV{variable}`` will be evaluated to the contents of the listed environment variable
