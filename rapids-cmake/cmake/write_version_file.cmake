@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2024, NVIDIA CORPORATION.
+# Copyright (c) 2021-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -92,6 +92,5 @@ function(rapids_cmake_write_version_file file_path)
   endif()
 
   string(TIMESTAMP current_year "%Y" UTC)
-  configure_file("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/version.hpp.in" "${output_path}"
-                 @ONLY)
+  configure_file("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/version.h.in" "${output_path}" @ONLY)
 endfunction()

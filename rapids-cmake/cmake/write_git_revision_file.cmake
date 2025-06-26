@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2023, NVIDIA CORPORATION.
+# Copyright (c) 2021-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -102,7 +102,7 @@ function(rapids_cmake_write_git_revision_file target file_path)
                     COMMAND ${CMAKE_COMMAND} -DWORKING_DIRECTORY=${CMAKE_CURRENT_SOURCE_DIR}
                             -DGIT_EXECUTABLE=${GIT_EXECUTABLE}
                             -D_RAPIDS_GIT_PREFIX=${_RAPIDS_PREFIX}
-                            -DTEMPLATE_FILE=${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/git_revision.hpp.in
+                            -DTEMPLATE_FILE=${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/git_revision.h.in
                             -DFILE_TO_WRITE=${file_path} -P
                             ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/compute_git_info.cmake
                     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
