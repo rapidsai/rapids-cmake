@@ -24,7 +24,7 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/default.json
     "rmm": {
       "version": "${rapids-cmake-version}",
       "git_url": "https://github.com/rapidsai/rmm.git",
-      "git_tag": "branch-${version}"
+      "git_tag": "${rapids-cmake-checkout-tag}"
     },
     "GTest": {
       "version": "1.16.0",
