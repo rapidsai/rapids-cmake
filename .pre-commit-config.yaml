@@ -34,7 +34,7 @@ repos:
             ^rapids-cmake/cpm/patches/.*
           )
   - repo: https://github.com/rapidsai/dependency-file-generator
-    rev: v1.17.0
+    rev: v1.19.0
     hooks:
         - id: rapids-dependency-file-generator
           args: ["--clean"]
@@ -81,8 +81,6 @@ repos:
     rev: v0.10.0.1
     hooks:
       - id: shellcheck
-        args: ["--severity=warning"]
-        files: ^ci/
 
 default_language_version:
   python: python3
