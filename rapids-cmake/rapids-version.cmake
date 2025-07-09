@@ -29,5 +29,15 @@ if(NOT DEFINED rapids-cmake-version)
     message(FATAL_ERROR "Could not determine RAPIDS version. Contents of VERSION file:\n${_rapids_version_formatted}"
     )
   endif()
+
   set(rapids-cmake-version ${RAPIDS_VERSION_MAJOR_MINOR})
+endif()
+
+if(NOT DEFINED rapids-cmake-checkout-tag)
+  file(READ "${CMAKE_CURRENT_LIST_DIR}/../RAPIDS_BRANCH" _rapids_checkout)
+  if(NOT _rapids_checkout)
+    message(FATAL_ERROR "Could not determine branch name to use for checking out rapids-cmake. The file \"${CMAKE_CURRENT_LIST_DIR}/../RAPIDS_BRANCH\" is missing."
+    )
+  endif()
+  set(rapids-cmake-checkout-tag "${_rapids_checkout}")
 endif()
