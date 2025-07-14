@@ -34,7 +34,8 @@ if(NOT DEFINED rapids-cmake-version)
 endif()
 
 if(NOT DEFINED rapids-cmake-checkout-tag)
-  file(READ "${CMAKE_CURRENT_LIST_DIR}/../RAPIDS_BRANCH" _rapids_checkout)
+  # Use STRINGS to trim whitespace/newlines
+  file(STRINGS "${CMAKE_CURRENT_LIST_DIR}/../RAPIDS_BRANCH" _rapids_checkout)
   if(NOT _rapids_checkout)
     message(FATAL_ERROR "Could not determine branch name to use for checking out rapids-cmake. The file \"${CMAKE_CURRENT_LIST_DIR}/../RAPIDS_BRANCH\" is missing."
     )
