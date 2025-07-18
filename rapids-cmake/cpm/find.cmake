@@ -190,8 +190,14 @@ function(rapids_cpm_find name version)
   if(package_needs_to_be_added)
     # Any non-build patch command triggers CPMAddPackage.
     if(CPM_${name}_SOURCE OR has_non_build_patch)
+      message(DEBUG
+              "rapids.cpm.rapids_find: CPMAddPackage(NAME ${name} VERSION ${version} ${_RAPIDS_UNPARSED_ARGUMENTS})"
+      )
       CPMAddPackage(NAME ${name} VERSION ${version} ${_RAPIDS_UNPARSED_ARGUMENTS})
     else()
+      message(DEBUG
+              "rapids.cpm.rapids_find CPMFindPackage(NAME ${name} VERSION ${version} ${_RAPIDS_UNPARSED_ARGUMENTS})"
+      )
       CPMFindPackage(NAME ${name} VERSION ${version} ${_RAPIDS_UNPARSED_ARGUMENTS})
     endif()
   else()

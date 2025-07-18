@@ -168,6 +168,15 @@ as needed.
 
     If no such field exists the default is ``true``.
 
+``src_dir``
+
+    An optional string value that represents the source directory under the root
+    of the project that contains the `CMakeLists.txt` to use
+
+
+    If no such field exists the default is presuming the root directory has
+    the `CMakeLists.txt` to use
+
 ``exclude_from_all``
 
     An optional boolean value that represents the CMake ```EXCLUDE_FROM_ALL``` property.

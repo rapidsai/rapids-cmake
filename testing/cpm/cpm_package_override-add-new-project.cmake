@@ -38,9 +38,9 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
 rapids_cpm_package_override(${CMAKE_CURRENT_BINARY_DIR}/override.json)
 
 # Verify that the override works
-include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
+include("${rapids-cmake-dir}/cpm/detail/package_info.cmake")
 
-rapids_cpm_package_details(custom_package_never_in_rapids version repository tag shallow exclude)
+rapids_cpm_package_info(custom_package_never_in_rapids VERSION_VAR version)
 if(NOT version STREQUAL "3.1.0")
   message(FATAL_ERROR "expected version field wasn't found. ${version} was found instead")
 endif()

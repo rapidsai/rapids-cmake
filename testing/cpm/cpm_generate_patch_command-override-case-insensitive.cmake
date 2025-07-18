@@ -34,8 +34,8 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
 }
   ]=])
 
-include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
-rapids_cpm_package_details(GTest version repository tag shallow exclude)
+include("${rapids-cmake-dir}/cpm/detail/package_info.cmake")
+rapids_cpm_package_info(GTest VERSION_VAR version)
 
 include(${rapids-cmake-dir}/cpm/init.cmake)
 rapids_cpm_init(OVERRIDE ${CMAKE_CURRENT_BINARY_DIR}/override.json)

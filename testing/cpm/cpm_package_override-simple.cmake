@@ -59,7 +59,7 @@ rapids_cpm_package_override(${CMAKE_CURRENT_BINARY_DIR}/override.json)
 # Verify that the override works
 include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
 
-rapids_cpm_package_details(GTest version repository tag shallow exclude)
+rapids_cpm_package_details_internal(GTest version repository tag src_subdir shallow exclude)
 if(NOT version STREQUAL "3.00.A1")
   message(FATAL_ERROR "custom version field was removed. ${version} was found instead")
 endif()
@@ -75,7 +75,7 @@ if(CPM_DOWNLOAD_ALL)
   )
 endif()
 
-rapids_cpm_package_details(rmm version repository tag shallow exclude)
+rapids_cpm_package_details_internal(rmm version repository tag src_subdir shallow exclude)
 if(NOT repository MATCHES "new_rmm_url")
   message(FATAL_ERROR "custom url field was not used. ${repository} was found instead")
 endif()

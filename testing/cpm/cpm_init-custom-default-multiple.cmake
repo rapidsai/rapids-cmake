@@ -68,7 +68,7 @@ rapids_cpm_init(CUSTOM_DEFAULT_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/default
 foreach(proj IN ITEMS rmm nvbench GTest)
   # Verify that multiple custom defaults work
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
-  rapids_cpm_package_details(${proj} version repository tag shallow exclude)
+  rapids_cpm_package_details_internal(${proj} version repository tag src_subdir shallow exclude)
   if(NOT version STREQUAL "${proj}_version")
     message(FATAL_ERROR "${proj} default version field was removed.")
   endif()

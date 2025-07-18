@@ -57,10 +57,10 @@ rapids_cpm_init(CUSTOM_DEFAULT_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/default
 
 # Load the default values for nvbench and GTest projects
 include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
-rapids_cpm_package_details(nvbench nvbench_version nvbench_repository nvbench_tag nvbench_shallow
-                           nvbench_exclude)
-rapids_cpm_package_details(GTest GTest_version GTest_repository GTest_tag GTest_shallow
-                           GTest_exclude)
+rapids_cpm_package_details_internal(nvbench nvbench_version nvbench_repository nvbench_tag
+                                    nvbench_subdir nvbench_shallow nvbench_exclude)
+rapids_cpm_package_details_internal(GTest GTest_version GTest_repository GTest_tag GTest_subdir
+                                    GTest_shallow GTest_exclude)
 
 expect_fetch_content_details(nvbench NO)
 expect_fetch_content_details(rmm NO)
@@ -92,7 +92,7 @@ expect_fetch_content_details(rmm YES)
 expect_fetch_content_details(GTest YES)
 
 # Verify that the override works
-rapids_cpm_package_details(nvbench version repository tag shallow exclude)
+rapids_cpm_package_details_internal(nvbench version repository tag src_subdir shallow exclude)
 if(NOT version STREQUAL nvbench_version)
   message(FATAL_ERROR "default version field was removed.")
 endif()
@@ -109,7 +109,7 @@ endif()
 unset(CPM_DOWNLOAD_ALL)
 
 # Verify that the override works
-rapids_cpm_package_details(rmm version repository tag shallow exclude)
+rapids_cpm_package_details_internal(rmm version repository tag src_subdir shallow exclude)
 if(NOT tag STREQUAL "my_tag")
   message(FATAL_ERROR "custom git_tag field was ignored. ${tag} found instead of my_tag")
 endif()
@@ -118,7 +118,7 @@ if(NOT CPM_DOWNLOAD_ALL)
 endif()
 unset(CPM_DOWNLOAD_ALL)
 
-rapids_cpm_package_details(GTest version repository tag shallow exclude)
+rapids_cpm_package_details_internal(GTest version repository tag src_subdir shallow exclude)
 if(NOT version STREQUAL "2.99")
   message(FATAL_ERROR "custom version field was removed. ${version} was found instead")
 endif()
