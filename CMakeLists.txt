@@ -36,9 +36,10 @@ if(NOT "${rapids-cmake-dir}" IN_LIST CMAKE_MODULE_PATH)
   list(APPEND CMAKE_MODULE_PATH "${rapids-cmake-dir}")
 endif()
 
-# Propagate up the rapids-cmake version
+# Propagate up the rapids-cmake version/tag info
 include("${rapids-cmake-dir}/rapids-version.cmake")
 set(rapids-cmake-version ${rapids-cmake-version} PARENT_SCOPE)
+set(rapids-cmake-checkout-tag ${rapids-cmake-checkout-tag} PARENT_SCOPE)
 
 # install a hook that sets up `rapids-cmake-dir` and `CMAKE_MODULE_PATH` all the way up the
 # call-stack

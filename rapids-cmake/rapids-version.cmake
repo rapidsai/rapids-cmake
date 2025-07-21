@@ -31,12 +31,15 @@ if(NOT DEFINED rapids-cmake-checkout-tag)
     )
   endif()
 
-  if(NOT DEFINED rapids-cmake-version)
-    set(rapids-cmake-version ${RAPIDS_VERSION_MAJOR_MINOR})
-  endif()
+  set(rapids-cmake-version ${RAPIDS_VERSION_MAJOR_MINOR})
+endif()
 
-  set(rapids-cmake-checkout-tag "branch-${RAPIDS_VERSION_MAJOR_MINOR}")
-  if(RAPIDS_USE_MAIN)
-    set(rapids-cmake-checkout-tag "main")
+if(NOT DEFINED rapids-cmake-checkout-tag)
+  # Use STRINGS to trim whitespace/newlines
+  file(STRINGS "${CMAKE_CURRENT_LIST_DIR}/../RAPIDS_BRANCH" _rapids_checkout)
+  if(NOT _rapids_checkout)
+    message(FATAL_ERROR "Could not determine branch name to use for checking out rapids-cmake. The file \"${CMAKE_CURRENT_LIST_DIR}/../RAPIDS_BRANCH\" is missing."
+    )
   endif()
+  set(rapids-cmake-checkout-tag "${_rapids_checkout}")
 endif()
