@@ -116,9 +116,17 @@ function(rapids_cpm_cccl)
   endif()
 
   if(TARGET CCCL::CCCL)
+    target_compile_definitions(CCCL::CCCL INTERFACE CUB_DISABLE_NAMESPACE_MAGIC)
+    target_compile_definitions(CCCL::CCCL INTERFACE CUB_IGNORE_NAMESPACE_MAGIC_ERROR)
+    target_compile_definitions(CCCL::CCCL INTERFACE THRUST_DISABLE_ABI_NAMESPACE)
+    target_compile_definitions(CCCL::CCCL INTERFACE THRUST_IGNORE_ABI_NAMESPACE_ERROR)
     target_compile_definitions(CCCL::CCCL INTERFACE CCCL_DISABLE_PDL)
     set(post_find_code
         [=[
+    target_compile_definitions(CCCL::CCCL INTERFACE CUB_DISABLE_NAMESPACE_MAGIC)
+    target_compile_definitions(CCCL::CCCL INTERFACE CUB_IGNORE_NAMESPACE_MAGIC_ERROR)
+    target_compile_definitions(CCCL::CCCL INTERFACE THRUST_DISABLE_ABI_NAMESPACE)
+    target_compile_definitions(CCCL::CCCL INTERFACE THRUST_IGNORE_ABI_NAMESPACE_ERROR)
     target_compile_definitions(CCCL::CCCL INTERFACE CCCL_DISABLE_PDL)
     ]=])
     include("${rapids-cmake-dir}/export/detail/post_find_package_code.cmake")
