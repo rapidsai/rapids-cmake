@@ -43,18 +43,15 @@ Result Targets
 function(rapids_cpm_rapids_logger)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.rapids_logger")
 
-  include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
-  rapids_cpm_package_details(rapids_logger version repository tag shallow exclude)
+  include("${rapids-cmake-dir}/cpm/detail/package_info.cmake")
+  rapids_cpm_package_info(rapids_logger ${ARGN} VERSION_VAR version FIND_VAR find_args CPM_VAR
+                          cpm_find_info TO_INSTALL_VAR to_install)
 
   include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
   rapids_cpm_generate_patch_command(rapids_logger ${version} patch_command build_patch_only)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
-  rapids_cpm_find(rapids_logger ${version} ${ARGN} ${build_patch_only}
-                  CPM_ARGS
-                  GIT_REPOSITORY ${repository}
-                  GIT_TAG ${tag}
-                  GIT_SHALLOW ${shallow} ${patch_command}
+  rapids_cpm_find(rapids_logger ${version} ${find_args} CPM_ARGS ${cpm_find_info}
                   OPTIONS "BUILD_TESTS OFF")
 
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")

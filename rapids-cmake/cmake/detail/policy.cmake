@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2023, NVIDIA CORPORATION.
+# Copyright (c) 2023-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -42,8 +42,6 @@ function(rapids_cmake_policy)
       "rapids-cmake policy [deprecated=${_RAPIDS_POLICY_DEPRECATED_IN} removed=${_RAPIDS_POLICY_REMOVED_IN}]:"
   )
   set(policy_mode DEPRECATION)
-  message(STATUS "_RAPIDS_POLICY_CALLERS_VERSION: ${_RAPIDS_POLICY_CALLERS_VERSION}")
-  message(STATUS "_RAPIDS_POLICY_REMOVED_IN: ${_RAPIDS_POLICY_REMOVED_IN}")
   if(_RAPIDS_POLICY_CALLERS_VERSION VERSION_GREATER_EQUAL ${_RAPIDS_POLICY_REMOVED_IN})
     set(policy_mode FATAL_ERROR)
   endif()

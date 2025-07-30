@@ -56,26 +56,14 @@ function(rapids_cpm_fmt)
                       MESSAGE [=[`rapids_cpm_fmt` is deprecated. If you need to fetch fmt, please use rapids_cpm_find directly.]=]
   )
 
-  set(to_install OFF)
-  if(INSTALL_EXPORT_SET IN_LIST ARGN)
-    set(to_install ON)
-  endif()
-
-  include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
-  rapids_cpm_package_details(fmt version repository tag shallow exclude)
-
-  include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
-  rapids_cpm_generate_patch_command(fmt ${version} patch_command build_patch_only)
+  include("${rapids-cmake-dir}/cpm/detail/package_info.cmake")
+  rapids_cpm_package_info(fmt ${ARGN} VERSION_VAR version FIND_VAR find_args CPM_VAR cpm_find_info
+                          TO_INSTALL_VAR to_install)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
-  rapids_cpm_find(fmt ${version} ${ARGN} ${build_patch_only}
-                  GLOBAL_TARGETS fmt::fmt fmt::fmt-header-only
-                  CPM_ARGS
-                  GIT_REPOSITORY ${repository}
-                  GIT_TAG ${tag}
-                  GIT_SHALLOW ${shallow} ${patch_command}
-                  EXCLUDE_FROM_ALL ${exclude}
-                  OPTIONS "FMT_INSTALL ${to_install}" "CMAKE_POSITION_INDEPENDENT_CODE ON")
+  rapids_cpm_find(fmt ${version} ${find_args} GLOBAL_TARGETS fmt::fmt fmt::fmt-header-only
+                  CPM_ARGS ${cpm_find_info} OPTIONS "FMT_INSTALL ${to_install}"
+                                                    "CMAKE_POSITION_INDEPENDENT_CODE ON")
 
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
   rapids_cpm_display_patch_status(fmt)

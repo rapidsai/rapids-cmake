@@ -67,12 +67,14 @@
       "version": "3.2.0",
       "git_shallow": false,
       "git_url": "https://github.com/NVIDIA/NVTX.git",
-      "git_tag": "69c9949150ac1c310758a304082228a36d5e4758"
+      "git_tag": "69c9949150ac1c310758a304082228a36d5e4758",
+      "source_subdir": "c"
     },
     "rmm": {
       "version": "${rapids-cmake-version}",
       "git_url": "https://github.com/rapidsai/rmm.git",
-      "git_tag": "${rapids-cmake-checkout-tag}"
+      "git_tag": "${rapids-cmake-checkout-tag}",
+      "source_subdir": "cpp"
     },
     "spdlog": {
       "version": "1.14.1",

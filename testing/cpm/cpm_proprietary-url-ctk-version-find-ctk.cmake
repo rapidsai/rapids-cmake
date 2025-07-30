@@ -16,7 +16,7 @@
 include(${rapids-cmake-dir}/cpm/init.cmake)
 include(${rapids-cmake-dir}/cpm/package_override.cmake)
 include(${rapids-cmake-dir}/cpm/detail/get_proprietary_binary_url.cmake)
-include(${rapids-cmake-dir}/cpm/detail/package_details.cmake)
+include(${rapids-cmake-dir}/cpm/detail/package_info.cmake)
 
 rapids_cpm_init()
 
@@ -40,7 +40,7 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
 rapids_cpm_package_override(${CMAKE_CURRENT_BINARY_DIR}/override.json)
 
 # Verify that the placeholders are evaluated correctly from `enable_language(CUDA)`
-rapids_cpm_package_details(test_binary version repository tag shallow exclude)
+rapids_cpm_package_info(test_binary VERSION_VAR version)
 rapids_cpm_get_proprietary_binary_url(test_binary ${version} url)
 
 find_package(CUDAToolkit)

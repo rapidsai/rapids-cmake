@@ -24,7 +24,8 @@ rapids_cpm_init()
 rapids_cpm_package_override("${CMAKE_CURRENT_BINARY_DIR}/../rapids-cmake/pinned_versions.json")
 
 # Verify that each git_tag is now different.
-rapids_cpm_package_details(rmm rmm_version rmm_repository pin_rmm_tag rmm_shallow rmm_exclude)
+rapids_cpm_package_details_internal(rmm rmm_version rmm_repository pin_rmm_tag rmm_src_dir
+                                    rmm_shallow rmm_exclude)
 
 if(NOT pin_rmm_tag STREQUAL "e3e32150d1bef13480ede4b2df1f0b38e43108a4")
   message(FATAL_ERROR "pinned rmm tag (${pin_rmm_tag}) doesn't match pre-computed SHA1 for the 22.02 tag"

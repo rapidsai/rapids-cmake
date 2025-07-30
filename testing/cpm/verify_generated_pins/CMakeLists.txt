@@ -30,8 +30,8 @@ endif()
 
 # Get the baseline before the override is added
 foreach(proj IN LISTS projects-to-verify)
-  rapids_cpm_package_details(${proj} ${proj}_version ${proj}_repository ${proj}_tag ${proj}_shallow
-                             ${proj}_exclude)
+  rapids_cpm_package_details_internal(${proj} ${proj}_version ${proj}_repository ${proj}_tag
+                                      ${proj}_src_dir ${proj}_shallow ${proj}_exclude)
 endforeach()
 
 # Verify that the pinned_versions is valid json by using it
@@ -46,8 +46,8 @@ endmacro()
 
 foreach(proj IN LISTS projects-to-verify)
   # Verify that each git_tag is now different.
-  rapids_cpm_package_details(${proj} ${proj}_version ${proj}_repository pin_${proj}_tag
-                             pin_${proj}_shallow ${proj}_exclude)
+  rapids_cpm_package_details_internal(${proj} ${proj}_version ${proj}_repository pin_${proj}_tag
+                                      pin_${proj}_src_dir pin_${proj}_shallow ${proj}_exclude)
   # 160 bits for SHA-1, 256 bits for SHA-256
   string(LENGTH "${${proj}_tag}" tag_length)
   if(pin_${proj}_tag STREQUAL ${proj}_tag
@@ -72,8 +72,9 @@ endforeach()
 
 foreach(proj IN LISTS projects-not-in-list)
   # Verify that we don't have entries for these
-  rapids_cpm_package_details(${proj} pin_${proj}_version ${proj}_repository pin_${proj}_tag
-                             ${proj}_shallow ${proj}_exclude)
+  rapids_cpm_package_details_internal(
+    ${proj} pin_${proj}_version ${proj}_repository pin_${proj}_tag pin_${proj}_src_dir
+    ${proj}_shallow ${proj}_exclude)
   if(pin_${proj}_version)
     message(FATAL_ERROR "${proj} shouldn't be in override, it was a system installed package")
   endif()

@@ -34,6 +34,6 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
 rapids_cpm_package_override(${CMAKE_CURRENT_BINARY_DIR}/override.json)
 
 # Verify that the override works
-include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
+include("${rapids-cmake-dir}/cpm/detail/package_info.cmake")
 
-rapids_cpm_package_details(fake_package_no_version version repository tag shallow exclude)
+rapids_cpm_package_info(fake_package_no_version VERSION_VAR version)
