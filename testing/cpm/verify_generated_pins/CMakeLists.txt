@@ -62,6 +62,12 @@ foreach(proj IN LISTS projects-to-verify)
     )
   endif()
 
+  if(proj IN_LIST projects-with-subdirs)
+    if(NOT pin_${proj}_src_dir)
+      message(FATAL_ERROR "pinned ${proj} should have a `source_subdir` entry")
+    endif()
+  endif()
+
   # Everything should have shallow marked as false so that clones by SHA1 work
   if(pin_${proj}_shallow)
     _get_json_data()

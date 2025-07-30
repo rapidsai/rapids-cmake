@@ -97,6 +97,39 @@ function(rapids_cpm_pinning_extract_source_git_info package git_url_var git_sha_
 endfunction()
 
 #[=======================================================================[.rst:
+rapids_cpm_pinning_extract_source_subdir
+----------------------------------------
+
+.. versionadded:: v25.10.00
+
+Transform the `patches` value json string to not reference any files
+on disk but instead embed the patches contents directly in the json
+
+Parameters:
+
+``package``
+    Name of package to extract git url and git sha for
+
+``source_subdir_var``
+    Holds the name of the variable to set in the calling scope with the
+    source subdirectory extracted from the package.
+
+    If no source subdirectory can be found for the package, the variable won't be set.
+
+
+#]=======================================================================]
+function(rapids_cpm_pinning_extract_source_subdir package_name source_subdir_var)
+  unset(stored_src_dir)
+  FetchContent_GetProperties(${package_name} SOURCE_DIR stored_src_dir)
+  if(DEFINED stored_src_dir AND NOT stored_src_dir STREQUAL ${package_name}_SOURCE_DIR)
+    message(STATUS "${package_name} stored_src_dir -> ${stored_src_dir}")
+    cmake_path(RELATIVE_PATH stored_src_dir BASE_DIRECTORY "${${package_name}_SOURCE_DIR}"
+               OUTPUT_VARIABLE relative_subdir)
+    set(${source_subdir_var} ${relative_subdir} PARENT_SCOPE)
+  endif()
+endfunction()
+
+#[=======================================================================[.rst:
 rapids_cpm_pinning_transform_patches
 ------------------------------------
 
@@ -111,6 +144,7 @@ Parameters:
     Variable name of the json object of the patch content to transform
 
 #]=======================================================================]
+# cmake-lint: disable=E1120
 function(rapids_cpm_pinning_transform_patches package_name patches_array_var output_var)
 
   include("${rapids-cmake-dir}/cpm/detail/convert_patch_json.cmake")
@@ -129,7 +163,6 @@ function(rapids_cpm_pinning_transform_patches package_name patches_array_var out
     cmake_path(GET json_path PARENT_PATH current_json_dir)
 
     math(EXPR patch_count "${patch_count} - 1")
-    # cmake-lint: disable=E1120
     foreach(index RANGE ${patch_count})
       string(JSON patch_data GET "${json_data}" ${index})
       string(JSON file_path ERROR_VARIABLE have_error GET "${patch_data}" file)
@@ -222,6 +255,7 @@ Parameters:
     scope.
 
 #]=======================================================================]
+# cmake-lint: disable=R0915,E1120
 function(rapids_cpm_pinning_add_json_entry package_name json_var)
 
   # Make sure variables from the callers scope doesn't break us
@@ -245,17 +279,22 @@ function(rapids_cpm_pinning_add_json_entry package_name json_var)
   endif()
 
   rapids_cpm_pinning_extract_source_git_info(${package} git_url git_sha ${baseline_arg})
+  rapids_cpm_pinning_extract_source_subdir(${package} source_subdir)
   if(git_url)
     string(CONFIGURE [=["git_url": "${git_url}",]=] url_string)
   endif()
   if(git_sha)
     string(CONFIGURE [=["git_tag": "${git_sha}",]=] sha_string)
   endif()
+  if(source_subdir)
+    string(CONFIGURE [=["source_subdir": "${source_subdir}",]=] source_subdir)
+  endif()
   # We start with a default template, and only add members that don't exist
   string(CONFIGURE [=[{
   "version": "${CPM_PACKAGE_${package_name}_VERSION}",
   ${url_string}
   ${sha_string}
+  ${source_subdir}
   "git_shallow": false,
   "always_download": true
   }]=]
