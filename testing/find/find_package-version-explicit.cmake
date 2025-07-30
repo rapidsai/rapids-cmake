@@ -33,7 +33,11 @@ include(${rapids-cmake-dir}/find/package.cmake)
 rapids_find_package(CUDAToolkit 11 REQUIRED INSTALL_EXPORT_SET test_export_set
                     BUILD_EXPORT_SET test_export_set)
 
-set(to_match_string "find_package(CUDAToolkit 11 QUIET)")
+if(CMAKE_VERSION VERSION_GREATER_EQUAL 4.1.0)
+  set(to_match_string "find_package(CUDAToolkit 11 QUIET UNWIND_INCLUDE)")
+else()
+  set(to_match_string "find_package(CUDAToolkit 11 QUIET)")
+endif()
 
 set(path "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/build/package_CUDAToolkit.cmake")
 file(READ "${path}" contents)
@@ -45,6 +49,8 @@ endif()
 
 set(path "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/install/package_CUDAToolkit.cmake")
 file(READ "${path}" contents)
+message(STATUS "contents: ${contents}")
+message(STATUS "to_match_string: ${to_match_string}")
 string(FIND "${contents}" "${to_match_string}" is_found)
 if(is_found EQUAL -1)
   message(FATAL_ERROR "rapids_find_package(INSTALL) failed to preserve version information in exported file"

@@ -1,5 +1,5 @@
 #=============================================================================
-# find_dependency Search for @name@
+# __find_dependency_no_return Search for @name@
 #
 # Make sure we search for a build-dir config module for the project
 set(possible_package_dir "@possible_dir@")
@@ -7,8 +7,17 @@ if(possible_package_dir AND NOT DEFINED @name@_DIR)
   set(@name@_DIR "${possible_package_dir}")
 endif()
 
-find_package(@name@ @version@ QUIET)
-find_dependency(@name@)
+if(CMAKE_VERSION VERSION_GREATER_EQUAL 4.2.0)
+  find_package(@name@ @version@ QUIET UNWIND_INCLUDE)
+  __find_dependency_no_return(@name@)
+  if(NOT @name@_FOUND)
+    unset(_cmake_unwind_arg)
+    return()
+  endif()
+else()
+  find_package(@name@ @version@ QUIET)
+  find_dependency(@name@)
+endif()
 
 if(possible_package_dir)
   unset(possible_package_dir)

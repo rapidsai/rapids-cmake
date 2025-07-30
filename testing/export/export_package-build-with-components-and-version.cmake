@@ -25,6 +25,9 @@ endif()
 
 # verify that the expected version is in FAKE_PACKAGE.cmake
 set(to_match_string [=[22.08 QUIET]=])
+if(CMAKE_VERSION VERSION_GREATER_EQUAL 4.1.0)
+  string(APPEND to_match_string [=[ UNWIND_INCLUDE]=])
+endif()
 file(READ "${path}" contents)
 string(FIND "${contents}" "${to_match_string}" is_found)
 if(is_found EQUAL -1)

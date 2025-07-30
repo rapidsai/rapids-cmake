@@ -29,7 +29,11 @@ if(NOT (DEFINED FakeDependency_A_FOUND AND DEFINED FakeDependency_B_FOUND AND DE
   message(FATAL_ERROR "rapids_find_package() failed to propagate COMPONENT A B C")
 endif()
 
-set(to_match_string "find_package(FakeDependency 11 QUIET COMPONENTS A;B;C)")
+if(CMAKE_VERSION VERSION_GREATER_EQUAL 4.1.0)
+  set(to_match_string "find_package(FakeDependency 11 QUIET UNWIND_INCLUDE COMPONENTS A;B;C)")
+else()
+  set(to_match_string "find_package(FakeDependency 11 QUIET COMPONENTS A;B;C)")
+endif()
 
 set(path "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/build/package_FakeDependency.cmake")
 file(READ "${path}" contents)
