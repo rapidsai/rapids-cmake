@@ -36,6 +36,7 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/default.json
 
 rapids_cpm_init(CUSTOM_DEFAULT_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/default.json")
 
+set(CPM_DOWNLOAD_ALL ON) # required so we don't find a local installed version of zstd
 rapids_cpm_find(zstd 1.5.7
                 GLOBAL_TARGETS zstd
                 CPM_ARGS

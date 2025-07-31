@@ -25,6 +25,7 @@ rapids_cpm_init()
 rapids_cpm_generate_pinned_versions(OUTPUT "${CMAKE_BINARY_DIR}/output_pinned_versions.json")
 
 rapids_cpm_nvtx3(INSTALL_EXPORT_SET test)
+set(CPM_DOWNLOAD_ALL ON) # required so we don't find a local installed version of zstd
 rapids_cpm_find(zstd 1.5.7
                 GLOBAL_TARGETS zstd
                 CPM_ARGS
