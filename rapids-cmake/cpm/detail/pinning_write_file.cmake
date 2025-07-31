@@ -122,7 +122,6 @@ function(rapids_cpm_pinning_extract_source_subdir package_name source_subdir_var
   unset(stored_src_dir)
   FetchContent_GetProperties(${package_name} SOURCE_DIR stored_src_dir)
   if(DEFINED stored_src_dir AND NOT stored_src_dir STREQUAL ${package_name}_SOURCE_DIR)
-    message(STATUS "${package_name} stored_src_dir -> ${stored_src_dir}")
     cmake_path(RELATIVE_PATH stored_src_dir BASE_DIRECTORY "${${package_name}_SOURCE_DIR}"
                OUTPUT_VARIABLE relative_subdir)
     set(${source_subdir_var} ${relative_subdir} PARENT_SCOPE)
