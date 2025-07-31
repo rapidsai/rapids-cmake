@@ -152,7 +152,7 @@ modified version is used.
 function(rapids_cpm_find name version)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.find")
   set(options CPM_ARGS BUILD_PATCH_ONLY)
-  set(one_value BUILD_EXPORT_SET INSTALL_EXPORT_SET)
+  set(one_value BUILD_EXPORT_SET INSTALL_EXPORT_SET SOURCE_SUBDIR)
   set(multi_value COMPONENTS GLOBAL_TARGETS)
   cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
@@ -185,6 +185,14 @@ function(rapids_cpm_find name version)
     string(REPLACE ";" " " _RAPIDS_COMPONENTS "${_RAPIDS_COMPONENTS}")
     list(APPEND _RAPIDS_UNPARSED_ARGUMENTS "FIND_PACKAGE_ARGUMENTS"
          "COMPONENTS ${_RAPIDS_COMPONENTS}")
+  endif()
+
+  if(_RAPIDS_SOURCE_SUBDIR)
+    # We have seen issues with some versions of CMake ( 4.0.Y ) not properly recording the
+    # SOURCE_SUBDIR in the stored information return by FetchContent_GetProperties
+    list(APPEND _RAPIDS_UNPARSED_ARGUMENTS "SOURCE_SUBDIR" "${_RAPIDS_SOURCE_SUBDIR}")
+    # Store this in a property that `pinning_write_file` can query
+    set_property(GLOBAL PROPERTY rapids_cmake_${name}_SOURCE_SUBDIR "${_RAPIDS_SOURCE_SUBDIR}")
   endif()
 
   if(package_needs_to_be_added)

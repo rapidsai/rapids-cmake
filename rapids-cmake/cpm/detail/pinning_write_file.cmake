@@ -120,12 +120,23 @@ Parameters:
 #]=======================================================================]
 function(rapids_cpm_pinning_extract_source_subdir package_name source_subdir_var)
   unset(stored_src_dir)
-  FetchContent_GetProperties(${package_name} SOURCE_DIR stored_src_dir)
-  message(STATUS "rapids_cpm_pinning_extract_source_subdir ${package_name} ${stored_src_dir} ${${package_name}_SOURCE_DIR}"
-  )
-  if(DEFINED stored_src_dir AND NOT stored_src_dir STREQUAL ${package_name}_SOURCE_DIR)
-    cmake_path(RELATIVE_PATH stored_src_dir BASE_DIRECTORY "${${package_name}_SOURCE_DIR}"
-               OUTPUT_VARIABLE relative_subdir)
+  unset(relative_subdir)
+
+  # We have seen issues with some versions of CMake ( 4.0.Y ) not properly recording the
+  # SOURCE_SUBDIR in the stored information return by FetchContent_GetProperties
+  #
+  # So we have `rapids_cpm_find` record the information so we can use that as when-ever possible
+  get_property(relative_subdir GLOBAL PROPERTY rapids_cmake_${package_name}_SOURCE_SUBDIR)
+
+  if(NOT DEFINED relative_subdir)
+    FetchContent_GetProperties(${package_name} SOURCE_DIR stored_src_dir)
+    if(DEFINED stored_src_dir AND NOT stored_src_dir STREQUAL ${package_name}_SOURCE_DIR)
+      cmake_path(RELATIVE_PATH stored_src_dir BASE_DIRECTORY "${${package_name}_SOURCE_DIR}"
+                 OUTPUT_VARIABLE relative_subdir)
+    endif()
+  endif()
+
+  if(DEFINED relative_subdir)
     set(${source_subdir_var} ${relative_subdir} PARENT_SCOPE)
   endif()
 endfunction()
