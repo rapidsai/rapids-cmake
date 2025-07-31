@@ -39,3 +39,4 @@ rapids_cpm_find(zstd 1.5.7
 include("${rapids-cmake-testing-dir}/cpm/verify_generated_pins.cmake")
 verify_generated_pins(verify_pins PROJECTS nvtx3 zstd SOURCE_SUBDIR_PROJECTS nvtx3 zstd PIN_FILE
                       "${CMAKE_BINARY_DIR}/output_pinned_versions.json")
+add_dependencies(verify_pins libzstd_static)
