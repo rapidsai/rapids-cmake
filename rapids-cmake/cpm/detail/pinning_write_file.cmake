@@ -286,14 +286,14 @@ function(rapids_cpm_pinning_add_json_entry package_name json_var)
     string(CONFIGURE [=["git_tag": "${git_sha}",]=] sha_string)
   endif()
   if(source_subdir)
-    string(CONFIGURE [=["source_subdir": "${source_subdir}",]=] source_subdir)
+    string(CONFIGURE [=["source_subdir": "${source_subdir}",]=] subdir_string)
   endif()
   # We start with a default template, and only add members that don't exist
   string(CONFIGURE [=[{
   "version": "${CPM_PACKAGE_${package_name}_VERSION}",
   ${url_string}
   ${sha_string}
-  ${source_subdir}
+  ${subdir_string}
   "git_shallow": false,
   "always_download": true
   }]=]
