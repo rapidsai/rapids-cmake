@@ -49,8 +49,6 @@ endif()
 
 set(path "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/install/package_CUDAToolkit.cmake")
 file(READ "${path}" contents)
-message(STATUS "contents: ${contents}")
-message(STATUS "to_match_string: ${to_match_string}")
 string(FIND "${contents}" "${to_match_string}" is_found)
 if(is_found EQUAL -1)
   message(FATAL_ERROR "rapids_find_package(INSTALL) failed to preserve version information in exported file"
