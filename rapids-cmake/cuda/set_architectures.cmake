@@ -73,6 +73,11 @@ function(rapids_cuda_set_architectures mode)
     list(REMOVE_ITEM supported_archs "100")
   endif()
 
+  if(CMAKE_CUDA_COMPILER_ID STREQUAL "NVIDIA" AND CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL
+                                                  13.0.0)
+    list(REMOVE_ITEM supported_archs "70")
+  endif()
+
   if(${mode} STREQUAL "RAPIDS")
 
     # CMake architecture list entry of "80" means to build compute and sm. What we want is for the
@@ -89,10 +94,10 @@ function(rapids_cuda_set_architectures mode)
     list(TRANSFORM CMAKE_CUDA_ARCHITECTURES APPEND "-real")
   endif()
 
-  # CUDA 12.8.0 and later warns when compiling for arch 70. We ignore this warning when compiling
+  # For the CUDA 12.X.0 series we want to silence warnings when compiling for arch 70 when compiling
   # for RAPIDS architectures.
-  if(CMAKE_CUDA_COMPILER_ID STREQUAL "NVIDIA" AND CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL
-                                                  12.8.0)
+  if(CMAKE_CUDA_COMPILER_ID STREQUAL "NVIDIA" AND CMAKE_CUDA_COMPILER_VERSION VERSION_LESS_EQUAL
+                                                  12.9.99)
     string(APPEND CMAKE_CUDA_FLAGS " -Wno-deprecated-gpu-targets")
   endif()
 
