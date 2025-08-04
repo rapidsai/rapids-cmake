@@ -24,7 +24,11 @@ if(NOT EXISTS "${path}")
 endif()
 
 # verify that the expected version exists in FAKE_PACKAGE.cmake
-set(to_match_string [=[14.7.2 QUIET)]=])
+set(to_match_string [=[14.7.2 QUIET]=])
+if(CMAKE_VERSION VERSION_GREATER_EQUAL 4.2.0)
+  string(APPEND to_match_string [=[ UNWIND_INCLUDE]=])
+endif()
+
 file(READ "${path}" contents)
 string(FIND "${contents}" "${to_match_string}" is_found)
 if(is_found EQUAL -1)

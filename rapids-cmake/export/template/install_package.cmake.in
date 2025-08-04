@@ -1,1 +1,9 @@
-find_dependency(@name@)
+if(CMAKE_VERSION VERSION_GREATER_EQUAL 4.2.0)
+  __find_dependency_no_return(@name@)
+  if(NOT @name@_FOUND)
+    unset(_cmake_unwind_arg)
+    return()
+  endif()
+else
+  find_dependency(@name@)
+endif()

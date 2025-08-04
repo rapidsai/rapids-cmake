@@ -1,2 +1,11 @@
-find_package(@name@ @version@ QUIET COMPONENTS @components@)
-find_dependency(@name@ COMPONENTS @components@)
+if(CMAKE_VERSION VERSION_GREATER_EQUAL 4.2.0)
+  find_package(@name@ @version@ QUIET UNWIND_INCLUDE COMPONENTS @components@)
+  __find_dependency_no_return(@name@ COMPONENTS @components@)
+  if(NOT @name@_FOUND)
+    unset(_cmake_unwind_arg)
+    return()
+  endif()
+else
+  find_package(@name@ @version@ QUIET COMPONENTS @components@)
+  find_dependency(@name@ COMPONENTS @components@)
+endif()
