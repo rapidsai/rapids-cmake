@@ -96,8 +96,9 @@ function(rapids_cuda_set_architectures mode)
 
   # For the CUDA 12.X.0 series we want to silence warnings when compiling for arch 70 when compiling
   # for RAPIDS architectures.
-  if(CMAKE_CUDA_COMPILER_ID STREQUAL "NVIDIA" AND CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL 12.8.0 AND CMAKE_CUDA_COMPILER_VERSION VERSION_LESS
-                                                  13.0.0)
+  if(CMAKE_CUDA_COMPILER_ID STREQUAL "NVIDIA" AND CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL
+                                                  12.8.0 AND CMAKE_CUDA_COMPILER_VERSION
+                                                             VERSION_LESS 13.0.0)
     string(APPEND CMAKE_CUDA_FLAGS " -Wno-deprecated-gpu-targets")
   endif()
 
