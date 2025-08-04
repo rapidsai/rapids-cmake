@@ -33,7 +33,7 @@ include(${rapids-cmake-dir}/find/package.cmake)
 rapids_find_package(CUDAToolkit 11 REQUIRED INSTALL_EXPORT_SET test_export_set
                     BUILD_EXPORT_SET test_export_set)
 
-if(CMAKE_VERSION VERSION_GREATER_EQUAL 4.1.0)
+if(CMAKE_VERSION VERSION_GREATER_EQUAL 4.2.0)
   set(to_match_string "find_package(CUDAToolkit 11 QUIET UNWIND_INCLUDE)")
 else()
   set(to_match_string "find_package(CUDAToolkit 11 QUIET)")

@@ -35,7 +35,7 @@ rapids_find_package(CUDAToolkit REQUIRED INSTALL_EXPORT_SET test_export_set
 
 # no version specified at find time, verify none recorded If we record the found version we break
 # things like CUDA backwards runtime compat
-if(CMAKE_VERSION VERSION_GREATER_EQUAL 4.1.0)
+if(CMAKE_VERSION VERSION_GREATER_EQUAL 4.2.0)
   set(to_match_string "__find_dependency_no_return(CUDAToolkit)")
 else()
   set(to_match_string "find_dependency(CUDAToolkit)")
