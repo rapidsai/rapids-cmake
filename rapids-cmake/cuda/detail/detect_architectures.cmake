@@ -64,7 +64,7 @@ int main(int argc, char** argv) {
   return 0;
   }
   ")
-    execute_process(COMMAND ${CMAKE_CUDA_COMPILER} -std=c++11 -o "${eval_exe}" "${eval_file}"
+    execute_process(COMMAND ${CMAKE_CUDA_COMPILER} -std=c++17 -o "${eval_exe}" "${eval_file}"
                     ERROR_FILE "${error_file}")
   endif()
 
