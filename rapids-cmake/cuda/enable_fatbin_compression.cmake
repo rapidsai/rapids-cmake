@@ -17,7 +17,7 @@ include_guard(GLOBAL)
 
 #[=======================================================================[.rst:
 rapids_cuda_enable_fatbin_compression
-----------------------------------
+-------------------------------------
 
 .. versionadded:: v25.10.00
 
@@ -41,7 +41,9 @@ the value selection that has been tuned by RAPIDS.
   If `target` doesn't currently exist it will be created as a global interface target.
 
 ``VARIABLE``
-  If `variable` exists the
+  A variable with the name specified in this option will be created with compilation
+  flags needed to fulfull the compression level requested. If a variable already
+  exists in the calling scope with this name it will be overwritten.
 
 ``balanced``
   Specify compression flags that aim for good tradeoff of binary size and
