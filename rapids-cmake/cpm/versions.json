@@ -13,17 +13,17 @@
       "git_tag": "097aa718f25d44315cadb80b407144ad455ee4f9"
     },
     "CCCL": {
-      "version": "2.8.4",
+      "version": "3.0.2",
       "git_shallow": false,
       "git_url": "https://github.com/NVIDIA/cccl.git",
-      "git_tag": "e80fa6c8c53c1d868b46571f3335c3964a63e816"
+      "git_tag": "9c40ed11560fa8ffd21abe4cdc8dc3ce875e48e3"
     },
     "cuco": {
       "version": "0.0.1",
       "git_shallow": false,
       "always_download": true,
       "git_url": "https://github.com/NVIDIA/cuCollections.git",
-      "git_tag": "f5e43ce27f33e7e98de16f712be9370a797f8c73"
+      "git_tag": "6d0c28e855545a7b89df1c4276b2e7fef351682c"
     },
     "rapids_logger": {
       "version": "0.1.0",
@@ -64,15 +64,15 @@
       }
     },
     "nvtx3": {
-      "version": "3.1.0",
+      "version": "3.2.0",
       "git_shallow": false,
       "git_url": "https://github.com/NVIDIA/NVTX.git",
-      "git_tag": "4808eeda29bb6dcfd38291d1a8ea280b48562c57"
+      "git_tag": "69c9949150ac1c310758a304082228a36d5e4758"
     },
     "rmm": {
       "version": "${rapids-cmake-version}",
       "git_url": "https://github.com/rapidsai/rmm.git",
-      "git_tag": "branch-${version}"
+      "git_tag": "${rapids-cmake-checkout-tag}"
     },
     "spdlog": {
       "version": "1.14.1",

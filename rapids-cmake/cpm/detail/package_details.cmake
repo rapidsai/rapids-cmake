@@ -110,10 +110,8 @@ function(rapids_cpm_package_details package_name version_var url_var tag_var sha
   rapids_cpm_json_get_value(always_download)
 
   # Evaluate any magic placeholders in the version or tag components including the
-  # `rapids-cmake-version` value
-  if(NOT DEFINED rapids-cmake-version)
-    include("${rapids-cmake-dir}/rapids-version.cmake")
-  endif()
+  # `rapids-cmake-version` and `rapids-cmake-checkout-tag` values
+  include("${rapids-cmake-dir}/rapids-version.cmake")
 
   cmake_language(EVAL CODE "set(version ${version})")
   cmake_language(EVAL CODE "set(git_tag ${git_tag})")
