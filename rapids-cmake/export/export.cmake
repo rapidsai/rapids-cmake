@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2024, NVIDIA CORPORATION.
+# Copyright (c) 2021-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -213,7 +213,10 @@ function(rapids_export type project_name)
     unset(_RAPIDS_VERSION) # unset this so we don't export a version value of `OFF`
   elseif(NOT DEFINED _RAPIDS_VERSION AND NOT DEFINED PROJECT_VERSION)
     set(rapids_version_set OFF)
-  elseif(DEFINED PROJECT_VERSION AND NOT DEFINED _RAPIDS_VERSION)
+  elseif(DEFINED PROJECT_VERSION AND NOT PROJECT_VERSION)
+    # PROJECT_VERSION is defined as a empty string / false value. Happens with CMake 4.1+
+    set(rapids_version_set OFF)
+  elseif(DEFINED PROJECT_VERSION AND PROJECT_VERSION AND NOT DEFINED _RAPIDS_VERSION)
     # Choose the project version when an explicit version isn't provided
     set(_RAPIDS_VERSION "${PROJECT_VERSION}")
   endif()
