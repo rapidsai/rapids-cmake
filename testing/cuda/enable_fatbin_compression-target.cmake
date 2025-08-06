@@ -33,58 +33,37 @@ endforeach()
 
 # Validate all the targets now have the proper values
 foreach(suffix mode option IN ZIP_LISTS name_suffix modes compile_options)
-  get_target_property(compile_opts not_yet_${suffix} INTERFACE_COMPILE_OPTIONS)
-  if(NOT compile_opts MATCHES "-Xfatbin=-compress-all")
-    message(FATAL_ERROR "not_yet_${suffix} missing the compress-all compile flag")
-  endif()
-  if(NOT compile_opts MATCHES "--compress-mode=${option}")
-    message(FATAL_ERROR "not_yet_${suffix} missing the proper compress-mode flag of ${option} instead has ${compile_opts}"
-    )
-  endif()
-
-  get_target_property(compile_opts exists_${suffix} COMPILE_OPTIONS)
-  if(NOT compile_opts MATCHES "-Xfatbin=-compress-all")
-    message(FATAL_ERROR "exists_${suffix} missing the compress-all compile flag")
-  endif()
-  if(NOT compile_opts MATCHES "--compress-mode=${option}")
-    message(FATAL_ERROR "exists_${suffix} missing the proper compress-mode flag of ${option} instead has ${compile_opts}"
-    )
-  endif()
+  foreach(target IN ITEMS not_yet_${suffix} exists_${suffix})
+    get_target_property(compile_opts ${target} INTERFACE_COMPILE_OPTIONS)
+    if(NOT compile_opts MATCHES "-Xfatbin=-compress-all")
+      message(FATAL_ERROR "${target} missing the compress-all compile flag")
+    endif()
+    if(NOT compile_opts MATCHES "--compress-mode=${option}")
+      message(FATAL_ERROR "${target} missing the proper compress-mode flag of ${option} instead has ${compile_opts}"
+      )
+    endif()
+  endforeach()
 endforeach()
 
 # Handle checking all the tune types that map to `rapids`
-rapids_cuda_enable_fatbin_compression(TARGET not_yet)
-rapids_cuda_enable_fatbin_compression(TARGET not_yet_rapids TUNE_FOR rapids)
-
-get_target_property(compile_opts_a not_yet INTERFACE_COMPILE_OPTIONS)
-get_target_property(compile_opts_b not_yet_rapids INTERFACE_COMPILE_OPTIONS)
-if(NOT compile_opts_a STREQUAL compile_opts_b)
-  message(FATAL_ERROR "rapids_cuda_enable_fatbin_compression without any TUNE_FOR should match 'rapids'"
-  )
-endif()
-if(NOT compile_opts_a MATCHES "-Xfatbin=-compress-all")
-  message(FATAL_ERROR "not_yet missing the compress-all compile flag")
-endif()
-if(CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL 13.0.0 AND NOT compile_opts_a MATCHES
-                                                                "--compress-mode")
-  message(FATAL_ERROR "not_yet missing the compress-mode compile flag")
-endif()
-
 add_library(exists SHARED ${stub_file})
 add_library(exists_rapids SHARED ${stub_file})
-rapids_cuda_enable_fatbin_compression(TARGET exists)
-rapids_cuda_enable_fatbin_compression(TARGET exists_rapids TUNE_FOR rapids)
 
-get_target_property(compile_opts_a exists COMPILE_OPTIONS)
-get_target_property(compile_opts_b exists_rapids COMPILE_OPTIONS)
-if(NOT compile_opts_a STREQUAL compile_opts_b)
-  message(FATAL_ERROR "rapids_cuda_enable_fatbin_compression without any TUNE_FOR should match 'rapids'"
-  )
-endif()
-if(NOT compile_opts_a MATCHES "-Xfatbin=-compress-all")
-  message(FATAL_ERROR "not_yet missing the compress-all compile flag")
-endif()
-if(CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL 13.0.0 AND NOT compile_opts_a MATCHES
-                                                                "--compress-mode")
-  message(FATAL_ERROR "not_yet missing the compress-mode compile flag")
-endif()
+foreach(target IN ITEMS not_yet exists)
+  rapids_cuda_enable_fatbin_compression(TARGET ${target})
+  rapids_cuda_enable_fatbin_compression(TARGET ${target}_rapids TUNE_FOR rapids)
+
+  get_target_property(compile_opts_a ${target} INTERFACE_COMPILE_OPTIONS)
+  get_target_property(compile_opts_b ${target}_rapids INTERFACE_COMPILE_OPTIONS)
+  if(NOT compile_opts_a STREQUAL compile_opts_b)
+    message(FATAL_ERROR "rapids_cuda_enable_fatbin_compression without any TUNE_FOR should match 'rapids'"
+    )
+  endif()
+  if(NOT compile_opts_a MATCHES "-Xfatbin=-compress-all")
+    message(FATAL_ERROR "${target} missing the compress-all compile flag")
+  endif()
+  if(CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL 13.0.0 AND NOT compile_opts_a MATCHES
+                                                                  "--compress-mode")
+    message(FATAL_ERROR "${target} missing the compress-mode compile flag")
+  endif()
+endforeach()
