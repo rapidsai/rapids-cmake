@@ -49,7 +49,12 @@ int main(int argc, char** argv)
       char buff[32];
       cudaDeviceProp prop;
       if (cudaGetDeviceProperties(&prop, dev) != cudaSuccess) { continue; }
-      sprintf(buff, \"%d%d\", prop.major, prop.minor);
+      if(prop.major >= 9) {
+        // Enable chip specific optimizations for sm90+
+        sprintf(buff, \"%d%da\", prop.major, prop.minor);
+      } else {
+        sprintf(buff, \"%d%d\", prop.major, prop.minor);
+      }
       archs.insert(buff);
     }
   }

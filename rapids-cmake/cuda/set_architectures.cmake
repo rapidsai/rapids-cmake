@@ -56,26 +56,32 @@ Result Variables
 function(rapids_cuda_set_architectures mode)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cuda.set_architectures")
 
-  set(supported_archs "70" "75" "80" "86" "90" "100" "120")
+  if(CMAKE_CUDA_COMPILER_ID STREQUAL "NVIDIA")
 
-  if(CMAKE_CUDA_COMPILER_ID STREQUAL "NVIDIA" AND CMAKE_CUDA_COMPILER_VERSION VERSION_LESS 12.0.0)
-    rapids_cmake_policy(DEPRECATED_IN 25.08 REMOVED_IN 25.12
-                        MESSAGE "Support for CUDA versions below 12 has been deprecated")
-  endif()
-  if(CMAKE_CUDA_COMPILER_ID STREQUAL "NVIDIA" AND CMAKE_CUDA_COMPILER_VERSION VERSION_LESS 11.1.0)
-    list(REMOVE_ITEM supported_archs "86")
-  endif()
-  if(CMAKE_CUDA_COMPILER_ID STREQUAL "NVIDIA" AND CMAKE_CUDA_COMPILER_VERSION VERSION_LESS 11.8.0)
-    list(REMOVE_ITEM supported_archs "90")
-  endif()
-  if(CMAKE_CUDA_COMPILER_ID STREQUAL "NVIDIA" AND CMAKE_CUDA_COMPILER_VERSION VERSION_LESS 12.8.0)
-    list(REMOVE_ITEM supported_archs "120")
-    list(REMOVE_ITEM supported_archs "100")
-  endif()
+    if(CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL 13.0.0)
+      set(supported_archs "75" "80" "86" "90a" "100f" "120a" "121f")
+    elseif(CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL 12.9.0)
+      set(supported_archs "70" "75" "80" "86" "90a" "100f" "120a" "121f")
+    elseif(CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL 12.0.0)
+      set(supported_archs "70" "75" "80" "86" "90a")
+      if(CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL 12.8.0)
+        list(APPEND supported_archs "100" "120a" "121")
+      endif()
+    else()
+      rapids_cmake_policy(DEPRECATED_IN 25.08 REMOVED_IN 25.12
+                          MESSAGE "Support for CUDA versions below 12 has been deprecated")
+      set(supported_archs "70" "75" "80" "86")
+      if(CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL 11.8.0)
+        list(APPEND supported_archs "90a")
+      endif()
+    endif()
 
-  if(CMAKE_CUDA_COMPILER_ID STREQUAL "NVIDIA" AND CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL
-                                                  13.0.0)
-    list(REMOVE_ITEM supported_archs "70")
+    # For the CUDA 12.X.0 series we want to silence warnings when compiling for arch 70 when
+    # compiling for RAPIDS architectures.
+    if(CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL 12.8.0 AND CMAKE_CUDA_COMPILER_VERSION
+                                                                    VERSION_LESS 13.0.0)
+      string(APPEND CMAKE_CUDA_FLAGS " -Wno-deprecated-gpu-targets")
+    endif()
   endif()
 
   if(${mode} STREQUAL "RAPIDS")
@@ -92,14 +98,6 @@ function(rapids_cuda_set_architectures mode)
     rapids_cuda_detect_architectures(supported_archs CMAKE_CUDA_ARCHITECTURES)
 
     list(TRANSFORM CMAKE_CUDA_ARCHITECTURES APPEND "-real")
-  endif()
-
-  # For the CUDA 12.X.0 series we want to silence warnings when compiling for arch 70 when compiling
-  # for RAPIDS architectures.
-  if(CMAKE_CUDA_COMPILER_ID STREQUAL "NVIDIA" AND CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL
-                                                  12.8.0 AND CMAKE_CUDA_COMPILER_VERSION
-                                                             VERSION_LESS 13.0.0)
-    string(APPEND CMAKE_CUDA_FLAGS " -Wno-deprecated-gpu-targets")
   endif()
 
   # cache the cuda archs.
