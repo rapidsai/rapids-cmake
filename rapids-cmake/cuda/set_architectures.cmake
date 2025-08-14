@@ -68,7 +68,7 @@ function(rapids_cuda_set_architectures mode)
       set(supported_archs "70-real" "75-real" "80-real" "86-real" "90a-real" "90-virtual")
       if(CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL 12.8.0)
         list(REMOVE_ITEM supported_archs "90-virtual")
-        list(APPEND supported_archs "100-real" "120a-real" "121")
+        list(APPEND supported_archs "100-real" "120a-real" "120-virtual")
       endif()
     else()
       rapids_cmake_policy(DEPRECATED_IN 25.08 REMOVED_IN 25.12
