@@ -28,4 +28,4 @@ if(CMAKE_CUDA_ARCHITECTURES STREQUAL "NATIVE")
   message(FATAL_ERROR "rapids_cuda_init_architectures didn't init CUDA_ARCHITECTURES")
 endif()
 
-include("${rapids-cmake-testing-dir}/cuda/validate-cuda-rapids.cmake")
+include("${rapids-cmake-testing-dir}/cuda/validate-cuda-native.cmake")
