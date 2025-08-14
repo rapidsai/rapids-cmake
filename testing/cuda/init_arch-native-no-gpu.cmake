@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2022-2025, NVIDIA CORPORATION.
+# Copyright (c) 2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 include(${rapids-cmake-dir}/cuda/init_architectures.cmake)
 
 set(ENV{CUDAARCHS} "NATIVE")
+set(ENV{CUDA_VISIBLE_DEVICES} "-1")
 rapids_cuda_init_architectures(rapids-project)
 project(rapids-project LANGUAGES CUDA)
 
@@ -28,4 +29,5 @@ if(CMAKE_CUDA_ARCHITECTURES STREQUAL "NATIVE")
   message(FATAL_ERROR "rapids_cuda_init_architectures didn't init CUDA_ARCHITECTURES")
 endif()
 
+# Since we have no visible devices the output will match that of RAPIDS and not NATIVE
 include("${rapids-cmake-testing-dir}/cuda/validate-cuda-rapids.cmake")

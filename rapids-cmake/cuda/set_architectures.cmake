@@ -92,8 +92,6 @@ function(rapids_cuda_set_architectures mode)
   elseif(${mode} STREQUAL "NATIVE")
     include(${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/detect_architectures.cmake)
     rapids_cuda_detect_architectures(supported_archs CMAKE_CUDA_ARCHITECTURES)
-
-    list(TRANSFORM CMAKE_CUDA_ARCHITECTURES APPEND "-real")
   endif()
 
   # cache the cuda archs.

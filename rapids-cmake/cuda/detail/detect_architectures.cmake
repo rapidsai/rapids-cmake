@@ -51,9 +51,9 @@ int main(int argc, char** argv)
       if (cudaGetDeviceProperties(&prop, dev) != cudaSuccess) { continue; }
       if (prop.major >= 9) {
         // Enable chip specific optimizations for sm90+
-        sprintf(buff, \"%d%da\", prop.major, prop.minor);
+        sprintf(buff, \"%d%da-real\", prop.major, prop.minor);
       } else {
-        sprintf(buff, \"%d%d\", prop.major, prop.minor);
+        sprintf(buff, \"%d%d-real\", prop.major, prop.minor);
       }
       archs.insert(buff);
     }

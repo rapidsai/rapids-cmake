@@ -23,6 +23,12 @@ foreach(value IN LISTS CMAKE_CUDA_ARCHITECTURES)
     message(FATAL_ERROR "All values in CMAKE_CUDA_ARCHITECTURES should have `-real`")
   endif()
 
+  # verify that we don't append multiple `-real`
+  string(FIND ${value} "real-real" location)
+  if(NOT location EQUAL "-1")
+    message(FATAL_ERROR "No values in CMAKE_CUDA_ARCHITECTURES should have `real-real`")
+  endif()
+
 endforeach()
 
 if(NOT DEFINED CACHE{CMAKE_CUDA_ARCHITECTURES})
