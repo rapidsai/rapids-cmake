@@ -39,6 +39,10 @@ dependencies:
       - output_types: conda
         matrices:
           - matrix:
+              cuda: "13.*"
+            packages:
+              - gcc<15.0.0
+          - matrix:
               cuda: "12.[0123]"
             packages:
               - gcc<13.0.0
@@ -58,6 +62,10 @@ dependencies:
               - sysroot_linux-aarch64==2.28
       - output_types: conda
         matrices:
+          - matrix:
+              cuda: "13.*"
+            packages:
+              - cuda-nvcc
           - matrix:
               cuda: "12.*"
             packages:
@@ -86,10 +94,18 @@ dependencies:
               cuda: "12.9"
             packages:
               - cuda-version=12.9
+          - matrix:
+              cuda: "13.0"
+            packages:
+              - cuda-version=13.0
   cuda:
     specific:
       - output_types: conda
         matrices:
+          - matrix:
+              cuda: "13.*"
+            packages:
+              - cuda-cupti-dev
           - matrix:
               cuda: "12.*"
             packages:
