@@ -18,6 +18,11 @@ include(${rapids-cmake-dir}/cpm/nvcomp.cmake)
 
 rapids_cpm_init()
 
+# Ensure we use the cached download of nvcomp instead of downloading it again
+if(EXISTS "${CPM_SOURCE_CACHE}/_deps/nvcomp_proprietary_binary-src/")
+  set(nvcomp_ROOT "${CPM_SOURCE_CACHE}/_deps/nvcomp_proprietary_binary-src/")
+endif()
+
 if(TARGET nvcomp::nvcomp)
   message(FATAL_ERROR "Expected nvcomp::nvcomp not to exist")
 endif()

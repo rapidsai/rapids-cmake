@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2023, NVIDIA CORPORATION.
+# Copyright (c) 2021-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,13 +18,18 @@ include(${rapids-cmake-dir}/cpm/nvcomp.cmake)
 
 rapids_cpm_init()
 
+# Ensure we use the cached download of nvcomp instead of downloading it again
+if(EXISTS "${CPM_SOURCE_CACHE}/_deps/nvcomp_proprietary_binary-src/")
+  set(nvcomp_ROOT "${CPM_SOURCE_CACHE}/_deps/nvcomp_proprietary_binary-src/")
+endif()
+
 if(TARGET nvcomp::nvcomp)
   message(FATAL_ERROR "Expected nvcomp::nvcomp not to exist")
 endif()
 
 rapids_cpm_nvcomp(USE_PROPRIETARY_BINARY ON)
 
-if(NOT nvcomp_proprietary_binary)
+if(NOT TARGET nvcomp::nvcomp)
   message(FATAL_ERROR "Expected nvcomp::nvcomp target to exist")
 endif()
 
