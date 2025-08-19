@@ -33,9 +33,14 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
       "version": "3.0.6",
       "git_url": "https://github.com/NVIDIA/nvcomp.git",
       "git_tag": "v2.2.0",
+      "proprietary_binary_cuda_version_mapping": {
+        "11": "11",
+        "12": "12",
+        "13": "12"
+      },
       "proprietary_binary": {
-        "x86_64-linux": "https://developer.download.nvidia.com/compute/nvcomp/${version}/local_installers/nvcomp_${version}_x86_64_${cuda-toolkit-version-major}.x.tgz",
-        "aarch64-linux": "https://developer.download.nvidia.com/compute/nvcomp/${version}/local_installers/nvcomp_${version}_SBSA_${cuda-toolkit-version-major}.x.tgz"
+        "x86_64-linux": "https://developer.download.nvidia.com/compute/nvcomp/${version}/local_installers/nvcomp_${version}_x86_64_${cuda-toolkit-version-mapping}.x.tgz",
+        "aarch64-linux": "https://developer.download.nvidia.com/compute/nvcomp/${version}/local_installers/nvcomp_${version}_SBSA_${cuda-toolkit-version-mapping}.x.tgz"
       }
     }
   }

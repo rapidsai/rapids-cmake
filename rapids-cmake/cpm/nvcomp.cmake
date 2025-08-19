@@ -166,15 +166,6 @@ function(rapids_cpm_nvcomp)
     endif()
   endif()
 
-  include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
-  rapids_cpm_generate_patch_command(nvcomp ${version} patch_command build_patch_only)
-
-  # Apply any patch commands to the proprietary binary
-
-  if(nvcomp_proprietary_binary AND PATCH_COMMAND IN_LIST find_args)
-    execute_process(COMMAND ${patch_command} WORKING_DIRECTORY ${nvcomp_ROOT})
-  endif()
-
   include("${rapids-cmake-dir}/cpm/find.cmake")
   rapids_cpm_find(nvcomp ${version} ${find_args} GLOBAL_TARGETS nvcomp::nvcomp
                   CPM_ARGS ${cpm_find_info} OPTIONS "BUILD_STATIC ON" "BUILD_TESTS OFF"
