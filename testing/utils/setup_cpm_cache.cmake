@@ -27,7 +27,6 @@ function(setup_cpm_cache)
   execute_process(COMMAND ${CMAKE_COMMAND} -Drapids-cmake-dir=${PROJECT_SOURCE_DIR}/../rapids-cmake
                           -S ${src_dir} -B ${build_dir} -DCPM_SOURCE_CACHE=${CPM_SOURCE_CACHE}
                           -DCPM_DOWNLOAD_LOCATION=${CPM_DOWNLOAD_LOCATION}
-                          # --trace-expand --trace-redirect=cache_log
                   WORKING_DIRECTORY ${src_dir}
                   OUTPUT_VARIABLE out_var)
   # Find the line in out_var that contains "CPM packages in cache
