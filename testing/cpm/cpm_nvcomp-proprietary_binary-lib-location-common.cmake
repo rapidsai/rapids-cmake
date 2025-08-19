@@ -35,8 +35,7 @@ endif()
 set(nvcomp_list_of_target_files "nvcomp-targets-dynamic-release.cmake"
                                 "nvcomp-targets-static-release.cmake")
 if(nvcomp_VERSION VERSION_LESS "5.0")
-  set(nvcomp_list_of_target_files ${nvcomp_list_of_target_files}
-                                  "nvcomp-targets-common-release.cmake")
+  list(APPEND nvcomp_list_of_target_files "nvcomp-targets-common-release.cmake")
 endif()
 foreach(filename IN LISTS nvcomp_list_of_target_files)
   file(STRINGS
