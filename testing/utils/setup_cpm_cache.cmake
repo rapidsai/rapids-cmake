@@ -37,6 +37,10 @@ function(setup_cpm_cache)
     endif()
   endforeach()
 
+  foreach(package IN LISTS packages)
+    message(STATUS "${package} downloaded and placed in rapids-cmake cache")
+  endforeach()
+
   set(PACKAGES_IN_CPM_CACHE ${packages} PARENT_SCOPE)
   set(CPM_SOURCE_CACHE "${CPM_SOURCE_CACHE}" PARENT_SCOPE)
   set(CPM_DOWNLOAD_LOCATION "${CPM_DOWNLOAD_LOCATION}" PARENT_SCOPE)

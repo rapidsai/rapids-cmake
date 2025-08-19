@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2021-2023, NVIDIA CORPORATION.
+# Copyright (c) 2021-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,10 +22,14 @@ if(TARGET nvcomp::nvcomp)
   message(FATAL_ERROR "Expected nvcomp::nvcomp not to exist")
 endif()
 
-rapids_cpm_nvcomp(USE_PROPRIETARY_BINARY OFF)
+rapids_cpm_nvcomp(DOWNLOAD_ONLY ON USE_PROPRIETARY_BINARY OFF)
 
 if(nvcomp_proprietary_binary)
   message(FATAL_ERROR "Ignored `USE_PROPRIETARY_BINARY OFF` and brought in the binary version")
+endif()
+
+if(NOT EXISTS "${nvcomp_SOURCE_DIR}/CMakeLists.txt")
+  message(FATAL_ERROR "Ignored USE_PROPRIETARY_BINARY OFF and brought in the binary version")
 endif()
 
 # Make sure we can be called multiple times
