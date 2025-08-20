@@ -99,6 +99,7 @@ require.
     rapids_cuda_init_runtime </command/rapids_cuda_init_runtime>
     rapids_cuda_set_runtime </command/rapids_cuda_set_runtime>
     rapids_cuda_set_architectures [Advanced] </command/rapids_cuda_set_architectures>
+    rapids_cuda_enable_fatbin_compression </command/rapids_cuda_enable_fatbin_compression>
 
 
 .. _`export`:

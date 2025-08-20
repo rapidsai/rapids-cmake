@@ -38,8 +38,12 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
 rapids_cpm_package_override(${CMAKE_CURRENT_BINARY_DIR}/override.json)
 
 #
-rapids_cpm_nvcomp(USE_PROPRIETARY_BINARY ON)
+rapids_cpm_nvcomp(USE_PROPRIETARY_BINARY ON DOWNLOAD_ONLY ON)
 
 if(nvcomp_proprietary_binary)
+  message(FATAL_ERROR "Ignored nvcomp override file and brought in the binary version")
+endif()
+
+if(NOT EXISTS "${nvcomp_SOURCE_DIR}/CMakeLists.txt")
   message(FATAL_ERROR "Ignored nvcomp override file and brought in the binary version")
 endif()

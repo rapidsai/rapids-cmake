@@ -1,3 +1,50 @@
+# rapids-cmake 25.08.00 (6 Aug 2025)
+
+## 🚨 Breaking Changes
+
+- rapids_cpm_cccl: Remove support for CCCL &lt; 2.8 ([#859](https://github.com/rapidsai/rapids-cmake/pull/859)) [@robertmaynard](https://github.com/robertmaynard)
+- Remove CUDA 11 support ([#855](https://github.com/rapidsai/rapids-cmake/pull/855)) [@KyleFromNVIDIA](https://github.com/KyleFromNVIDIA)
+- Update to CCCL 3.0 ([#854](https://github.com/rapidsai/rapids-cmake/pull/854)) [@vyasr](https://github.com/vyasr)
+- Require cpp subdirectory for RMM ([#832](https://github.com/rapidsai/rapids-cmake/pull/832)) [@bdice](https://github.com/bdice)
+
+## 🐛 Bug Fixes
+
+- CCCL: disable PDL ([#876](https://github.com/rapidsai/rapids-cmake/pull/876)) [@bdice](https://github.com/bdice)
+- Use RMM main (new branching strategy) to fix downstream fetching issues ([#862](https://github.com/rapidsai/rapids-cmake/pull/862)) [@bdice](https://github.com/bdice)
+- rapids_cpm_cccl: Update to new location of cccl-config ([#858](https://github.com/rapidsai/rapids-cmake/pull/858)) [@robertmaynard](https://github.com/robertmaynard)
+- Remove CCCL patches that aren&#39;t used anymore ([#857](https://github.com/rapidsai/rapids-cmake/pull/857)) [@robertmaynard](https://github.com/robertmaynard)
+- Fetch the atomic fix in CCCL 3.0 ([#856](https://github.com/rapidsai/rapids-cmake/pull/856)) [@PointKernel](https://github.com/PointKernel)
+
+## 📖 Documentation
+
+- add docs on CI workflow inputs ([#868](https://github.com/rapidsai/rapids-cmake/pull/868)) [@jameslamb](https://github.com/jameslamb)
+
+## 🚀 New Features
+
+- Update CCCL version tag for PDL disable ([#879](https://github.com/rapidsai/rapids-cmake/pull/879)) [@davidwendt](https://github.com/davidwendt)
+- Use `RAPIDS_BRANCH` file to handle the new branching strategy ([#870](https://github.com/rapidsai/rapids-cmake/pull/870)) [@robertmaynard](https://github.com/robertmaynard)
+- rapids-cmake: Add support for a version suffix to mean using main ([#864](https://github.com/rapidsai/rapids-cmake/pull/864)) [@robertmaynard](https://github.com/robertmaynard)
+- rapids_cpm_cccl: Remove support for CCCL &lt; 2.8 ([#859](https://github.com/rapidsai/rapids-cmake/pull/859)) [@robertmaynard](https://github.com/robertmaynard)
+- Update to CCCL 3.0 ([#831](https://github.com/rapidsai/rapids-cmake/pull/831)) [@bdice](https://github.com/bdice)
+
+## 🛠️ Improvements
+
+- Update to CCCL v3.0.2 ([#878](https://github.com/rapidsai/rapids-cmake/pull/878)) [@bdice](https://github.com/bdice)
+- fix(docker): use versioned `-latest` tag for all `rapidsai` images ([#871](https://github.com/rapidsai/rapids-cmake/pull/871)) [@gforsyth](https://github.com/gforsyth)
+- Revert &quot;Use RMM main (new branching strategy)&quot; ([#869](https://github.com/rapidsai/rapids-cmake/pull/869)) [@robertmaynard](https://github.com/robertmaynard)
+- Rename `*.hpp.in` to `*.h.in` to signify that they are C headers ([#867](https://github.com/rapidsai/rapids-cmake/pull/867)) [@KyleFromNVIDIA](https://github.com/KyleFromNVIDIA)
+- refactor(shellcheck): enable for all files ([#866](https://github.com/rapidsai/rapids-cmake/pull/866)) [@gforsyth](https://github.com/gforsyth)
+- Remove nvidia and dask channels ([#865](https://github.com/rapidsai/rapids-cmake/pull/865)) [@vyasr](https://github.com/vyasr)
+- Upgrade cuCollections to fetch the new storage for better runtime performance ([#861](https://github.com/rapidsai/rapids-cmake/pull/861)) [@PointKernel](https://github.com/PointKernel)
+- Remove CUDA 11 support ([#855](https://github.com/rapidsai/rapids-cmake/pull/855)) [@KyleFromNVIDIA](https://github.com/KyleFromNVIDIA)
+- Update to CCCL 3.0 ([#854](https://github.com/rapidsai/rapids-cmake/pull/854)) [@vyasr](https://github.com/vyasr)
+- Deprecate fmt and spdlog ([#853](https://github.com/rapidsai/rapids-cmake/pull/853)) [@vyasr](https://github.com/vyasr)
+- Forward-merge branch-25.06 into branch-25.08 ([#848](https://github.com/rapidsai/rapids-cmake/pull/848)) [@gforsyth](https://github.com/gforsyth)
+- Update to NVTX 3.2.0. ([#844](https://github.com/rapidsai/rapids-cmake/pull/844)) [@bdice](https://github.com/bdice)
+- Forward-merge branch-25.06 into branch-25.08 ([#839](https://github.com/rapidsai/rapids-cmake/pull/839)) [@gforsyth](https://github.com/gforsyth)
+- Temporarily use patched CCCL ([#833](https://github.com/rapidsai/rapids-cmake/pull/833)) [@bdice](https://github.com/bdice)
+- Require cpp subdirectory for RMM ([#832](https://github.com/rapidsai/rapids-cmake/pull/832)) [@bdice](https://github.com/bdice)
+
 # rapids-cmake 25.06.00 (5 Jun 2025)
 
 ## 🚨 Breaking Changes

@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2022-2025, NVIDIA CORPORATION.
+# Copyright (c) 2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,22 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-include(${rapids-cmake-dir}/cpm/init.cmake)
-include(${rapids-cmake-dir}/cpm/nvcomp.cmake)
+include(${rapids-cmake-dir}/cuda/enable_fatbin_compression.cmake)
 
-rapids_cpm_init()
+enable_language(CUDA)
 
-if(TARGET nvcomp::nvcomp)
-  message(FATAL_ERROR "Expected nvcomp::nvcomp not to exist")
-endif()
-
-set(CMAKE_SYSTEM_PROCESSOR "i686") # Don't do this outside of tests
-rapids_cpm_nvcomp(USE_PROPRIETARY_BINARY ON DOWNLOAD_ONLY ON)
-
-if(nvcomp_proprietary_binary)
-  message(FATAL_ERROR "Shouldn't have found a pre-built version of nvcomp for a non-existent CMAKE_SYSTEM_PROCESSOR key"
-  )
-endif()
-if(NOT EXISTS "${nvcomp_SOURCE_DIR}/CMakeLists.txt")
-  message(FATAL_ERROR "Ignored USE_PROPRIETARY_BINARY OFF and brought in the binary version")
-endif()
+rapids_cuda_enable_fatbin_compression()

@@ -32,9 +32,11 @@ endif()
 
 # Check the contents of the nvcomp cmake files to ensure that every line containing "_IMPORT_PREFIX"
 # also contains "${CMAKE_INSTALL_LIBDIR}"
-set(nvcomp_list_of_target_files
-    "nvcomp-targets-common-release.cmake" "nvcomp-targets-dynamic-release.cmake"
-    "nvcomp-targets-static-release.cmake")
+set(nvcomp_list_of_target_files "nvcomp-targets-dynamic-release.cmake"
+                                "nvcomp-targets-static-release.cmake")
+if(nvcomp_VERSION VERSION_LESS "5.0")
+  list(APPEND nvcomp_list_of_target_files "nvcomp-targets-common-release.cmake")
+endif()
 foreach(filename IN LISTS nvcomp_list_of_target_files)
   file(STRINGS
        "${CMAKE_CURRENT_BINARY_DIR}/_deps/nvcomp_proprietary_binary-src/${CMAKE_INSTALL_LIBDIR}/cmake/nvcomp/${filename}"

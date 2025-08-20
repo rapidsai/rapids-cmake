@@ -231,6 +231,16 @@
           "INSTALL_EXPORT_SET": 1
         }
       },
+      "rapids_cuda_enable_fatbin_compression": {
+        "pargs": {
+          "nargs": 0
+        },
+        "kwargs": {
+          "VARIABLE": 1,
+          "TARGET": 1,
+          "TUNE_FOR": 1
+        }
+      },
       "rapids_cuda_init_architectures": {
         "pargs": {
           "nargs": 1
