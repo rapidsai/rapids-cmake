@@ -16,7 +16,7 @@
       "version": "3.1.0",
       "git_shallow": false,
       "git_url": "https://github.com/bdice/cccl.git",
-      "git_tag": "ce3b8d89843559f7a5f20b3b1458dd48c0947f25"
+      "git_tag": "b5e013fcca8885ece8780f2e442f88bbee1a8147"
     },
     "cuco": {
       "version": "0.0.1",
