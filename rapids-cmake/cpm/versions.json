@@ -23,7 +23,7 @@
       "git_shallow": false,
       "always_download": true,
       "git_url": "https://github.com/NVIDIA/cuCollections.git",
-      "git_tag": "162b99ec5b7bac6577e005a0abf1bcb857cfbca4"
+      "git_tag": "6d59add35767afaf8dbc03ee52f916b00cd0fb11"
     },
     "rapids_logger": {
       "version": "0.1.0",
@@ -50,14 +50,14 @@
       "git_tag": "935bb0b633dd387940dd91ca21a48bdfb74cf09e"
     },
     "nvcomp": {
-      "version": "4.2.0.11",
+      "version": "5.0.0.6",
       "git_shallow": false,
       "git_url": "https://github.com/NVIDIA/nvcomp.git",
       "git_tag": "a6e4e64a177e07cd2e5c8c5e07bb66ffefceae84",
       "proprietary_binary_cuda_version_mapping": {
         "11": "11",
         "12": "12",
-        "13": "12"
+        "13": "13"
       },
       "proprietary_binary": {
         "x86_64-linux": "https://developer.download.nvidia.com/compute/nvcomp/redist/nvcomp/linux-x86_64/nvcomp-linux-x86_64-${version}_cuda${cuda-toolkit-version-mapping}-archive.tar.xz",

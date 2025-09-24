@@ -15,6 +15,7 @@
 #=============================================================================
 include(${rapids-cmake-dir}/cuda/set_architectures.cmake)
 
+enable_language(CUDA)
 rapids_cuda_set_architectures(RAPIDS)
 
 if(NOT DEFINED CMAKE_CUDA_ARCHITECTURES)
