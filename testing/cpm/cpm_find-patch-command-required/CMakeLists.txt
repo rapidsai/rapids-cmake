@@ -27,7 +27,7 @@ if(NOT EXISTS "${deps_dir}")
                   WORKING_DIRECTORY "${deps_dir}")
 endif()
 
-set(gtest_dir "${deps_dir}/gtest")
+set(gtest_dir "${deps_dir}/googletest")
 list(APPEND CMAKE_PREFIX_PATH "${gtest_dir}")
 
 include(${rapids-cmake-dir}/cpm/init.cmake)
