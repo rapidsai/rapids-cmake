@@ -1,6 +1,6 @@
 {
   "packages": {
-    "fmt": {
+    "GTest": {
       "patches": [
         {
           "inline_patch": {
