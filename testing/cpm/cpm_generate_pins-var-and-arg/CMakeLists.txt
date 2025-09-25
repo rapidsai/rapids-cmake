@@ -17,11 +17,13 @@ cmake_minimum_required(VERSION 3.30.4)
 project(rapids-test-project LANGUAGES CXX)
 
 include(${rapids-cmake-dir}/cpm/init.cmake)
+include(${rapids-cmake-dir}/cpm/gtest.cmake)
 include(${rapids-cmake-dir}/cpm/rmm.cmake)
 
 set(RAPIDS_CMAKE_CPM_PINNED_VERSIONS_FILE
     "${CMAKE_CURRENT_BINARY_DIR}/custom_path/pinned_versions.json")
 rapids_cpm_init(GENERATE_PINNED_VERSIONS)
+rapids_cpm_gtest()
 rapids_cpm_rmm()
 
 include("${rapids-cmake-testing-dir}/cpm/verify_generated_pins.cmake")
