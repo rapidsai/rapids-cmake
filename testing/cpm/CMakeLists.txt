@@ -32,7 +32,7 @@ add_cmake_config_test(cpm_find-patch-command NO_CPM_CACHE)
 add_cmake_config_test(cpm_find-patch-command-embedded NO_CPM_CACHE)
 add_cmake_config_test(cpm_find-patch-command-required NO_CPM_CACHE)
 add_cmake_config_test(cpm_find-patch-command-required-fails NO_CPM_CACHE SHOULD_FAIL
-                      "rapids-cmake [fmt]: failed to apply patch")
+                      "rapids-cmake [GTest]: failed to apply patch")
 add_cmake_config_test(cpm_find-restore-cpm-vars)
 add_cmake_config_test(cpm_find-version-explicit-install.cmake)
 
@@ -99,10 +99,6 @@ add_cmake_build_test(cpm_cccl-preserve-custom-install-loc)
 add_cmake_config_test(cpm_cuco-simple.cmake)
 add_cmake_config_test(cpm_cuco-export.cmake)
 
-add_cmake_config_test(cpm_fmt-export.cmake)
-add_cmake_config_test(cpm_fmt-simple.cmake)
-add_cmake_build_test(cpm_fmt-static-lib.cmake)
-
 add_cmake_config_test(cpm_gbench-export.cmake)
 add_cmake_config_test(cpm_gbench-simple.cmake)
 add_cmake_config_test(cpm_gbench-explicit-static.cmake)
@@ -118,7 +114,6 @@ add_cmake_config_test(cpm_nvbench-export.cmake SERIAL)
 add_cmake_config_test(cpm_nvbench-simple.cmake SERIAL)
 add_cmake_config_test(cpm_nvbench-already-found-fmt.cmake SERIAL)
 add_cmake_build_test(cpm_nvbench-conda.cmake SERIAL)
-add_cmake_build_test(cpm_nvbench-conda-fmt.cmake SERIAL)
 add_cmake_config_test(cpm_nvbench-explicit-static.cmake SERIAL)
 
 add_cmake_config_test(cpm_nvcomp-export.cmake)
@@ -144,7 +139,3 @@ add_cmake_config_test(cpm_proprietary-url-no-ctk-parsing.cmake)
 
 add_cmake_config_test(cpm_rmm-export.cmake)
 add_cmake_config_test(cpm_rmm-simple.cmake)
-
-add_cmake_build_test(cpm_spdlog-external-fmt.cmake)
-add_cmake_config_test(cpm_spdlog-export.cmake)
-add_cmake_config_test(cpm_spdlog-simple.cmake)

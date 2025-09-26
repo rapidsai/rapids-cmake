@@ -19,8 +19,5 @@ project(rapids-test-b LANGUAGES CXX)
 include(${rapids-cmake-dir}/cpm/init.cmake)
 rapids_cpm_init()
 
-include(${rapids-cmake-dir}/cpm/cuco.cmake)
-include(${rapids-cmake-dir}/cpm/nvcomp.cmake)
-
-rapids_cpm_cuco(DOWNLOAD_ONLY ON)
-rapids_cpm_nvcomp(DOWNLOAD_ONLY ON)
+include(${rapids-cmake-dir}/cpm/gtest.cmake)
+rapids_cpm_gtest(DOWNLOAD_ONLY ON)
