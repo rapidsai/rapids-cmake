@@ -41,7 +41,7 @@
       "version": "0.0",
       "git_shallow": false,
       "git_url": "https://github.com/NVIDIA/nvbench.git",
-      "git_tag": "4879607c7086f3ebae2f8b9655d0b920c41d22ef"
+      "git_tag": "b88a45f4170af4e907e69af22a55af67859d3b49"
     },
     "nvcomp": {
       "version": "5.0.0.6",
