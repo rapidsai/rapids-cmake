@@ -29,7 +29,13 @@
       "version": "0.1.0",
       "git_shallow": false,
       "git_url": "https://github.com/rapidsai/rapids-logger.git",
-      "git_tag": "309a7f968c7713cba2d75da1cd19e1212e69aad7"
+      "git_tag": "46070bb255482f0782ca840ae45de9354380e298"
+    },
+    "fmt": {
+      "version": "11.0.2",
+      "git_shallow": false,
+      "git_url": "https://github.com/fmtlib/fmt.git",
+      "git_tag": "0c9fce2ffefecfdce794e1859584e25877b7b592"
     },
     "GTest": {
       "version": "1.16.0",
@@ -70,6 +76,12 @@
       "git_url": "https://github.com/rapidsai/rmm.git",
       "git_tag": "${rapids-cmake-checkout-tag}",
       "source_subdir": "cpp"
+    },
+    "spdlog": {
+      "version": "1.14.1",
+      "git_shallow": false,
+      "git_url": "https://github.com/gabime/spdlog.git",
+      "git_tag": "27cb4c76708608465c413f6d0e6b8d99a4d84302"
     }
   }
 }

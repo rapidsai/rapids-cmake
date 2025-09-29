@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2024-2025, NVIDIA CORPORATION.
+# Copyright (c) 2023, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,14 +13,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-cmake_minimum_required(VERSION 3.30.4)
-project(rapids-test-b LANGUAGES CXX)
-
 include(${rapids-cmake-dir}/cpm/init.cmake)
+include(${rapids-cmake-dir}/cpm/fmt.cmake)
+
 rapids_cpm_init()
 
-include(${rapids-cmake-dir}/cpm/cuco.cmake)
-include(${rapids-cmake-dir}/cpm/nvcomp.cmake)
+if(TARGET fmt::fmt-header-only)
+  message(FATAL_ERROR "Expected fmt::fmt-header-only expected to not exist")
+endif()
 
-rapids_cpm_cuco(DOWNLOAD_ONLY ON)
-rapids_cpm_nvcomp(DOWNLOAD_ONLY ON)
+if(TARGET fmt::fmt)
+  message(FATAL_ERROR "Expected fmt::fmt expected to not exist")
+endif()
+
+rapids_cpm_fmt()
+
+if(NOT TARGET fmt::fmt-header-only)
+  message(FATAL_ERROR "Expected fmt::fmt-header-only target to exist")
+endif()
+
+if(NOT TARGET fmt::fmt)
+  message(FATAL_ERROR "Expected fmt::fmt target to exist")
+endif()
+
+rapids_cpm_fmt()

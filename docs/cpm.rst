@@ -28,7 +28,7 @@ projects.
 If the override is of an existing default project, it only needs to specify the
 fields it wants to override.
 
-For example if you wanted to change the version of `GTest` you would do the following:
+For example if you wanted to change the version of `fmt` you would do the following:
 
 .. literalinclude:: /packages/example_git_tag_override.json
   :language: json

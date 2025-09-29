@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2024-2025, NVIDIA CORPORATION.
+# Copyright (c) 2023, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,14 +13,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-cmake_minimum_required(VERSION 3.30.4)
-project(rapids-test-b LANGUAGES CXX)
-
 include(${rapids-cmake-dir}/cpm/init.cmake)
+include(${rapids-cmake-dir}/cpm/fmt.cmake)
+
 rapids_cpm_init()
 
-include(${rapids-cmake-dir}/cpm/cuco.cmake)
-include(${rapids-cmake-dir}/cpm/nvcomp.cmake)
+rapids_cpm_fmt(BUILD_EXPORT_SET frank INSTALL_EXPORT_SET test)
+rapids_cpm_fmt(INSTALL_EXPORT_SET test2)
 
-rapids_cpm_cuco(DOWNLOAD_ONLY ON)
-rapids_cpm_nvcomp(DOWNLOAD_ONLY ON)
+get_target_property(packages rapids_export_install_test PACKAGE_NAMES)
+if(NOT fmt IN_LIST packages)
+  message(FATAL_ERROR "rapids_cpm_fmt failed to record fmt needs to be exported")
+endif()
+
+get_target_property(packages rapids_export_install_test2 PACKAGE_NAMES)
+if(NOT fmt IN_LIST packages)
+  message(FATAL_ERROR "rapids_cpm_fmt failed to record fmt needs to be exported")
+endif()
+
+get_target_property(packages rapids_export_build_frank PACKAGE_NAMES)
+if(NOT fmt IN_LIST packages)
+  message(FATAL_ERROR "rapids_cpm_fmt failed to record fmt needs to be exported")
+endif()
