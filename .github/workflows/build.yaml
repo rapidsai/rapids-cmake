@@ -35,12 +35,12 @@ jobs:
   docs-build:
     if: github.ref_type == 'branch'
     secrets: inherit
-    uses: rapidsai/shared-workflows/.github/workflows/custom-job.yaml@branch-25.10
+    uses: rapidsai/shared-workflows/.github/workflows/custom-job.yaml@branch-25.12
     with:
       arch: "amd64"
       branch: ${{ inputs.branch }}
       build_type: ${{ inputs.build_type || 'branch' }}
-      container_image: "rapidsai/ci-conda:25.10-latest"
+      container_image: "rapidsai/ci-conda:25.12-latest"
       date: ${{ inputs.date }}
       node_type: "cpu4"
       script: "ci/build_docs.sh"

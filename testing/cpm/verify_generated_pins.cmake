@@ -28,6 +28,10 @@ function(verify_generated_pins target_name)
     set(_RAPIDS_PIN_FILE "${CMAKE_CURRENT_BINARY_DIR}/rapids-cmake/pinned_versions.json")
   endif()
 
+  message(STATUS "Verifying generated pins for projects: ${_RAPIDS_PROJECTS}")
+  message(STATUS "Pin file: ${_RAPIDS_PIN_FILE}")
+  message(STATUS "Source subdir projects: ${_RAPIDS_SOURCE_SUBDIR_PROJECTS}")
+  message(STATUS "Projects not in list: ${_RAPIDS_PROJECTS_NOT_EXIST}")
   foreach(proj IN LISTS _RAPIDS_PROJECTS)
     if(NOT CPM_PACKAGE_${proj}_SOURCE_DIR)
       message(FATAL_ERROR "Attempting to verify a project ( ${proj} ) that was not cloned as part of this build"
