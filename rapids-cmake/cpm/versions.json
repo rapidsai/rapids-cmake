@@ -23,7 +23,7 @@
       "git_shallow": false,
       "always_download": true,
       "git_url": "https://github.com/NVIDIA/cuCollections.git",
-      "git_tag": "64f57e458900d5fd55adbe36755a09536d7f5b32"
+      "git_tag": "d36905c69ce02d74abdd31dc864ce3e1ffc5a7db"
     },
     "rapids_logger": {
       "version": "0.1.0",
