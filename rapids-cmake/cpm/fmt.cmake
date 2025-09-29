@@ -51,10 +51,6 @@ Result Variables
 function(rapids_cpm_fmt)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.fmt")
   include("${rapids-cmake-dir}/cmake/detail/policy.cmake")
-  rapids_cmake_policy(DEPRECATED_IN 25.08
-                      REMOVED_IN 25.12
-                      MESSAGE [=[`rapids_cpm_fmt` is deprecated. If you need to fetch fmt, please use rapids_cpm_find directly.]=]
-  )
 
   include("${rapids-cmake-dir}/cpm/detail/package_info.cmake")
   rapids_cpm_package_info(fmt ${ARGN} VERSION_VAR version FIND_VAR find_args CPM_VAR cpm_find_info
