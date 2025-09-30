@@ -19,5 +19,5 @@ project(rapids-test-a LANGUAGES CXX)
 include(${rapids-cmake-dir}/cpm/init.cmake)
 rapids_cpm_init()
 
-include(${rapids-cmake-dir}/cpm/gbench.cmake)
-rapids_cpm_gbench()
+include(${rapids-cmake-dir}/cpm/rmm.cmake)
+rapids_cpm_rmm()

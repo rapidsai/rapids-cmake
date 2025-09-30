@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2024-2025, NVIDIA CORPORATION.
+# Copyright (c) 2023-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,14 +13,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #=============================================================================
-cmake_minimum_required(VERSION 3.30.4)
-project(rapids-test-b LANGUAGES CXX)
-
 include(${rapids-cmake-dir}/cpm/init.cmake)
+include(${rapids-cmake-dir}/cpm/spdlog.cmake)
+
+enable_language(CXX)
+
 rapids_cpm_init()
+rapids_cpm_spdlog(FMT_OPTION "EXTERNAL_FMT_HO")
 
-include(${rapids-cmake-dir}/cpm/cuco.cmake)
-include(${rapids-cmake-dir}/cpm/nvcomp.cmake)
+file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/use_external_fmt.cpp"
+     [=[
 
-rapids_cpm_cuco(DOWNLOAD_ONLY ON)
-rapids_cpm_nvcomp(DOWNLOAD_ONLY ON)
+#ifndef SPDLOG_FMT_EXTERNAL
+#error "SPDLOG_FMT_EXTERNAL not defined"
+#endif
+
+]=])
+
+add_library(spdlog_extern_fmt SHARED "${CMAKE_CURRENT_BINARY_DIR}/use_external_fmt.cpp")
+target_link_libraries(spdlog_extern_fmt PRIVATE spdlog::spdlog)
+
+add_library(spdlog-header-only_extern_fmt SHARED "${CMAKE_CURRENT_BINARY_DIR}/use_external_fmt.cpp")
+target_link_libraries(spdlog-header-only_extern_fmt PRIVATE spdlog::spdlog_header_only)
