@@ -27,9 +27,9 @@ rapids_cpm_find(cucxx 1.0)
 # Should find CPM generated `Findcucxx.cmake`
 find_package(cucxx REQUIRED)
 
-set(expected_find_path "${CPM_MODULE_PATH}/Findcucxx.cmake")
+set(expected_find_path "${CMAKE_FIND_PACKAGE_REDIRECTS_DIR}/cucxx-config.cmake")
 if(NOT EXISTS "${expected_find_path}")
-  message(FATAL_ERROR "Findcucxx.cmake was not generated")
+  message(FATAL_ERROR "cucxx-config.cmake was not generated")
 endif()
 
 if(NOT TARGET MOCK_CUCXX)
