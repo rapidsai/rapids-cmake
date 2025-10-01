@@ -26,9 +26,9 @@
       "git_tag": "6d59add35767afaf8dbc03ee52f916b00cd0fb11"
     },
     "rapids_logger": {
-      "version": "0.2.0",
+      "version": "0.2.1",
       "git_url": "https://github.com/rapidsai/rapids-logger.git",
-      "git_tag": "9db6afe15ea80766bbfb65747a9189b1d671df5b"
+      "git_tag": "aab9882574e75cc3d7cd1809888b0e5380ebe85d"
     },
     "GTest": {
       "version": "1.16.0",
