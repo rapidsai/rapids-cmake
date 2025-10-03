@@ -41,7 +41,7 @@ in the build tree of the calling project
   ```
   This is an advanced option that allows projects to specify a custom default ``versions.json`` file that will
   be used instead of the one packaged inside rapids-cmake. Since this allows you to specify a new default
-  ``versions.json`` it must contain information for all the built-in rapids-cmake packages ( cccl, fmt, rmm, etc )
+  ``versions.json`` it must contain information for all the built-in rapids-cmake packages ( cccl, GTest, rmm, etc )
   that are used by your project.
 
   Using a built-in rapids-cmake package without an explicit entry in the custom default version file is undefined behavior.
