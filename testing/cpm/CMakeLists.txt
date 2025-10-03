@@ -91,6 +91,7 @@ add_cmake_build_test(cpm_bs_thread_pool-build-config-works.cmake)
 add_cmake_build_test(cpm_bs_thread_pool-install-config-works.cmake)
 
 add_cmake_config_test(cpm_cccl-simple.cmake)
+add_cmake_config_test(cpm_cccl-enable-unstable.cmake)
 add_cmake_config_test(cpm_cccl-export.cmake)
 add_cmake_build_test(cpm_cccl-version-2-8.cmake NO_CPM_CACHE)
 add_cmake_build_test(cpm_cccl-version-3-0.cmake NO_CPM_CACHE)

@@ -41,8 +41,7 @@ file will automatically call `thrust_create_target(CCCL::Thrust FROM_OPTIONS)`.
                    [<CPM_ARGS> ...])
 
 ``ENABLE_UNSTABLE``
-  Enable unstable features in CCCL. When specified, sets a local variable `enable_unstable` to ON.
-  Defaults to OFF if not specified.
+  Enable unstable features in CCCL.
 
 .. |PKG_NAME| replace:: CCCL
 .. include:: common_package_args.txt
@@ -73,18 +72,11 @@ function(rapids_cpm_cccl)
   set(multi_value)
   cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
-  # Set local variable if ENABLE_UNSTABLE is provided
-  if(_RAPIDS_ENABLE_UNSTABLE)
-    set(enable_unstable ON)
-  else()
-    set(enable_unstable OFF)
-  endif()
-
   include("${rapids-cmake-dir}/cpm/detail/package_info.cmake")
   rapids_cpm_package_info(CCCL ${_RAPIDS_UNPARSED_ARGUMENTS} VERSION_VAR version FIND_VAR find_args
                           CPM_VAR cpm_find_info TO_INSTALL_VAR to_install)
 
-  if(enable_unstable)
+  if(_RAPIDS_ENABLE_UNSTABLE)
     list(APPEND cpm_find_info OPTIONS "CCCL_ENABLE_UNSTABLE ON")
   endif()
 
@@ -110,7 +102,7 @@ function(rapids_cpm_cccl)
   include("${rapids-cmake-dir}/cpm/find.cmake")
   rapids_cpm_find(CCCL ${version} ${find_args}
                   GLOBAL_TARGETS CCCL CCCL::CCCL CCCL::CUB CCCL::libcudacxx
-                                 $<IF:$<BOOL:${enable_unstable}>,CCCL::cudax,>
+                                 $<IF:$<BOOL:${_RAPIDS_ENABLE_UNSTABLE}>,CCCL::cudax,>
                   CPM_ARGS FIND_PACKAGE_ARGUMENTS EXACT ${cpm_find_info})
 
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
