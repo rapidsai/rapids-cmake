@@ -28,8 +28,6 @@ include(${rapids-cmake-dir}/cpm/nvbench.cmake)
 include(${rapids-cmake-dir}/cpm/nvcomp.cmake)
 include(${rapids-cmake-dir}/cpm/nvtx3.cmake)
 include(${rapids-cmake-dir}/cpm/rmm.cmake)
-include(${rapids-cmake-dir}/cpm/spdlog.cmake)
-include(${rapids-cmake-dir}/cpm/fmt.cmake)
 
 rapids_cpm_init(GENERATE_PINNED_VERSIONS)
 
@@ -43,8 +41,6 @@ rapids_cpm_rapids_logger(DOWNLOAD_ONLY ON)
 rapids_cpm_nvbench(DOWNLOAD_ONLY ON)
 rapids_cpm_nvtx3(DOWNLOAD_ONLY ON)
 rapids_cpm_rmm(DOWNLOAD_ONLY ON)
-rapids_cpm_spdlog(DOWNLOAD_ONLY ON)
-rapids_cpm_fmt(DOWNLOAD_ONLY ON)
 
 # Download all binary packages
 set(CPM_DOWNLOAD_ALL "OFF")
