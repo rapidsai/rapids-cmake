@@ -100,9 +100,8 @@ function(rapids_cpm_cccl)
   endif()
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
-  rapids_cpm_find(CCCL ${version} ${find_args}
-                  GLOBAL_TARGETS CCCL CCCL::CCCL CCCL::CUB CCCL::libcudacxx
-                                 $<IF:$<BOOL:${_RAPIDS_ENABLE_UNSTABLE}>,CCCL::cudax,>
+  rapids_cpm_find(CCCL ${version} ${find_args} GLOBAL_TARGETS CCCL CCCL::CCCL CCCL::CUB
+                                                              CCCL::libcudacxx CCCL::cudax
                   CPM_ARGS FIND_PACKAGE_ARGUMENTS EXACT ${cpm_find_info})
 
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
