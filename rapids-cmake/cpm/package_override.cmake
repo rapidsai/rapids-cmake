@@ -131,21 +131,13 @@ function(rapids_cpm_package_override _rapids_override_filepath)
 
       # establish the fetch content
       include(FetchContent)
-      include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
-      rapids_cpm_package_details(${package_name} version repository tag shallow exclude)
+      include("${rapids-cmake-dir}/cpm/detail/package_info.cmake")
+      rapids_cpm_package_info(${package_name} FOR_FETCH_CONTENT CPM_VAR cpm_find_info)
 
-      include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
-      rapids_cpm_generate_patch_command(${package_name} ${version} patch_command build_patch_only)
-
-      unset(exclude_from_all)
-      if(exclude)
-        set(exclude_from_all EXCLUDE_FROM_ALL)
-      endif()
-      FetchContent_Declare(${package_proper_name}
-                           GIT_REPOSITORY ${repository}
-                           GIT_TAG ${tag}
-                           GIT_SHALLOW ${shallow}
-                           ${patch_command} ${exclude_from_all})
+      message(DEBUG
+              "rapids.cpm.rapids_cpm_package_override: FetchContent_Declare(${package_proper_name} ${cpm_find_info}) "
+      )
+      FetchContent_Declare(${package_proper_name} ${cpm_find_info})
       unset(package_proper_name)
     endforeach()
   endif()

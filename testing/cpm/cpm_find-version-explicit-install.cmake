@@ -20,8 +20,8 @@ rapids_cpm_init()
 
 rapids_cpm_cccl(INSTALL_EXPORT_SET example_export)
 
-include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
-rapids_cpm_package_details(cccl cccl_version repository tag shallow exclude)
+include("${rapids-cmake-dir}/cpm/detail/package_info.cmake")
+rapids_cpm_package_info(cccl VERSION_VAR cccl_version)
 
 set(cccl_path "${CMAKE_BINARY_DIR}/rapids-cmake/example_export/install/package_CCCL.cmake")
 

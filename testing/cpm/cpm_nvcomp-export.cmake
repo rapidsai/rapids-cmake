@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2022, NVIDIA CORPORATION.
+# Copyright (c) 2022-2025, NVIDIA CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,9 +16,13 @@
 include(${rapids-cmake-dir}/cpm/init.cmake)
 include(${rapids-cmake-dir}/cpm/nvcomp.cmake)
 
+# Ensure we use the cached download of nvcomp instead of downloading it again
+if(EXISTS "${CPM_SOURCE_CACHE}/_deps/nvcomp_proprietary_binary-src/")
+  set(nvcomp_ROOT "${CPM_SOURCE_CACHE}/_deps/nvcomp_proprietary_binary-src/")
+endif()
 rapids_cpm_init()
-rapids_cpm_nvcomp(BUILD_EXPORT_SET test)
-rapids_cpm_nvcomp(BUILD_EXPORT_SET test2)
+rapids_cpm_nvcomp(BUILD_EXPORT_SET test USE_PROPRIETARY_BINARY ON)
+rapids_cpm_nvcomp(BUILD_EXPORT_SET test2 USE_PROPRIETARY_BINARY ON)
 
 get_target_property(packages rapids_export_build_test PACKAGE_NAMES)
 if(NOT nvcomp IN_LIST packages)

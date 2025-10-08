@@ -46,7 +46,7 @@ rapids_cpm_package_override(${CMAKE_CURRENT_BINARY_DIR}/override.json)
 # Verify that the override doesn't exist due to `CPM_rmm_SOURCE`
 include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
 
-rapids_cpm_package_details(rmm version repository tag shallow exclude)
+rapids_cpm_package_details_internal(rmm version repository tag src_subdir shallow exclude)
 if(NOT repository MATCHES "new_rmm_url")
   message(FATAL_ERROR "custom url field should not be set, due to CPM_rmm_SOURCE")
 endif()
@@ -60,7 +60,7 @@ endif()
 unset(version)
 unset(repository)
 unset(tag)
-rapids_cpm_package_details(not_in_base version repository tag shallow exclude)
+rapids_cpm_package_details_internal(not_in_base version repository tag src_subdir shallow exclude)
 if(NOT (version AND repository AND tag))
   message(FATAL_ERROR "rapids_cpm_package_details should still have details for package that doesn't exist"
   )

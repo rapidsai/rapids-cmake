@@ -62,12 +62,11 @@ Result Variables
 function(rapids_cpm_cccl)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.cccl")
 
-  include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
-  rapids_cpm_package_details(CCCL version repository tag shallow exclude)
+  include("${rapids-cmake-dir}/cpm/detail/package_info.cmake")
+  rapids_cpm_package_info(CCCL ${ARGN} VERSION_VAR version FIND_VAR find_args CPM_VAR cpm_find_info
+                          TO_INSTALL_VAR to_install)
 
-  set(to_install OFF)
-  if(INSTALL_EXPORT_SET IN_LIST ARGN AND NOT exclude)
-    set(to_install ON)
+  if(to_install)
     # Make sure we install CCCL into the `include/rapids` subdirectory instead of the default
     include(GNUInstallDirs)
     string(APPEND CMAKE_INSTALL_INCLUDEDIR "/rapids")
@@ -86,24 +85,13 @@ function(rapids_cpm_cccl)
     endif()
   endif()
 
-  include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
-  rapids_cpm_generate_patch_command(CCCL ${version} patch_command build_patch_only)
   include("${rapids-cmake-dir}/cpm/find.cmake")
-  rapids_cpm_find(CCCL ${version} ${ARGN} ${build_patch_only}
-                  GLOBAL_TARGETS CCCL CCCL::CCCL CCCL::CUB CCCL::libcudacxx
-                  CPM_ARGS FIND_PACKAGE_ARGUMENTS EXACT
-                  GIT_REPOSITORY ${repository}
-                  GIT_TAG ${tag}
-                  GIT_SHALLOW ${shallow} ${patch_command}
-                  EXCLUDE_FROM_ALL ${exclude})
+  rapids_cpm_find(CCCL ${version} ${find_args} GLOBAL_TARGETS CCCL CCCL::CCCL CCCL::CUB
+                                                              CCCL::libcudacxx
+                  CPM_ARGS FIND_PACKAGE_ARGUMENTS EXACT ${cpm_find_info})
 
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
   rapids_cpm_display_patch_status(CCCL)
-
-  set(options)
-  set(one_value BUILD_EXPORT_SET INSTALL_EXPORT_SET)
-  set(multi_value)
-  cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
   if(CCCL_SOURCE_DIR)
     # Store where CMake can find the cccl-config.cmake

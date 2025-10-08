@@ -39,10 +39,6 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
 rapids_cpm_package_override(${CMAKE_CURRENT_BINARY_DIR}/override.json)
 
 # Verify that the override works
-include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
+include("${rapids-cmake-dir}/cpm/detail/package_info.cmake")
 
-rapids_cpm_package_details(rmm version repository tag shallow exclude)
-if(NOT CPM_DOWNLOAD_ALL)
-  message(FATAL_ERROR "CPM_DOWNLOAD_ALL should be set to true when an override exists with a patches entry"
-  )
-endif()
+rapids_cpm_package_info(rmm)

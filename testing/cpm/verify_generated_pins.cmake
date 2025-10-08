@@ -17,7 +17,7 @@
 function(verify_generated_pins target_name)
   set(_rapids_options)
   set(_rapids_one_value PIN_FILE)
-  set(_rapids_multi_value PROJECTS PROJECTS_NOT_EXIST)
+  set(_rapids_multi_value PROJECTS PROJECTS_NOT_EXIST SOURCE_SUBDIR_PROJECTS)
   cmake_parse_arguments(PARSE_ARGV 1 _RAPIDS "${_rapids_options}" "${_rapids_one_value}"
                         "${_rapids_multi_value}")
 
@@ -42,6 +42,7 @@ function(verify_generated_pins target_name)
                             "-Drapids-cmake-dir=${rapids-cmake-dir}"
                             "-Dpinned_versions_file=${_RAPIDS_PIN_FILE}"
                             "-Dprojects-to-verify=${_RAPIDS_PROJECTS}"
+                            "-Dprojects-with-subdirs=${_RAPIDS_SOURCE_SUBDIR_PROJECTS}"
                             "-Dprojects-not-in-list=${_RAPIDS_PROJECTS_NOT_EXIST}"
                     VERBATIM)
 

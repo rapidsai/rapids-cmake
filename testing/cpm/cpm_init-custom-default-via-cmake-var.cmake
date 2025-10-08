@@ -48,7 +48,7 @@ rapids_cpm_init(CUSTOM_DEFAULT_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/default
 
 # Verify that the custom defaults works
 include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
-rapids_cpm_package_details(nvbench version repository tag shallow exclude)
+rapids_cpm_package_details_internal(nvbench version repository tag src_subdir shallow exclude)
 
 if(NOT version STREQUAL "custom_version")
   message(FATAL_ERROR "custom default version field was ignored. ${version} found instead of custom_version"

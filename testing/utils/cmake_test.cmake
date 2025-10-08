@@ -84,6 +84,8 @@ function(add_cmake_test mode source_or_dir)
     message(FATAL_ERROR "Unable to find a file or directory named: ${source_or_dir}")
   endif()
 
+  set(extra_configure_flags "-DCMAKE_MESSAGE_LOG_LEVEL=DEBUG")
+
   if(NOT RAPIDS_TEST_NO_RAPIDS_CMAKE_HOOKS)
     list(APPEND
          extra_configure_flags

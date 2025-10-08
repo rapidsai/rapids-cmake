@@ -21,6 +21,11 @@ if(NOT location EQUAL -1)
   message(FATAL_ERROR "CMAKE_CUDA_ARCHITECTURES last value shouldn't have `-real`")
 endif()
 
+string(FIND ${last_value} "virtual-real" location)
+if(NOT location EQUAL "-1")
+  message(FATAL_ERROR "No values in CMAKE_CUDA_ARCHITECTURES should have `virtual-real`")
+endif()
+
 # Each item should be `number-real` and should be ordered from low to high. In addition the values
 # should map to Volta+ GPU arch ( 70+ )
 set(previous_value 69)
@@ -50,7 +55,8 @@ if(NOT DEFINED CACHE{CMAKE_CUDA_ARCHITECTURES})
   )
 endif()
 
-if(CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL 12.8.0)
+if(CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL 12.8.0 AND CMAKE_CUDA_COMPILER_VERSION
+                                                                VERSION_LESS 13.0.0)
   if(NOT CMAKE_CUDA_FLAGS MATCHES "Wno-deprecated-gpu-targets")
     message(FATAL_ERROR "CMAKE_CUDA_FLAGS should have -Wno-deprecated-gpu-targets")
   endif()

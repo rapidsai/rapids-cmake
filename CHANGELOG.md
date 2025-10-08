@@ -1,3 +1,41 @@
+# rapids-cmake 25.10.00 (8 Oct 2025)
+
+## 🚨 Breaking Changes
+
+- Upgrade to nvCOMP 5.0.0.6 ([#896](https://github.com/rapidsai/rapids-cmake/pull/896)) [@vuule](https://github.com/vuule)
+
+## 🐛 Bug Fixes
+
+- Fix generation of `RAPIDS_BRANCH` ([#909](https://github.com/rapidsai/rapids-cmake/pull/909)) [@KyleFromNVIDIA](https://github.com/KyleFromNVIDIA)
+- change Architectures to avoid compute_100/120 code gen bug ([#900](https://github.com/rapidsai/rapids-cmake/pull/900)) [@robertmaynard](https://github.com/robertmaynard)
+- set_architectures + NATIVE works even without a GPU ([#899](https://github.com/rapidsai/rapids-cmake/pull/899)) [@robertmaynard](https://github.com/robertmaynard)
+- set_architectures correctly limits CUDA 12.8 to sm_120 ([#898](https://github.com/rapidsai/rapids-cmake/pull/898)) [@robertmaynard](https://github.com/robertmaynard)
+- rapids_export handles PROJECT_VERSION CMake 4.1+ change in behavior ([#893](https://github.com/rapidsai/rapids-cmake/pull/893)) [@robertmaynard](https://github.com/robertmaynard)
+- Fix detect architectures to support gcc 14 ([#892](https://github.com/rapidsai/rapids-cmake/pull/892)) [@ChuckHastings](https://github.com/ChuckHastings)
+- Update RAPIDS.cmake to match new logic in other projects ([#884](https://github.com/rapidsai/rapids-cmake/pull/884)) [@robertmaynard](https://github.com/robertmaynard)
+- Update RAPIDS_BRANCH to 25.10 ([#883](https://github.com/rapidsai/rapids-cmake/pull/883)) [@robertmaynard](https://github.com/robertmaynard)
+- Expand versions.json to have src_dir representation ([#882](https://github.com/rapidsai/rapids-cmake/pull/882)) [@robertmaynard](https://github.com/robertmaynard)
+
+## 🚀 New Features
+
+- Update cuco version to fetch signed comparison warning fix ([#905](https://github.com/rapidsai/rapids-cmake/pull/905)) [@PointKernel](https://github.com/PointKernel)
+- Updated dependencies.yaml to support CUDA 13 ([#901](https://github.com/rapidsai/rapids-cmake/pull/901)) [@robertmaynard](https://github.com/robertmaynard)
+- Use family arch flags whenever possible ([#897](https://github.com/rapidsai/rapids-cmake/pull/897)) [@robertmaynard](https://github.com/robertmaynard)
+- Upgrade to nvCOMP 5.0.0.6 ([#896](https://github.com/rapidsai/rapids-cmake/pull/896)) [@vuule](https://github.com/vuule)
+- Update set_architectures to support CUDA 13 ([#891](https://github.com/rapidsai/rapids-cmake/pull/891)) [@robertmaynard](https://github.com/robertmaynard)
+- rapids-cmake Expose `rapids_cuda_enable_fatbin_compression` to have better CUDA 12/13 compression API ([#890](https://github.com/rapidsai/rapids-cmake/pull/890)) [@robertmaynard](https://github.com/robertmaynard)
+- CUDA 13 builds will properly pull nvcomp  4.2.0.11 ([#889](https://github.com/rapidsai/rapids-cmake/pull/889)) [@robertmaynard](https://github.com/robertmaynard)
+- Properly store `source_subdir` values from `rapids_cpm_find` calls ([#885](https://github.com/rapidsai/rapids-cmake/pull/885)) [@robertmaynard](https://github.com/robertmaynard)
+
+## 🛠️ Improvements
+
+- Configure repo for automatic release notes generation ([#907](https://github.com/rapidsai/rapids-cmake/pull/907)) [@AyodeAwe](https://github.com/AyodeAwe)
+- Use branch-25.10 again ([#904](https://github.com/rapidsai/rapids-cmake/pull/904)) [@jameslamb](https://github.com/jameslamb)
+- Update rapids-dependency-file-generator ([#903](https://github.com/rapidsai/rapids-cmake/pull/903)) [@KyleFromNVIDIA](https://github.com/KyleFromNVIDIA)
+- Update cuco version to fetch the new roaring bitmap ([#902](https://github.com/rapidsai/rapids-cmake/pull/902)) [@PointKernel](https://github.com/PointKernel)
+- Bump cuco version to fetch a bug fix for device retrieve APIs ([#887](https://github.com/rapidsai/rapids-cmake/pull/887)) [@PointKernel](https://github.com/PointKernel)
+- chore: update docker version tags ([#873](https://github.com/rapidsai/rapids-cmake/pull/873)) [@gforsyth](https://github.com/gforsyth)
+
 # rapids-cmake 25.08.00 (6 Aug 2025)
 
 ## 🚨 Breaking Changes

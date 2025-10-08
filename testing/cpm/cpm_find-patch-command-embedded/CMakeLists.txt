@@ -17,7 +17,7 @@ cmake_minimum_required(VERSION 3.26.4)
 project(rapids-cpm_find-patch-command-project LANGUAGES CXX)
 
 include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
-rapids_cpm_package_details(fmt version repository tag shallow exclude)
+rapids_cpm_package_details_internal(fmt version repository tag src_subdir shallow exclude)
 
 set(deps_dir "${CMAKE_CURRENT_BINARY_DIR}/_fmt_dep")
 if(NOT EXISTS "${deps_dir}")
