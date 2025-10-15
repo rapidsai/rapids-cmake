@@ -22,8 +22,8 @@
       "version": "0.0.1",
       "git_shallow": false,
       "always_download": true,
-      "git_url": "https://github.com/PointKernel/cuCollections.git",
-      "git_tag": "stream-allocator"
+      "git_url": "https://github.com/NVIDIA/cuCollections.git",
+      "git_tag": "3b9873ada51835f61b73c90ec4efa74996b74e96"
     },
     "rapids_logger": {
       "version": "0.2.3",
