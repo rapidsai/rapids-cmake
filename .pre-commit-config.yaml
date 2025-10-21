@@ -71,7 +71,7 @@ repos:
     rev: v1.0.0
     hooks:
       - id: verify-copyright
-        args: [--fix, --force-spdx]
+        args: [--fix, --spdx]
         files: |
           (?x)
             [.](cmake|cpp|cu|cuh|h|hpp|sh|pxd|py|pyx)$|
