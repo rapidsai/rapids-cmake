@@ -43,7 +43,7 @@ dependencies:
       - output_types: conda
         matrices:
           - matrix:
-              cuda: "12.[0123]"
+              cuda: "12.[23]"
             packages:
               - gcc<13.0.0
           - matrix:
