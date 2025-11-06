@@ -19,7 +19,7 @@ Content](https://cmake.org/cmake/help/latest/module/FetchContent.html) into your
 cmake_minimum_required(...)
 
 if(NOT EXISTS ${CMAKE_CURRENT_BINARY_DIR}/<PROJECT>_RAPIDS.cmake)
-  file(DOWNLOAD https://raw.githubusercontent.com/rapidsai/rapids-cmake/branch-<VERSION_MAJOR>.<VERSION_MINOR>/RAPIDS.cmake
+  file(DOWNLOAD https://raw.githubusercontent.com/rapidsai/rapids-cmake/release/<VERSION_MAJOR>.<VERSION_MINOR>/RAPIDS.cmake
     ${CMAKE_CURRENT_BINARY_DIR}/<PROJECT>_RAPIDS.cmake)
 endif()
 include(${CMAKE_CURRENT_BINARY_DIR}/<PROJECT>_RAPIDS.cmake)
@@ -145,7 +145,7 @@ At times projects or developers will need to verify ``rapids-cmake`` branches. T
   # This only works when specifying
   #
   # set(rapids-cmake-fetch-via-git "ON")
-  # set(rapids-cmake-branch "branch-<cal_ver>")
+  # set(rapids-cmake-branch "release/<cal_ver>")
   #
   # or
   # set(rapids-cmake-fetch-via-git "ON")

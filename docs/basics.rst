@@ -71,7 +71,7 @@ At times projects or developers will need to verify ``rapids-cmake`` branches. T
   # This only works when specifying
   #
   # set(rapids-cmake-fetch-via-git "ON")
-  # set(rapids-cmake-branch "branch-<cal_ver>")
+  # set(rapids-cmake-branch "release/<cal_ver>")
   #
   # or
   # set(rapids-cmake-fetch-via-git "ON")
