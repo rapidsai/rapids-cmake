@@ -99,13 +99,13 @@ fi
 
 # Update template URLs in documentation and examples based on context
 if [[ "${RUN_CONTEXT}" == "main" ]]; then
-    # In main context, use "main" branch in URLs
-    sed_runner "s|release/<VERSION_MAJOR>\\.<VERSION_MINOR>|main|g" README.md
-    sed_runner "s|release/<VERSION_MAJOR>\\.<VERSION_MINOR>|main|g" rapids-cmake/cuda/init_architectures.cmake
+    # In main context, convert any release/X.Y references to main
+    sed_runner "s|release/${NEXT_SHORT_TAG}|main|g" README.md
+    sed_runner "s|release/${NEXT_SHORT_TAG}|main|g" rapids-cmake/cuda/init_architectures.cmake
 elif [[ "${RUN_CONTEXT}" == "release" ]]; then
-    # In release context, use "release/<VERSION_MAJOR>.<VERSION_MINOR>" in URLs
-    sed_runner "s|main|release/<VERSION_MAJOR>.<VERSION_MINOR>|g" README.md
-    sed_runner "s|main|release/<VERSION_MAJOR>.<VERSION_MINOR>|g" rapids-cmake/cuda/init_architectures.cmake
+    # In release context, convert main references to release/X.Y
+    sed_runner "s|main|release/${NEXT_SHORT_TAG}|g" README.md
+    sed_runner "s|main|release/${NEXT_SHORT_TAG}|g" rapids-cmake/cuda/init_architectures.cmake
 fi
 
 for FILE in .github/workflows/*.yaml; do
