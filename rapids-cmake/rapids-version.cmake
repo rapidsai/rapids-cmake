@@ -1,9 +1,10 @@
-#=============================================================================
+# =============================================================================
+# cmake-format: off
 # SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
-#=============================================================================
-# can't have an include guard on this file
-# that breaks its usage by cpm/detail/package_details
+# cmake-format: on
+# =============================================================================
+# can't have an include guard on this file that breaks its usage by cpm/detail/package_details
 
 if(NOT DEFINED rapids-cmake-checkout-tag)
   file(READ "${CMAKE_CURRENT_LIST_DIR}/../VERSION" _rapids_version)

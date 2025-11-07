@@ -1,7 +1,9 @@
-#=============================================================================
+# =============================================================================
+# cmake-format: off
 # SPDX-FileCopyrightText: Copyright (c) 2024-2025, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
-#=============================================================================
+# cmake-format: on
+# =============================================================================
 cmake_minimum_required(VERSION 3.26.4)
 project(rapids-cpm_find-patch-command-project LANGUAGES CXX)
 
