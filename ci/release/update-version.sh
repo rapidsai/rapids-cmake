@@ -88,6 +88,26 @@ function sed_runner() {
 echo "${NEXT_FULL_TAG}" > VERSION
 echo "${RAPIDS_BRANCH_NAME}" > RAPIDS_BRANCH
 
+# Update RAPIDS.cmake branch references based on context
+if [[ "${RUN_CONTEXT}" == "main" ]]; then
+    # In main context, use "main" branch
+    sed_runner "s|\"release/\${rapids-cmake-version}\"|\"main\"|g" RAPIDS.cmake
+elif [[ "${RUN_CONTEXT}" == "release" ]]; then
+    # In release context, use "release/${rapids-cmake-version}"
+    sed_runner "s|\"main\"|\"release/\${rapids-cmake-version}\"|g" RAPIDS.cmake
+fi
+
+# Update template URLs in documentation and examples based on context
+if [[ "${RUN_CONTEXT}" == "main" ]]; then
+    # In main context, use "main" branch in URLs
+    sed_runner "s|release/<VERSION_MAJOR>\\.<VERSION_MINOR>|main|g" README.md
+    sed_runner "s|release/<VERSION_MAJOR>\\.<VERSION_MINOR>|main|g" rapids-cmake/cuda/init_architectures.cmake
+elif [[ "${RUN_CONTEXT}" == "release" ]]; then
+    # In release context, use "release/<VERSION_MAJOR>.<VERSION_MINOR>" in URLs
+    sed_runner "s|main|release/<VERSION_MAJOR>.<VERSION_MINOR>|g" README.md
+    sed_runner "s|main|release/<VERSION_MAJOR>.<VERSION_MINOR>|g" rapids-cmake/cuda/init_architectures.cmake
+fi
+
 for FILE in .github/workflows/*.yaml; do
   sed_runner "/shared-workflows/ s|@.*|@${RAPIDS_BRANCH_NAME}|g" "${FILE}"
   sed_runner "s|:[0-9]*\\.[0-9]*-|:${NEXT_SHORT_TAG}-|g" "${FILE}"
