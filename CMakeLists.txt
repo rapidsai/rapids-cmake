@@ -1,17 +1,21 @@
-#=============================================================================
+# =============================================================================
+# cmake-format: off
 # SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
-#=============================================================================
+# cmake-format: on
+# =============================================================================
 #
 # This is the legacy entry point for projects using rapids-cmake.
 #
+# cmake-format: off
 # This will setup the following variables in the parent directory
 # - CMAKE_MODULE_PATH
 # - rapids-cmake-dir
+# cmake-format: on
 #
-# This is considered legacy as it has issues when multiple projects
-# use rapids-cmake via CPM inside the same global project. In those
-# cases it can fail due to CMAKE_MODULE_PREFIX not being exported properly
+# This is considered legacy as it has issues when multiple projects use rapids-cmake via CPM inside
+# the same global project. In those cases it can fail due to CMAKE_MODULE_PREFIX not being exported
+# properly
 
 # Enforce the minimum required CMake version for all users
 cmake_minimum_required(VERSION 3.30.4 FATAL_ERROR)

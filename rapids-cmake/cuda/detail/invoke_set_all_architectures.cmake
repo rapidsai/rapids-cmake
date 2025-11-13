@@ -1,10 +1,11 @@
-#=============================================================================
-# SPDX-FileCopyrightText: Copyright (c) 2021-2023, NVIDIA CORPORATION.
+# =============================================================================
+# cmake-format: off
+# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
-#=============================================================================
+# cmake-format: on
+# =============================================================================
 #
-# RAPIDS detected something use requested a file to be
-# called after `project()`, so chain call them.
+# RAPIDS detected something use requested a file to be called after `project()`, so chain call them.
 if(DEFINED _RAPIDS_PREVIOUS_CMAKE_PROJECT_INCLUDE)
   include("${_RAPIDS_PREVIOUS_CMAKE_PROJECT_INCLUDE}")
 endif()

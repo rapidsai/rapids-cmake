@@ -1,7 +1,9 @@
-#=============================================================================
+# =============================================================================
+# cmake-format: off
 # SPDX-FileCopyrightText: Copyright (c) 2022-2025, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
-#=============================================================================
+# cmake-format: on
+# =============================================================================
 add_cmake_config_test(rapids-test.cmake)
 
 add_cmake_build_test(generate_resource_spec-no-gpus)

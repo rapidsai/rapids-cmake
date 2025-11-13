@@ -1,7 +1,9 @@
-#=============================================================================
+# =============================================================================
+# cmake-format: off
 # SPDX-FileCopyrightText: Copyright (c) 2024-2025, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
-#=============================================================================
+# cmake-format: on
+# =============================================================================
 
 # Emulate the variables and properties that FetchContent would set so tests that themselves download
 # rapids-cmake will use the version we have symlinked.

@@ -1,9 +1,11 @@
-#=============================================================================
+# =============================================================================
+# cmake-format: off
 # SPDX-FileCopyrightText: Copyright (c) 2024-2025, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
-#=============================================================================
-# rapids-cmake will output as `AUTHOR_WARNING` so we need to hijack
-# message to verify we see output we expect
+# cmake-format: on
+# =============================================================================
+# rapids-cmake will output as `AUTHOR_WARNING` so we need to hijack message to verify we see output
+# we expect
 set(rmm_string "RAPIDS-CMake is assuming the override rMm is meant for the rmm package")
 set(gtest_string "RAPIDS-CMake is assuming the override gtest is meant for the GTest package")
 

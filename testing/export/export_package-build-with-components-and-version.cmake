@@ -1,7 +1,9 @@
-#=============================================================================
+# =============================================================================
+# cmake-format: off
 # SPDX-FileCopyrightText: Copyright (c) 2018-2025, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
-#=============================================================================
+# cmake-format: on
+# =============================================================================
 include(${rapids-cmake-dir}/export/package.cmake)
 
 rapids_export_package(build FAKE_PACKAGE test_export_set VERSION 22.08 COMPONENTS comp1)

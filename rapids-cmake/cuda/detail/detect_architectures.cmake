@@ -1,7 +1,9 @@
-#=============================================================================
+# =============================================================================
+# cmake-format: off
 # SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
-#=============================================================================
+# cmake-format: on
+# =============================================================================
 include_guard(GLOBAL)
 
 # Function uses the CUDA runtime API to query the compute capability of the device, so if a user
