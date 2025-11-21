@@ -105,6 +105,134 @@ cmake -DCPM_DOWNLOAD_ALL=ON ....
 ```
 
 
+Offline and Airgapped Usage
+****************************
+
+When building in environments with restricted network access, such as airgapped systems or
+networks with unstable connections, rapids-cmake provides several mechanisms to enable
+offline builds using CPM's caching and local override features.
+
+Using CPM_SOURCE_CACHE for Offline Builds
+==========================================
+
+The :cmake:variable:`CPM_SOURCE_CACHE` variable enables caching of downloaded dependencies,
+preventing re-downloads and allowing fully offline builds once the cache is populated.
+
+The cache location can be specified via environment variable:
+
+.. code-block:: bash
+
+   export CPM_SOURCE_CACHE=$HOME/.cache/CPM
+   cmake -B build ...
+
+Or passed directly as a CMake configure option (which takes precedence over the environment variable):
+
+.. code-block:: bash
+
+   cmake -B build -DCPM_SOURCE_CACHE=/path/to/cache ...
+
+Once dependencies are downloaded to the cache directory, subsequent builds can be performed
+completely offline as long as all required packages exist locally.
+
+**Workflow for preparing an offline environment:**
+
+1. On a machine with network access, configure with :cmake:variable:`CPM_SOURCE_CACHE`:
+
+   .. code-block:: bash
+
+      cmake -B build -DCPM_SOURCE_CACHE=/path/to/cache ...
+      cmake --build build
+
+2. Transfer the cache directory to the airgapped system
+
+3. Build offline using the same cache path:
+
+   .. code-block:: bash
+
+      cmake -B build -DCPM_SOURCE_CACHE=/path/to/cache ...
+      cmake --build build
+
+Using Local Package Overrides
+==============================
+
+For development workflows where you need to use a locally modified version of a dependency,
+or when you have pre-downloaded sources, use the :cmake:variable:`CPM_<PackageName>_SOURCE`
+variable to override the source location for individual packages:
+
+.. code-block:: bash
+
+   cmake -B build -DCPM_fmt_SOURCE=/local/path/to/fmt ...
+
+This replaces the remote source entirely with your local directory for that build, enabling
+simultaneous development on both the consumer project and its dependencies.
+
+Using Package Lock Files
+=========================
+
+For managing complex transitive dependency sets, CPM provides lock file support through
+``CPMUsePackageLock()``. This is an upstream CPM feature (not rapids-cmake specific) that
+centralizes dependency version management:
+
+.. code-block:: cmake
+
+   include(cmake/CPM.cmake)
+   CPMUsePackageLock(package-lock.cmake)
+
+To update the lock file after adding or modifying dependencies:
+
+.. code-block:: bash
+
+   cmake -B build
+   cmake --build build --target cpm-update-package-lock
+
+This generates a complete lockfile of all transitive dependencies that can be committed
+to your repository for reproducible builds. See the `CPM documentation
+<https://github.com/cpm-cmake/CPM.cmake/blob/master/README.md#cpm-package-lock>`_ for details.
+
+Additional Offline Options
+===========================
+
+**CPM_USE_LOCAL_PACKAGES**: Instructs CPM to attempt :cmake:command:`find_package()<cmake:command:find_package>`
+first before downloading sources. This is useful in airgapped environments where dependencies
+are pre-installed via system package managers:
+
+.. code-block:: bash
+
+   cmake -B build -DCPM_USE_LOCAL_PACKAGES=ON ...
+
+**CPM_LOCAL_PACKAGES_ONLY**: Enforces strictly offline operation by emitting errors if any
+dependency cannot be found locally:
+
+.. code-block:: bash
+
+   cmake -B build -DCPM_LOCAL_PACKAGES_ONLY=ON ...
+
+Integration with rapids-cmake Reproducibility Features
+=======================================================
+
+For reproducible builds, combine offline caching with :cmake:command:`rapids_cpm_generate_pinned_versions`
+to generate exact git SHA pinning. This ensures bitwise-identical builds across environments:
+
+1. Generate pinned versions:
+
+   .. code-block:: bash
+
+      cmake -B build -DRAPIDS_CMAKE_CPM_PINNED_VERSIONS_FILE=pinned_versions.json \
+                     -DCPM_SOURCE_CACHE=/path/to/cache ...
+
+2. Transfer both the ``pinned_versions.json`` and cache directory to the offline environment
+
+3. Build offline with pinned versions:
+
+   .. code-block:: bash
+
+      cmake -B build -DRAPIDS_CMAKE_CPM_OVERRIDE_VERSION_FILE=pinned_versions.json \
+                     -DCPM_SOURCE_CACHE=/path/to/cache ...
+
+This workflow provides both reproducibility (via pinned SHA values) and offline capability
+(via source cache).
+
+
 rapids-cmake package version format
 ###################################
 
