@@ -65,8 +65,8 @@
     },
     "rmm": {
       "version": "${rapids-cmake-version}",
-      "git_url": "https://github.com/rapidsai/rmm.git",
-      "git_tag": "${rapids-cmake-checkout-tag}",
+      "git_url": "https://github.com/bdice/rmm.git",
+      "git_tag": "3461fa868ef0e76b1f2868680e6cbda5b65fcd89",
       "source_subdir": "cpp"
     }
   }
