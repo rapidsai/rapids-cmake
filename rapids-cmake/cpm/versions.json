@@ -66,7 +66,7 @@
     "rmm": {
       "version": "${rapids-cmake-version}",
       "git_url": "https://github.com/bdice/rmm.git",
-      "git_tag": "2a8aa4c5802eb91022d9f74f5c86ccb7319c3ce1",
+      "git_tag": "859c1c41ed5863c5feae9ee86fc4081fdc3c55e3",
       "source_subdir": "cpp"
     }
   }
