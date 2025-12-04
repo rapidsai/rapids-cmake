@@ -8,8 +8,9 @@ include(${rapids-cmake-dir}/cpm/init.cmake)
 include(${rapids-cmake-dir}/cpm/package_override.cmake)
 
 # Need to write out an override file
-file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/simple_override.json
-     [=[
+file(
+  WRITE ${CMAKE_CURRENT_BINARY_DIR}/simple_override.json
+  [=[
 {
   "packages": {
     "nvbench": {
@@ -19,7 +20,8 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/simple_override.json
     }
   }
 }
-  ]=])
+  ]=]
+)
 rapids_cpm_package_override(${CMAKE_CURRENT_BINARY_DIR}/simple_override.json)
 
 rapids_cpm_init()
@@ -29,7 +31,9 @@ include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
 rapids_cpm_package_details_internal(nvbench version repository tag src_subdir shallow exclude)
 
 if(NOT version STREQUAL "custom_version")
-  message(FATAL_ERROR "custom version field was ignored. ${version} found instead of custom_version"
+  message(
+    FATAL_ERROR
+    "custom version field was ignored. ${version} found instead of custom_version"
   )
 endif()
 if(NOT repository STREQUAL "my_url2")

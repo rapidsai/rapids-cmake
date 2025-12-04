@@ -21,7 +21,9 @@ endif()
 rapids_cpm_nvcomp()
 
 if(nvcomp_proprietary_binary)
-  message(FATAL_ERROR "Ignored no explicit enabling of `USE_PROPRIETARY_BINARY` and brought in the binary version"
+  message(
+    FATAL_ERROR
+    "Ignored no explicit enabling of `USE_PROPRIETARY_BINARY` and brought in the binary version"
   )
 endif()
 

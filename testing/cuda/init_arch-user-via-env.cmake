@@ -11,7 +11,9 @@ rapids_cuda_init_architectures(rapids-project)
 project(rapids-project LANGUAGES CUDA)
 
 if(NOT DEFINED CMAKE_CUDA_ARCHITECTURES)
-  message(FATAL_ERROR "CMAKE_CUDA_ARCHITECTURES should exist after calling rapids_cuda_init_architectures()"
+  message(
+    FATAL_ERROR
+    "CMAKE_CUDA_ARCHITECTURES should exist after calling rapids_cuda_init_architectures()"
   )
 endif()
 

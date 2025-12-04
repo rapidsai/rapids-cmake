@@ -17,7 +17,9 @@ set(CMAKE_SYSTEM_PROCESSOR "i686") # Don't do this outside of tests
 rapids_cpm_nvcomp(USE_PROPRIETARY_BINARY ON DOWNLOAD_ONLY ON)
 
 if(nvcomp_proprietary_binary)
-  message(FATAL_ERROR "Shouldn't have found a pre-built version of nvcomp for a non-existent CMAKE_SYSTEM_PROCESSOR key"
+  message(
+    FATAL_ERROR
+    "Shouldn't have found a pre-built version of nvcomp for a non-existent CMAKE_SYSTEM_PROCESSOR key"
   )
 endif()
 if(NOT EXISTS "${nvcomp_SOURCE_DIR}/CMakeLists.txt")

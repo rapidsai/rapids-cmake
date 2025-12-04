@@ -30,20 +30,39 @@ function(rapids_cpm_package_info package_name)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.rapids_cpm_package_info")
 
   set(options FOR_FETCH_CONTENT)
-  set(one_value VERSION_VAR FIND_VAR CPM_VAR TO_INSTALL_VAR BUILD_EXPORT_SET INSTALL_EXPORT_SET)
+  set(
+    one_value
+    VERSION_VAR
+    FIND_VAR
+    CPM_VAR
+    TO_INSTALL_VAR
+    BUILD_EXPORT_SET
+    INSTALL_EXPORT_SET
+  )
   set(multi_value)
   cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
   # Get all the package details
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
-  rapids_cpm_package_details_internal(${package_name} _rapids_version _rapids_url _rapids_tag
-                                      _rapids_src_subdir _rapids_shallow _rapids_exclude_from_all)
+  rapids_cpm_package_details_internal(
+    ${package_name}
+    _rapids_version
+    _rapids_url
+    _rapids_tag
+    _rapids_src_subdir
+    _rapids_shallow
+    _rapids_exclude_from_all
+  )
 
   # Compute all the patch related details
   if(_RAPIDS_CPM_VAR OR _RAPIDS_FIND_VAR)
     include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
-    rapids_cpm_generate_patch_command(${package_name} ${_rapids_version} patch_command
-                                      build_patch_only)
+    rapids_cpm_generate_patch_command(
+      ${package_name}
+      ${_rapids_version}
+      patch_command
+      build_patch_only
+    )
 
     # The find info is the input unparsed args plus `build_patch_only`
     set(_rapids_find_content ${_RAPIDS_UNPARSED_ARGUMENTS} ${build_patch_only})
@@ -57,8 +76,13 @@ function(rapids_cpm_package_info package_name)
     set(_rapids_cpm_content "GIT_REPOSITORY" "${_rapids_url}" "GIT_TAG" "${_rapids_tag}")
 
     if(NOT _RAPIDS_FOR_FETCH_CONTENT)
-      list(APPEND _rapids_cpm_content "GIT_SHALLOW" "${_rapids_shallow}" "EXCLUDE_FROM_ALL"
-           "${_rapids_exclude_from_all}")
+      list(
+        APPEND _rapids_cpm_content
+        "GIT_SHALLOW"
+        "${_rapids_shallow}"
+        "EXCLUDE_FROM_ALL"
+        "${_rapids_exclude_from_all}"
+      )
     endif()
     if(patch_command)
       list(APPEND _rapids_cpm_content "${patch_command}")
@@ -91,5 +115,4 @@ function(rapids_cpm_package_info package_name)
     set(rapids_cmake_always_download ${rapids_cmake_always_download} PARENT_SCOPE)
     set(CPM_DOWNLOAD_ALL ${CPM_DOWNLOAD_ALL} PARENT_SCOPE)
   endif()
-
 endfunction()

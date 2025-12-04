@@ -44,12 +44,23 @@ function(rapids_cpm_bs_thread_pool)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.bs_thread_pool")
 
   include("${rapids-cmake-dir}/cpm/detail/package_info.cmake")
-  rapids_cpm_package_info(bs_thread_pool ${ARGN} VERSION_VAR version FIND_VAR find_args CPM_VAR
-                          cpm_find_info TO_INSTALL_VAR to_install)
+  rapids_cpm_package_info(
+    bs_thread_pool
+    ${ARGN}
+    VERSION_VAR version
+    FIND_VAR find_args
+    CPM_VAR cpm_find_info
+    TO_INSTALL_VAR to_install
+  )
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
-  rapids_cpm_find(bs_thread_pool ${version} ${find_args} GLOBAL_TARGETS rapids_bs_thread_pool
-                  CPM_ARGS ${cpm_find_info} DOWNLOAD_ONLY ON)
+  rapids_cpm_find(
+    bs_thread_pool
+    ${version}
+    ${find_args}
+    GLOBAL_TARGETS rapids_bs_thread_pool
+    CPM_ARGS ${cpm_find_info} DOWNLOAD_ONLY ON
+  )
 
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
   rapids_cpm_display_patch_status(bs_thread_pool)
@@ -63,9 +74,12 @@ function(rapids_cpm_bs_thread_pool)
   if(bs_thread_pool_ADDED)
     if(NOT TARGET rapids_bs_thread_pool)
       add_library(rapids_bs_thread_pool INTERFACE)
-      target_include_directories(rapids_bs_thread_pool
-                                 INTERFACE "$<BUILD_INTERFACE:${bs_thread_pool_SOURCE_DIR}/include>"
-                                           "$<INSTALL_INTERFACE:include>")
+      target_include_directories(
+        rapids_bs_thread_pool
+        INTERFACE
+          "$<BUILD_INTERFACE:${bs_thread_pool_SOURCE_DIR}/include>"
+          "$<INSTALL_INTERFACE:include>"
+      )
       target_compile_definitions(rapids_bs_thread_pool INTERFACE "BS_THREAD_POOL_ENABLE_PAUSE=1")
       target_compile_features(rapids_bs_thread_pool INTERFACE cxx_std_17 cuda_std_17)
       set_property(TARGET rapids_bs_thread_pool PROPERTY EXPORT_NAME thread_pool)
@@ -73,25 +87,37 @@ function(rapids_cpm_bs_thread_pool)
     endif()
     if(_RAPIDS_BUILD_EXPORT_SET)
       include("${rapids-cmake-dir}/export/export.cmake")
-      rapids_export(BUILD bs_thread_pool
-                    VERSION ${version}
-                    EXPORT_SET bs_thread_pool-targets
-                    GLOBAL_TARGETS thread_pool
-                    NAMESPACE BS::)
+      rapids_export(
+        BUILD
+        bs_thread_pool
+        VERSION ${version}
+        EXPORT_SET bs_thread_pool-targets
+        GLOBAL_TARGETS thread_pool
+        NAMESPACE BS::
+      )
       include("${rapids-cmake-dir}/export/find_package_root.cmake")
-      rapids_export_find_package_root(BUILD bs_thread_pool [=[${CMAKE_CURRENT_LIST_DIR}]=]
-                                      EXPORT_SET ${_RAPIDS_BUILD_EXPORT_SET})
+      rapids_export_find_package_root(
+        BUILD
+        bs_thread_pool
+        [=[${CMAKE_CURRENT_LIST_DIR}]=]
+        EXPORT_SET ${_RAPIDS_BUILD_EXPORT_SET}
+      )
     endif()
     if(to_install)
       include(GNUInstallDirs)
-      install(DIRECTORY "${bs_thread_pool_SOURCE_DIR}/include/"
-              DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
+      install(
+        DIRECTORY "${bs_thread_pool_SOURCE_DIR}/include/"
+        DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+      )
       include("${rapids-cmake-dir}/export/export.cmake")
-      rapids_export(INSTALL bs_thread_pool
-                    VERSION ${version}
-                    EXPORT_SET bs_thread_pool-targets
-                    GLOBAL_TARGETS thread_pool
-                    NAMESPACE BS::)
+      rapids_export(
+        INSTALL
+        bs_thread_pool
+        VERSION ${version}
+        EXPORT_SET bs_thread_pool-targets
+        GLOBAL_TARGETS thread_pool
+        NAMESPACE BS::
+      )
     endif()
   endif()
 

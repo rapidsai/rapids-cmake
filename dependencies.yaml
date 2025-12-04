@@ -23,6 +23,20 @@ files:
     includes:
       - cuda_version
       - docs
+  py_build_gersemi_rapids_cmake:
+    output: pyproject
+    pyproject_dir: python/gersemi-rapids-cmake
+    extras:
+      table: build-system
+    includes:
+      - py_build_gersemi_rapids_cmake
+  py_run_gersemi_rapids_cmake:
+    output: pyproject
+    pyproject_dir: python/gersemi-rapids-cmake
+    extras:
+      table: project
+    includes:
+      - py_run_gersemi_rapids_cmake
 channels:
   - rapidsai
   - conda-forge
@@ -143,3 +157,13 @@ dependencies:
       - output_types: [conda, requirements]
         packages:
           - pre-commit
+  py_build_gersemi_rapids_cmake:
+    common:
+      - output_types: [requirements, pyproject]
+        packages:
+          - setuptools
+  py_run_gersemi_rapids_cmake:
+    common:
+      - output_types: [requirements, pyproject]
+        packages:
+          - gersemi

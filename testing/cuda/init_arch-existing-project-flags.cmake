@@ -15,7 +15,9 @@ rapids_cuda_init_architectures(example)
 
 project(example LANGUAGES CUDA)
 if(NOT DEFINED file_A)
-  message(FATAL_ERROR "rapids_cuda_init_architectures can't overwrite existing `project()` include hooks"
+  message(
+    FATAL_ERROR
+    "rapids_cuda_init_architectures can't overwrite existing `project()` include hooks"
   )
 endif()
 
@@ -28,6 +30,8 @@ rapids_cuda_init_architectures(example2)
 project(example2 LANGUAGES CUDA)
 
 if(NOT DEFINED file_B)
-  message(FATAL_ERROR "rapids_cuda_init_architectures can't overwrite existing `project()` include hooks"
+  message(
+    FATAL_ERROR
+    "rapids_cuda_init_architectures can't overwrite existing `project()` include hooks"
   )
 endif()

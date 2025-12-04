@@ -6,5 +6,11 @@
 # =============================================================================
 include(${rapids-cmake-dir}/find/package.cmake)
 
-rapids_find_package(ZLIB 99999999999 EXACT REQUIRED INSTALL_EXPORT_SET test_export_set
-                    GLOBAL_TARGETS ZLIB::ZLIB)
+rapids_find_package(
+  ZLIB
+  99999999999
+  EXACT
+  REQUIRED
+  INSTALL_EXPORT_SET test_export_set
+  GLOBAL_TARGETS ZLIB::ZLIB
+)

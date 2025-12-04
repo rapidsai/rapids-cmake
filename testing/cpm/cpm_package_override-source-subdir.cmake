@@ -12,8 +12,9 @@ include(${rapids-cmake-dir}/cpm/find.cmake)
 include(${rapids-cmake-dir}/cpm/package_override.cmake)
 
 # Need to write out a default file
-file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/default.json
-     [=[
+file(
+  WRITE ${CMAKE_CURRENT_BINARY_DIR}/default.json
+  [=[
 {
   "packages": {
     "zstd": {
@@ -23,19 +24,28 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/default.json
     }
   }
 }
-  ]=])
+  ]=]
+)
 
 rapids_cpm_init(CUSTOM_DEFAULT_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/default.json")
 
 set(CPM_DOWNLOAD_ALL ON) # required so we don't find a local installed version of zstd
-rapids_cpm_find(zstd 1.5.7
-                GLOBAL_TARGETS zstd
-                CPM_ARGS
-                GIT_REPOSITORY https://github.com/facebook/zstd.git
-                GIT_TAG v1.5.7
-                GIT_SHALLOW FALSE SOURCE_SUBDIR build/cmake
-                OPTIONS "ZSTD_BUILD_STATIC ON" "ZSTD_BUILD_SHARED OFF" "ZSTD_BUILD_TESTS OFF"
-                        "ZSTD_BUILD_PROGRAMS OFF" "BUILD_SHARED_LIBS OFF")
+rapids_cpm_find(
+  zstd
+  1.5.7
+  GLOBAL_TARGETS zstd
+  CPM_ARGS
+    GIT_REPOSITORY https://github.com/facebook/zstd.git
+    GIT_TAG v1.5.7
+    GIT_SHALLOW FALSE
+    SOURCE_SUBDIR build/cmake
+    OPTIONS
+      "ZSTD_BUILD_STATIC ON"
+      "ZSTD_BUILD_SHARED OFF"
+      "ZSTD_BUILD_TESTS OFF"
+      "ZSTD_BUILD_PROGRAMS OFF"
+      "BUILD_SHARED_LIBS OFF"
+)
 
 if(NOT TARGET libzstd_static)
   message(FATAL_ERROR "source_subdir in override was ignored for `rapids_cpm_find`")

@@ -137,7 +137,14 @@ function(rapids_find_generate_module name)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.find.generate_module")
 
   set(options NO_CONFIG)
-  set(one_value VERSION BUILD_EXPORT_SET INSTALL_EXPORT_SET INITIAL_CODE_BLOCK FINAL_CODE_BLOCK)
+  set(
+    one_value
+    VERSION
+    BUILD_EXPORT_SET
+    INSTALL_EXPORT_SET
+    INITIAL_CODE_BLOCK
+    FINAL_CODE_BLOCK
+  )
   set(multi_value HEADER_NAMES LIBRARY_NAMES INCLUDE_SUFFIXES)
   cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
@@ -164,21 +171,32 @@ function(rapids_find_generate_module name)
 
     if(DEFINED _RAPIDS_VERSION)
       list(TRANSFORM _RAPIDS_PKG_LIB_NAMES APPEND "${_RAPIDS_VERSION}" OUTPUT_VARIABLE lib_version1)
-      list(TRANSFORM _RAPIDS_PKG_LIB_NAMES APPEND ".${_RAPIDS_VERSION}" OUTPUT_VARIABLE
-                                                                        lib_version2)
+      list(
+        TRANSFORM _RAPIDS_PKG_LIB_NAMES
+        APPEND ".${_RAPIDS_VERSION}"
+        OUTPUT_VARIABLE lib_version2
+      )
       list(PREPEND _RAPIDS_PKG_LIB_NAMES ${lib_version1} ${lib_version2})
 
-      list(TRANSFORM _RAPIDS_PKG_LIB_DEBUG_NAMES APPEND "${_RAPIDS_VERSION}" OUTPUT_VARIABLE
-                                                                             lib_version1)
-      list(TRANSFORM _RAPIDS_PKG_LIB_DEBUG_NAMES APPEND ".${_RAPIDS_VERSION}" OUTPUT_VARIABLE
-                                                                              lib_version2)
+      list(
+        TRANSFORM _RAPIDS_PKG_LIB_DEBUG_NAMES
+        APPEND "${_RAPIDS_VERSION}"
+        OUTPUT_VARIABLE lib_version1
+      )
+      list(
+        TRANSFORM _RAPIDS_PKG_LIB_DEBUG_NAMES
+        APPEND ".${_RAPIDS_VERSION}"
+        OUTPUT_VARIABLE lib_version2
+      )
       list(PREPEND _RAPIDS_PKG_LIB_DEBUG_NAMES ${lib_version1} ${lib_version2})
     endif()
   endif()
 
   if(DEFINED _RAPIDS_INITIAL_CODE_BLOCK)
     if(NOT DEFINED ${_RAPIDS_INITIAL_CODE_BLOCK})
-      message(FATAL_ERROR "INITIAL_CODE_BLOCK variable `${_RAPIDS_INITIAL_CODE_BLOCK}` doesn't exist"
+      message(
+        FATAL_ERROR
+        "INITIAL_CODE_BLOCK variable `${_RAPIDS_INITIAL_CODE_BLOCK}` doesn't exist"
       )
     endif()
     set(_RAPIDS_FIND_INITIAL_CODE_BLOCK "${${_RAPIDS_INITIAL_CODE_BLOCK}}")
@@ -193,8 +211,11 @@ function(rapids_find_generate_module name)
 
   # Need to generate the module
   string(TIMESTAMP current_year "%Y" UTC)
-  configure_file("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/find_module.cmake.in"
-                 "${CMAKE_BINARY_DIR}/cmake/find_modules/Find${name}.cmake" @ONLY)
+  configure_file(
+    "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/find_module.cmake.in"
+    "${CMAKE_BINARY_DIR}/cmake/find_modules/Find${name}.cmake"
+    @ONLY
+  )
 
   # Need to add our generated modules to CMAKE_MODULE_PATH!
   if(NOT "${CMAKE_BINARY_DIR}/rapids-cmake/find_modules/" IN_LIST CMAKE_MODULE_PATH)
@@ -204,10 +225,16 @@ function(rapids_find_generate_module name)
 
   # Record what export sets this module is part of
   include("${rapids-cmake-dir}/export/find_package_file.cmake")
-  rapids_export_find_package_file(BUILD "${CMAKE_BINARY_DIR}/cmake/find_modules/Find${name}.cmake"
-                                  EXPORT_SET ${_RAPIDS_BUILD_EXPORT_SET})
-  rapids_export_find_package_file(INSTALL "${CMAKE_BINARY_DIR}/cmake/find_modules/Find${name}.cmake"
-                                  EXPORT_SET ${_RAPIDS_INSTALL_EXPORT_SET})
+  rapids_export_find_package_file(
+    BUILD
+    "${CMAKE_BINARY_DIR}/cmake/find_modules/Find${name}.cmake"
+    EXPORT_SET ${_RAPIDS_BUILD_EXPORT_SET}
+  )
+  rapids_export_find_package_file(
+    INSTALL
+    "${CMAKE_BINARY_DIR}/cmake/find_modules/Find${name}.cmake"
+    EXPORT_SET ${_RAPIDS_INSTALL_EXPORT_SET}
+  )
 endfunction()
 
 cmake_policy(POP)

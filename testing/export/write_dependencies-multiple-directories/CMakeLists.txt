@@ -26,7 +26,9 @@ if(NOT FAKE_CPM_PACKAGE IN_LIST packages)
   message(FATAL_ERROR "rapids_export_cpm failed to record FAKE_CPM_PACKAGE needs to be exported")
 endif()
 if(NOT SECOND_FAKE_CPM_PACKAGE IN_LIST packages)
-  message(FATAL_ERROR "rapids_export_cpm failed to record SECOND_FAKE_CPM_PACKAGE needs to be exported"
+  message(
+    FATAL_ERROR
+    "rapids_export_cpm failed to record SECOND_FAKE_CPM_PACKAGE needs to be exported"
   )
 endif()
 
@@ -52,8 +54,12 @@ if(NOT requires_cpm)
 endif()
 
 # Verify that cpm configuration files exist
-if(NOT EXISTS "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/build/cpm_FAKE_CPM_PACKAGE.cmake"
-   OR NOT EXISTS
-      "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/build/cpm_SECOND_FAKE_CPM_PACKAGE.cmake")
+if(
+  NOT EXISTS "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/build/cpm_FAKE_CPM_PACKAGE.cmake"
+  OR
+    NOT
+      EXISTS
+        "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/build/cpm_SECOND_FAKE_CPM_PACKAGE.cmake"
+)
   message(FATAL_ERROR "rapids_export_cpm failed to generate a CPM configuration")
 endif()

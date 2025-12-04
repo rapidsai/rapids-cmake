@@ -44,13 +44,19 @@ function(rapids_export_write_dependencies type export_set file_path)
   endif()
 
   # Determine if we need have any `ROOT_DIR` variables we need to set.
-  get_property(find_root_dirs TARGET rapids_export_${type}_${export_set}
-               PROPERTY "FIND_ROOT_PACKAGES")
+  get_property(
+    find_root_dirs
+    TARGET rapids_export_${type}_${export_set}
+    PROPERTY "FIND_ROOT_PACKAGES"
+  )
   list(REMOVE_DUPLICATES find_root_dirs)
 
   # Determine if we need have any `FindModules` that we need to package.
-  get_property(find_modules TARGET rapids_export_${type}_${export_set}
-               PROPERTY "FIND_PACKAGES_TO_INSTALL")
+  get_property(
+    find_modules
+    TARGET rapids_export_${type}_${export_set}
+    PROPERTY "FIND_PACKAGES_TO_INSTALL"
+  )
   list(REMOVE_DUPLICATES find_modules)
 
   # Determine if we need to inject CPM hooks
@@ -66,10 +72,17 @@ function(rapids_export_write_dependencies type export_set file_path)
   set(_RAPIDS_EXPORT_CONTENTS)
   if(uses_cpm)
     # Include download_with_retry.cmake in the exported dependencies first
-    file(READ "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/../cmake/download_with_retry.cmake"
-         download_with_retry_logic)
-    string(REPLACE "include_guard(GLOBAL)\n" "" download_with_retry_logic
-                   "${download_with_retry_logic}")
+    file(
+      READ "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/../cmake/download_with_retry.cmake"
+      download_with_retry_logic
+    )
+    string(
+      REPLACE
+      "include_guard(GLOBAL)\n"
+      ""
+      download_with_retry_logic
+      "${download_with_retry_logic}"
+    )
     string(APPEND _RAPIDS_EXPORT_CONTENTS ${download_with_retry_logic})
 
     file(READ "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/../cpm/detail/download.cmake" cpm_logic)
@@ -78,19 +91,23 @@ function(rapids_export_write_dependencies type export_set file_path)
     string(APPEND _RAPIDS_EXPORT_CONTENTS "rapids_cpm_download()\n\n")
 
     if(type STREQUAL build)
-      string(APPEND
-             _RAPIDS_EXPORT_CONTENTS
-             "# re-use our CPM source cache if not set
+      string(
+        APPEND _RAPIDS_EXPORT_CONTENTS
+        "# re-use our CPM source cache if not set
 if(NOT DEFINED CPM_SOURCE_CACHE)
   set(CPM_SOURCE_CACHE \"@CPM_SOURCE_CACHE@\")
   set(rapids_clear_cpm_cache true)
-endif()\n")
+endif()\n"
+      )
     endif()
   endif()
 
   foreach(package IN LISTS find_root_dirs)
-    get_property(root_dir_path TARGET rapids_export_${type}_${export_set}
-                 PROPERTY "FIND_ROOT_FOR_${package}")
+    get_property(
+      root_dir_path
+      TARGET rapids_export_${type}_${export_set}
+      PROPERTY "FIND_ROOT_FOR_${package}"
+    )
     set(dep_content "set(${package}_ROOT \"${root_dir_path}\")")
     string(APPEND _RAPIDS_EXPORT_CONTENTS "${dep_content}\n")
   endforeach()
@@ -99,8 +116,11 @@ endif()\n")
     cmake_path(GET file_path PARENT_PATH find_module_dest)
     file(COPY ${find_modules} DESTINATION "${find_module_dest}")
 
-    string(APPEND _RAPIDS_EXPORT_CONTENTS
-           [=[list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}")]=] "\n")
+    string(
+      APPEND _RAPIDS_EXPORT_CONTENTS
+      [=[list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}")]=]
+      "\n"
+    )
   endif()
 
   set(dep_dir "${CMAKE_BINARY_DIR}/rapids-cmake/${export_set}/${type}")
@@ -115,8 +135,11 @@ endif()\n")
     endif()
     string(APPEND _RAPIDS_EXPORT_CONTENTS "${dep_content}\n")
 
-    get_property(post_find_code TARGET rapids_export_${type}_${export_set}
-                 PROPERTY "${dep}_POST_FIND_CODE")
+    get_property(
+      post_find_code
+      TARGET rapids_export_${type}_${export_set}
+      PROPERTY "${dep}_POST_FIND_CODE"
+    )
     if(post_find_code)
       string(APPEND _RAPIDS_EXPORT_CONTENTS "if(${dep}_FOUND)\n${post_find_code}\nendif()\n")
     endif()
@@ -130,6 +153,9 @@ endif()\n")
   string(APPEND _RAPIDS_EXPORT_CONTENTS "set(rapids_global_targets ${global_targets})\n")
 
   string(TIMESTAMP current_year "%Y" UTC)
-  configure_file("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/dependencies.cmake.in" "${file_path}"
-                 @ONLY)
+  configure_file(
+    "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/dependencies.cmake.in"
+    "${file_path}"
+    @ONLY
+  )
 endfunction()

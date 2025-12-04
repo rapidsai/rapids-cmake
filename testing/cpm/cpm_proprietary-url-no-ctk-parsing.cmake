@@ -12,8 +12,9 @@ include(${rapids-cmake-dir}/cpm/detail/package_info.cmake)
 rapids_cpm_init()
 
 # Need to write out an override file with a proprietary blob url
-file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
-     [=[
+file(
+  WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
+  [=[
 {
   "packages": {
     "test_binary": {
@@ -27,7 +28,8 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
     }
   }
 }
-]=])
+]=]
+)
 rapids_cpm_package_override(${CMAKE_CURRENT_BINARY_DIR}/override.json)
 
 rapids_cpm_package_info(test_binary VERSION_VAR version)
@@ -35,6 +37,8 @@ rapids_cpm_get_proprietary_binary_url(test_binary ${version} nvcomp_url)
 
 # Verify that we didn't go searching for the CUDAToolkit
 if(TARGET CUDA::cudart_static OR TARGET CUDA::cudart)
-  message(FATAL_ERROR "test_binary didn't use the cuda toolkit placeholder, but searching for it still occurred"
+  message(
+    FATAL_ERROR
+    "test_binary didn't use the cuda toolkit placeholder, but searching for it still occurred"
   )
 endif()

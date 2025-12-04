@@ -19,6 +19,8 @@ if(CMAKE_CUDA_ARCHITECTURES STREQUAL "9000")
 endif()
 
 if(NOT CMAKE_CUDA_ARCHITECTURES STREQUAL "80-real")
-  message(FATAL_ERROR "rapids_cuda_init_architectures didn't preserve users CUDA_ARCHITECTURES value"
+  message(
+    FATAL_ERROR
+    "rapids_cuda_init_architectures didn't preserve users CUDA_ARCHITECTURES value"
   )
 endif()

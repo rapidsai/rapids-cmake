@@ -12,8 +12,9 @@ include(${rapids-cmake-testing-dir}/utils/check_copyright_header.cmake)
 rapids_cpm_init()
 
 # Need to write out an override file
-file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
-     [=[
+file(
+  WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
+  [=[
 {
   "packages": {
     "pkg_with_patch": {
@@ -32,7 +33,8 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
     }
   }
 }
-  ]=])
+  ]=]
+)
 rapids_cpm_package_override(${CMAKE_CURRENT_BINARY_DIR}/override.json)
 
 rapids_cpm_generate_patch_command(pkg_with_patch 10.2 patch_command build_patch_only)

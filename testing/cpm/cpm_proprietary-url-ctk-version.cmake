@@ -12,8 +12,9 @@ include(${rapids-cmake-dir}/cpm/detail/package_info.cmake)
 rapids_cpm_init()
 
 # Need to write out an override file with a proprietary blob url
-file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
-     [=[
+file(
+  WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
+  [=[
 {
   "packages": {
     "test_binary": {
@@ -27,7 +28,8 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
     }
   }
 }
-]=])
+]=]
+)
 rapids_cpm_package_override(${CMAKE_CURRENT_BINARY_DIR}/override.json)
 
 # Verify that the placeholders are evaluated correctly from `find_package(CUDAToolkit)`

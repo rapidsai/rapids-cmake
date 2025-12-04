@@ -10,7 +10,9 @@ enable_language(CUDA)
 rapids_cuda_set_architectures(RAPIDS)
 
 if(NOT DEFINED CMAKE_CUDA_ARCHITECTURES)
-  message(FATAL_ERROR "CMAKE_CUDA_ARCHITECTURES should exist after calling rapids_cuda_set_architectures()"
+  message(
+    FATAL_ERROR
+    "CMAKE_CUDA_ARCHITECTURES should exist after calling rapids_cuda_set_architectures()"
   )
 endif()
 

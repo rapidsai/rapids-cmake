@@ -8,8 +8,13 @@ include(${rapids-cmake-dir}/export/cpm.cmake)
 
 rapids_export_cpm(INSTALL RaFT fake_set CPM_ARGS FAKE_PACKAGE_ARGS TRUE)
 
-rapids_export_cpm(install RMM fake_set CPM_ARGS VERSION 2.0 FAKE_PACKAGE_ARGS FALSE
-                  GLOBAL_TARGETS RMM::RMM_POOL)
+rapids_export_cpm(
+  install
+  RMM
+  fake_set
+  CPM_ARGS VERSION 2.0 FAKE_PACKAGE_ARGS FALSE
+  GLOBAL_TARGETS RMM::RMM_POOL
+)
 
 if(NOT TARGET rapids_export_install_fake_set)
   message(FATAL_ERROR "rapids_export_cpm failed to generate target for install")
@@ -37,7 +42,9 @@ if(NOT requires_cpm)
 endif()
 
 # Verify that cpm configuration files exist
-if(NOT EXISTS "${CMAKE_BINARY_DIR}/rapids-cmake/fake_set/install/cpm_RaFT.cmake"
-   OR NOT EXISTS "${CMAKE_BINARY_DIR}/rapids-cmake/fake_set/install/cpm_RMM.cmake")
+if(
+  NOT EXISTS "${CMAKE_BINARY_DIR}/rapids-cmake/fake_set/install/cpm_RaFT.cmake"
+  OR NOT EXISTS "${CMAKE_BINARY_DIR}/rapids-cmake/fake_set/install/cpm_RMM.cmake"
+)
   message(FATAL_ERROR "rapids_export_cpm failed to generate a CPM configuration")
 endif()

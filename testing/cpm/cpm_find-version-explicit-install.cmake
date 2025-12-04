@@ -20,6 +20,8 @@ file(READ "${cccl_path}" contents)
 message(STATUS "contents: ${contents}")
 string(FIND "${contents}" "${cccl_version}" is_found)
 if(is_found EQUAL -1)
-  message(FATAL_ERROR "rapids_cpm_cccl failed to generate a find_package configuration with version"
+  message(
+    FATAL_ERROR
+    "rapids_cpm_cccl failed to generate a find_package configuration with version"
   )
 endif()

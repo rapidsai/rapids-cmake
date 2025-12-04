@@ -5,23 +5,26 @@
 # cmake-format: on
 # =============================================================================
 if(GIT_EXECUTABLE AND EXISTS "${GIT_EXECUTABLE}")
-  execute_process(COMMAND ${GIT_EXECUTABLE} rev-parse HEAD
-                  WORKING_DIRECTORY ${WORKING_DIRECTORY}
-                  ERROR_QUIET
-                  OUTPUT_VARIABLE _RAPIDS_WRITE_SHA1
-                  OUTPUT_STRIP_TRAILING_WHITESPACE # need to strip off any newline
+  execute_process(
+    COMMAND ${GIT_EXECUTABLE} rev-parse HEAD
+    WORKING_DIRECTORY ${WORKING_DIRECTORY}
+    ERROR_QUIET
+    OUTPUT_VARIABLE _RAPIDS_WRITE_SHA1
+    OUTPUT_STRIP_TRAILING_WHITESPACE # need to strip off any newline
   )
-  execute_process(COMMAND ${GIT_EXECUTABLE} rev-parse --abbrev-ref HEAD
-                  WORKING_DIRECTORY ${WORKING_DIRECTORY}
-                  ERROR_QUIET
-                  OUTPUT_VARIABLE _RAPIDS_WRITE_BRANCH
-                  OUTPUT_STRIP_TRAILING_WHITESPACE # need to strip off any newline
+  execute_process(
+    COMMAND ${GIT_EXECUTABLE} rev-parse --abbrev-ref HEAD
+    WORKING_DIRECTORY ${WORKING_DIRECTORY}
+    ERROR_QUIET
+    OUTPUT_VARIABLE _RAPIDS_WRITE_BRANCH
+    OUTPUT_STRIP_TRAILING_WHITESPACE # need to strip off any newline
   )
-  execute_process(COMMAND ${GIT_EXECUTABLE} describe --tag --dirty --always
-                  WORKING_DIRECTORY ${WORKING_DIRECTORY}
-                  ERROR_QUIET
-                  OUTPUT_VARIABLE _RAPIDS_WRITE_VERSION
-                  OUTPUT_STRIP_TRAILING_WHITESPACE # need to strip off any newline
+  execute_process(
+    COMMAND ${GIT_EXECUTABLE} describe --tag --dirty --always
+    WORKING_DIRECTORY ${WORKING_DIRECTORY}
+    ERROR_QUIET
+    OUTPUT_VARIABLE _RAPIDS_WRITE_VERSION
+    OUTPUT_STRIP_TRAILING_WHITESPACE # need to strip off any newline
   )
 endif()
 

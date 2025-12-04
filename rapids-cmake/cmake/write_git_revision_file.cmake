@@ -87,16 +87,19 @@ function(rapids_cmake_write_git_revision_file target file_path)
   # Find Git
   find_package(Git QUIET)
 
-  add_custom_target(${target}_compute_git_info ALL
-                    BYPRODUCTS "${file_path}"
-                    COMMENT "Generate git revision file for ${target}"
-                    COMMAND ${CMAKE_COMMAND} -DWORKING_DIRECTORY=${CMAKE_CURRENT_SOURCE_DIR}
-                            -DGIT_EXECUTABLE=${GIT_EXECUTABLE}
-                            -D_RAPIDS_GIT_PREFIX=${_RAPIDS_PREFIX}
-                            -DTEMPLATE_FILE=${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/git_revision.h.in
-                            -DFILE_TO_WRITE=${file_path} -P
-                            ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/compute_git_info.cmake
-                    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+  add_custom_target(
+    ${target}_compute_git_info
+    ALL
+    BYPRODUCTS "${file_path}"
+    COMMENT "Generate git revision file for ${target}"
+    COMMAND
+      ${CMAKE_COMMAND} -DWORKING_DIRECTORY=${CMAKE_CURRENT_SOURCE_DIR}
+      -DGIT_EXECUTABLE=${GIT_EXECUTABLE} -D_RAPIDS_GIT_PREFIX=${_RAPIDS_PREFIX}
+      -DTEMPLATE_FILE=${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/git_revision.h.in
+      -DFILE_TO_WRITE=${file_path} -P
+      ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/compute_git_info.cmake
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+  )
 
   # Generate a target that depends on compute_git_info This is what other targets will use to get
   # the build path and makes sure that we have correct parallel builds
@@ -105,5 +108,4 @@ function(rapids_cmake_write_git_revision_file target file_path)
 
   cmake_path(GET file_path PARENT_PATH file_path_dir)
   target_include_directories(${target} INTERFACE "$<BUILD_INTERFACE:${file_path_dir}>")
-
 endfunction()

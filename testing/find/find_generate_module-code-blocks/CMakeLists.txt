@@ -14,10 +14,13 @@ set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}")
 # Generate the find module
 set(initial_code_block [[set(RapidsTest_INITIAL_CODE_BLOCK TRUE)]])
 set(final_code_block [[set(RapidsTest_FINAL_CODE_BLOCK TRUE)]])
-rapids_find_generate_module(RapidsTest
-                            HEADER_NAMES rapids-cmake-test-header_only.hpp INITIAL_CODE_BLOCK
-                                         initial_code_block FINAL_CODE_BLOCK final_code_block
-                            INSTALL_EXPORT_SET test_set)
+rapids_find_generate_module(
+  RapidsTest
+  HEADER_NAMES rapids-cmake-test-header_only.hpp
+  INITIAL_CODE_BLOCK initial_code_block
+  FINAL_CODE_BLOCK final_code_block
+  INSTALL_EXPORT_SET test_set
+)
 
 find_package(RapidsTest REQUIRED)
 

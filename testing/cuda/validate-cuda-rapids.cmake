@@ -29,25 +29,35 @@ foreach(value IN LISTS CMAKE_CUDA_ARCHITECTURES)
 
   string(REPLACE "-real" "" value "${value}")
   if(value LESS previous_value)
-    message(FATAL_ERROR "CMAKE_CUDA_ARCHITECTURES values should be ordered lowest to highest."
-                        "with lowest >= 70")
+    message(
+      FATAL_ERROR
+      "CMAKE_CUDA_ARCHITECTURES values should be ordered lowest to highest."
+      "with lowest >= 70"
+    )
   endif()
 endforeach()
 
 if(last_value LESS previous_value)
-  message(FATAL_ERROR "CMAKE_CUDA_ARCHITECTURES values should be ordered lowest to highest."
-                      "with lowest >= 70")
+  message(
+    FATAL_ERROR
+    "CMAKE_CUDA_ARCHITECTURES values should be ordered lowest to highest."
+    "with lowest >= 70"
+  )
 endif()
 
 list(APPEND CMAKE_CUDA_ARCHITECTURES ${last_value})
 
 if(NOT DEFINED CACHE{CMAKE_CUDA_ARCHITECTURES})
-  message(FATAL_ERROR "rapids_cuda_set_architectures didn't make CMAKE_CUDA_ARCHITECTURES a cache variable"
+  message(
+    FATAL_ERROR
+    "rapids_cuda_set_architectures didn't make CMAKE_CUDA_ARCHITECTURES a cache variable"
   )
 endif()
 
-if(CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL 12.8.0 AND CMAKE_CUDA_COMPILER_VERSION
-                                                                VERSION_LESS 13.0.0)
+if(
+  CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL 12.8.0
+  AND CMAKE_CUDA_COMPILER_VERSION VERSION_LESS 13.0.0
+)
   if(NOT CMAKE_CUDA_FLAGS MATCHES "Wno-deprecated-gpu-targets")
     message(FATAL_ERROR "CMAKE_CUDA_FLAGS should have -Wno-deprecated-gpu-targets")
   endif()

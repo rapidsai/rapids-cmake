@@ -68,14 +68,25 @@ function(rapids_cpm_nvcomp)
   cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
   include("${rapids-cmake-dir}/cpm/detail/package_info.cmake")
-  rapids_cpm_package_info(nvcomp ${_RAPIDS_UNPARSED_ARGUMENTS} VERSION_VAR version FIND_VAR
-                          find_args CPM_VAR cpm_find_info TO_INSTALL_VAR to_install)
+  rapids_cpm_package_info(
+    nvcomp
+    ${_RAPIDS_UNPARSED_ARGUMENTS}
+    VERSION_VAR version
+    FIND_VAR find_args
+    CPM_VAR cpm_find_info
+    TO_INSTALL_VAR to_install
+  )
 
   # first search locally if `rapids_cmake_always_download` is false
   if(NOT rapids_cmake_always_download)
     include("${rapids-cmake-dir}/find/package.cmake")
-    rapids_find_package(nvcomp ${version} GLOBAL_TARGETS nvcomp::nvcomp ${_RAPIDS_EXPORT_ARGUMENTS}
-                        FIND_ARGS QUIET)
+    rapids_find_package(
+      nvcomp
+      ${version}
+      GLOBAL_TARGETS nvcomp::nvcomp ${_RAPIDS_EXPORT_ARGUMENTS}
+      FIND_ARGS
+      QUIET
+    )
     if(nvcomp_FOUND)
       # report where nvcomp was found
       message(STATUS "Found nvcomp: ${nvcomp_DIR} (found version ${nvcomp_VERSION})")
@@ -104,7 +115,9 @@ function(rapids_cpm_nvcomp)
         cmake_path(GET lib_dir PARENT_PATH lib_dir_parent)
         cmake_path(GET CMAKE_INSTALL_INCLUDEDIR PARENT_PATH include_dir_parent)
         if(NOT lib_dir_parent STREQUAL include_dir_parent)
-          message(FATAL_ERROR "CMAKE_INSTALL_INCLUDEDIR and CMAKE_INSTALL_LIBDIR must share parent directory"
+          message(
+            FATAL_ERROR
+            "CMAKE_INSTALL_INCLUDEDIR and CMAKE_INSTALL_LIBDIR must share parent directory"
           )
         endif()
 
@@ -112,19 +125,26 @@ function(rapids_cpm_nvcomp)
         # nvcomp-release-targets.cmake. Guarded in an EXISTS check so we only try to do this on the
         # first configuration pass
         cmake_path(GET lib_dir FILENAME lib_dir_name)
-        set(nvcomp_list_of_target_files
-            "nvcomp-targets-common-release.cmake"
-            "nvcomp-targets-common.cmake"
-            "nvcomp-targets-dynamic-release.cmake"
-            "nvcomp-targets-dynamic.cmake"
-            "nvcomp-targets-release.cmake"
-            "nvcomp-targets-static-release.cmake"
-            "nvcomp-targets-static.cmake")
+        set(
+          nvcomp_list_of_target_files
+          "nvcomp-targets-common-release.cmake"
+          "nvcomp-targets-common.cmake"
+          "nvcomp-targets-dynamic-release.cmake"
+          "nvcomp-targets-dynamic.cmake"
+          "nvcomp-targets-release.cmake"
+          "nvcomp-targets-static-release.cmake"
+          "nvcomp-targets-static.cmake"
+        )
         foreach(filename IN LISTS nvcomp_list_of_target_files)
           if(EXISTS "${nvcomp_ROOT}/lib/cmake/nvcomp/${filename}")
             file(READ "${nvcomp_ROOT}/lib/cmake/nvcomp/${filename}" FILE_CONTENTS)
-            string(REPLACE "\$\{_IMPORT_PREFIX\}/lib/" "\$\{_IMPORT_PREFIX\}/${lib_dir_name}/"
-                           FILE_CONTENTS ${FILE_CONTENTS})
+            string(
+              REPLACE
+              "\$\{_IMPORT_PREFIX\}/lib/"
+              "\$\{_IMPORT_PREFIX\}/${lib_dir_name}/"
+              FILE_CONTENTS
+              ${FILE_CONTENTS}
+            )
             file(WRITE "${nvcomp_ROOT}/lib/cmake/nvcomp/${filename}" ${FILE_CONTENTS})
           endif()
         endforeach()
@@ -138,8 +158,12 @@ function(rapids_cpm_nvcomp)
       # nvcomp_DIR value
       set(nvcomp_proprietary_root "${nvcomp_ROOT}")
       cmake_path(NORMAL_PATH nvcomp_proprietary_root)
-      set(rapids_cpm_nvcomp_proprietary_root "${nvcomp_proprietary_root}"
-          CACHE INTERNAL "nvcomp proprietary root dir location")
+      set(
+        rapids_cpm_nvcomp_proprietary_root
+        "${nvcomp_proprietary_root}"
+        CACHE INTERNAL
+        "nvcomp proprietary root dir location"
+      )
 
       # Enforce that we need to find the local download of nvcomp and nothing else when we have a
       # proprietary binary enabled.
@@ -158,16 +182,28 @@ function(rapids_cpm_nvcomp)
   endif()
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
-  rapids_cpm_find(nvcomp ${version} ${find_args} GLOBAL_TARGETS nvcomp::nvcomp
-                  CPM_ARGS ${cpm_find_info} OPTIONS "BUILD_STATIC ON" "BUILD_TESTS OFF"
-                                                    "BUILD_BENCHMARKS OFF" "BUILD_EXAMPLES OFF")
+  rapids_cpm_find(
+    nvcomp
+    ${version}
+    ${find_args}
+    GLOBAL_TARGETS nvcomp::nvcomp
+    CPM_ARGS
+      ${cpm_find_info}
+      OPTIONS "BUILD_STATIC ON" "BUILD_TESTS OFF" "BUILD_BENCHMARKS OFF" "BUILD_EXAMPLES OFF"
+  )
 
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
   rapids_cpm_display_patch_status(nvcomp)
 
   # provide consistent targets between a found nvcomp and one building from source
-  set(nvcomp_possible_target_names nvcomp nvcomp_cpu nvcomp_cpu_static nvcomp_device_static
-                                   nvcomp_static)
+  set(
+    nvcomp_possible_target_names
+    nvcomp
+    nvcomp_cpu
+    nvcomp_cpu_static
+    nvcomp_device_static
+    nvcomp_static
+  )
   foreach(name IN LISTS nvcomp_possible_target_names)
     if(NOT TARGET nvcomp::${name} AND TARGET ${name})
       add_library(nvcomp::${name} ALIAS ${name})
@@ -189,8 +225,10 @@ function(rapids_cpm_nvcomp)
     include(GNUInstallDirs)
 
     install(DIRECTORY "${nvcomp_ROOT}/${lib_dir}/" DESTINATION "${lib_dir}")
-    install(DIRECTORY "${nvcomp_ROOT}/${CMAKE_INSTALL_INCLUDEDIR}/"
-            DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
+    install(
+      DIRECTORY "${nvcomp_ROOT}/${CMAKE_INSTALL_INCLUDEDIR}/"
+      DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+    )
     # place the license information in the location that conda uses
     install(FILES "${nvcomp_ROOT}/NOTICE" DESTINATION info/ RENAME NVCOMP_NOTICE)
     install(FILES "${nvcomp_ROOT}/LICENSE" DESTINATION info/ RENAME NVCOMP_LICENSE)
@@ -198,8 +236,11 @@ function(rapids_cpm_nvcomp)
 
   # point our consumers to where they can find the pre-built version
   include("${rapids-cmake-dir}/export/find_package_root.cmake")
-  rapids_export_find_package_root(BUILD nvcomp "${nvcomp_ROOT}"
-                                  EXPORT_SET ${_RAPIDS_BUILD_EXPORT_SET}
-                                  CONDITION nvcomp_proprietary_binary)
-
+  rapids_export_find_package_root(
+    BUILD
+    nvcomp
+    "${nvcomp_ROOT}"
+    EXPORT_SET ${_RAPIDS_BUILD_EXPORT_SET}
+    CONDITION nvcomp_proprietary_binary
+  )
 endfunction()

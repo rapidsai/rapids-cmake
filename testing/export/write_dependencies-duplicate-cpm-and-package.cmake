@@ -8,8 +8,13 @@ include(${rapids-cmake-dir}/export/cpm.cmake)
 include(${rapids-cmake-dir}/export/package.cmake)
 include(${rapids-cmake-dir}/export/write_dependencies.cmake)
 
-rapids_export_cpm(INSTALL RMM test_set CPM_ARGS RMM VERSION 2.0 FAKE_PACKAGE_ARGS FALSE
-                  GLOBAL_TARGETS RMM::RMM_POOL)
+rapids_export_cpm(
+  INSTALL
+  RMM
+  test_set
+  CPM_ARGS RMM VERSION 2.0 FAKE_PACKAGE_ARGS FALSE
+  GLOBAL_TARGETS RMM::RMM_POOL
+)
 
 rapids_export_package(install RMM test_set)
 rapids_export_package(install ZLIB test_set)
@@ -33,11 +38,15 @@ foreach(line IN LISTS text)
 endforeach()
 
 if(NOT cpm_command_count EQUAL 1)
-  message(FATAL_ERROR "Incorrect number of CPMFindPackage entries found. Expected 1, counted ${cpm_command_count}"
+  message(
+    FATAL_ERROR
+    "Incorrect number of CPMFindPackage entries found. Expected 1, counted ${cpm_command_count}"
   )
 endif()
 
 if(NOT find_dependency_command_count EQUAL 2)
-  message(FATAL_ERROR "Incorrect number of find_dependency entries found. Expected 2, counted ${find_dependency_command_count}"
+  message(
+    FATAL_ERROR
+    "Incorrect number of find_dependency entries found. Expected 2, counted ${find_dependency_command_count}"
   )
 endif()

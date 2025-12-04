@@ -23,7 +23,8 @@ rapids_export(BUILD FakEProJecT EXPORT_SET fake_set NAMESPACE test::)
 rapids_export(INSTALL FakEProJecT EXPORT_SET fake_set NAMESPACE test::)
 
 check_copyright_header("${CMAKE_BINARY_DIR}/fakeproject-config.cmake")
-check_copyright_header("${CMAKE_BINARY_DIR}/rapids-cmake/fakeproject/export/fakeproject/fakeproject-config.cmake"
+check_copyright_header(
+  "${CMAKE_BINARY_DIR}/rapids-cmake/fakeproject/export/fakeproject/fakeproject-config.cmake"
 )
 check_copyright_header("${CMAKE_BINARY_DIR}/rapids-cmake/FakEProJecT/build/cpm_RaFT.cmake")
 check_copyright_header("${CMAKE_BINARY_DIR}/dependencies.cmake")

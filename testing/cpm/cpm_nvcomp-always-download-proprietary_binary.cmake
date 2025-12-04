@@ -15,8 +15,9 @@ if(TARGET nvcomp::nvcomp)
 endif()
 
 # Need to write out an nvcomp override file
-file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
-     [=[
+file(
+  WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
+  [=[
 {
   "packages": {
     "nvcomp": {
@@ -36,7 +37,8 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
     }
   }
 }
-]=])
+]=]
+)
 rapids_cpm_package_override(${CMAKE_CURRENT_BINARY_DIR}/override.json)
 
 #

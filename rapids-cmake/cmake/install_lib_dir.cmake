@@ -66,5 +66,4 @@ function(rapids_cmake_install_lib_dir out_variable_name)
   endif()
 
   set(${out_variable_name} ${computed_path} PARENT_SCOPE)
-
 endfunction()

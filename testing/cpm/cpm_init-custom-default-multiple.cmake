@@ -7,8 +7,9 @@
 include(${rapids-cmake-dir}/cpm/init.cmake)
 
 # Need to write out multiple default files
-file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/defaultsA.json
-     [=[
+file(
+  WRITE ${CMAKE_CURRENT_BINARY_DIR}/defaultsA.json
+  [=[
 {
   "packages": {
     "nvbench": {
@@ -18,10 +19,12 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/defaultsA.json
     }
   }
 }
-  ]=])
+  ]=]
+)
 
-file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/defaultsB.json
-     [=[
+file(
+  WRITE ${CMAKE_CURRENT_BINARY_DIR}/defaultsB.json
+  [=[
 {
   "packages": {
     "nvbench": {
@@ -36,10 +39,12 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/defaultsB.json
     },
   }
 }
-  ]=])
+  ]=]
+)
 
-file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/defaultsC.json
-     [=[
+file(
+  WRITE ${CMAKE_CURRENT_BINARY_DIR}/defaultsC.json
+  [=[
 {
   "packages": {
     "GTest": {
@@ -49,7 +54,8 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/defaultsC.json
     }
   }
 }
-  ]=])
+  ]=]
+)
 
 # Emulate multiple projects calling `rapids_cpm_init` with different default files
 rapids_cpm_init(CUSTOM_DEFAULT_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/defaultsA.json")
@@ -70,7 +76,9 @@ foreach(proj IN ITEMS rmm nvbench GTest)
     message(FATAL_ERROR "${proj} default tag field was removed.")
   endif()
   if(CPM_DOWNLOAD_ALL)
-    message(FATAL_ERROR "CPM_DOWNLOAD_ALL should be false since since we just specified a defaults version file'"
+    message(
+      FATAL_ERROR
+      "CPM_DOWNLOAD_ALL should be false since since we just specified a defaults version file'"
     )
   endif()
   unset(CPM_DOWNLOAD_ALL)

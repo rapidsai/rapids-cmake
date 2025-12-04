@@ -14,8 +14,10 @@ set(deps_dir "${CMAKE_CURRENT_BINARY_DIR}/_gtest_dep")
 if(NOT EXISTS "${deps_dir}")
   file(MAKE_DIRECTORY "${deps_dir}")
   find_package(Git)
-  execute_process(COMMAND ${GIT_EXECUTABLE} clone --depth 1 --branch "${tag}" "${repository}"
-                  WORKING_DIRECTORY "${deps_dir}")
+  execute_process(
+    COMMAND ${GIT_EXECUTABLE} clone --depth 1 --branch "${tag}" "${repository}"
+    WORKING_DIRECTORY "${deps_dir}"
+  )
 endif()
 
 set(gtest_dir "${deps_dir}/googletest")
@@ -44,8 +46,11 @@ if(NOT EXISTS "${GTest_SOURCE_DIR}/git_file_2.txt")
   message(FATAL_ERROR "failed to apply GTest second patch")
 endif()
 
-execute_process(COMMAND ${GIT_EXECUTABLE} diff --quiet ${tag} RESULT_VARIABLE REPO_IS_PATCHED
-                WORKING_DIRECTORY "${GTest_SOURCE_DIR}")
+execute_process(
+  COMMAND ${GIT_EXECUTABLE} diff --quiet ${tag}
+  RESULT_VARIABLE REPO_IS_PATCHED
+  WORKING_DIRECTORY "${GTest_SOURCE_DIR}"
+)
 
 if(NOT ${REPO_IS_PATCHED})
   message(FATAL_ERROR "The repo was downloaded to ${GTest_SOURCE_DIR} but not patched.")

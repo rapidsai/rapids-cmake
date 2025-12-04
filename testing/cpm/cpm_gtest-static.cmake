@@ -16,8 +16,9 @@ endif()
 set(BUILD_SHARED_LIBS OFF)
 rapids_cpm_gtest()
 
-file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/use_gtest.cpp"
-     [=[
+file(
+  WRITE "${CMAKE_CURRENT_BINARY_DIR}/use_gtest.cpp"
+  [=[
 #include <gtest/gtest.h>
 
 // The fixture for testing class Foo.
@@ -29,6 +30,7 @@ class FooTest : public testing::Test {
   void SetUp() override {}
   void TearDown() override {}
 };
-]=])
+]=]
+)
 add_library(uses_gtest SHARED ${CMAKE_CURRENT_BINARY_DIR}/use_gtest.cpp)
 target_link_libraries(uses_gtest PRIVATE GTest::gtest)

@@ -8,8 +8,9 @@ include(${rapids-cmake-dir}/cpm/init.cmake)
 include(${rapids-cmake-dir}/cpm/package_override.cmake)
 
 # Need to write out a default file
-file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/default.json
-     [=[
+file(
+  WRITE ${CMAKE_CURRENT_BINARY_DIR}/default.json
+  [=[
 {
   "packages": {
     "rmm": {
@@ -24,13 +25,15 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/default.json
     }
   }
 }
-  ]=])
+  ]=]
+)
 
 rapids_cpm_init(CUSTOM_DEFAULT_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/default.json")
 
 # Need to write out an override file
-file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
-     [=[
+file(
+  WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
+  [=[
 {
   "packages": {
     "rmm": {
@@ -43,7 +46,8 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
     }
   }
 }
-  ]=])
+  ]=]
+)
 
 rapids_cpm_package_override(${CMAKE_CURRENT_BINARY_DIR}/override.json)
 
@@ -55,14 +59,18 @@ if(NOT version STREQUAL "3.00.A1")
   message(FATAL_ERROR "custom version field was removed. ${version} was found instead")
 endif()
 if(NOT tag MATCHES "3.00.A1")
-  message(FATAL_ERROR "custom version field not used when computing git_tag value. ${tag} was found instead"
+  message(
+    FATAL_ERROR
+    "custom version field not used when computing git_tag value. ${tag} was found instead"
   )
 endif()
 if(NOT exclude MATCHES "OFF")
   message(FATAL_ERROR "default value of exclude not found. ${exclude} was found instead")
 endif()
 if(CPM_DOWNLOAD_ALL)
-  message(FATAL_ERROR "CPM_DOWNLOAD_ALL should be false by default when an override exists that doesn't modify url or tag"
+  message(
+    FATAL_ERROR
+    "CPM_DOWNLOAD_ALL should be false by default when an override exists that doesn't modify url or tag"
   )
 endif()
 
@@ -77,6 +85,8 @@ if(NOT exclude MATCHES "ON")
   message(FATAL_ERROR "override should have changed exclude value. ${exclude} was found instead")
 endif()
 if(NOT CPM_DOWNLOAD_ALL)
-  message(FATAL_ERROR "CPM_DOWNLOAD_ALL should be set to true when an override exists with a custom repository"
+  message(
+    FATAL_ERROR
+    "CPM_DOWNLOAD_ALL should be set to true when an override exists with a custom repository"
   )
 endif()

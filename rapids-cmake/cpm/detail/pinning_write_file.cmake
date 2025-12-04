@@ -40,22 +40,25 @@ function(rapids_cpm_pinning_extract_source_git_info package git_url_var git_sha_
   set(_RAPIDS_URL)
   set(_RAPIDS_SHA)
   if(EXISTS "${source_dir}")
-    execute_process(COMMAND ${GIT_EXECUTABLE} ls-remote --get-url
-                    WORKING_DIRECTORY ${source_dir}
-                    ERROR_QUIET
-                    OUTPUT_VARIABLE _RAPIDS_URL
-                    OUTPUT_STRIP_TRAILING_WHITESPACE)
+    execute_process(
+      COMMAND ${GIT_EXECUTABLE} ls-remote --get-url
+      WORKING_DIRECTORY ${source_dir}
+      ERROR_QUIET
+      OUTPUT_VARIABLE _RAPIDS_URL
+      OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
     # Need to handle when we have applied N patch sets to the git repo and therefore the latest
     # commit is just local
     #
     # Find all commits on our branch back to the common parent ( what we cloned )
     #
-    execute_process(COMMAND ${GIT_EXECUTABLE} show-branch --current --sha1-name
-                            ${_RAPIDS_REQUESTED_GIT_TAG}
-                    WORKING_DIRECTORY ${source_dir}
-                    ERROR_QUIET
-                    OUTPUT_VARIABLE _rapids_commit_stack
-                    OUTPUT_STRIP_TRAILING_WHITESPACE)
+    execute_process(
+      COMMAND ${GIT_EXECUTABLE} show-branch --current --sha1-name ${_RAPIDS_REQUESTED_GIT_TAG}
+      WORKING_DIRECTORY ${source_dir}
+      ERROR_QUIET
+      OUTPUT_VARIABLE _rapids_commit_stack
+      OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
     # The last entry in the output that has "* [" is our commit
     #
     # Find that line and convert the `* [short-sha1] Commit Message` to a list that is ` *
@@ -71,11 +74,13 @@ function(rapids_cpm_pinning_extract_source_git_info package git_url_var git_sha_
     endif()
 
     # Convert from the short sha1 ( could be keyword `HEAD` ) to a full SHA1
-    execute_process(COMMAND ${GIT_EXECUTABLE} rev-parse ${short_sha}
-                    WORKING_DIRECTORY ${source_dir}
-                    ERROR_QUIET
-                    OUTPUT_VARIABLE _RAPIDS_SHA
-                    OUTPUT_STRIP_TRAILING_WHITESPACE)
+    execute_process(
+      COMMAND ${GIT_EXECUTABLE} rev-parse ${short_sha}
+      WORKING_DIRECTORY ${source_dir}
+      ERROR_QUIET
+      OUTPUT_VARIABLE _RAPIDS_SHA
+      OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
   endif()
   # Only set the provided variables if we extracted the information
   if(_RAPIDS_URL)
@@ -84,7 +89,6 @@ function(rapids_cpm_pinning_extract_source_git_info package git_url_var git_sha_
   if(_RAPIDS_SHA)
     set(${git_sha_var} "${_RAPIDS_SHA}" PARENT_SCOPE)
   endif()
-
 endfunction()
 
 #[=======================================================================[.rst:
@@ -122,8 +126,11 @@ function(rapids_cpm_pinning_extract_source_subdir package_name source_subdir_var
   if(NOT DEFINED relative_subdir)
     FetchContent_GetProperties(${package_name} SOURCE_DIR stored_src_dir)
     if(DEFINED stored_src_dir AND NOT stored_src_dir STREQUAL ${package_name}_SOURCE_DIR)
-      cmake_path(RELATIVE_PATH stored_src_dir BASE_DIRECTORY "${${package_name}_SOURCE_DIR}"
-                 OUTPUT_VARIABLE relative_subdir)
+      cmake_path(
+        RELATIVE_PATH stored_src_dir
+        BASE_DIRECTORY "${${package_name}_SOURCE_DIR}"
+        OUTPUT_VARIABLE relative_subdir
+      )
     endif()
   endif()
 
@@ -149,14 +156,12 @@ Parameters:
 #]=======================================================================]
 # cmake-lint: disable=E1120
 function(rapids_cpm_pinning_transform_patches package_name patches_array_var output_var)
-
   include("${rapids-cmake-dir}/cpm/detail/convert_patch_json.cmake")
 
   # We need to get the `files` key and transform it
   set(json_data "${${patches_array_var}}")
   string(JSON patch_count LENGTH "${json_data}")
   if(patch_count GREATER_EQUAL 1)
-
     # Setup state so that we can eval `current_json_dir` placeholder
     string(TOLOWER "${package_name}" normalized_pkg_name)
     get_property(json_path GLOBAL PROPERTY rapids_cpm_${normalized_pkg_name}_override_json_file)
@@ -182,8 +187,13 @@ function(rapids_cpm_pinning_transform_patches package_name patches_array_var out
         # Remove the the file entry and replace it with the correct inline json format
         string(JSON patch_data ERROR_VARIABLE have_error REMOVE "${patch_data}" file)
         set(json_key "inline_patch")
-        string(JSON patch_data ERROR_VARIABLE have_error SET "${patch_data}" "${json_key}"
-               "${as_json}")
+        string(
+          JSON patch_data
+          ERROR_VARIABLE have_error
+          SET "${patch_data}"
+          "${json_key}"
+          "${as_json}"
+        )
         string(JSON json_data SET "${json_data}" ${index} "${patch_data}")
       endif()
     endforeach()
@@ -216,7 +226,6 @@ Parameters:
 
 #]=======================================================================]
 function(rapids_cpm_pinning_create_and_set_member package_name json_var key value)
-
   if(key MATCHES "patches")
     # Transform inplace the value to only have inline patches
     rapids_cpm_pinning_transform_patches(${package_name} value value)
@@ -260,7 +269,6 @@ Parameters:
 #]=======================================================================]
 # cmake-lint: disable=R0915,E1120
 function(rapids_cpm_pinning_add_json_entry package_name json_var)
-
   # Make sure variables from the callers scope doesn't break us
   unset(git_url)
   unset(git_sha)
@@ -293,7 +301,9 @@ function(rapids_cpm_pinning_add_json_entry package_name json_var)
     string(CONFIGURE [=["source_subdir": "${source_subdir}",]=] subdir_string)
   endif()
   # We start with a default template, and only add members that don't exist
-  string(CONFIGURE [=[{
+  string(
+    CONFIGURE
+      [=[{
   "version": "${CPM_PACKAGE_${package_name}_VERSION}",
   ${url_string}
   ${sha_string}
@@ -301,7 +311,8 @@ function(rapids_cpm_pinning_add_json_entry package_name json_var)
   "git_shallow": false,
   "always_download": true
   }]=]
-                   pinned_json_entry)
+    pinned_json_entry
+  )
 
   set(override_exclusion_list "")
   set(json_exclusion_list "")
@@ -327,8 +338,12 @@ function(rapids_cpm_pinning_add_json_entry package_name json_var)
       string(JSON existing_value ERROR_VARIABLE dont_have GET "${pinned_json_entry}" ${member})
       if(dont_have AND (NOT member IN_LIST exclusions))
         string(JSON value GET "${data}" ${member})
-        rapids_cpm_pinning_create_and_set_member(${package_name} pinned_json_entry ${member}
-                                                 ${value})
+        rapids_cpm_pinning_create_and_set_member(
+          ${package_name}
+          pinned_json_entry
+          ${member}
+          ${value}
+        )
       endif()
     endforeach()
   endforeach()
@@ -349,15 +364,16 @@ This pinned versions.json file will be written to all output files
 provided to :cmake:command:`rapids_cpm_generate_pinned_versions`.
 #]=======================================================================]
 function(rapids_cpm_pinning_write_file)
-
   find_package(Git QUIET REQUIRED)
 
-  set(_rapids_json
-      [=[
+  set(
+    _rapids_json
+    [=[
 {
 "root": {
 "packages": {
-]=])
+]=]
+  )
 
   # initial pass to remove any packages that aren't checked out by source or an existing json entry.
   #
@@ -395,11 +411,17 @@ function(rapids_cpm_pinning_write_file)
     endif()
     rapids_cpm_pinning_add_json_entry(${package} _rapids_entry)
     if(not_last_package)
-      string(APPEND _rapids_entry [=[,
-]=])
+      string(
+        APPEND _rapids_entry
+        [=[,
+]=]
+      )
     else()
-      string(APPEND _rapids_entry [=[
-]=])
+      string(
+        APPEND _rapids_entry
+        [=[
+]=]
+      )
     endif()
     string(APPEND _rapids_json "${_rapids_entry}")
   endforeach()
@@ -419,11 +441,14 @@ function(rapids_cpm_pinning_write_file)
   # Setup status string to developer.
   set(message_extra_info)
   if(ignored_packages)
-    set(message_extra_info
-        "The following packages resolved to system installed versions: ${ignored_packages}. If you need those pinned to an explicit version please set `CPM_DOWNLOAD_ALL` and re-generate."
+    set(
+      message_extra_info
+      "The following packages resolved to system installed versions: ${ignored_packages}. If you need those pinned to an explicit version please set `CPM_DOWNLOAD_ALL` and re-generate."
     )
   endif()
 
-  message(STATUS "rapids_cpm_generate_pinned_versions wrote version information. ${message_extra_info}"
+  message(
+    STATUS
+    "rapids_cpm_generate_pinned_versions wrote version information. ${message_extra_info}"
   )
 endfunction()

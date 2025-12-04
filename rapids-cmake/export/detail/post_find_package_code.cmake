@@ -70,6 +70,9 @@ function(rapids_export_post_find_package_code type name code)
   # if the code coming in is a list of string we will have `;`, so transform those to "\n" so we
   # have a single string
   string(REPLACE ";" "\n" code "${code}")
-  set_property(TARGET rapids_export_${type}_${export_set} APPEND_STRING
-               PROPERTY "${name}_POST_FIND_CODE" "${code}\n")
+  set_property(
+    TARGET rapids_export_${type}_${export_set}
+    APPEND_STRING
+    PROPERTY "${name}_POST_FIND_CODE" "${code}\n"
+  )
 endfunction()

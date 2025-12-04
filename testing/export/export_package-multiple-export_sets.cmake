@@ -17,11 +17,15 @@ get_target_property(global_targets1 rapids_export_build_export1 GLOBAL_TARGETS)
 get_target_property(global_targets2 rapids_export_build_export2 GLOBAL_TARGETS)
 
 if(NOT packages1 STREQUAL packages2)
-  message(FATAL_ERROR "rapids_export_package failed to record same package is in multiple export sets"
+  message(
+    FATAL_ERROR
+    "rapids_export_package failed to record same package is in multiple export sets"
   )
 endif()
 
 if(NOT global_targets1 STREQUAL global_targets2)
-  message(FATAL_ERROR "rapids_export_package failed to record same target is in multiple export sets"
+  message(
+    FATAL_ERROR
+    "rapids_export_package failed to record same target is in multiple export sets"
   )
 endif()

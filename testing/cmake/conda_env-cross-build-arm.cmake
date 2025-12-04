@@ -42,19 +42,27 @@ endif()
 get_target_property(link_options conda_env INTERFACE_LINK_OPTIONS)
 message(STATUS "link_options: ${link_options}")
 if(NOT "$<HOST_LINK:SHELL:LINKER:-rpath-link=$ENV{BUILD_PREFIX}/lib>" IN_LIST link_options)
-  message(FATAL_ERROR "Expected rpath-link=env{BUILD_PREFIX} to be in the link options of `conda_env`"
+  message(
+    FATAL_ERROR
+    "Expected rpath-link=env{BUILD_PREFIX} to be in the link options of `conda_env`"
   )
 endif()
 if(NOT "$<HOST_LINK:SHELL:LINKER:-rpath-link=$ENV{PREFIX}/lib>" IN_LIST link_options)
   message(FATAL_ERROR "Expected rpath-link=env{PREFIX} to be in the link options of `conda_env`")
 endif()
-if(NOT "$<HOST_LINK:SHELL:LINKER:-rpath-link=$ENV{PREFIX}/targets/sbsa-linux/lib>" IN_LIST
-   link_options)
-  message(FATAL_ERROR "Expected rpath-link=env{PREFIX}/targets/sbsa-linux/ to be in the link options of `conda_env`"
+if(
+  NOT
+    "$<HOST_LINK:SHELL:LINKER:-rpath-link=$ENV{PREFIX}/targets/sbsa-linux/lib>" IN_LIST link_options
+)
+  message(
+    FATAL_ERROR
+    "Expected rpath-link=env{PREFIX}/targets/sbsa-linux/ to be in the link options of `conda_env`"
   )
 endif()
 if("$<HOST_LINK:SHELL:LINKER:-rpath-link=$ENV{CONDA_PREFIX}/lib>" IN_LIST link_options)
-  message(FATAL_ERROR "Not expected for rpath-link=env{CONDA_PREFIX} to be in the link options of `conda_env`"
+  message(
+    FATAL_ERROR
+    "Not expected for rpath-link=env{CONDA_PREFIX} to be in the link options of `conda_env`"
   )
 endif()
 
@@ -84,10 +92,24 @@ list(GET CMAKE_PREFIX_PATH 2 third_value)
 list(GET CMAKE_PREFIX_PATH 3 fourth_value)
 list(GET CMAKE_PREFIX_PATH 4 fifth_value)
 list(GET CMAKE_PREFIX_PATH 5 sixth_value)
-set(correct_list "placeholder" "env_1" "env_2" "$ENV{PREFIX}/targets/sbsa-linux" "$ENV{PREFIX}"
-                 "$ENV{BUILD_PREFIX}")
-set(actual_list "${first_value}" "${second_value}" "${third_value}" "${fourth_value}"
-                "${fifth_value}" "${sixth_value}")
+set(
+  correct_list
+  "placeholder"
+  "env_1"
+  "env_2"
+  "$ENV{PREFIX}/targets/sbsa-linux"
+  "$ENV{PREFIX}"
+  "$ENV{BUILD_PREFIX}"
+)
+set(
+  actual_list
+  "${first_value}"
+  "${second_value}"
+  "${third_value}"
+  "${fourth_value}"
+  "${fifth_value}"
+  "${sixth_value}"
+)
 foreach(correct actual IN ZIP_LISTS correct_list actual_list)
   if(NOT correct STREQUAL actual)
     message(STATUS "correct: ${correct}")

@@ -7,23 +7,26 @@
 cmake_minimum_required(VERSION 3.30.4)
 file(STRINGS "${EXECUTABLE}" contents)
 
-execute_process(COMMAND ${GIT_EXECUTABLE} rev-parse HEAD
-                WORKING_DIRECTORY ${WORKING_DIRECTORY}
-                ERROR_QUIET
-                OUTPUT_VARIABLE RAPIDS_WRITE_SHA1
-                OUTPUT_STRIP_TRAILING_WHITESPACE # need to strip off any newline
+execute_process(
+  COMMAND ${GIT_EXECUTABLE} rev-parse HEAD
+  WORKING_DIRECTORY ${WORKING_DIRECTORY}
+  ERROR_QUIET
+  OUTPUT_VARIABLE RAPIDS_WRITE_SHA1
+  OUTPUT_STRIP_TRAILING_WHITESPACE # need to strip off any newline
 )
-execute_process(COMMAND ${GIT_EXECUTABLE} rev-parse --abbrev-ref HEAD
-                WORKING_DIRECTORY ${WORKING_DIRECTORY}
-                ERROR_QUIET
-                OUTPUT_VARIABLE RAPIDS_WRITE_BRANCH
-                OUTPUT_STRIP_TRAILING_WHITESPACE # need to strip off any newline
+execute_process(
+  COMMAND ${GIT_EXECUTABLE} rev-parse --abbrev-ref HEAD
+  WORKING_DIRECTORY ${WORKING_DIRECTORY}
+  ERROR_QUIET
+  OUTPUT_VARIABLE RAPIDS_WRITE_BRANCH
+  OUTPUT_STRIP_TRAILING_WHITESPACE # need to strip off any newline
 )
-execute_process(COMMAND ${GIT_EXECUTABLE} describe --tag --dirty --always
-                WORKING_DIRECTORY ${WORKING_DIRECTORY}
-                ERROR_QUIET
-                OUTPUT_VARIABLE RAPIDS_WRITE_VERSION
-                OUTPUT_STRIP_TRAILING_WHITESPACE # need to strip off any newline
+execute_process(
+  COMMAND ${GIT_EXECUTABLE} describe --tag --dirty --always
+  WORKING_DIRECTORY ${WORKING_DIRECTORY}
+  ERROR_QUIET
+  OUTPUT_VARIABLE RAPIDS_WRITE_VERSION
+  OUTPUT_STRIP_TRAILING_WHITESPACE # need to strip off any newline
 )
 
 if(NOT contents MATCHES "sha1=${RAPIDS_WRITE_SHA1}")

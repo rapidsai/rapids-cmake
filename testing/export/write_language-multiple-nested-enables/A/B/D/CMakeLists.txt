@@ -8,6 +8,7 @@
 include(${rapids-cmake-dir}/export/write_language.cmake)
 
 function(enable_nested_language file_path)
+  # gersemi: ignore
   # replicates CPM including the file
   include("${file_path}")
 endfunction()

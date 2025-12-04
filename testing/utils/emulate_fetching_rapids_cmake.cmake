@@ -27,10 +27,13 @@ if(NOT _rapids_already_hooked)
   # construct a symlink from the source to the build dir so we get the latest local changes without
   # issue
   execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory "${scratch_dir}")
-  execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink "${local-rapids-cmake-root}"
-                          "${rapids-cmake_SOURCE_DIR}"
-                  WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}" ECHO_OUTPUT_VARIABLE
-                                    ECHO_ERROR_VARIABLE)
+  execute_process(
+    COMMAND
+      ${CMAKE_COMMAND} -E create_symlink "${local-rapids-cmake-root}" "${rapids-cmake_SOURCE_DIR}"
+    WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
+    ECHO_OUTPUT_VARIABLE
+    ECHO_ERROR_VARIABLE
+  )
   unset(scratch_dir)
 
   message(STATUS "${local-rapids-cmake-root} -> ${rapids-cmake_SOURCE_DIR}")

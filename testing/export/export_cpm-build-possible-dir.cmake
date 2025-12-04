@@ -27,8 +27,13 @@ endif()
 # Verify in-valid dir is ignored
 set(also_fake_cpm_package_DIR OFF)
 set(also_fake_cpm_package_BINARY_DIR /binary/dir/path/)
-rapids_export_cpm(BUILD also_fake_cpm_package test_export_set CPM_ARGS VERSION 2.0
-                  GLOBAL_TARGETS ABC::ABC ABC::CBA)
+rapids_export_cpm(
+  BUILD
+  also_fake_cpm_package
+  test_export_set
+  CPM_ARGS VERSION 2.0
+  GLOBAL_TARGETS ABC::ABC ABC::CBA
+)
 set(path "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/build/cpm_also_fake_cpm_package.cmake")
 if(NOT EXISTS "${path}")
   message(FATAL_ERROR "rapids_export_cpm failed to generate a CPM configuration")

@@ -31,6 +31,9 @@ function(rapids_test_record_test_component)
   if(NOT TARGET rapids_test_install_${component})
     add_library(rapids_test_install_${component} INTERFACE)
   endif()
-  set_property(TARGET rapids_test_install_${component} APPEND PROPERTY "TESTS_TO_RUN"
-                                                                       "${_RAPIDS_TEST_NAME}")
+  set_property(
+    TARGET rapids_test_install_${component}
+    APPEND
+    PROPERTY "TESTS_TO_RUN" "${_RAPIDS_TEST_NAME}"
+  )
 endfunction()

@@ -12,6 +12,8 @@ set(CTEST_RESOURCE_SPEC_FILE "sentinel file")
 rapids_test_init()
 
 if(NOT CTEST_RESOURCE_SPEC_FILE STREQUAL "sentinel file")
-  message(FATAL_ERROR "CTEST_RESOURCE_SPEC_FILE shouldn't be modified if already set before calling rapids_test_init"
+  message(
+    FATAL_ERROR
+    "CTEST_RESOURCE_SPEC_FILE shouldn't be modified if already set before calling rapids_test_init"
   )
 endif()

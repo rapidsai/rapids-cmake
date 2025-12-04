@@ -11,8 +11,9 @@ include(${rapids-cmake-dir}/cpm/package_override.cmake)
 rapids_cpm_init()
 
 # Need to write out an override file
-file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
-     [=[
+file(
+  WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
+  [=[
 {
   "packages": {
     "custom_package_never_in_rapids" : {
@@ -24,7 +25,8 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
     }
   }
 }
-  ]=])
+  ]=]
+)
 
 rapids_cpm_package_override(${CMAKE_CURRENT_BINARY_DIR}/override.json)
 

@@ -48,5 +48,4 @@ foreach(line IN LISTS text)
       message(FATAL_ERROR "Duplicate entries found in targets to promote to global")
     endif()
   endif()
-
 endforeach()

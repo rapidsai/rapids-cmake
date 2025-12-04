@@ -18,7 +18,14 @@ endif()
 rapids_cpm_cccl(ENABLE_UNSTABLE)
 
 # Test that all expected targets exist, including CCCL::cudax
-set(targets CCCL::CCCL CCCL::CUB CCCL::libcudacxx CCCL::Thrust CCCL::cudax)
+set(
+  targets
+  CCCL::CCCL
+  CCCL::CUB
+  CCCL::libcudacxx
+  CCCL::Thrust
+  CCCL::cudax
+)
 foreach(target IN LISTS targets)
   if(NOT TARGET ${target})
     message(FATAL_ERROR "Expected ${target} to exist")

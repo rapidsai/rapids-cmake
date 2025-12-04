@@ -48,14 +48,39 @@ function(rapids_cuda_set_architectures mode)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cuda.set_architectures")
 
   if(CMAKE_CUDA_COMPILER_ID STREQUAL "NVIDIA")
-
     if(CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL 13.0.0)
-      set(supported_archs "75-real" "80-real" "86-real" "90a-real" "100f-real" "120a-real" "120")
+      set(
+        supported_archs
+        "75-real"
+        "80-real"
+        "86-real"
+        "90a-real"
+        "100f-real"
+        "120a-real"
+        "120"
+      )
     elseif(CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL 12.9.0)
-      set(supported_archs "70-real" "75-real" "80-real" "86-real" "90a-real" "100f-real"
-                          "120a-real" "120")
+      set(
+        supported_archs
+        "70-real"
+        "75-real"
+        "80-real"
+        "86-real"
+        "90a-real"
+        "100f-real"
+        "120a-real"
+        "120"
+      )
     else()
-      set(supported_archs "70-real" "75-real" "80-real" "86-real" "90a-real" "90-virtual")
+      set(
+        supported_archs
+        "70-real"
+        "75-real"
+        "80-real"
+        "86-real"
+        "90a-real"
+        "90-virtual"
+      )
       if(CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL 12.8.0)
         list(REMOVE_ITEM supported_archs "90-virtual")
         list(APPEND supported_archs "100-real" "120a-real" "120-virtual")
@@ -64,8 +89,10 @@ function(rapids_cuda_set_architectures mode)
 
     # For the CUDA 12.X.0 series we want to silence warnings when compiling for arch 70 when
     # compiling for RAPIDS architectures.
-    if(CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL 12.8.0 AND CMAKE_CUDA_COMPILER_VERSION
-                                                                    VERSION_LESS 13.0.0)
+    if(
+      CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL 12.8.0
+      AND CMAKE_CUDA_COMPILER_VERSION VERSION_LESS 13.0.0
+    )
       string(APPEND CMAKE_CUDA_FLAGS " -Wno-deprecated-gpu-targets")
     endif()
   endif()
@@ -84,7 +111,9 @@ function(rapids_cuda_set_architectures mode)
   endif()
   if(NOT cached_value STREQUAL CMAKE_CUDA_ARCHITECTURES)
     string(REPLACE ";" "\n  " _cuda_architectures_pretty "${CMAKE_CUDA_ARCHITECTURES}")
-    message(STATUS "Project ${PROJECT_NAME} is building for CUDA architectures:\n  ${_cuda_architectures_pretty}"
+    message(
+      STATUS
+      "Project ${PROJECT_NAME} is building for CUDA architectures:\n  ${_cuda_architectures_pretty}"
     )
   endif()
 
@@ -96,5 +125,4 @@ function(rapids_cuda_set_architectures mode)
   # Set as a local variable to maintain comp
   set(CMAKE_CUDA_ARCHITECTURES ${CMAKE_CUDA_ARCHITECTURES} PARENT_SCOPE)
   set(CMAKE_CUDA_FLAGS ${CMAKE_CUDA_FLAGS} PARENT_SCOPE)
-
 endfunction()

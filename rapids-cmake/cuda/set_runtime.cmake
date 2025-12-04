@@ -59,5 +59,4 @@ function(rapids_cuda_set_runtime target use_static value)
     set_target_properties(${target} PROPERTIES CUDA_RUNTIME_LIBRARY Shared)
     target_link_libraries(${target} ${mode} $<TARGET_NAME_IF_EXISTS:CUDA::cudart>)
   endif()
-
 endfunction()

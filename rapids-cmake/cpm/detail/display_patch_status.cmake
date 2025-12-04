@@ -36,6 +36,5 @@ function(rapids_cpm_display_patch_status package_name)
       file(READ "${err_file}" contents)
       message(FATAL_ERROR "${contents}")
     endif()
-
   endif()
 endfunction()

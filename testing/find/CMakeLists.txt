@@ -24,17 +24,26 @@ add_cmake_config_test(find_package-version-explicit-failed.cmake)
 
 add_cmake_config_test(find_package-version-explicit.cmake)
 add_cmake_config_test(find_package-version-none.cmake)
-add_cmake_config_test(find_package-version-required-explicit-failed.cmake SHOULD_FAIL
-                      "but required is exact version \"99999999999\"")
+add_cmake_config_test(
+  find_package-version-required-explicit-failed.cmake
+  SHOULD_FAIL
+  "but required is exact version \"99999999999\""
+)
 
 add_cmake_config_test(find_generate_module-build)
 add_cmake_config_test(find_generate_module-install)
 add_cmake_config_test(find_generate_module-header-only)
 
 add_cmake_config_test(find_generate_module-code-blocks)
-add_cmake_config_test(find_generate_module-back-initial-code-block-var.cmake SHOULD_FAIL
-                      "INITIAL_CODE_BLOCK variable `var_doesn't_exist` doesn't exist")
-add_cmake_config_test(find_generate_module-back-final-code-block-var.cmake SHOULD_FAIL
-                      "FINAL_CODE_BLOCK variable `var_doesn't_exist` doesn't exist")
+add_cmake_config_test(
+  find_generate_module-back-initial-code-block-var.cmake
+  SHOULD_FAIL
+  "INITIAL_CODE_BLOCK variable `var_doesn't_exist` doesn't exist"
+)
+add_cmake_config_test(
+  find_generate_module-back-final-code-block-var.cmake
+  SHOULD_FAIL
+  "FINAL_CODE_BLOCK variable `var_doesn't_exist` doesn't exist"
+)
 
 add_cmake_config_test(find_generate_module-verify-copyright-header.cmake)

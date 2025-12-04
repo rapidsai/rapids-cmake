@@ -52,7 +52,9 @@ function(rapids_test_generate_resource_spec DESTINATION filepath)
   endif()
 
   if(NOT rapids_lang)
-    message(FATAL_ERROR "rapids_test_generate_resource_spec Requires the CUDA or C++ language to be enabled."
+    message(
+      FATAL_ERROR
+      "rapids_test_generate_resource_spec Requires the CUDA or C++ language to be enabled."
     )
   endif()
 
@@ -62,23 +64,30 @@ function(rapids_test_generate_resource_spec DESTINATION filepath)
   if(NOT TARGET generate_ctest_json)
     find_package(CUDAToolkit QUIET)
 
-    add_executable(generate_ctest_json
-                   ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/generate_resource_spec.cpp)
+    add_executable(
+      generate_ctest_json
+      ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/generate_resource_spec.cpp
+    )
     if(CUDAToolkit_FOUND)
       target_link_libraries(generate_ctest_json PRIVATE CUDA::cudart_static)
       target_compile_definitions(generate_ctest_json PRIVATE HAVE_CUDA)
     endif()
-    set_property(SOURCE ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/generate_resource_spec.cpp
-                 PROPERTY LANGUAGE ${rapids_lang})
-    set_target_properties(generate_ctest_json
-                          PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/rapids-cmake/"
-                                     OUTPUT_NAME ${rapids_test_generate_exe_name})
+    set_property(
+      SOURCE ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/generate_resource_spec.cpp
+      PROPERTY LANGUAGE ${rapids_lang}
+    )
+    set_target_properties(
+      generate_ctest_json
+      PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/rapids-cmake/"
+        OUTPUT_NAME ${rapids_test_generate_exe_name}
+    )
     target_compile_features(generate_ctest_json PRIVATE ${rapids_lang_lower}_std_17)
 
     add_test(NAME generate_resource_spec COMMAND generate_ctest_json "${filepath}")
-    set_tests_properties(generate_resource_spec
-                         PROPERTIES FIXTURES_SETUP resource_spec GENERATED_RESOURCE_SPEC_FILE
-                                    "${filepath}")
+    set_tests_properties(
+      generate_resource_spec
+      PROPERTIES FIXTURES_SETUP resource_spec GENERATED_RESOURCE_SPEC_FILE "${filepath}"
+    )
   endif()
-
 endfunction()

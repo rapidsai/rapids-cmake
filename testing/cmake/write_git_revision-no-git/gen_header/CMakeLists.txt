@@ -10,5 +10,7 @@ include(${rapids-cmake-dir}/cmake/write_git_revision_file.cmake)
 # git doesn't exist
 find_package(Git)
 set(GIT_EXECUTABLE "/fake/path")
-rapids_cmake_write_git_revision_file(git_generated_header
-                                     "${CMAKE_CURRENT_BINARY_DIR}/demo/git_version.hpp")
+rapids_cmake_write_git_revision_file(
+  git_generated_header
+  "${CMAKE_CURRENT_BINARY_DIR}/demo/git_version.hpp"
+)

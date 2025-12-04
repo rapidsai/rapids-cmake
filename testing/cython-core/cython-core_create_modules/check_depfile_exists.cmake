@@ -10,6 +10,9 @@ if(NOT DEFINED DEPFILE)
 endif()
 
 if(NOT EXISTS "${DEPFILE}")
-  message(FATAL_ERROR "rapids_cython_create_modules didn't create the dependency file. "
-                      "Expected dependency file: ${DEPFILE}")
+  message(
+    FATAL_ERROR
+    "rapids_cython_create_modules didn't create the dependency file. "
+    "Expected dependency file: ${DEPFILE}"
+  )
 endif()

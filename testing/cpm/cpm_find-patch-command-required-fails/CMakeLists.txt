@@ -14,8 +14,10 @@ set(deps_dir "${CMAKE_CURRENT_BINARY_DIR}/_gtest_dep")
 if(NOT EXISTS "${deps_dir}")
   file(MAKE_DIRECTORY "${deps_dir}")
   find_package(Git)
-  execute_process(COMMAND ${GIT_EXECUTABLE} clone --depth 1 --branch "${tag}" "${repository}"
-                  WORKING_DIRECTORY "${deps_dir}")
+  execute_process(
+    COMMAND ${GIT_EXECUTABLE} clone --depth 1 --branch "${tag}" "${repository}"
+    WORKING_DIRECTORY "${deps_dir}"
+  )
 endif()
 
 set(gtest_dir "${deps_dir}/googletest")

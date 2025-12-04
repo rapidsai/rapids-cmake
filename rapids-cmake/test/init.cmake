@@ -52,5 +52,4 @@ function(rapids_test_init)
   if(NOT CTEST_RESOURCE_SPEC_FILE)
     rapids_test_generate_resource_spec(DESTINATION "${rapids_test_spec_file}")
   endif()
-
 endfunction()

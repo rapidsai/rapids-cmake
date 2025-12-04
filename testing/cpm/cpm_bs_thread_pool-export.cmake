@@ -14,12 +14,16 @@ rapids_cpm_bs_thread_pool(INSTALL_EXPORT_SET test2)
 
 get_target_property(packages rapids_export_build_test PACKAGE_NAMES)
 if(NOT bs_thread_pool IN_LIST packages)
-  message(FATAL_ERROR "rapids_cpm_bs_thread_pool failed to record bs_thread_pool needs to be exported"
+  message(
+    FATAL_ERROR
+    "rapids_cpm_bs_thread_pool failed to record bs_thread_pool needs to be exported"
   )
 endif()
 
 get_target_property(packages rapids_export_install_test2 PACKAGE_NAMES)
 if(NOT bs_thread_pool IN_LIST packages)
-  message(FATAL_ERROR "rapids_cpm_bs_thread_pool failed to record bs_thread_pool needs to be exported"
+  message(
+    FATAL_ERROR
+    "rapids_cpm_bs_thread_pool failed to record bs_thread_pool needs to be exported"
   )
 endif()

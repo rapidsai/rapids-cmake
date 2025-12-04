@@ -10,8 +10,9 @@ set(ENV{rapids_version} custom_env_version)
 set(ENV{rapids_user} custom_env_user)
 
 # Need to write out an override file
-file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
-     [=[
+file(
+  WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
+  [=[
 {
   "packages": {
     "nvbench": {
@@ -21,7 +22,8 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
     }
   }
 }
-  ]=])
+  ]=]
+)
 
 rapids_cpm_init(OVERRIDE "${CMAKE_CURRENT_BINARY_DIR}/override.json")
 
@@ -30,11 +32,15 @@ include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
 rapids_cpm_package_details_internal(nvbench version repository tag src_subdir shallow exclude)
 
 if(NOT version STREQUAL "custom_env_version")
-  message(FATAL_ERROR "custom version field was ignored. ${version} found instead of custom_env_version"
+  message(
+    FATAL_ERROR
+    "custom version field was ignored. ${version} found instead of custom_env_version"
   )
 endif()
 if(NOT repository STREQUAL "custom_env_user@gitlab.private.com")
-  message(FATAL_ERROR "custom git_url field was ignored. ${repository} found instead of custom_env_user@gitlab.private.com"
+  message(
+    FATAL_ERROR
+    "custom git_url field was ignored. ${repository} found instead of custom_env_user@gitlab.private.com"
   )
 endif()
 if(NOT DEFINED CPM_DOWNLOAD_ALL)

@@ -12,10 +12,15 @@ function(make_fake_project_build_dir_with_config name version config_file versio
   set(build_dir "${CMAKE_CURRENT_BINARY_DIR}/${name}-build/")
   file(MAKE_DIRECTORY ${build_dir})
 
-  configure_package_config_file("${CMAKE_CURRENT_SOURCE_DIR}/${config_file}"
-                                "${build_dir}/${config_file}"
-                                INSTALL_DESTINATION "${build_dir}/${config_file}")
+  configure_package_config_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/${config_file}.in"
+    "${build_dir}/${config_file}"
+    INSTALL_DESTINATION "${build_dir}/${config_file}"
+  )
 
-  write_basic_package_version_file("${build_dir}/${version_file}" VERSION ${version}
-                                   COMPATIBILITY SameMajorVersion)
+  write_basic_package_version_file(
+    "${build_dir}/${version_file}"
+    VERSION ${version}
+    COMPATIBILITY SameMajorVersion
+  )
 endfunction()

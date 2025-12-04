@@ -60,7 +60,9 @@ function(rapids_cmake_download_with_retry url output_file sha256)
 
   while(NOT download_success AND current_retry LESS ${_RAPIDS_MAX_RETRIES})
     if(current_retry GREATER 0)
-      message(STATUS "Retrying download (attempt ${current_retry} of ${_RAPIDS_MAX_RETRIES}) after ${_RAPIDS_RETRY_DELAY} seconds..."
+      message(
+        STATUS
+        "Retrying download (attempt ${current_retry} of ${_RAPIDS_MAX_RETRIES}) after ${_RAPIDS_RETRY_DELAY} seconds..."
       )
       execute_process(COMMAND ${CMAKE_COMMAND} -E sleep ${_RAPIDS_RETRY_DELAY})
     endif()
@@ -78,7 +80,9 @@ function(rapids_cmake_download_with_retry url output_file sha256)
       if(downloaded_sha256 STREQUAL "${sha256}")
         set(download_success TRUE)
       else()
-        message(WARNING "Downloaded file SHA256 checksum mismatch. Expected: ${sha256}, Got: ${downloaded_sha256}"
+        message(
+          WARNING
+          "Downloaded file SHA256 checksum mismatch. Expected: ${sha256}, Got: ${downloaded_sha256}"
         )
         file(REMOVE "${output_file}")
       endif()
@@ -89,7 +93,9 @@ function(rapids_cmake_download_with_retry url output_file sha256)
       if(current_retry LESS ${_RAPIDS_MAX_RETRIES})
         message(WARNING "Failed to download file. Will retry. Download log:\n${download_log}")
       else()
-        message(FATAL_ERROR "Failed to download file after ${_RAPIDS_MAX_RETRIES} attempts. Download log:\n${download_log}"
+        message(
+          FATAL_ERROR
+          "Failed to download file after ${_RAPIDS_MAX_RETRIES} attempts. Download log:\n${download_log}"
         )
       endif()
     endif()

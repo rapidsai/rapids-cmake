@@ -19,6 +19,8 @@ set(to_match_string [=[COMPONENTS)]=])
 file(READ "${path}" contents)
 string(FIND "${contents}" "${to_match_string}" is_found)
 if(NOT is_found EQUAL -1)
-  message(FATAL_ERROR "rapids_export_package generated a find_package configuration with COMPONENTS"
+  message(
+    FATAL_ERROR
+    "rapids_export_package generated a find_package configuration with COMPONENTS"
   )
 endif()

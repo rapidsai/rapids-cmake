@@ -66,8 +66,11 @@ function(rapids_export_cpm type name export_set)
   endif()
 
   string(TIMESTAMP current_year "%Y" UTC)
-  configure_file("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/cpm.cmake.in"
-                 "${CMAKE_BINARY_DIR}/rapids-cmake/${export_set}/${type}/cpm_${name}.cmake" @ONLY)
+  configure_file(
+    "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/cpm.cmake.in"
+    "${CMAKE_BINARY_DIR}/rapids-cmake/${export_set}/${type}/cpm_${name}.cmake"
+    @ONLY
+  )
 
   if(NOT TARGET rapids_export_${type}_${export_set})
     add_library(rapids_export_${type}_${export_set} INTERFACE)
@@ -81,8 +84,10 @@ function(rapids_export_cpm type name export_set)
 
   if(_RAPIDS_GLOBAL_TARGETS)
     # record our targets that need to be marked as global when imported
-    set_property(TARGET rapids_export_${type}_${export_set} APPEND
-                 PROPERTY "GLOBAL_TARGETS" "${_RAPIDS_GLOBAL_TARGETS}")
+    set_property(
+      TARGET rapids_export_${type}_${export_set}
+      APPEND
+      PROPERTY "GLOBAL_TARGETS" "${_RAPIDS_GLOBAL_TARGETS}"
+    )
   endif()
-
 endfunction()

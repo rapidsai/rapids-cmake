@@ -27,8 +27,11 @@ endif()
 # Test that the dependency file was created properly.
 cmake_path(SET depfile NORMALIZE "${CMAKE_CURRENT_BINARY_DIR}/test.c.dep")
 add_custom_target(check_depfile_exists ALL DEPENDS test)
-add_custom_command(TARGET check_depfile_exists
-                   POST_BUILD
-                   COMMAND ${CMAKE_COMMAND} -DDEPFILE="${depfile}" -P
-                           ${CMAKE_CURRENT_SOURCE_DIR}/check_depfile_exists.cmake
-                   COMMENT "Checking for existence of dependency file")
+add_custom_command(
+  TARGET check_depfile_exists
+  POST_BUILD
+  COMMAND
+    ${CMAKE_COMMAND} -DDEPFILE="${depfile}" -P
+    ${CMAKE_CURRENT_SOURCE_DIR}/check_depfile_exists.cmake
+  COMMENT "Checking for existence of dependency file"
+)

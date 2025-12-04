@@ -16,5 +16,8 @@ endforeach()
 
 include(FindPackageHandleStandardArgs)
 
-find_package_handle_standard_args(FakeDependency REASON_FAILURE_MESSAGE "${_FAIL_REASON}"
-                                  HANDLE_COMPONENTS)
+find_package_handle_standard_args(
+  FakeDependency
+  REASON_FAILURE_MESSAGE "${_FAIL_REASON}"
+  HANDLE_COMPONENTS
+)

@@ -50,5 +50,4 @@ function(rapids_cuda_init_runtime use_static value)
       set(CUDA_USE_STATIC_CUDA_RUNTIME OFF PARENT_SCOPE)
     endif()
   endif()
-
 endfunction()

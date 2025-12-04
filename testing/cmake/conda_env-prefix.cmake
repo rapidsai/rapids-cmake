@@ -18,7 +18,9 @@ endif()
 
 get_target_property(compile_options conda_env INTERFACE_COMPILE_OPTIONS)
 if(NOT "$<$<CONFIG:Debug>:-O0>" IN_LIST compile_options)
-  message(FATAL_ERROR "Expected $<$<CONFIG:Debug>>:-O0> to be in the compile options of `conda_env`"
+  message(
+    FATAL_ERROR
+    "Expected $<$<CONFIG:Debug>>:-O0> to be in the compile options of `conda_env`"
   )
 endif()
 
@@ -46,15 +48,21 @@ endif()
 
 get_target_property(link_options conda_env INTERFACE_LINK_OPTIONS)
 if("$<HOST_LINK:SHELL:LINKER:-rpath-link=$ENV{BUILD_PREFIX}/lib>" IN_LIST link_options)
-  message(FATAL_ERROR "Not expected rpath-link=env{BUILD_PREFIX} to be in the link options of `conda_env`"
+  message(
+    FATAL_ERROR
+    "Not expected rpath-link=env{BUILD_PREFIX} to be in the link options of `conda_env`"
   )
 endif()
 if("$<HOST_LINK:SHELL:LINKER:-rpath-link=$ENV{PREFIX}/lib>" IN_LIST link_options)
-  message(FATAL_ERROR "Not expected rpath-link=env{PREFIX} to be in the link options of `conda_env`"
+  message(
+    FATAL_ERROR
+    "Not expected rpath-link=env{PREFIX} to be in the link options of `conda_env`"
   )
 endif()
 if(NOT "$<HOST_LINK:SHELL:LINKER:-rpath-link=$ENV{CONDA_PREFIX}/lib>" IN_LIST link_options)
-  message(FATAL_ERROR "Expected for rpath-link=env{CONDA_PREFIX} to be in the link options of `conda_env`"
+  message(
+    FATAL_ERROR
+    "Expected for rpath-link=env{CONDA_PREFIX} to be in the link options of `conda_env`"
   )
 endif()
 

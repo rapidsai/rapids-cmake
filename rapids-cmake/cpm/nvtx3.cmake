@@ -43,15 +43,23 @@ function(rapids_cpm_nvtx3)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.nvtx3")
 
   include("${rapids-cmake-dir}/cpm/detail/package_info.cmake")
-  rapids_cpm_package_info(nvtx3 ${ARGN} VERSION_VAR version FIND_VAR find_args CPM_VAR
-                          cpm_find_info TO_INSTALL_VAR to_install)
+  rapids_cpm_package_info(
+    nvtx3
+    ${ARGN}
+    VERSION_VAR version
+    FIND_VAR find_args
+    CPM_VAR cpm_find_info
+    TO_INSTALL_VAR to_install
+  )
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
-  rapids_cpm_find(nvtx3 ${version} ${find_args}
-                  GLOBAL_TARGETS nvtx3-c nvtx3-cpp
-                  CPM_ARGS ${cpm_find_info}
-                  EXCLUDE_FROM_ALL ${exclude}
-                  OPTIONS "NVTX3_INSTALL ON")
+  rapids_cpm_find(
+    nvtx3
+    ${version}
+    ${find_args}
+    GLOBAL_TARGETS nvtx3-c nvtx3-cpp
+    CPM_ARGS ${cpm_find_info} EXCLUDE_FROM_ALL ${exclude} OPTIONS "NVTX3_INSTALL ON"
+  )
 
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
   rapids_cpm_display_patch_status(nvtx3)
@@ -61,5 +69,4 @@ function(rapids_cpm_nvtx3)
   set(nvtx3_BINARY_DIR "${nvtx3_BINARY_DIR}" PARENT_SCOPE)
   set(nvtx3_ADDED "${nvtx3_ADDED}" PARENT_SCOPE)
   set(nvtx3_VERSION ${version} PARENT_SCOPE)
-
 endfunction()

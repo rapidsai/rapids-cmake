@@ -11,13 +11,17 @@ unset(ENV{CONDA_PREFIX})
 
 rapids_cmake_install_lib_dir(lib_dir)
 if(DEFINED CMAKE_INSTALL_LIBDIR)
-  message(FATAL_ERROR "rapids_cmake_install_lib_dir shouldn't have caused the CMAKE_INSTALL_LIBDIR variable to exist"
+  message(
+    FATAL_ERROR
+    "rapids_cmake_install_lib_dir shouldn't have caused the CMAKE_INSTALL_LIBDIR variable to exist"
   )
 endif()
 
 include(GNUInstallDirs)
 if(NOT lib_dir STREQUAL CMAKE_INSTALL_LIBDIR)
-  message(FATAL_ERROR "rapids_cmake_install_lib_dir computed '${lib_dir}', but we expected '${CMAKE_INSTALL_LIBDIR}' as it should match GNUInstallDirs"
+  message(
+    FATAL_ERROR
+    "rapids_cmake_install_lib_dir computed '${lib_dir}', but we expected '${CMAKE_INSTALL_LIBDIR}' as it should match GNUInstallDirs"
   )
 endif()
 

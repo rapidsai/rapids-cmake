@@ -23,11 +23,13 @@ get_property(_multi_config GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
 if(_multi_config)
   set(_config_arg --config $<CONFIG>)
 endif()
-add_custom_target(check ALL
-                  COMMAND ${CMAKE_COMMAND} --install . --component Component1 --prefix
-                          install-component1/ ${_config_arg}
-                  COMMAND ${CMAKE_COMMAND} --install . --component Component2 --prefix
-                          install-component2/ ${_config_arg}
-                  COMMAND ${CMAKE_COMMAND} -P
-                          ${CMAKE_CURRENT_SOURCE_DIR}/check_installed_components.cmake)
+add_custom_target(
+  check
+  ALL
+  COMMAND
+    ${CMAKE_COMMAND} --install . --component Component1 --prefix install-component1/ ${_config_arg}
+  COMMAND
+    ${CMAKE_COMMAND} --install . --component Component2 --prefix install-component2/ ${_config_arg}
+  COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_SOURCE_DIR}/check_installed_components.cmake
+)
 add_dependencies(check test1 test2)

@@ -14,8 +14,12 @@ project(rapids-existing-target LANGUAGES CXX)
 
 include("${rapids-cmake-testing-dir}/cpm/make_fake_project_build_dir_with_config.cmake")
 
-make_fake_project_build_dir_with_config(RapidsTestFind 2021.01.02 RapidsTestFindConfig.cmake
-                                        RapidsTestFindConfigVersion.cmake)
+make_fake_project_build_dir_with_config(
+  RapidsTestFind
+  2021.01.02
+  RapidsTestFindConfig.cmake
+  RapidsTestFindConfigVersion.cmake
+)
 
 rapids_cpm_init()
 
@@ -23,14 +27,26 @@ set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_BINARY_DIR}/RapidsTestFind-build/")
 
 add_library(RapidsTest::RapidsTest IMPORTED INTERFACE)
 
-rapids_cpm_find(RapidsTestFind 2021.01.02 GLOBAL_TARGETS RapidsTest::RapidsTest
-                INSTALL_EXPORT_SET setA)
+rapids_cpm_find(
+  RapidsTestFind
+  2021.01.02
+  GLOBAL_TARGETS RapidsTest::RapidsTest
+  INSTALL_EXPORT_SET setA
+)
 
-rapids_cpm_find(RapidsTestFind 2021.01.02 GLOBAL_TARGETS RapidsTest::RapidsTest
-                INSTALL_EXPORT_SET setB)
+rapids_cpm_find(
+  RapidsTestFind
+  2021.01.02
+  GLOBAL_TARGETS RapidsTest::RapidsTest
+  INSTALL_EXPORT_SET setB
+)
 
-rapids_cpm_find(RapidsTestFind 2021.01.02 GLOBAL_TARGETS RapidsTest::RapidsTest
-                BUILD_EXPORT_SET setB)
+rapids_cpm_find(
+  RapidsTestFind
+  2021.01.02
+  GLOBAL_TARGETS RapidsTest::RapidsTest
+  BUILD_EXPORT_SET setB
+)
 
 function(verify_dependency_file file_name to_match)
   file(STRINGS "${file_name}" text)
@@ -46,7 +62,6 @@ function(verify_dependency_file file_name to_match)
   if(NOT package_dependency_found)
     message(FATAL_ERROR "${file_name} failed to export RapidsTestFind properly")
   endif()
-
 endfunction()
 
 set(file_path "${CMAKE_CURRENT_BINARY_DIR}/build_export_set.cmake")

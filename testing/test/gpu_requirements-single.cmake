@@ -12,6 +12,8 @@ rapids_test_gpu_requirements(fake_test GPUS 1 PERCENT 4)
 
 get_test_property(fake_test RESOURCE_GROUPS value)
 if(NOT value STREQUAL "1,gpus:4")
-  message(FATAL_ERROR "Unexpected RESOURCE_GROUPS test property value after rapids_test_gpu_requirements"
+  message(
+    FATAL_ERROR
+    "Unexpected RESOURCE_GROUPS test property value after rapids_test_gpu_requirements"
   )
 endif()

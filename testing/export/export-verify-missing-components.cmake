@@ -15,5 +15,10 @@ install(TARGETS fakeLib EXPORT fake_set)
 add_library(fakeLib_c1 INTERFACE)
 install(TARGETS fakeLib_c1 EXPORT fake_set_c1)
 
-rapids_export(BUILD FakEProJecT EXPORT_SET fake_set COMPONENTS_EXPORT_SET fake_set_c1
-              NAMESPACE test::)
+rapids_export(
+  BUILD
+  FakEProJecT
+  EXPORT_SET fake_set
+  COMPONENTS_EXPORT_SET fake_set_c1
+  NAMESPACE test::
+)

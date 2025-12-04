@@ -192,7 +192,14 @@ function(rapids_export type project_name)
   string(TOUPPER ${project_name} project_name_uppercase)
 
   set(options "")
-  set(one_value EXPORT_SET VERSION NAMESPACE DOCUMENTATION FINAL_CODE_BLOCK)
+  set(
+    one_value
+    EXPORT_SET
+    VERSION
+    NAMESPACE
+    DOCUMENTATION
+    FINAL_CODE_BLOCK
+  )
   set(multi_value GLOBAL_TARGETS COMPONENTS COMPONENTS_EXPORT_SET LANGUAGES)
   cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
@@ -218,17 +225,23 @@ function(rapids_export type project_name)
   endif()
 
   if(NOT DEFINED _RAPIDS_NAMESPACE)
-    message(VERBOSE
-            "rapids-cmake EXPORT: no NAMESPACE was provided. `${project_name}::` is recommended \
-if EXPORT_NAME isn't set for the export targets.")
+    message(
+      VERBOSE
+      "rapids-cmake EXPORT: no NAMESPACE was provided. `${project_name}::` is recommended \
+if EXPORT_NAME isn't set for the export targets."
+    )
   endif()
 
   if(_RAPIDS_COMPONENTS AND NOT _RAPIDS_COMPONENTS_EXPORT_SET)
-    message(FATAL_ERROR "rapids_export(${type} ${project_name} is missing COMPONENTS_EXPORT_SET as COMPONENTS was provided."
+    message(
+      FATAL_ERROR
+      "rapids_export(${type} ${project_name} is missing COMPONENTS_EXPORT_SET as COMPONENTS was provided."
     )
   endif()
   if(_RAPIDS_COMPONENTS_EXPORT_SET AND NOT _RAPIDS_COMPONENTS)
-    message(FATAL_ERROR "rapids_export(${type} ${project_name} is missing COMPONENTS as COMPONENTS_EXPORT_SET was provided."
+    message(
+      FATAL_ERROR
+      "rapids_export(${type} ${project_name} is missing COMPONENTS as COMPONENTS_EXPORT_SET was provided."
     )
   endif()
 
@@ -237,8 +250,13 @@ if EXPORT_NAME isn't set for the export targets.")
     set(_RAPIDS_HAS_COMPONENTS TRUE)
 
     foreach(comp comp_export_set IN ZIP_LISTS _RAPIDS_COMPONENTS _RAPIDS_COMPONENTS_EXPORT_SET)
-      string(REGEX REPLACE "(${project_name}[-_])|([-_]?${comp}[-_]?)|([-_]?export[s]?)" ""
-                           nice_export_name "${comp_export_set}")
+      string(
+        REGEX REPLACE
+        "(${project_name}[-_])|([-_]?${comp}[-_]?)|([-_]?export[s]?)"
+        ""
+        nice_export_name
+        "${comp_export_set}"
+      )
       if(nice_export_name STREQUAL "")
         string(PREPEND nice_export_name "${comp}")
       else()
@@ -248,8 +266,14 @@ if EXPORT_NAME isn't set for the export targets.")
       if(DEFINED _RAPIDS_NAMESPACE)
         set(_RAPIDS_COMPONENT_NAMESPACE "${_RAPIDS_NAMESPACE}")
       endif()
-      rapids_export_component(${type} ${project_name} ${comp} ${comp_export_set}
-                              ${nice_export_name} "${_RAPIDS_COMPONENT_NAMESPACE}")
+      rapids_export_component(
+        ${type}
+        ${project_name}
+        ${comp}
+        ${comp_export_set}
+        ${nice_export_name}
+        "${_RAPIDS_COMPONENT_NAMESPACE}"
+      )
     endforeach()
   endif()
 
@@ -277,25 +301,35 @@ if EXPORT_NAME isn't set for the export targets.")
     set(scratch_dir "${PROJECT_BINARY_DIR}/rapids-cmake/${project_name}/export/${project_name}")
 
     string(TIMESTAMP current_year "%Y" UTC)
-    configure_package_config_file("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/config.cmake.in"
-                                  "${scratch_dir}/${project_name}-config.cmake"
-                                  INSTALL_DESTINATION "${install_location}")
+    configure_package_config_file(
+      "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/config.cmake.in"
+      "${scratch_dir}/${project_name}-config.cmake"
+      INSTALL_DESTINATION "${install_location}"
+    )
 
     if(rapids_version_set)
       write_basic_package_version_file(
-        "${scratch_dir}/${project_name}-config-version.cmake" VERSION ${rapids_project_version}
-        COMPATIBILITY ${rapids_project_version_compat})
+        "${scratch_dir}/${project_name}-config-version.cmake"
+        VERSION ${rapids_project_version}
+        COMPATIBILITY ${rapids_project_version_compat}
+      )
     endif()
 
     if(DEFINED _RAPIDS_NAMESPACE)
-      install(EXPORT ${_RAPIDS_EXPORT_SET}
-              FILE ${project_name}-targets.cmake
-              NAMESPACE ${_RAPIDS_NAMESPACE}
-              DESTINATION "${install_location}"
-              COMPONENT ${project_name})
+      install(
+        EXPORT ${_RAPIDS_EXPORT_SET}
+        FILE ${project_name}-targets.cmake
+        NAMESPACE ${_RAPIDS_NAMESPACE}
+        DESTINATION "${install_location}"
+        COMPONENT ${project_name}
+      )
     else()
-      install(EXPORT ${_RAPIDS_EXPORT_SET} FILE ${project_name}-targets.cmake
-              DESTINATION "${install_location}" COMPONENT ${project_name})
+      install(
+        EXPORT ${_RAPIDS_EXPORT_SET}
+        FILE ${project_name}-targets.cmake
+        DESTINATION "${install_location}"
+        COMPONENT ${project_name}
+      )
     endif()
 
     if(TARGET rapids_export_install_${_RAPIDS_EXPORT_SET})
@@ -314,41 +348,51 @@ if EXPORT_NAME isn't set for the export targets.")
 
     # Install everything we have generated
     install(DIRECTORY "${scratch_dir}/" DESTINATION "${install_location}" COMPONENT ${project_name})
-
   else()
     set(install_location "${PROJECT_BINARY_DIR}")
     string(TIMESTAMP current_year "%Y" UTC)
-    configure_package_config_file("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/config.cmake.in"
-                                  "${install_location}/${project_name}-config.cmake"
-                                  INSTALL_DESTINATION "${install_location}")
+    configure_package_config_file(
+      "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/config.cmake.in"
+      "${install_location}/${project_name}-config.cmake"
+      INSTALL_DESTINATION "${install_location}"
+    )
 
     if(rapids_version_set)
       write_basic_package_version_file(
-        "${install_location}/${project_name}-config-version.cmake" VERSION ${rapids_project_version}
-        COMPATIBILITY ${rapids_project_version_compat})
+        "${install_location}/${project_name}-config-version.cmake"
+        VERSION ${rapids_project_version}
+        COMPATIBILITY ${rapids_project_version_compat}
+      )
     endif()
 
     if(DEFINED _RAPIDS_NAMESPACE)
-      export(EXPORT ${_RAPIDS_EXPORT_SET} NAMESPACE "${_RAPIDS_NAMESPACE}"
-             FILE "${install_location}/${project_name}-targets.cmake")
+      export(
+        EXPORT ${_RAPIDS_EXPORT_SET}
+        NAMESPACE "${_RAPIDS_NAMESPACE}"
+        FILE "${install_location}/${project_name}-targets.cmake"
+      )
     else()
       export(EXPORT ${_RAPIDS_EXPORT_SET} FILE "${install_location}/${project_name}-targets.cmake")
     endif()
 
     if(TARGET rapids_export_build_${_RAPIDS_EXPORT_SET})
       include("${rapids-cmake-dir}/export/write_dependencies.cmake")
-      rapids_export_write_dependencies(BUILD ${_RAPIDS_EXPORT_SET}
-                                       "${install_location}/${project_name}-dependencies.cmake")
+      rapids_export_write_dependencies(
+        BUILD
+        ${_RAPIDS_EXPORT_SET}
+        "${install_location}/${project_name}-dependencies.cmake"
+      )
     endif()
 
     if(DEFINED _RAPIDS_LANGUAGES)
       include("${rapids-cmake-dir}/export/write_language.cmake")
       foreach(lang IN LISTS _RAPIDS_LANGUAGES)
-        rapids_export_write_language(BUILD ${lang}
-                                     "${install_location}/${project_name}-${lang}-language.cmake")
+        rapids_export_write_language(
+          BUILD
+          ${lang}
+          "${install_location}/${project_name}-${lang}-language.cmake"
+        )
       endforeach()
     endif()
-
   endif()
-
 endfunction()

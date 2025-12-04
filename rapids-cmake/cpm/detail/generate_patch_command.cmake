@@ -33,12 +33,19 @@ function(rapids_cpm_generate_patch_command package_name version patch_command bu
 
   string(TOLOWER "${package_name}" normalized_pkg_name)
   get_property(json_path GLOBAL PROPERTY rapids_cpm_${normalized_pkg_name}_json_file)
-  get_property(override_json_path GLOBAL
-               PROPERTY rapids_cpm_${normalized_pkg_name}_override_json_file)
+  get_property(
+    override_json_path
+    GLOBAL
+    PROPERTY rapids_cpm_${normalized_pkg_name}_override_json_file
+  )
 
   string(JSON json_data ERROR_VARIABLE no_default_patch GET "${json_data}" patches)
-  string(JSON override_json_data ERROR_VARIABLE no_override_patch GET "${override_json_data}"
-         patches)
+  string(
+    JSON override_json_data
+    ERROR_VARIABLE no_override_patch
+    GET "${override_json_data}"
+    patches
+  )
   if(no_default_patch AND no_override_patch)
     return() # no patches
   endif()
@@ -52,7 +59,7 @@ function(rapids_cpm_generate_patch_command package_name version patch_command bu
   cmake_path(GET json_path PARENT_PATH current_json_dir)
 
   # Parse required fields
-  function(rapids_cpm_json_get_value json_data_ name)
+  function(generate_patch_command_json_get_value json_data_ name)
     string(JSON value ERROR_VARIABLE have_error GET "${json_data_}" ${name})
     if(NOT have_error)
       set(${name} ${value} PARENT_SCOPE)
@@ -77,20 +84,24 @@ function(rapids_cpm_generate_patch_command package_name version patch_command bu
     math(EXPR patch_count "${patch_count} - 1")
     foreach(index RANGE ${patch_count})
       string(JSON patch_data GET "${json_data}" ${index})
-      rapids_cpm_json_get_value(${patch_data} fixed_in)
+      generate_patch_command_json_get_value(${patch_data} fixed_in)
       if(NOT fixed_in OR version VERSION_LESS fixed_in)
         set(build)
 
-        rapids_cpm_json_get_value(${patch_data} file)
-        rapids_cpm_json_get_value(${patch_data} inline_patch)
-        rapids_cpm_json_get_value(${patch_data} issue)
-        rapids_cpm_json_get_value(${patch_data} build)
+        generate_patch_command_json_get_value(${patch_data} file)
+        generate_patch_command_json_get_value(${patch_data} inline_patch)
+        generate_patch_command_json_get_value(${patch_data} issue)
+        generate_patch_command_json_get_value(${patch_data} build)
 
         # Convert any embedded patch to a file.
         if(inline_patch)
           include("${rapids-cmake-dir}/cpm/detail/convert_patch_json.cmake")
-          rapids_cpm_convert_patch_json(FROM_JSON_TO_FILE inline_patch FILE_VAR file PACKAGE_NAME
-                                        ${package_name} INDEX ${index})
+          rapids_cpm_convert_patch_json(
+            FROM_JSON_TO_FILE inline_patch
+            FILE_VAR file
+            PACKAGE_NAME ${package_name}
+            INDEX ${index}
+          )
         endif()
 
         if(NOT build)
@@ -107,7 +118,7 @@ function(rapids_cpm_generate_patch_command package_name version patch_command bu
           list(APPEND patch_issues_to_ref "${issue}")
 
           set(required FALSE)
-          rapids_cpm_json_get_value(${patch_data} required)
+          generate_patch_command_json_get_value(${patch_data} required)
           list(APPEND patch_required_to_apply "${required}")
         endif()
         unset(file)
@@ -122,8 +133,11 @@ function(rapids_cpm_generate_patch_command package_name version patch_command bu
   set(err_file "${CMAKE_BINARY_DIR}/rapids-cmake/patches/${package_name}/err")
   if(patch_files_to_run)
     string(TIMESTAMP current_year "%Y" UTC)
-    configure_file(${rapids-cmake-dir}/cpm/patches/command_template.cmake.in "${patch_script}"
-                   @ONLY)
+    configure_file(
+      ${rapids-cmake-dir}/cpm/patches/command_template.cmake.in
+      "${patch_script}"
+      @ONLY
+    )
     set(${patch_command} PATCH_COMMAND ${CMAKE_COMMAND} -P ${patch_script} PARENT_SCOPE)
   else()
     # remove any old patch / log files that exist and are no longer needed due to a change in the

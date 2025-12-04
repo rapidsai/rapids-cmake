@@ -11,7 +11,9 @@ set(CMAKE_PREFIX_PATH "${rapids-cmake-testing-dir}/find/find_package-components/
 rapids_find_package(FakeDependency 11 COMPONENTS AAAAA BUILD_EXPORT_SET test_export_set)
 
 if(FakeDependency_FOUND)
-  message(FATAL_ERROR "rapids_find_package recorded incorrect FOUND state for a failed find_package request"
+  message(
+    FATAL_ERROR
+    "rapids_find_package recorded incorrect FOUND state for a failed find_package request"
   )
 endif()
 

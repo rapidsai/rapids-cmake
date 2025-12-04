@@ -26,7 +26,14 @@ function(rapids_cpm_convert_patch_json)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.conver_path_json")
 
   set(options)
-  set(one_value FROM_JSON_TO_FILE FROM_FILE_TO_JSON FILE_VAR PACKAGE_NAME INDEX)
+  set(
+    one_value
+    FROM_JSON_TO_FILE
+    FROM_FILE_TO_JSON
+    FILE_VAR
+    PACKAGE_NAME
+    INDEX
+  )
   set(multi_value)
   cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
@@ -41,8 +48,9 @@ function(rapids_cpm_convert_patch_json)
     string(JSON json_content GET "${json}" "content")
 
     # Figure out the file path
-    set(file
-        "${CMAKE_BINARY_DIR}/rapids-cmake/patches/${_RAPIDS_PACKAGE_NAME}/embedded_patch_${_RAPIDS_INDEX}.${type}"
+    set(
+      file
+      "${CMAKE_BINARY_DIR}/rapids-cmake/patches/${_RAPIDS_PACKAGE_NAME}/embedded_patch_${_RAPIDS_INDEX}.${type}"
     )
 
     # Transform from a list of strings to a single file
@@ -78,16 +86,17 @@ function(rapids_cpm_convert_patch_json)
       string(JSON inline_patch SET "${inline_patch}" ${content_length} "\"${line}\"")
     endforeach()
 
-    set(json_content
-        [=[{
+    set(
+      json_content
+      [=[{
       "type" : "",
       "content" : []
-    }]=])
+    }]=]
+    )
     string(JSON json_content SET "${json_content}" "type" "\"${patch_ext}\"")
     string(JSON json_content SET "${json_content}" "content" "${inline_patch}")
     set(${_RAPIDS_FROM_FILE_TO_JSON} "${json_content}" PARENT_SCOPE)
   else()
     message(FATAL_ERROR "rapids_cpm_convert_patch_json unsupported mode: ${mode}")
   endif()
-
 endfunction()

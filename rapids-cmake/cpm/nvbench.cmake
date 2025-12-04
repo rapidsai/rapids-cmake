@@ -63,8 +63,14 @@ function(rapids_cpm_nvbench)
   endif()
 
   include("${rapids-cmake-dir}/cpm/detail/package_info.cmake")
-  rapids_cpm_package_info(nvbench ${ARGN} VERSION_VAR version FIND_VAR find_args CPM_VAR
-                          cpm_find_info TO_INSTALL_VAR to_install)
+  rapids_cpm_package_info(
+    nvbench
+    ${ARGN}
+    VERSION_VAR version
+    FIND_VAR find_args
+    CPM_VAR cpm_find_info
+    TO_INSTALL_VAR to_install
+  )
 
   # CUDA::nvml is an optional package and might not be installed ( aka conda )
   find_package(CUDAToolkit REQUIRED)
@@ -74,15 +80,21 @@ function(rapids_cpm_nvbench)
   endif()
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
-  rapids_cpm_find(nvbench ${version} ${find_args}
-                  GLOBAL_TARGETS nvbench::nvbench nvbench::main
-                  CPM_ARGS ${cpm_find_info}
-                  OPTIONS "NVBench_ENABLE_NVML ${nvbench_with_nvml}"
-                          "NVBench_ENABLE_CUPTI OFF"
-                          "NVBench_ENABLE_EXAMPLES OFF"
-                          "NVBench_ENABLE_TESTING OFF"
-                          "NVBench_ENABLE_INSTALL_RULES ${to_install}"
-                          "BUILD_SHARED_LIBS ${build_shared}")
+  rapids_cpm_find(
+    nvbench
+    ${version}
+    ${find_args}
+    GLOBAL_TARGETS nvbench::nvbench nvbench::main
+    CPM_ARGS
+      ${cpm_find_info}
+      OPTIONS
+        "NVBench_ENABLE_NVML ${nvbench_with_nvml}"
+        "NVBench_ENABLE_CUPTI OFF"
+        "NVBench_ENABLE_EXAMPLES OFF"
+        "NVBench_ENABLE_TESTING OFF"
+        "NVBench_ENABLE_INSTALL_RULES ${to_install}"
+        "BUILD_SHARED_LIBS ${build_shared}"
+  )
 
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
   rapids_cpm_display_patch_status(nvbench)

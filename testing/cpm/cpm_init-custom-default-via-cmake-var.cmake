@@ -7,8 +7,9 @@
 include(${rapids-cmake-dir}/cpm/init.cmake)
 
 # Need to write out the custom default file that is real but should be ignored
-file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/defaults_ignored.json
-     [=[
+file(
+  WRITE ${CMAKE_CURRENT_BINARY_DIR}/defaults_ignored.json
+  [=[
 {
   "packages": {
     "nvbench": {
@@ -18,11 +19,13 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/defaults_ignored.json
     }
   }
 }
-  ]=])
+  ]=]
+)
 
 # Need to write out the custom default file that will be used by the CMake var
-file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/defaults.json
-     [=[
+file(
+  WRITE ${CMAKE_CURRENT_BINARY_DIR}/defaults.json
+  [=[
 {
   "packages": {
     "nvbench": {
@@ -32,7 +35,8 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/defaults.json
     }
   }
 }
-  ]=])
+  ]=]
+)
 
 set(RAPIDS_CMAKE_CPM_DEFAULT_VERSION_FILE ${CMAKE_CURRENT_BINARY_DIR}/defaults.json)
 rapids_cpm_init(CUSTOM_DEFAULT_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/defaults_ignored.json")
@@ -42,11 +46,15 @@ include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
 rapids_cpm_package_details_internal(nvbench version repository tag src_subdir shallow exclude)
 
 if(NOT version STREQUAL "custom_version")
-  message(FATAL_ERROR "custom default version field was ignored. ${version} found instead of custom_version"
+  message(
+    FATAL_ERROR
+    "custom default version field was ignored. ${version} found instead of custom_version"
   )
 endif()
 if(NOT repository STREQUAL "my_url")
-  message(FATAL_ERROR "custom default git_url field was ignored. ${repository} found instead of my_url"
+  message(
+    FATAL_ERROR
+    "custom default git_url field was ignored. ${repository} found instead of my_url"
   )
 endif()
 if(NOT tag STREQUAL "my_tag")

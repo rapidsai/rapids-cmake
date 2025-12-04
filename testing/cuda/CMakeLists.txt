@@ -6,10 +6,16 @@
 # =============================================================================
 add_cmake_config_test(rapids-cuda.cmake)
 
-add_cmake_config_test(enable_fatbin_compression-invalid-tuning-flag.cmake SHOULD_FAIL
-                      "rapids_cuda_enable_fatbin_compression `TUNE_FOR`")
-add_cmake_config_test(enable_fatbin_compression-no-arguments.cmake SHOULD_FAIL
-                      "rapids_cuda_enable_fatbin_compression requires")
+add_cmake_config_test(
+  enable_fatbin_compression-invalid-tuning-flag.cmake
+  SHOULD_FAIL
+  "rapids_cuda_enable_fatbin_compression `TUNE_FOR`"
+)
+add_cmake_config_test(
+  enable_fatbin_compression-no-arguments.cmake
+  SHOULD_FAIL
+  "rapids_cuda_enable_fatbin_compression requires"
+)
 add_cmake_config_test(enable_fatbin_compression-target.cmake)
 add_cmake_config_test(enable_fatbin_compression-var.cmake)
 

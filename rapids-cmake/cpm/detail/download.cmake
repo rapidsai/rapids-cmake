@@ -57,16 +57,13 @@ function(rapids_cpm_download)
         # Also support the rapids-cmake download location ( cmake/ vs cpm/ )
         set(CPM_DOWNLOAD_LOCATION "${CPM_SOURCE_CACHE}/cmake/CPM_${CPM_DOWNLOAD_VERSION}.cmake")
       endif()
-
     elseif(DEFINED ENV{CPM_SOURCE_CACHE})
-
       # default to the same location that cpm computes
       set(CPM_DOWNLOAD_LOCATION "$ENV{CPM_SOURCE_CACHE}/cpm/CPM_${CPM_DOWNLOAD_VERSION}.cmake")
       if(EXISTS "$ENV{CPM_SOURCE_CACHE}/cmake/CPM_${CPM_DOWNLOAD_VERSION}.cmake")
         # Also support the rapids-cmake download location ( cmake/ vs cpm/ )
         set(CPM_DOWNLOAD_LOCATION "$ENV{CPM_SOURCE_CACHE}/cmake/CPM_${CPM_DOWNLOAD_VERSION}.cmake")
       endif()
-
     else()
       set(CPM_DOWNLOAD_LOCATION "${CMAKE_BINARY_DIR}/cmake/CPM_${CPM_DOWNLOAD_VERSION}.cmake")
     endif()
@@ -79,7 +76,9 @@ function(rapids_cpm_download)
     endif()
     rapids_cmake_download_with_retry(
       https://github.com/cpm-cmake/CPM.cmake/releases/download/v${CPM_DOWNLOAD_VERSION}/CPM.cmake
-      ${CPM_DOWNLOAD_LOCATION} ${CPM_DOWNLOAD_SHA256_HASH})
+      ${CPM_DOWNLOAD_LOCATION}
+      ${CPM_DOWNLOAD_SHA256_HASH}
+    )
   endif()
 
   include(${CPM_DOWNLOAD_LOCATION})
@@ -89,5 +88,4 @@ function(rapids_cpm_download)
   # Push up the modified CMAKE_MODULE_PATh to allow `find_package` calls to find packages that CPM
   # already added.
   set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" PARENT_SCOPE)
-
 endfunction()

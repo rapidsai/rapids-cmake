@@ -40,8 +40,9 @@ for packages included via `CPM` to enable extra languages.
 function(rapids_export_write_language type lang file_path)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.export.write_language")
 
-  set(code_to_inject
-      [=[
+  set(
+    code_to_inject
+    [=[
 # Enable the requested language, which is only supported
 # in the highest directory that 'uses' a language.
 # We have to presume all directories use a language
@@ -132,9 +133,9 @@ endforeach()
 unset(rapids_existing_calls)
 unset(rapids_directories)
 unset(rapids_root_directory)
-]=])
+]=]
+  )
 
   string(CONFIGURE "${code_to_inject}" code_to_inject @ONLY)
   file(WRITE "${file_path}" "${code_to_inject}")
-
 endfunction()

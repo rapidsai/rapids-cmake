@@ -68,8 +68,10 @@ function(rapids_cuda_init_architectures project_name)
     if(CMAKE_CUDA_ARCHITECTURES STREQUAL "RAPIDS" OR CMAKE_CUDA_ARCHITECTURES STREQUAL "NATIVE")
       set(cuda_arch_mode "${CMAKE_CUDA_ARCHITECTURES}")
     endif()
-  elseif(DEFINED ENV{CUDAARCHS} AND ("$ENV{CUDAARCHS}" STREQUAL "RAPIDS" OR "$ENV{CUDAARCHS}"
-                                                                            STREQUAL "NATIVE"))
+  elseif(
+    DEFINED ENV{CUDAARCHS}
+    AND ("$ENV{CUDAARCHS}" STREQUAL "RAPIDS" OR "$ENV{CUDAARCHS}" STREQUAL "NATIVE")
+  )
     set(cuda_arch_mode "$ENV{CUDAARCHS}")
   elseif(NOT (DEFINED ENV{CUDAARCHS} OR DEFINED CMAKE_CUDA_ARCHITECTURES))
     set(cuda_arch_mode "RAPIDS")
@@ -94,10 +96,12 @@ function(rapids_cuda_init_architectures project_name)
     #
     # If an existing file was specified for loading post `project` we will chain include them
     if(DEFINED CMAKE_PROJECT_${project_name}_INCLUDE)
-      set(_RAPIDS_PREVIOUS_CMAKE_PROJECT_INCLUDE "${CMAKE_PROJECT_${project_name}_INCLUDE}"
-          PARENT_SCOPE)
+      set(
+        _RAPIDS_PREVIOUS_CMAKE_PROJECT_INCLUDE
+        "${CMAKE_PROJECT_${project_name}_INCLUDE}"
+        PARENT_SCOPE
+      )
     endif()
     set(CMAKE_PROJECT_${project_name}_INCLUDE "${load_file}" PARENT_SCOPE)
   endif()
-
 endfunction()
