@@ -21,10 +21,10 @@ include(rapids-find)
 
 rapids_cuda_init_architectures(integration)
 
-project(integration VERSION 21.12 LANGUAGES C CXX CUDA)
+project(integration VERSION 26.02 LANGUAGES C CXX CUDA)
 message(STATUS "Example: CMAKE_CUDA_ARCHITECTURES: ${CMAKE_CUDA_ARCHITECTURES}")
 
-option(CUDA_STATIC_RUNTIME "Use CUDA static runtime" OFF)
+option(CUDA_STATIC_RUNTIME "Use CUDA static runtime" ON)
 # Set a default build type if none was specified
 rapids_cmake_build_type(Release)
 
