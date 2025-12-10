@@ -377,6 +377,11 @@
           "INSTALL_DIR": "1"
         }
       },
+      "rapids_cython_find_prefix_paths": {
+        "pargs": {
+          "nargs": "2"
+        }
+      },
       "rapids_cython_add_rpath_entries": {
         "pargs": {
           "nargs": "0"
