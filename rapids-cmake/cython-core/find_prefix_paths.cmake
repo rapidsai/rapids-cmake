@@ -30,7 +30,7 @@ function(rapids_cython_find_prefix_paths python_executable paths_var)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cython.init")
 
   set(_get_entry_points
-[=[
+      [=[
 import os
 from importlib.metadata import entry_points
 from importlib.resources import files
@@ -46,15 +46,11 @@ for ep in entry_points(group="cmake.prefix"):
         paths.append(os.fspath(p))
 
 print(";".join(f"{x}" for x in paths))
-]=]
-  )
+]=])
 
   # Execute the Python at configure time and capture output
-  execute_process(
-      COMMAND ${python_executable} -c "${_get_entry_points}"
-      OUTPUT_VARIABLE prefix_dirs
-      OUTPUT_STRIP_TRAILING_WHITESPACE
-  )
+  execute_process(COMMAND ${python_executable} -c "${_get_entry_points}" OUTPUT_VARIABLE prefix_dirs
+                  OUTPUT_STRIP_TRAILING_WHITESPACE)
 
   set(${paths_var} ${prefix_dirs} PARENT_SCOPE)
 
