@@ -17,3 +17,5 @@ add_cmake_config_test(cython-core_create_modules_with_prefix)
 add_cmake_build_test(cython-core_create_modules_component)
 
 add_cmake_config_test(cython-core_add_rpath_entries)
+
+add_cmake_config_test(cython-core_find_prefix_paths)

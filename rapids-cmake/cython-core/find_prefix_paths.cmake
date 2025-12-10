@@ -17,7 +17,7 @@ Find all paths that should be added to CMAKE_PREFIX_PATH according to Python ent
 
 .. code-block:: cmake
 
-  rapids_cython_find_prefix_paths(<paths_var>)
+  rapids_cython_find_prefix_paths(<python_executable> <paths_var>)
 
 Result Variables
 ^^^^^^^^^^^^^^^^
@@ -25,12 +25,10 @@ Result Variables
   paths that should be added to the prefix path.
 
 #]=======================================================================]
-function(rapids_cython_find_prefix_paths paths_var)
+function(rapids_cython_find_prefix_paths python_executable paths_var)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cython.init")
 
-  find_package(Python COMPONENTS Interpreter REQUIRED)
-
-  set(_PY_SNIPPET
+  set(_get_entry_points
 [=[
 import os
 from importlib.metadata import entry_points
@@ -46,13 +44,13 @@ for ep in entry_points(group="cmake.prefix"):
     else:
         paths.append(os.fspath(p))
 
-print(";".join(f"{x}/lib64/cmake" for x in paths))
+print(";".join(f"{x}" for x in paths))
 ]=]
   )
 
   # Execute the Python at configure time and capture output
   execute_process(
-      COMMAND ${Python_EXECUTABLE} -c "${_PY_SNIPPET}"
+      COMMAND ${python_executable} -c "${_get_entry_points}"
       OUTPUT_VARIABLE prefix_dirs
       OUTPUT_STRIP_TRAILING_WHITESPACE
   )
