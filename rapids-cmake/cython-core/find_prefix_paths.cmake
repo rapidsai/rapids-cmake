@@ -19,10 +19,11 @@ Find all paths that should be added to CMAKE_PREFIX_PATH according to Python ent
 
   rapids_cython_find_prefix_paths(<python_executable> <paths_var>)
 
-Result Variables
-^^^^^^^^^^^^^^^^
-  :cmake:variable:`<paths_var>` will be set to a list of
-  paths that should be added to the prefix path.
+``python_executable``
+  Path to the Python executable whose entry points to search
+
+``paths_var``
+  The variable to set with the resulting list of paths.
 
 #]=======================================================================]
 function(rapids_cython_find_prefix_paths python_executable paths_var)
