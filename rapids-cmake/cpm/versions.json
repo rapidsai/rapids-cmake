@@ -16,7 +16,7 @@
       "version": "3.2.0",
       "git_shallow": false,
       "git_url": "https://github.com/NVIDIA/cccl.git",
-      "git_tag": "5d84ac45162ac2e6ebd2ca3c6a5c061469a8c63c"
+      "git_tag": "5a8484481970da09a782dbe6395b83fe252130fc"
     },
     "cuco": {
       "version": "0.0.1",
@@ -66,7 +66,7 @@
     "rmm": {
       "version": "${rapids-cmake-version}",
       "git_url": "https://github.com/bdice/rmm.git",
-      "git_tag": "859c1c41ed5863c5feae9ee86fc4081fdc3c55e3",
+      "git_tag": "8c59fdcfa16bb77dea7f3e2dce89f7d119f6ddb8",
       "source_subdir": "cpp"
     }
   }
