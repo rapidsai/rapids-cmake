@@ -40,12 +40,11 @@ for ep in entry_points(group="cmake.prefix"):
     p = files(ep.load())
     # Some entry_points expose a _paths attribute
     if hasattr(p, "_paths"):
-        for s in p._paths:
-            paths.append(os.fspath(s))
+        paths.extend(map(os.fspath, p._paths))
     else:
         paths.append(os.fspath(p))
 
-print(";".join(f"{x}" for x in paths))
+print(";".join(paths))
 ]=])
 
   # Execute the Python at configure time and capture output
