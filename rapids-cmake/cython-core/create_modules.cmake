@@ -126,8 +126,13 @@ function(rapids_cython_create_modules)
                        DEPFILE ${depfile}
                        COMMENT "Transpiling ${cython_filename} to ${cpp_filename}")
 
-    python_add_library(${cython_module} MODULE "${CMAKE_CURRENT_BINARY_DIR}/${cpp_filename}"
-                       WITH_SOABI)
+    if(NOT "${SKBUILD_SABI_VERSION}" STREQUAL "")
+      python_add_library(${cython_module} MODULE "${CMAKE_CURRENT_BINARY_DIR}/${cpp_filename}"
+                         WITH_SOABI USE_SABI ${SKBUILD_SABI_VERSION})
+    else()
+      python_add_library(${cython_module} MODULE "${CMAKE_CURRENT_BINARY_DIR}/${cpp_filename}"
+                         WITH_SOABI)
+    endif()
 
     # The final library name must match the original filename and must ignore the prefix.
     set_target_properties(${cython_module} PROPERTIES LIBRARY_OUTPUT_NAME ${cython_module_filename})

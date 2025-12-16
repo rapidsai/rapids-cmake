@@ -43,7 +43,8 @@ macro(rapids_cython_init)
       message(TRACE "Accessing SKBUILD variable ${SKBUILD}")
     endif()
 
-    find_package(Python COMPONENTS Interpreter Development.Module REQUIRED)
+    find_package(Python REQUIRED COMPONENTS Interpreter Development.Module
+                                            ${SKBUILD_SABI_COMPONENT})
     find_program(CYTHON "cython" REQUIRED)
 
     if(NOT CYTHON_FLAGS)
