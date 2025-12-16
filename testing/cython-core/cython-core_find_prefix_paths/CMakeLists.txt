@@ -33,7 +33,6 @@ execute_process(COMMAND "${Python_EXECUTABLE}" "-c" "${_get_platlib}"
 string(STRIP "${site_packages_path}" site_packages_path)
 set(libucx_path "${site_packages_path}/libucx")
 
-execute_process(COMMAND "rm" "-rf" "${env_dir}")
 if(NOT libucx_path IN_LIST prefix_paths)
   message(FATAL_ERROR "Expected to find libucx path '${libucx_path}' in prefix paths but did not.")
 endif()
