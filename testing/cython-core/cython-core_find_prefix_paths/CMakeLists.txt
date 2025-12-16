@@ -14,6 +14,7 @@ project(rapids_cython-find_prefix_path_test LANGUAGES C)
 find_package(Python REQUIRED COMPONENTS Interpreter)
 
 set(env_dir "${CMAKE_CURRENT_BINARY_DIR}/env")
+file(REMOVE_RECURSE "${env_dir}")
 execute_process(COMMAND ${Python_EXECUTABLE} -m "venv" "${env_dir}")
 
 set(Python_EXECUTABLE "${env_dir}/bin/python")
