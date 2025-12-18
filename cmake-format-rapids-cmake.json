@@ -1,6 +1,30 @@
 {
   "parse": {
     "additional_commands": {
+      "rapids_cmake_bin2c": {
+        "pargs": {
+          "nargs": 3,
+          "flags": [
+            "STATIC",
+            "CONST"
+          ]
+        },
+        "kwargs": {
+          "ROW_WIDTH": 1
+        }
+      },
+      "rapids_cmake_bin2c_custom_command": {
+        "pargs": {
+          "nargs": 3,
+          "flags": [
+            "STATIC",
+            "CONST"
+          ]
+        },
+        "kwargs": {
+          "ROW_WIDTH": 1
+        }
+      },
       "rapids_cmake_build_type": {
         "pargs": {
           "nargs": 1

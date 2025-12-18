@@ -57,3 +57,5 @@ add_cmake_build_test(write_version-all-zeroes)
 add_cmake_build_test(write_version-custom-prefix)
 add_cmake_build_test(write_version-leading-zeroes)
 add_cmake_build_test(write_version-relative)
+
+add_cmake_build_test(bin2c)
