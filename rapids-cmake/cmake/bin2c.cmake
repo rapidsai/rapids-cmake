@@ -79,7 +79,7 @@ a custom command rather than configure time.
 
   .. code-block:: cmake
 
-    rapids_cmake_bin2c( output_file input_file variable_name [STATIC] [CONST] [ROW_WIDTH <row-width>] )
+    rapids_cmake_bin2c_custom_command( output_file input_file variable_name [STATIC] [CONST] [ROW_WIDTH <row-width>] )
 
 #]=======================================================================]
 function(rapids_cmake_bin2c_custom_command output_file input_file array_name)
