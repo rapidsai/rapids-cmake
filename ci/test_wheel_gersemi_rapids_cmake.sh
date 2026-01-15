@@ -7,7 +7,7 @@ set -euo pipefail
 source rapids-init-pip
 
 # Download the gersemi-rapids-cmake wheel built in the previous step
-WHEELHOUSE=$(rapids-download-from-github "$(rapids-package-name "wheel_python" gersemi-rapids-cmake --pure)")
+WHEELHOUSE=$(rapids-download-from-github "$(RAPIDS_PY_WHEEL_NAME=gersemi-rapids-cmake rapids-package-name "wheel_python" rapids-cmake --pure)")
 
 rapids-logger "Install gersemi-rapids-cmake and its basic dependencies in a virtual environment"
 
