@@ -1,3 +1,40 @@
+# rapids-cmake 25.12.00 (10 Dec 2025)
+
+### 🚨 Breaking Changes
+* Remove deprecated support for fmt and spdlog by @bdice in https://github.com/rapidsai/rapids-cmake/pull/914
+* Remove deprecated support for CUDA 11 by @bdice in https://github.com/rapidsai/rapids-cmake/pull/913
+* Remove spdlog and fmt and move to rapids-logger 0.2.1 by @vyasr in https://github.com/rapidsai/rapids-cmake/pull/918
+* Require CUDA 12.2+ by @jakirkham in https://github.com/rapidsai/rapids-cmake/pull/934
+### 🐛 Bug Fixes
+* Fix `RAPIDS_BRANCH` file by @KyleFromNVIDIA in https://github.com/rapidsai/rapids-cmake/pull/910
+* Temporarily restore spdlog and fmt by @vyasr in https://github.com/rapidsai/rapids-cmake/pull/917
+* Update rapids-logger to 0.2.2 by @vyasr in https://github.com/rapidsai/rapids-cmake/pull/920
+* Can't use Genex in `GLOBAL_TARGETS` by @robertmaynard in https://github.com/rapidsai/rapids-cmake/pull/921
+* Update rapids-logger to 0.2.3 by @vyasr in https://github.com/rapidsai/rapids-cmake/pull/923
+* refactored update-version.sh to handle new branching strategy by @rockhowse in https://github.com/rapidsai/rapids-cmake/pull/936
+### 🚀 New Features
+* Adding `ENABLE_UNSTABLE` option for `rapids_cpm_cccl` by @nirandaperera in https://github.com/rapidsai/rapids-cmake/pull/919
+### 🛠️ Improvements
+* Update nvbench by @bdice in https://github.com/rapidsai/rapids-cmake/pull/895
+* Update to CCCL v3.1.0 by @bdice in https://github.com/rapidsai/rapids-cmake/pull/906
+* Upgrade to CPM 0.42.0 by @vyasr in https://github.com/rapidsai/rapids-cmake/pull/916
+* Forward-merge branch-25.10 into branch-25.12 by @bdice in https://github.com/rapidsai/rapids-cmake/pull/927
+* Update CCCL to final v3.1.0 release tag by @bdice in https://github.com/rapidsai/rapids-cmake/pull/928
+* Use main in RAPIDS_BRANCH by @bdice in https://github.com/rapidsai/rapids-cmake/pull/930
+* Use main branch by @bdice in https://github.com/rapidsai/rapids-cmake/pull/931
+* Use main shared-workflows branch by @bdice in https://github.com/rapidsai/rapids-cmake/pull/932
+* Use SPDX for all copyright headers by @KyleFromNVIDIA in https://github.com/rapidsai/rapids-cmake/pull/933
+* Bump cuco version to fetch stream-ordered allocator by @PointKernel in https://github.com/rapidsai/rapids-cmake/pull/929
+* Bump cuco version to bypass equal check for multiset/multimap by @PointKernel in https://github.com/rapidsai/rapids-cmake/pull/935
+* Some more SPDX fixes by @KyleFromNVIDIA in https://github.com/rapidsai/rapids-cmake/pull/937
+* Update CCCL to get backports for XGBoost compatibility by @bdice in https://github.com/rapidsai/rapids-cmake/pull/944
+
+## New Contributors
+* @nirandaperera made their first contribution in https://github.com/rapidsai/rapids-cmake/pull/919
+* @rockhowse made their first contribution in https://github.com/rapidsai/rapids-cmake/pull/936
+
+**Full Changelog**: https://github.com/rapidsai/rapids-cmake/compare/v25.12.00a...release/25.12
+
 # rapids-cmake 25.10.00 (8 Oct 2025)
 
 ## 🚨 Breaking Changes

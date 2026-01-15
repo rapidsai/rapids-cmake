@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -19,8 +19,9 @@ to include support for `RAPIDS` and `NATIVE` to make CUDA architecture compilati
 
     rapids_cuda_init_architectures(<project_name>)
 
-Used before enabling the CUDA language either via :cmake:command:`project() <cmake:command:project>` to establish the
-CUDA architectures to be compiled for. Parses the :cmake:envvar:`ENV{CUDAARCHS} <cmake:envvar:CUDAARCHS>`, and
+Used before enabling the CUDA language either via :cmake:command:`project() <cmake:command:project>` or
+:cmake:command:`enable_language() <cmake:command:enable_language>` to establish the CUDA architectures
+to be compiled for. Parses the :cmake:envvar:`ENV{CUDAARCHS} <cmake:envvar:CUDAARCHS>`, and
 :cmake:variable:`CMAKE_CUDA_ARCHITECTURES <cmake:variable:CMAKE_CUDA_ARCHITECTURES>` for special values
 `RAPIDS`, and `NATIVE`.
 

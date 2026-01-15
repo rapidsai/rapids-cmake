@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2023-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -46,7 +46,11 @@ macro(rapids_cython_init)
       message(TRACE "Accessing SKBUILD variable ${SKBUILD}")
     endif()
 
-    find_package(Python COMPONENTS Interpreter Development.Module REQUIRED)
+    find_package(
+      Python
+      REQUIRED
+      COMPONENTS Interpreter Development.Module ${SKBUILD_SABI_COMPONENT}
+    )
     find_program(CYTHON "cython" REQUIRED)
 
     if(NOT CYTHON_FLAGS)

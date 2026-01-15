@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2023-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -99,6 +99,11 @@ function(rapids_cpm_cccl)
       set_property(GLOBAL PROPERTY rapids_cmake_cccl_install_rules ON)
     endif()
   endif()
+
+  # CCCL's install rules use ${CCCL_TOPLEVEL_PROJECT} as a positional argument. When CCCL is
+  # included via add_subdirectory (not as the top-level project), this variable is undefined,
+  # causing cmake_parse_arguments to misparse the function call. Explicitly set it to OFF.
+  set(CCCL_TOPLEVEL_PROJECT OFF)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
   rapids_cpm_find(
