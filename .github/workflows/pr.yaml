@@ -62,6 +62,8 @@ jobs:
       package-name: gersemi-rapids-cmake
       package-type: python
       pure-wheel: true
+      # This selects "ARCH=amd64 + the earliest supported Python + CUDA".
+      matrix_filter: map(select(.ARCH == "amd64")) | min_by([(.PY_VER|split(".")|map(tonumber)), (.CUDA_VER|split(".")|map(tonumber))]) | [.]
   wheel-tests-gersemi-rapids-cmake:
     needs: wheel-build-gersemi-rapids-cmake
     secrets: inherit
@@ -69,8 +71,8 @@ jobs:
     with:
       build_type: pull-request
       script: ci/test_wheel_gersemi_rapids_cmake.sh
-      # This selects "ARCH=amd64 + the latest supported Python + CUDA".
-      matrix_filter: map(select(.ARCH == "amd64")) | max_by([(.PY_VER|split(".")|map(tonumber)), (.CUDA_VER|split(".")|map(tonumber))]) | [.]
+      # This selects "ARCH=amd64 + the earliest supported Python + CUDA".
+      matrix_filter: map(select(.ARCH == "amd64")) | min_by([(.PY_VER|split(".")|map(tonumber)), (.CUDA_VER|split(".")|map(tonumber))]) | [.]
   telemetry-summarize:
     # This job must use a self-hosted runner to record telemetry traces.
     runs-on: linux-amd64-cpu4
