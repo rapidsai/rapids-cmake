@@ -23,7 +23,7 @@ paths = (
 pool = AdaptivePool(1)
 warning_sink = WarningSink(False)
 
-found_definitions = find_all_custom_command_definitions(paths, pool, warning_sink)
+found_definitions = find_all_custom_command_definitions(paths, pool, warning_sink, True)
 
 if warning_sink.records:
     warning_sink.flush()

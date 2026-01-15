@@ -170,4 +170,4 @@ dependencies:
     common:
       - output_types: [requirements, pyproject]
         packages:
-          - gersemi
+          - gersemi==0.25.1

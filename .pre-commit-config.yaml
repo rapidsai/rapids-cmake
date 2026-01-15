@@ -103,7 +103,7 @@ repos:
         language: python
         types: [cmake]
         additional_dependencies:
-          - &gersemi gersemi==0.23.2
+          - &gersemi gersemi==0.25.1
         pass_filenames: false
       - id: gersemi-rapids-cmake
         name: gersemi-rapids-cmake
