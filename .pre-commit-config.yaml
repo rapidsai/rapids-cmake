@@ -82,6 +82,21 @@ repos:
         args: [--fix, --project-prefix=rapids, --no-cpp, --no-python]
   - repo: local
     hooks:
+      - id: cmake-lint
+        name: cmake-lint
+        entry: ./ci/checks/run-cmake-format.sh cmake-lint
+        language: python
+        types: [cmake]
+        # Note that pre-commit autoupdate does not update the versions
+        # of dependencies, so we'll have to update this manually.
+        additional_dependencies:
+          - cmakelang==0.6.13
+        verbose: true
+        require_serial: true
+        exclude: |
+          (?x)^(
+            ^testing/.*$
+          )
       - id: regenerate-stubs
         name: regenerate-stubs
         entry: python3 ci/regenerate_stubs.py
@@ -112,21 +127,6 @@ repos:
         additional_dependencies:
           - *gersemi
         require_serial: true
-      - id: cmake-lint
-        name: cmake-lint
-        entry: ./ci/checks/run-cmake-format.sh cmake-lint
-        language: python
-        types: [cmake]
-        # Note that pre-commit autoupdate does not update the versions
-        # of dependencies, so we'll have to update this manually.
-        additional_dependencies:
-          - cmakelang==0.6.13
-        verbose: true
-        require_serial: true
-        exclude: |
-          (?x)^(
-            ^testing/.*$
-          )
   - repo: https://github.com/shellcheck-py/shellcheck-py
     rev: v0.10.0.1
     hooks:
