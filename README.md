@@ -17,7 +17,7 @@ Content](https://cmake.org/cmake/help/latest/module/FetchContent.html) into your
 cmake_minimum_required(...)
 
 if(NOT EXISTS ${CMAKE_CURRENT_BINARY_DIR}/<PROJECT>_RAPIDS.cmake)
-  file(DOWNLOAD https://raw.githubusercontent.com/rapidsai/rapids-cmake/main/RAPIDS.cmake
+  file(DOWNLOAD https://raw.githubusercontent.com/rapidsai/rapids-cmake/release/26.02/RAPIDS.cmake
     ${CMAKE_CURRENT_BINARY_DIR}/<PROJECT>_RAPIDS.cmake)
 endif()
 include(${CMAKE_CURRENT_BINARY_DIR}/<PROJECT>_RAPIDS.cmake)
@@ -165,4 +165,4 @@ A few notes:
 
 ## Contributing
 
-Review the [CONTRIBUTING.md](https://github.com/rapidsai/rapids-cmake/blob/main/CONTRIBUTING.md) file for information on how to contribute code and issues to the project.
+Review the [CONTRIBUTING.md](https://github.com/rapidsai/rapids-cmake/blob/release/26.02/CONTRIBUTING.md) file for information on how to contribute code and issues to the project.

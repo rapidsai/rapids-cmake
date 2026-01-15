@@ -44,7 +44,7 @@ Example on how to properly use :cmake:command:`rapids_cuda_init_architectures`:
   cmake_minimum_required(...)
 
   if(NOT EXISTS ${CMAKE_CURRENT_BINARY_DIR}/EXAMPLE_RAPIDS.cmake)
-    file(DOWNLOAD https://raw.githubusercontent.com/rapidsai/rapids-cmake/main/RAPIDS.cmake
+    file(DOWNLOAD https://raw.githubusercontent.com/rapidsai/rapids-cmake/release/26.02/RAPIDS.cmake
       ${CMAKE_CURRENT_BINARY_DIR}/EXAMPLE_RAPIDS.cmake)
   endif()
   include(${CMAKE_CURRENT_BINARY_DIR}/EXAMPLE_RAPIDS.cmake)
