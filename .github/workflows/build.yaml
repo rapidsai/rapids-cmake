@@ -57,6 +57,9 @@ jobs:
       package-name: gersemi-rapids-cmake
       package-type: python
       pure-wheel: true
+      append-cuda-suffix: false
+      # This selects "ARCH=amd64 + the earliest supported Python + CUDA".
+      matrix_filter: map(select(.ARCH == "amd64")) | min_by([(.PY_VER|split(".")|map(tonumber)), (.CUDA_VER|split(".")|map(tonumber))]) | [.]
   wheel-publish-gersemi-rapids-cmake:
     needs: wheel-build-gersemi-rapids-cmake
     secrets: inherit
