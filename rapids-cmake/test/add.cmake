@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2022-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2022-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -61,7 +61,15 @@ function(rapids_test_add)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.test.add")
 
   set(options)
-  set(one_value NAME WORKING_DIRECTORY GPUS PERCENT INSTALL_COMPONENT_SET INSTALL_TARGET)
+  set(
+    one_value
+    NAME
+    WORKING_DIRECTORY
+    GPUS
+    PERCENT
+    INSTALL_COMPONENT_SET
+    INSTALL_TARGET
+  )
   set(multi_value COMMAND)
   cmake_parse_arguments(_RAPIDS_TEST "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
@@ -82,7 +90,9 @@ function(rapids_test_add)
   endif()
   if(DEFINED _RAPIDS_TEST_INSTALL_TARGET)
     if(NOT TARGET ${_RAPIDS_TEST_INSTALL_TARGET})
-      message(FATAL_ERROR "rapids_add_test given INSTALL_TARGET \"${_RAPIDS_TEST_INSTALL_TARGET}\", which does not exist"
+      message(
+        FATAL_ERROR
+        "rapids_add_test given INSTALL_TARGET \"${_RAPIDS_TEST_INSTALL_TARGET}\", which does not exist"
       )
     endif()
     set(target_to_install ${_RAPIDS_TEST_INSTALL_TARGET})
@@ -102,30 +112,42 @@ function(rapids_test_add)
   set(_rapids_run_gpu_test_script_dir "${PROJECT_BINARY_DIR}/rapids-cmake/")
   set(_rapids_run_gpu_test_script "./run_gpu_test.cmake")
   if(NOT EXISTS "${_rapids_run_gpu_test_script_dir}${_rapids_run_gpu_test_script}")
-    file(COPY "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/run_gpu_test.cmake"
-         DESTINATION "${_rapids_run_gpu_test_script_dir}")
+    file(
+      COPY "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/run_gpu_test.cmake"
+      DESTINATION "${_rapids_run_gpu_test_script_dir}"
+    )
   endif()
 
-  add_test(NAME ${_RAPIDS_TEST_NAME}
-           COMMAND ${CMAKE_COMMAND} "-Dcommand_to_run=${command}" "-Dcommand_args=${args}"
-                   "-P=${_rapids_run_gpu_test_script_dir}${_rapids_run_gpu_test_script}"
-           WORKING_DIRECTORY "${_RAPIDS_TEST_WORKING_DIRECTORY}")
+  add_test(
+    NAME ${_RAPIDS_TEST_NAME}
+    COMMAND
+      ${CMAKE_COMMAND} "-Dcommand_to_run=${command}" "-Dcommand_args=${args}"
+      "-P=${_rapids_run_gpu_test_script_dir}${_rapids_run_gpu_test_script}"
+    WORKING_DIRECTORY "${_RAPIDS_TEST_WORKING_DIRECTORY}"
+  )
 
   include(${CMAKE_CURRENT_FUNCTION_LIST_DIR}/gpu_requirements.cmake)
   if(DEFINED _RAPIDS_TEST_GPUS)
-    rapids_test_gpu_requirements(${_RAPIDS_TEST_NAME} GPUS ${_RAPIDS_TEST_GPUS}
-                                 PERCENT ${_RAPIDS_TEST_PERCENT})
+    rapids_test_gpu_requirements(
+      ${_RAPIDS_TEST_NAME}
+      GPUS ${_RAPIDS_TEST_GPUS}
+      PERCENT ${_RAPIDS_TEST_PERCENT}
+    )
   endif()
 
   if(_RAPIDS_TEST_INSTALL_COMPONENT_SET)
     include(${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/record_test_component.cmake)
     include(${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/record_install.cmake)
 
-    rapids_test_record_test_component(NAME ${_RAPIDS_TEST_NAME} COMPONENT
-                                      ${_RAPIDS_TEST_INSTALL_COMPONENT_SET})
+    rapids_test_record_test_component(
+      NAME ${_RAPIDS_TEST_NAME}
+      COMPONENT ${_RAPIDS_TEST_INSTALL_COMPONENT_SET}
+    )
     if(TARGET ${target_to_install})
-      rapids_test_record_install(TARGET ${target_to_install} COMPONENT
-                                 ${_RAPIDS_TEST_INSTALL_COMPONENT_SET})
+      rapids_test_record_install(
+        TARGET ${target_to_install}
+        COMPONENT ${_RAPIDS_TEST_INSTALL_COMPONENT_SET}
+      )
     endif()
   endif()
 endfunction()

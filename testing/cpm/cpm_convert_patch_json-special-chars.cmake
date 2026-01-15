@@ -1,26 +1,30 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2025-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
 include(${rapids-cmake-dir}/cpm/detail/convert_patch_json.cmake)
 
-set(bug
-    [=[#include "file.h"
+set(
+  bug
+  [=[#include "file.h"
 int function(not_parsed[
 N], properly ) {
-}]=])
+}]=]
+)
 set(file_path "${CMAKE_BINARY_DIR}/bug.txt")
 file(WRITE ${file_path} "${bug}")
 
-set(expected_output
-    [==[[
+set(
+  expected_output
+  [==[[
 "#include \"file.h\"",
 "int function(not_parsed[",
 "N], properly ) {",
 "}"
-]]==])
+]]==]
+)
 
 rapids_cpm_convert_patch_json(FROM_FILE_TO_JSON json FILE_VAR file_path)
 string(JSON json_content GET "${json}" "content")

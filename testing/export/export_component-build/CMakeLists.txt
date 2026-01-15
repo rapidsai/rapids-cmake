@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2023-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -19,8 +19,9 @@ rapids_export_component(BUILD fakeproject component1 fake_set fake_set test::c1:
 
 # Add a custom command that generates a second project that verifies our component targets are
 # exported correctly
-file(WRITE "${CMAKE_BINARY_DIR}/verify-1/CMakeLists.txt"
-     [=[
+file(
+  WRITE "${CMAKE_BINARY_DIR}/verify-1/CMakeLists.txt"
+  [=[
 cmake_minimum_required(VERSION 3.20)
 project(verify_build_targets LANGUAGES CXX)
 
@@ -44,9 +45,12 @@ if(NOT TARGET CUDA::toolkit)
   message(FATAL_ERROR "rapids_export failed to write a correct `CUDAToolkit` dependency")
 endif()
 
-]=])
+]=]
+)
 
-add_custom_target(verify_target_component_files ALL
-                  COMMAND ${CMAKE_COMMAND} -E rm -rf "${CMAKE_BINARY_DIR}/verify-1/build"
-                  COMMAND ${CMAKE_COMMAND} -S="${CMAKE_BINARY_DIR}/verify-1"
-                          -B="${CMAKE_BINARY_DIR}/verify-1/build")
+add_custom_target(
+  verify_target_component_files
+  ALL
+  COMMAND ${CMAKE_COMMAND} -E rm -rf "${CMAKE_BINARY_DIR}/verify-1/build"
+  COMMAND ${CMAKE_COMMAND} -S="${CMAKE_BINARY_DIR}/verify-1" -B="${CMAKE_BINARY_DIR}/verify-1/build"
+)

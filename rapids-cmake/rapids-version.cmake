@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -17,7 +17,9 @@ if(NOT DEFINED rapids-cmake-checkout-tag)
     set(RAPIDS_VERSION "${RAPIDS_VERSION_MAJOR}.${RAPIDS_VERSION_MINOR}.${RAPIDS_VERSION_PATCH}")
   else()
     string(REPLACE "\n" "\n  " _rapids_version_formatted "  ${_rapids_version}")
-    message(FATAL_ERROR "Could not determine RAPIDS version. Contents of VERSION file:\n${_rapids_version_formatted}"
+    message(
+      FATAL_ERROR
+      "Could not determine RAPIDS version. Contents of VERSION file:\n${_rapids_version_formatted}"
     )
   endif()
 
@@ -28,7 +30,9 @@ if(NOT DEFINED rapids-cmake-checkout-tag)
   # Use STRINGS to trim whitespace/newlines
   file(STRINGS "${CMAKE_CURRENT_LIST_DIR}/../RAPIDS_BRANCH" _rapids_checkout)
   if(NOT _rapids_checkout)
-    message(FATAL_ERROR "Could not determine branch name to use for checking out rapids-cmake. The file \"${CMAKE_CURRENT_LIST_DIR}/../RAPIDS_BRANCH\" is missing."
+    message(
+      FATAL_ERROR
+      "Could not determine branch name to use for checking out rapids-cmake. The file \"${CMAKE_CURRENT_LIST_DIR}/../RAPIDS_BRANCH\" is missing."
     )
   endif()
   set(rapids-cmake-checkout-tag "${_rapids_checkout}")

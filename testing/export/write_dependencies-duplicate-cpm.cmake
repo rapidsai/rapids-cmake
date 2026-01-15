@@ -1,19 +1,29 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
 include(${rapids-cmake-dir}/export/cpm.cmake)
 include(${rapids-cmake-dir}/export/write_dependencies.cmake)
 
-rapids_export_cpm(INSTALL RMM test_set CPM_ARGS VERSION 2.0 FAKE_PACKAGE_ARGS FALSE
-                  GLOBAL_TARGETS RMM::RMM_POOL)
+rapids_export_cpm(
+  INSTALL
+  RMM
+  test_set
+  CPM_ARGS VERSION 2.0 FAKE_PACKAGE_ARGS FALSE
+  GLOBAL_TARGETS RMM::RMM_POOL
+)
 
 rapids_export_cpm(INSTALL Thrust test_set CPM_ARGS VERSION 12.0 GLOBAL_TARGETS Thrust::Thrust)
 
-rapids_export_cpm(INSTALL RMM test_set CPM_ARGS VERSION 2.0 FAKE_PACKAGE_ARGS FALSE
-                  GLOBAL_TARGETS RMM::RMM)
+rapids_export_cpm(
+  INSTALL
+  RMM
+  test_set
+  CPM_ARGS VERSION 2.0 FAKE_PACKAGE_ARGS FALSE
+  GLOBAL_TARGETS RMM::RMM
+)
 
 rapids_export_write_dependencies(install test_set "${CMAKE_CURRENT_BINARY_DIR}/export_set.cmake")
 
@@ -47,10 +57,11 @@ foreach(line IN LISTS text)
       message(FATAL_ERROR "Duplicate entries found in targets to promote to global")
     endif()
   endif()
-
 endforeach()
 
 if(NOT find_package_count EQUAL 2)
-  message(FATAL_ERROR "Too many CPMFindPackage entries found. Expected 2, counted ${find_package_count}"
+  message(
+    FATAL_ERROR
+    "Too many CPMFindPackage entries found. Expected 2, counted ${find_package_count}"
   )
 endif()

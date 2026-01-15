@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2023-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 
 repos:
@@ -18,6 +18,27 @@ repos:
       - id: check-json
       - id: pretty-format-json
         args: ["--autofix", "--no-sort-keys"]
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.14.8
+    hooks:
+      - id: ruff-check
+        args: [--fix]
+        exclude: |
+          (?x)
+            ^docs/conf[.]py$
+      - id: ruff-format
+        exclude: |
+          (?x)
+            ^docs/conf[.]py$
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.19.0
+    hooks:
+      - id: mypy
+        additional_dependencies:
+          - gersemi
+        exclude: |
+          (?x)
+            ^docs/conf[.]py$
   - repo: https://github.com/pre-commit/mirrors-clang-format
     rev: v20.1.4
     hooks:
@@ -39,19 +60,28 @@ repos:
     hooks:
         - id: rapids-dependency-file-generator
           args: ["--clean", "--warn-all", "--strict"]
+  - repo: https://github.com/rapidsai/pre-commit-hooks
+    rev: v1.2.1
+    hooks:
+      - id: verify-copyright
+        args: [--fix, --spdx]
+        files: |
+          (?x)
+            [.](cmake|cpp|cu|cuh|h|hpp|sh|pxd|py|pyx)$|
+            CMakeLists[.]txt$|
+            meta[.]yaml$|
+            ^testing/export/write_language-multiple-nested-enables/A/B/static[.]not_cu$|
+            dependencies[.]yaml$|
+            pyproject[.]toml$|
+            ^[.]pre-commit-config[.]yaml$|
+            [.]stubs$
+        exclude: |
+          (?x)
+            ^python/gersemi-rapids-cmake/gersemi_rapids_cmake_detail/stubs/rapids/rapids-cmake/generated/
+      - id: verify-codeowners
+        args: [--fix, --project-prefix=rapids, --no-cpp, --no-python]
   - repo: local
     hooks:
-      - id: cmake-format
-        name: cmake-format
-        entry: ./ci/checks/run-cmake-format.sh cmake-format
-        language: python
-        types: [cmake]
-        # Note that pre-commit autoupdate does not update the versions
-        # of dependencies, so we'll have to update this manually.
-        additional_dependencies:
-          - cmakelang==0.6.13
-        verbose: true
-        require_serial: true
       - id: cmake-lint
         name: cmake-lint
         entry: ./ci/checks/run-cmake-format.sh cmake-lint
@@ -67,22 +97,36 @@ repos:
           (?x)^(
             ^testing/.*$
           )
-  - repo: https://github.com/rapidsai/pre-commit-hooks
-    rev: v1.2.1
-    hooks:
-      - id: verify-copyright
-        args: [--fix, --spdx]
+      - id: regenerate-stubs
+        name: regenerate-stubs
+        entry: python3 ci/regenerate_stubs.py
+        language: python
+        types: [cmake]
+        additional_dependencies:
+          - &gersemi gersemi==0.25.1
+        pass_filenames: false
+      - id: gersemi-rapids-cmake
+        name: gersemi-rapids-cmake
+        entry: ci/checks/gersemi.sh -i --warnings-as-errors --extensions rapids_cmake_detail --
+        language: python
+        types: [cmake]
         files: |
           (?x)
-            [.](cmake|cpp|cu|cuh|h|hpp|sh|pxd|py|pyx)$|
-            CMakeLists[.]txt$|
-            meta[.]yaml$|
-            ^testing/export/write_language-multiple-nested-enables/A/B/static[.]not_cu$|
-            dependencies[.]yaml$|
-            pyproject[.]toml$|
-            ^[.]pre-commit-config[.]yaml$
-      - id: verify-codeowners
-        args: [--fix, --project-prefix=rapids, --no-cpp, --no-python]
+            ^rapids-cmake/
+        additional_dependencies:
+          - *gersemi
+        require_serial: true
+      - id: gersemi-testing
+        name: gersemi-testing
+        entry: ci/checks/gersemi.sh -i --warnings-as-errors --extensions rapids_cmake_detail --definitions testing/ --
+        language: python
+        types: [cmake]
+        files: |
+          (?x)
+            ^testing/
+        additional_dependencies:
+          - *gersemi
+        require_serial: true
   - repo: https://github.com/shellcheck-py/shellcheck-py
     rev: v0.10.0.1
     hooks:

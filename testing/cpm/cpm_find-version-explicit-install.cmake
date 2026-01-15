@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -20,6 +20,8 @@ file(READ "${cccl_path}" contents)
 message(STATUS "contents: ${contents}")
 string(FIND "${contents}" "${cccl_version}" is_found)
 if(is_found EQUAL -1)
-  message(FATAL_ERROR "rapids_cpm_cccl failed to generate a find_package configuration with version"
+  message(
+    FATAL_ERROR
+    "rapids_cpm_cccl failed to generate a find_package configuration with version"
   )
 endif()

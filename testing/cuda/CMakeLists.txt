@@ -1,15 +1,21 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
 add_cmake_config_test(rapids-cuda.cmake)
 
-add_cmake_config_test(enable_fatbin_compression-invalid-tuning-flag.cmake SHOULD_FAIL
-                      "rapids_cuda_enable_fatbin_compression `TUNE_FOR`")
-add_cmake_config_test(enable_fatbin_compression-no-arguments.cmake SHOULD_FAIL
-                      "rapids_cuda_enable_fatbin_compression requires")
+add_cmake_config_test(
+  enable_fatbin_compression-invalid-tuning-flag.cmake
+  SHOULD_FAIL
+  "rapids_cuda_enable_fatbin_compression `TUNE_FOR`"
+)
+add_cmake_config_test(
+  enable_fatbin_compression-no-arguments.cmake
+  SHOULD_FAIL
+  "rapids_cuda_enable_fatbin_compression requires"
+)
 add_cmake_config_test(enable_fatbin_compression-target.cmake)
 add_cmake_config_test(enable_fatbin_compression-var.cmake)
 

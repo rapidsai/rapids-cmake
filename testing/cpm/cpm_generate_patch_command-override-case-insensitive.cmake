@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2024-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2024-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -8,8 +8,9 @@ cmake_minimum_required(VERSION 3.30.4)
 project(rapids-cpm_find-patch-command-project LANGUAGES CXX)
 
 # Need to write out an override file
-file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
-     [=[
+file(
+  WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
+  [=[
 {
   "packages": {
     "gtest": {
@@ -23,7 +24,8 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
     }
   }
 }
-  ]=])
+  ]=]
+)
 
 include("${rapids-cmake-dir}/cpm/detail/package_info.cmake")
 rapids_cpm_package_info(GTest VERSION_VAR version)
@@ -35,7 +37,9 @@ include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
 rapids_cpm_generate_patch_command(GTest ${version} patch_command build_patch_only)
 message(STATUS "patch_command: ${patch_command}")
 if(NOT patch_command)
-  message(FATAL_ERROR "rapids_cpm_package_override failed to load patch step for `GTest` from package `gtest`"
+  message(
+    FATAL_ERROR
+    "rapids_cpm_package_override failed to load patch step for `GTest` from package `gtest`"
   )
 endif()
 

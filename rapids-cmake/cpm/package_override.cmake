@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -68,7 +68,9 @@ function(rapids_cpm_package_override _rapids_override_filepath)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.rapids_cpm_package_override")
 
   if(NOT EXISTS "${_rapids_override_filepath}")
-    message(FATAL_ERROR "rapids_cpm_package_override can't load '${_rapids_override_filepath}', verify it exists"
+    message(
+      FATAL_ERROR
+      "rapids_cpm_package_override can't load '${_rapids_override_filepath}', verify it exists"
     )
   endif()
   file(READ "${_rapids_override_filepath}" json_data)
@@ -84,8 +86,12 @@ function(rapids_cpm_package_override _rapids_override_filepath)
     foreach(index RANGE ${package_count})
       string(JSON package_name MEMBER "${json_data}" packages ${index})
       string(TOLOWER "${package_name}" normalized_pkg_name)
-      get_property(override_exists GLOBAL PROPERTY rapids_cpm_${normalized_pkg_name}_override_json
-                   SET)
+      get_property(
+        override_exists
+        GLOBAL
+        PROPERTY rapids_cpm_${normalized_pkg_name}_override_json
+        SET
+      )
       if(override_exists)
         # Early terminate if this project already has an override
         continue()
@@ -93,10 +99,15 @@ function(rapids_cpm_package_override _rapids_override_filepath)
 
       # Warn if our name all lower case matches a default package, but our case sensitive names
       # doesn't ( ABC vs abc )
-      get_property(package_proper_name GLOBAL
-                   PROPERTY rapids_cpm_${normalized_pkg_name}_proper_name)
+      get_property(
+        package_proper_name
+        GLOBAL
+        PROPERTY rapids_cpm_${normalized_pkg_name}_proper_name
+      )
       if(package_proper_name AND NOT package_proper_name STREQUAL package_name)
-        message(AUTHOR_WARNING "RAPIDS-CMake is assuming the override ${package_name} is meant for the ${package_proper_name} package. For correctness please use the correctly cased name"
+        message(
+          AUTHOR_WARNING
+          "RAPIDS-CMake is assuming the override ${package_name} is meant for the ${package_proper_name} package. For correctness please use the correctly cased name"
         )
       endif()
       if(NOT package_proper_name)
@@ -111,8 +122,10 @@ function(rapids_cpm_package_override _rapids_override_filepath)
       # even when not in use
       string(JSON data GET "${json_data}" packages "${package_name}")
       set_property(GLOBAL PROPERTY rapids_cpm_${normalized_pkg_name}_override_json "${data}")
-      set_property(GLOBAL PROPERTY rapids_cpm_${normalized_pkg_name}_override_json_file
-                                   "${_rapids_override_filepath}")
+      set_property(
+        GLOBAL
+        PROPERTY rapids_cpm_${normalized_pkg_name}_override_json_file "${_rapids_override_filepath}"
+      )
 
       if(DEFINED CPM_${package_name}_SOURCE)
         set_property(GLOBAL PROPERTY rapids_cpm_${normalized_pkg_name}_override_ignored "ON")
@@ -125,8 +138,9 @@ function(rapids_cpm_package_override _rapids_override_filepath)
       include("${rapids-cmake-dir}/cpm/detail/package_info.cmake")
       rapids_cpm_package_info(${package_name} FOR_FETCH_CONTENT CPM_VAR cpm_find_info)
 
-      message(DEBUG
-              "rapids.cpm.rapids_cpm_package_override: FetchContent_Declare(${package_proper_name} ${cpm_find_info}) "
+      message(
+        DEBUG
+        "rapids.cpm.rapids_cpm_package_override: FetchContent_Declare(${package_proper_name} ${cpm_find_info}) "
       )
       FetchContent_Declare(${package_proper_name} ${cpm_find_info})
       unset(package_proper_name)

@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2022-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2022-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -29,6 +29,9 @@ function(rapids_test_record_install)
   cmake_parse_arguments(_RAPIDS_TEST "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
   set(component ${_RAPIDS_TEST_COMPONENT})
-  set_property(TARGET rapids_test_install_${component} APPEND PROPERTY TARGETS_TO_INSTALL
-                                                                       "${_RAPIDS_TEST_TARGET}")
+  set_property(
+    TARGET rapids_test_install_${component}
+    APPEND
+    PROPERTY TARGETS_TO_INSTALL "${_RAPIDS_TEST_TARGET}"
+  )
 endfunction()

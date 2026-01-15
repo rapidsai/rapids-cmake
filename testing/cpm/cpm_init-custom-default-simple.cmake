@@ -1,14 +1,15 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2024-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2024-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
 include(${rapids-cmake-dir}/cpm/init.cmake)
 
 # Need to write out a custom default file
-file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/defaults.json
-     [=[
+file(
+  WRITE ${CMAKE_CURRENT_BINARY_DIR}/defaults.json
+  [=[
 {
   "packages": {
     "nvbench": {
@@ -18,7 +19,8 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/defaults.json
     }
   }
 }
-  ]=])
+  ]=]
+)
 
 rapids_cpm_init(CUSTOM_DEFAULT_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/defaults.json")
 
@@ -27,11 +29,15 @@ include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
 rapids_cpm_package_details_internal(nvbench version repository tag src_subdir shallow exclude)
 
 if(NOT version STREQUAL "custom_version")
-  message(FATAL_ERROR "custom default version field was ignored. ${version} found instead of custom_version"
+  message(
+    FATAL_ERROR
+    "custom default version field was ignored. ${version} found instead of custom_version"
   )
 endif()
 if(NOT repository STREQUAL "my_url")
-  message(FATAL_ERROR "custom default git_url field was ignored. ${repository} found instead of my_url"
+  message(
+    FATAL_ERROR
+    "custom default git_url field was ignored. ${repository} found instead of my_url"
   )
 endif()
 if(NOT tag STREQUAL "my_tag")

@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2023-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -22,8 +22,9 @@ set(ENV{CONDA_PREFIX} "/opt/conda/prefix")
 rapids_cpm_init()
 rapids_cpm_nvbench()
 
-file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/use_fmt.cpp"
-     [=[
+file(
+  WRITE "${CMAKE_CURRENT_BINARY_DIR}/use_fmt.cpp"
+  [=[
 #include <nvbench/nvbench.cuh>
 
 #include <cstdint>
@@ -41,7 +42,8 @@ NVBENCH_BENCH_TYPES(nvbench_distinct, NVBENCH_TYPE_AXES(data_type))
   .add_int64_axis("NumRows", {10'000, 100'000, 1'000'000, 10'000'000});
 
 int main() { return 0; }
-]=])
+]=]
+)
 
 add_library(uses_fmt SHARED "${CMAKE_CURRENT_BINARY_DIR}/use_fmt.cpp")
 target_link_libraries(uses_fmt PRIVATE nvbench::nvbench)

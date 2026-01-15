@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2022-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2022-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -43,13 +43,29 @@ function(rapids_cpm_cuco)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.cuco")
 
   include("${rapids-cmake-dir}/cpm/detail/package_info.cmake")
-  rapids_cpm_package_info(cuco ${ARGN} VERSION_VAR version FIND_VAR find_args CPM_VAR cpm_find_info
-                          TO_INSTALL_VAR to_install)
+  rapids_cpm_package_info(
+    cuco
+    ${ARGN}
+    VERSION_VAR version
+    FIND_VAR find_args
+    CPM_VAR cpm_find_info
+    TO_INSTALL_VAR to_install
+  )
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
-  rapids_cpm_find(cuco ${version} ${find_args} GLOBAL_TARGETS cuco::cuco CPM_ARGS ${cpm_find_info}
-                  OPTIONS "BUILD_TESTS OFF" "BUILD_BENCHMARKS OFF" "BUILD_EXAMPLES OFF"
-                          "INSTALL_CUCO ${to_install}")
+  rapids_cpm_find(
+    cuco
+    ${version}
+    ${find_args}
+    GLOBAL_TARGETS cuco::cuco
+    CPM_ARGS
+      ${cpm_find_info}
+      OPTIONS
+        "BUILD_TESTS OFF"
+        "BUILD_BENCHMARKS OFF"
+        "BUILD_EXAMPLES OFF"
+        "INSTALL_CUCO ${to_install}"
+  )
 
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
   rapids_cpm_display_patch_status(cuco)
@@ -59,5 +75,4 @@ function(rapids_cpm_cuco)
   set(cuco_BINARY_DIR "${cuco_BINARY_DIR}" PARENT_SCOPE)
   set(cuco_ADDED "${cuco_ADDED}" PARENT_SCOPE)
   set(cuco_VERSION ${version} PARENT_SCOPE)
-
 endfunction()

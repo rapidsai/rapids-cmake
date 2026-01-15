@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2023-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -42,14 +42,24 @@ function(convert_paths_to_install_dir prop_var)
     get_property(build_locs GLOBAL PROPERTY ${name}_build)
     foreach(build_loc IN LISTS build_locs)
       if(build_loc STREQUAL possible_build_path)
-        string(REPLACE "${build_loc}" "${install_loc}/${name}" install_value
-                       "${possible_build_path}")
+        string(
+          REPLACE
+          "${build_loc}"
+          "${install_loc}/${name}"
+          install_value
+          "${possible_build_path}"
+        )
         break()
       endif()
     endforeach()
   else()
-    string(REPLACE "${_RAPIDS_BUILD_DIR}" "\${CMAKE_INSTALL_PREFIX}" install_value
-                   "${possible_build_path}")
+    string(
+      REPLACE
+      "${_RAPIDS_BUILD_DIR}"
+      "\${CMAKE_INSTALL_PREFIX}"
+      install_value
+      "${possible_build_path}"
+    )
   endif()
   set(${prop_var} "${install_value}" PARENT_SCOPE)
 endfunction()
@@ -82,6 +92,7 @@ endfunction()
 
 # Provide an `add_test` function signature since the built-in version doesn't exist in script mode
 function(add_test name command)
+  # gersemi: ignore
   if(NOT name IN_LIST _RAPIDS_TESTS_TO_RUN)
     return()
   endif()
@@ -120,44 +131,59 @@ endfunction()
 # Provide a `set_tests_properties` function signature since the built-in version doesn't exist in
 # script mode
 function(set_tests_properties name)
+  # gersemi: ignore
   if(NOT name IN_LIST _RAPIDS_TESTS_TO_RUN)
     return()
   endif()
 
   set(options PROPERTIES)
-  set(env_props ENVIRONMENT #
-                ENVIRONMENT_MODIFICATION)
-  set(one_value
-      FIXTURES_CLEANUP #
-      FIXTURES_REQUIRED #
-      FIXTURES_SETUP #
-      LABELS #
-      MEASUREMENT #
-      PASS_REGULAR_EXPRESSION #
-      PROCESSOR_AFFINITY #
-      PROCESSORS #
-      REQUIRED_FILES #
-      RESOURCE_GROUPS #
-      RESOURCE_LOCK #
-      RUN_SERIAL #
-      SKIP_REGULAR_EXPRESSION #
-      SKIP_RETURN_CODE #
-      TIMEOUT #
-      TIMEOUT_AFTER_MATCH #
-      WILL_FAIL)
-  set(multi_value_no_propagate
-      _BACKTRACE_TRIPLES #
-      ATTACHED_FILES #
-      ATTACHED_FILES_ON_FAIL #
-      WORKING_DIRECTORY)
-  cmake_parse_arguments(_RAPIDS_TEST "${options}" "${one_value}"
-                        "${env_props};${multi_value_no_propagate}" ${ARGN})
+  set(
+    env_props
+    ENVIRONMENT #
+    ENVIRONMENT_MODIFICATION
+  )
+  set(
+    one_value
+    FIXTURES_CLEANUP #
+    FIXTURES_REQUIRED #
+    FIXTURES_SETUP #
+    LABELS #
+    MEASUREMENT #
+    PASS_REGULAR_EXPRESSION #
+    PROCESSOR_AFFINITY #
+    PROCESSORS #
+    REQUIRED_FILES #
+    RESOURCE_GROUPS #
+    RESOURCE_LOCK #
+    RUN_SERIAL #
+    SKIP_REGULAR_EXPRESSION #
+    SKIP_RETURN_CODE #
+    TIMEOUT #
+    TIMEOUT_AFTER_MATCH #
+    WILL_FAIL
+  )
+  set(
+    multi_value_no_propagate
+    _BACKTRACE_TRIPLES #
+    ATTACHED_FILES #
+    ATTACHED_FILES_ON_FAIL #
+    WORKING_DIRECTORY
+  )
+  cmake_parse_arguments(
+    _RAPIDS_TEST
+    "${options}"
+    "${one_value}"
+    "${env_props};${multi_value_no_propagate}"
+    ${ARGN}
+  )
   foreach(prop IN LISTS env_props)
     if(_RAPIDS_TEST_${prop})
       set(prop_value "${_RAPIDS_TEST_${prop}}")
       find_and_convert_paths_from_var_list(prop_value)
-      string(APPEND test_prop_content
-             "set_tests_properties([=[${name}]=] PROPERTIES ${prop} \"${prop_value}\")\n")
+      string(
+        APPEND test_prop_content
+        "set_tests_properties([=[${name}]=] PROPERTIES ${prop} \"${prop_value}\")\n"
+      )
     endif()
   endforeach()
 
@@ -165,8 +191,10 @@ function(set_tests_properties name)
     if(_RAPIDS_TEST_${prop})
       set(prop_value "${_RAPIDS_TEST_${prop}}")
       convert_paths_to_install_dir(prop_value)
-      string(APPEND test_prop_content
-             "set_tests_properties([=[${name}]=] PROPERTIES ${prop} ${prop_value})\n")
+      string(
+        APPEND test_prop_content
+        "set_tests_properties([=[${name}]=] PROPERTIES ${prop} ${prop_value})\n"
+      )
     endif()
   endforeach()
 
@@ -176,6 +204,7 @@ endfunction()
 
 # Provide a `subdirs` function signature since the built-in version doesn't exist in script mode
 function(subdirs name)
+  # gersemi: ignore
   string(APPEND test_file_content "\n")
   if(EXISTS "${name}/CTestTestfile.cmake")
     include("${name}/CTestTestfile.cmake")
@@ -198,10 +227,19 @@ function(extract_install_info)
   set(options "file(INSTALL")
   set(one_value DESTINATION TYPE)
   set(multi_value FILES)
-  cmake_parse_arguments(_RAPIDS_TEST "${options}" "${one_value}" "${multi_value}"
-                        ${install_contents})
-  if(_RAPIDS_TEST_TYPE STREQUAL "EXECUTABLE" OR _RAPIDS_TEST_TYPE STREQUAL "SHARED_LIBRARY"
-     OR _RAPIDS_TEST_TYPE STREQUAL "STATIC_LIBRARY" OR _RAPIDS_TEST_TYPE STREQUAL "OBJECT_LIBRARY")
+  cmake_parse_arguments(
+    _RAPIDS_TEST
+    "${options}"
+    "${one_value}"
+    "${multi_value}"
+    ${install_contents}
+  )
+  if(
+    _RAPIDS_TEST_TYPE STREQUAL "EXECUTABLE"
+    OR _RAPIDS_TEST_TYPE STREQUAL "SHARED_LIBRARY"
+    OR _RAPIDS_TEST_TYPE STREQUAL "STATIC_LIBRARY"
+    OR _RAPIDS_TEST_TYPE STREQUAL "OBJECT_LIBRARY"
+  )
     foreach(build_loc IN LISTS _RAPIDS_TEST_FILES)
       cmake_path(GET build_loc FILENAME name)
       set_property(GLOBAL PROPERTY ${name}_install ${_RAPIDS_TEST_DESTINATION})
@@ -250,12 +288,15 @@ endfunction()
 determine_install_location_of_all_targets()
 # Setup the install location of `run_gpu_test`
 set_property(GLOBAL PROPERTY run_gpu_test.cmake_install ".")
-set_property(GLOBAL PROPERTY run_gpu_test.cmake_build
-                             "${_RAPIDS_PROJECT_DIR}/rapids-cmake/./run_gpu_test.cmake")
+set_property(
+  GLOBAL
+  PROPERTY run_gpu_test.cmake_build "${_RAPIDS_PROJECT_DIR}/rapids-cmake/./run_gpu_test.cmake"
+)
 
 include(${CMAKE_CURRENT_LIST_DIR}/default_names.cmake)
-set(test_file_content
-    "
+set(
+  test_file_content
+  "
 set(CTEST_SCRIPT_DIRECTORY \".\")
 set(CMAKE_INSTALL_PREFIX \"./${_RAPIDS_INSTALL_PREFIX}\")
 add_test(generate_resource_spec ./${rapids_test_generate_exe_name} \"./${rapids_test_json_file_name}\")
@@ -265,7 +306,8 @@ set_tests_properties(generate_resource_spec PROPERTIES
   GENERATED_RESOURCE_SPEC_FILE \"\${_cwd}/${rapids_test_json_file_name}\"
 )
 \n\n
-")
+"
+)
 
 # will cause the above `add_test`, etc hooks to trigger filling up the contents of
 # `test_file_content`

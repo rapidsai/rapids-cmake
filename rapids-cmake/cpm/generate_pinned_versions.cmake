@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2024-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2024-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -69,8 +69,13 @@ function(rapids_cpm_generate_pinned_versions)
   set(_rapids_options)
   set(_rapids_one_value OUTPUT)
   set(_rapids_multi_value)
-  cmake_parse_arguments(_RAPIDS "${_rapids_options}" "${_rapids_one_value}"
-                        "${_rapids_multi_value}" ${ARGN})
+  cmake_parse_arguments(
+    _RAPIDS
+    "${_rapids_options}"
+    "${_rapids_one_value}"
+    "${_rapids_multi_value}"
+    ${ARGN}
+  )
 
   if(NOT _RAPIDS_OUTPUT)
     message(FATAL_ERROR "rapids_cpm_generate_pinned_versions requires an `OUTPUT` argument")
@@ -90,9 +95,11 @@ function(rapids_cpm_generate_pinned_versions)
     # execution so we get all CPM packages added. Plus we can compute the paths once, and write out
     # `N` times if needed
     set(root_dir "${${CMAKE_PROJECT_NAME}_SOURCE_DIR}")
-    cmake_language(DEFER DIRECTORY ${root_dir} ID rapids_cpm_generate_pinned_versions CALL include
-                   "${rapids-cmake-dir}/cpm/detail/pinning_root_dir_hook.cmake")
+    cmake_language(
+      DEFER DIRECTORY ${root_dir} ID rapids_cpm_generate_pinned_versions
+      CALL include
+      "${rapids-cmake-dir}/cpm/detail/pinning_root_dir_hook.cmake"
+    )
     set_property(GLOBAL PROPERTY rapids_cpm_generate_pin_hook "ON")
   endif()
-
 endfunction()

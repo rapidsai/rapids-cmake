@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -21,7 +21,9 @@ endif()
 rapids_cpm_nvcomp()
 
 if(nvcomp_proprietary_binary)
-  message(FATAL_ERROR "Ignored no explicit enabling of `USE_PROPRIETARY_BINARY` and brought in the binary version"
+  message(
+    FATAL_ERROR
+    "Ignored no explicit enabling of `USE_PROPRIETARY_BINARY` and brought in the binary version"
   )
 endif()
 

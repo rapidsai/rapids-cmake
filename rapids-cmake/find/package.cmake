@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -106,8 +106,13 @@ macro(rapids_find_package name)
   set(_rapids_options FIND_ARGS)
   set(_rapids_one_value BUILD_EXPORT_SET INSTALL_EXPORT_SET)
   set(_rapids_multi_value COMPONENTS GLOBAL_TARGETS)
-  cmake_parse_arguments(_RAPIDS_FIND "${_rapids_options}" "${_rapids_one_value}"
-                        "${_rapids_multi_value}" ${ARGN})
+  cmake_parse_arguments(
+    _RAPIDS_FIND
+    "${_rapids_options}"
+    "${_rapids_one_value}"
+    "${_rapids_multi_value}"
+    ${ARGN}
+  )
 
   if(_RAPIDS_FIND_COMPONENTS)
     list(APPEND _RAPIDS_FIND_UNPARSED_ARGUMENTS COMPONENTS ${_RAPIDS_FIND_COMPONENTS})
@@ -123,7 +128,6 @@ macro(rapids_find_package name)
   # Only record the export requirements if the package was found This allows us to handle implicit
   # OPTIONAL find packages
   if(${${name}_FOUND})
-
     set(_rapids_extra_info)
     if(_RAPIDS_FIND_GLOBAL_TARGETS)
       list(APPEND _rapids_extra_info "GLOBAL_TARGETS" ${_RAPIDS_FIND_GLOBAL_TARGETS})
@@ -145,8 +149,12 @@ macro(rapids_find_package name)
 
     if(_RAPIDS_FIND_INSTALL_EXPORT_SET)
       include("${rapids-cmake-dir}/export/package.cmake")
-      rapids_export_package(INSTALL ${name} ${_RAPIDS_FIND_INSTALL_EXPORT_SET}
-                                    ${_rapids_extra_info})
+      rapids_export_package(
+        INSTALL
+        ${name}
+        ${_RAPIDS_FIND_INSTALL_EXPORT_SET}
+        ${_rapids_extra_info}
+      )
     endif()
 
     unset(_rapids_extra_info)

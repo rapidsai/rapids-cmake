@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -71,23 +71,31 @@ function(rapids_export_package type name export_set)
   if(_RAPIDS_COMPONENTS AND _RAPIDS_VERSION)
     set(version ${_RAPIDS_VERSION})
     set(components ${_RAPIDS_COMPONENTS})
-    configure_file("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/${type}_package_components_versioned.cmake.in"
-                   "${CMAKE_BINARY_DIR}/rapids-cmake/${export_set}/${type}/package_${name}.cmake"
-                   @ONLY)
+    configure_file(
+      "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/${type}_package_components_versioned.cmake.in"
+      "${CMAKE_BINARY_DIR}/rapids-cmake/${export_set}/${type}/package_${name}.cmake"
+      @ONLY
+    )
   elseif(_RAPIDS_COMPONENTS)
     set(components ${_RAPIDS_COMPONENTS})
-    configure_file("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/${type}_package_components.cmake.in"
-                   "${CMAKE_BINARY_DIR}/rapids-cmake/${export_set}/${type}/package_${name}.cmake"
-                   @ONLY)
+    configure_file(
+      "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/${type}_package_components.cmake.in"
+      "${CMAKE_BINARY_DIR}/rapids-cmake/${export_set}/${type}/package_${name}.cmake"
+      @ONLY
+    )
   elseif(_RAPIDS_VERSION)
     set(version ${_RAPIDS_VERSION})
-    configure_file("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/${type}_package_versioned.cmake.in"
-                   "${CMAKE_BINARY_DIR}/rapids-cmake/${export_set}/${type}/package_${name}.cmake"
-                   @ONLY)
+    configure_file(
+      "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/${type}_package_versioned.cmake.in"
+      "${CMAKE_BINARY_DIR}/rapids-cmake/${export_set}/${type}/package_${name}.cmake"
+      @ONLY
+    )
   else()
-    configure_file("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/${type}_package.cmake.in"
-                   "${CMAKE_BINARY_DIR}/rapids-cmake/${export_set}/${type}/package_${name}.cmake"
-                   @ONLY)
+    configure_file(
+      "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/${type}_package.cmake.in"
+      "${CMAKE_BINARY_DIR}/rapids-cmake/${export_set}/${type}/package_${name}.cmake"
+      @ONLY
+    )
   endif()
 
   if(NOT TARGET rapids_export_${type}_${export_set})
@@ -102,8 +110,10 @@ function(rapids_export_package type name export_set)
 
   if(_RAPIDS_GLOBAL_TARGETS)
     # record our targets that need to be marked as global when imported
-    set_property(TARGET rapids_export_${type}_${export_set} APPEND
-                 PROPERTY "GLOBAL_TARGETS" "${_RAPIDS_GLOBAL_TARGETS}")
+    set_property(
+      TARGET rapids_export_${type}_${export_set}
+      APPEND
+      PROPERTY "GLOBAL_TARGETS" "${_RAPIDS_GLOBAL_TARGETS}"
+    )
   endif()
-
 endfunction()
