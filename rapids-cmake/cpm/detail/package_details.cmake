@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -79,6 +79,7 @@ function(rapids_cpm_package_details_internal package_name version_var url_var ta
   rapids_cpm_json_get_value(version)
   rapids_cpm_json_get_value(git_url)
   rapids_cpm_json_get_value(git_tag)
+  rapids_cpm_json_get_value(use_github_tarball)
 
   # Only do validation if we have an entry
   if(json_data OR override_json_data)
@@ -135,6 +136,16 @@ function(rapids_cpm_package_details_internal package_name version_var url_var ta
   cmake_language(EVAL CODE "set(version ${version})")
   cmake_language(EVAL CODE "set(git_tag ${git_tag})")
   cmake_language(EVAL CODE "set(git_url ${git_url})")
+
+  # If use_github_tarball is set, construct the tarball URL and clear git_tag to signal URL-based
+  # fetching to package_info.cmake
+  if(use_github_tarball)
+    # Convert git URL to tarball URL: https://github.com/ORG/REPO.git ->
+    # https://github.com/ORG/REPO/archive/TAG.tar.gz
+    string(REGEX REPLACE "\\.git$" "" tarball_base_url "${git_url}")
+    set(git_url "${tarball_base_url}/archive/${git_tag}.tar.gz")
+    set(git_tag "")
+  endif()
 
   set(${version_var} ${version} PARENT_SCOPE)
   set(${url_var} ${git_url} PARENT_SCOPE)

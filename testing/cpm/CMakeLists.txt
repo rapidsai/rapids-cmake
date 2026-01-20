@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -68,6 +68,9 @@ add_cmake_config_test(cpm_package_override-obey-cpm-source-var.cmake)
 add_cmake_config_test(cpm_package_override-patches.cmake)
 add_cmake_config_test(cpm_package_override-source-subdir.cmake)
 add_cmake_config_test(cpm_package_override-simple.cmake)
+add_cmake_config_test(cpm_package_override-use-github-tarball.cmake)
+
+add_cmake_config_test(cpm_package_info-use-github-tarball.cmake)
 
 add_cmake_config_test(cpm_generate_patch_command-invalid.cmake)
 add_cmake_config_test(cpm_generate_patch_command-override-case-insensitive.cmake)
