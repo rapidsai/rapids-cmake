@@ -53,14 +53,14 @@ function(rapids_cpm_package_info package_name)
     # value.
     #
     # The cpm content is all the boiler plate info CPM needs such as GIT_REPO GIT_TAG GIT_SHALLOW
-    # PATCH details SOURCE_SUBDIR -> todo EXCLUDE_FROM_ALL When _rapids_tag is empty, we're using
-    # URL-based fetching (tarball) instead of git
+    # PATCH details SOURCE_SUBDIR -> todo EXCLUDE_FROM_ALL
     if(_rapids_tag)
       set(_rapids_cpm_content "GIT_REPOSITORY" "${_rapids_url}" "GIT_TAG" "${_rapids_tag}")
       if(NOT _RAPIDS_FOR_FETCH_CONTENT)
         list(APPEND _rapids_cpm_content "GIT_SHALLOW" "${_rapids_shallow}")
       endif()
     else()
+      # When _rapids_tag is empty, we're using URL-based fetching (tarball) instead of git
       set(_rapids_cpm_content "URL" "${_rapids_url}")
     endif()
 
