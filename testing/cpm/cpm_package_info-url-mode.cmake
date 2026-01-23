@@ -9,16 +9,15 @@ include(${rapids-cmake-dir}/cpm/package_override.cmake)
 
 rapids_cpm_init()
 
-# Need to write out an override file with use_github_tarball
+# Need to write out an override file with url and url_hash
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
      [=[
 {
   "packages": {
-    "test_tarball_pkg": {
+    "test_url_pkg": {
       "version": "1.0.0",
-      "git_url": "https://github.com/NVIDIA/cccl.git",
-      "git_tag": "abc123def456",
-      "use_github_tarball": true
+      "url": "https://github.com/NVIDIA/cccl/archive/abc123def456.tar.gz",
+      "url_hash": "SHA256=deadbeef1234567890abcdef1234567890abcdef1234567890abcdef12345678"
     },
     "test_git_pkg": {
       "version": "2.0.0",
@@ -34,30 +33,33 @@ rapids_cpm_package_override(${CMAKE_CURRENT_BINARY_DIR}/override.json)
 # Verify that rapids_cpm_package_info generates correct CPM arguments
 include("${rapids-cmake-dir}/cpm/detail/package_info.cmake")
 
-# Test tarball package - should use URL
-rapids_cpm_package_info(test_tarball_pkg VERSION_VAR version CPM_VAR cpm_args)
+# Test url package - should use URL and URL_HASH
+rapids_cpm_package_info(test_url_pkg VERSION_VAR version CPM_VAR cpm_args)
 
 list(FIND cpm_args "URL" url_index)
 if(url_index EQUAL -1)
-  message(FATAL_ERROR "CPM args should contain 'URL' for use_github_tarball package.\nGot: ${cpm_args}"
-  )
+  message(FATAL_ERROR "CPM args should contain 'URL' for url package.\nGot: ${cpm_args}")
+endif()
+
+list(FIND cpm_args "URL_HASH" url_hash_index)
+if(url_hash_index EQUAL -1)
+  message(FATAL_ERROR "CPM args should contain 'URL_HASH' for url package.\nGot: ${cpm_args}")
 endif()
 
 list(FIND cpm_args "GIT_REPOSITORY" git_repo_index)
 if(NOT git_repo_index EQUAL -1)
-  message(FATAL_ERROR "CPM args should NOT contain 'GIT_REPOSITORY' for use_github_tarball package.\nGot: ${cpm_args}"
+  message(FATAL_ERROR "CPM args should NOT contain 'GIT_REPOSITORY' for url package.\nGot: ${cpm_args}"
   )
 endif()
 
 list(FIND cpm_args "GIT_TAG" git_tag_index)
 if(NOT git_tag_index EQUAL -1)
-  message(FATAL_ERROR "CPM args should NOT contain 'GIT_TAG' for use_github_tarball package.\nGot: ${cpm_args}"
-  )
+  message(FATAL_ERROR "CPM args should NOT contain 'GIT_TAG' for url package.\nGot: ${cpm_args}")
 endif()
 
 list(FIND cpm_args "GIT_SHALLOW" git_shallow_index)
 if(NOT git_shallow_index EQUAL -1)
-  message(FATAL_ERROR "CPM args should NOT contain 'GIT_SHALLOW' for use_github_tarball package.\nGot: ${cpm_args}"
+  message(FATAL_ERROR "CPM args should NOT contain 'GIT_SHALLOW' for url package.\nGot: ${cpm_args}"
   )
 endif()
 
@@ -66,7 +68,15 @@ math(EXPR url_value_index "${url_index} + 1")
 list(GET cpm_args ${url_value_index} url_value)
 set(expected_url "https://github.com/NVIDIA/cccl/archive/abc123def456.tar.gz")
 if(NOT url_value STREQUAL expected_url)
-  message(FATAL_ERROR "URL value should be tarball URL.\nExpected: ${expected_url}\nGot: ${url_value}"
+  message(FATAL_ERROR "URL value incorrect.\nExpected: ${expected_url}\nGot: ${url_value}")
+endif()
+
+# Verify the URL_HASH value is correct
+math(EXPR url_hash_value_index "${url_hash_index} + 1")
+list(GET cpm_args ${url_hash_value_index} url_hash_value)
+set(expected_hash "SHA256=deadbeef1234567890abcdef1234567890abcdef1234567890abcdef12345678")
+if(NOT url_hash_value STREQUAL expected_hash)
+  message(FATAL_ERROR "URL_HASH value incorrect.\nExpected: ${expected_hash}\nGot: ${url_hash_value}"
   )
 endif()
 

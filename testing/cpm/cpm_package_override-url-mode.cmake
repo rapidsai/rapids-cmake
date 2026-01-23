@@ -9,16 +9,15 @@ include(${rapids-cmake-dir}/cpm/package_override.cmake)
 
 rapids_cpm_init()
 
-# Need to write out an override file with use_github_tarball
+# Need to write out an override file with url and url_hash
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
      [=[
 {
   "packages": {
-    "test_tarball_pkg": {
+    "test_url_pkg": {
       "version": "1.0.0",
-      "git_url": "https://github.com/NVIDIA/cccl.git",
-      "git_tag": "abc123def456",
-      "use_github_tarball": true
+      "url": "https://github.com/NVIDIA/cccl/archive/abc123def456.tar.gz",
+      "url_hash": "SHA256=deadbeef1234567890abcdef1234567890abcdef1234567890abcdef12345678"
     },
     "test_git_pkg": {
       "version": "2.0.0",
@@ -31,22 +30,26 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
 
 rapids_cpm_package_override(${CMAKE_CURRENT_BINARY_DIR}/override.json)
 
-# Verify that use_github_tarball constructs the correct URL and clears the tag
+# Verify that url/url_hash mode works correctly
 include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
 
-rapids_cpm_package_details_internal(test_tarball_pkg version url tag src_subdir shallow exclude)
+rapids_cpm_package_details_internal(test_url_pkg version url tag src_subdir shallow exclude)
 
-# Verify URL is constructed as tarball URL
+# Verify URL is passed through correctly
 set(expected_url "https://github.com/NVIDIA/cccl/archive/abc123def456.tar.gz")
 if(NOT url STREQUAL expected_url)
-  message(FATAL_ERROR "use_github_tarball should construct tarball URL.\nExpected: ${expected_url}\nGot: ${url}"
-  )
+  message(FATAL_ERROR "url should be passed through.\nExpected: ${expected_url}\nGot: ${url}")
 endif()
 
-# Verify tag is empty (signals URL-based fetching) Use truthiness check - empty string evaluates to
-# false in CMake
+# Verify tag is empty (signals URL-based fetching)
 if(tag)
-  message(FATAL_ERROR "use_github_tarball should set tag to empty. Got: '${tag}'")
+  message(FATAL_ERROR "tag should be empty for url mode. Got: '${tag}'")
+endif()
+
+# Verify url_hash is set in parent scope
+if(NOT _rapids_url_hash STREQUAL
+   "SHA256=deadbeef1234567890abcdef1234567890abcdef1234567890abcdef12345678")
+  message(FATAL_ERROR "_rapids_url_hash should be set. Got: '${_rapids_url_hash}'")
 endif()
 
 # Verify version is still correct
@@ -54,13 +57,13 @@ if(NOT version STREQUAL "1.0.0")
   message(FATAL_ERROR "version should be 1.0.0. Got: ${version}")
 endif()
 
-# Verify that packages without use_github_tarball still use git
+# Verify that git_url/git_tag packages still work
 rapids_cpm_package_details_internal(test_git_pkg version url tag src_subdir shallow exclude)
 
 if(NOT url STREQUAL "https://github.com/NVIDIA/other.git")
-  message(FATAL_ERROR "git_url should be preserved for non-tarball packages. Got: ${url}")
+  message(FATAL_ERROR "git_url should be preserved for git packages. Got: ${url}")
 endif()
 
 if(NOT tag STREQUAL "xyz789")
-  message(FATAL_ERROR "git_tag should be preserved for non-tarball packages. Got: ${tag}")
+  message(FATAL_ERROR "git_tag should be preserved for git packages. Got: ${tag}")
 endif()

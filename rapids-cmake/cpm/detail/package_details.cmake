@@ -51,7 +51,7 @@ function(rapids_cpm_package_details package_name version_var url_var tag_var sha
 
 endfunction()
 
-# cmake-lint: disable=R0913,R0915
+# cmake-lint: disable=R0912,R0913,R0915
 function(rapids_cpm_package_details_internal package_name version_var url_var tag_var subdir_var
          shallow_var exclude_from_all_var)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.rapids_cpm_package_details_internal")
@@ -79,26 +79,69 @@ function(rapids_cpm_package_details_internal package_name version_var url_var ta
   rapids_cpm_json_get_value(version)
   rapids_cpm_json_get_value(git_url)
   rapids_cpm_json_get_value(git_tag)
-  rapids_cpm_json_get_value(use_github_tarball)
+  rapids_cpm_json_get_value(url)
+  rapids_cpm_json_get_value(url_hash)
+
+  # Handle mode switching in overrides: if override provides git mode, don't inherit url mode from
+  # default (and vice versa). This allows overrides to switch between git and url fetch modes.
+  if(override_json_data)
+    string(JSON value ERROR_VARIABLE no_git_url_in_override GET "${override_json_data}" git_url)
+    string(JSON value ERROR_VARIABLE no_git_tag_in_override GET "${override_json_data}" git_tag)
+    string(JSON value ERROR_VARIABLE no_url_in_override GET "${override_json_data}" url)
+    string(JSON value ERROR_VARIABLE no_url_hash_in_override GET "${override_json_data}" url_hash)
+
+    # If override provides git mode, clear any inherited url mode
+    if(NOT no_git_url_in_override OR NOT no_git_tag_in_override)
+      unset(url)
+      unset(url_hash)
+    endif()
+    # If override provides url mode, clear any inherited git mode
+    if(NOT no_url_in_override OR NOT no_url_hash_in_override)
+      unset(git_url)
+      unset(git_tag)
+    endif()
+  endif()
 
   # Only do validation if we have an entry
   if(json_data OR override_json_data)
-    # Validate that we have the required fields
-    foreach(var IN ITEMS version git_url git_tag)
-      if(NOT ${var})
-        message(FATAL_ERROR "rapids_cmake can't parse '${package_name}' json entry, it is missing a `${var}` entry"
-        )
-      endif()
-    endforeach()
+    # Validate that we have the required fields Either (git_url + git_tag) OR (url + url_hash) must
+    # be specified
+    if(NOT version)
+      message(FATAL_ERROR "rapids_cmake can't parse '${package_name}' json entry, it is missing a `version` entry"
+      )
+    endif()
+
+    set(has_git_mode FALSE)
+    set(has_url_mode FALSE)
+    if(git_url AND git_tag)
+      set(has_git_mode TRUE)
+    endif()
+    if(url AND url_hash)
+      set(has_url_mode TRUE)
+    endif()
+
+    if(has_git_mode AND has_url_mode)
+      message(FATAL_ERROR "rapids_cmake can't parse '${package_name}' json entry, it has both git_url/git_tag and url/url_hash. Only one mode is allowed."
+      )
+    elseif(NOT has_git_mode AND NOT has_url_mode)
+      message(FATAL_ERROR "rapids_cmake can't parse '${package_name}' json entry, it must have either (git_url and git_tag) or (url and url_hash)"
+      )
+    endif()
   endif()
 
   if(override_json_data)
-    string(JSON value ERROR_VARIABLE no_url_override GET "${override_json_data}" git_url)
-    string(JSON value ERROR_VARIABLE no_tag_override GET "${override_json_data}" git_tag)
+    string(JSON value ERROR_VARIABLE no_git_url_override GET "${override_json_data}" git_url)
+    string(JSON value ERROR_VARIABLE no_git_tag_override GET "${override_json_data}" git_tag)
+    string(JSON value ERROR_VARIABLE no_url_override GET "${override_json_data}" url)
+    string(JSON value ERROR_VARIABLE no_url_hash_override GET "${override_json_data}" url_hash)
     string(JSON value ERROR_VARIABLE no_patches_override GET "${override_json_data}" patches)
-    set(git_details_overridden TRUE)
-    if(no_url_override AND no_tag_override AND no_patches_override)
-      set(git_details_overridden FALSE)
+    set(fetch_details_overridden TRUE)
+    if(no_git_url_override
+       AND no_git_tag_override
+       AND no_url_override
+       AND no_url_hash_override
+       AND no_patches_override)
+      set(fetch_details_overridden FALSE)
     endif()
   endif()
 
@@ -116,7 +159,7 @@ function(rapids_cpm_package_details_internal package_name version_var url_var ta
   # below works as expected in the default case.
   unset(always_download)
   unset(override_ignored)
-  if(override_json_data AND json_data AND git_details_overridden)
+  if(override_json_data AND json_data AND fetch_details_overridden)
     # `always_download` default value requires the package to exist in both the default and override
     # and that the git url / git tag have been modified. We also need to make sure that when using
     # an override that it isn't disabled due to `CPM_<pkg>_SOURCE`
@@ -134,22 +177,22 @@ function(rapids_cpm_package_details_internal package_name version_var url_var ta
   include("${rapids-cmake-dir}/rapids-version.cmake")
 
   cmake_language(EVAL CODE "set(version ${version})")
-  cmake_language(EVAL CODE "set(git_tag ${git_tag})")
-  cmake_language(EVAL CODE "set(git_url ${git_url})")
 
-  # If use_github_tarball is set, construct the tarball URL and clear git_tag to signal URL-based
-  # fetching to package_info.cmake
-  if(use_github_tarball)
-    # Convert git URL to tarball URL: https://github.com/ORG/REPO.git ->
-    # https://github.com/ORG/REPO/archive/TAG.tar.gz
-    string(REGEX REPLACE "\\.git$" "" tarball_base_url "${git_url}")
-    set(git_url "${tarball_base_url}/archive/${git_tag}.tar.gz")
-    set(git_tag "")
+  # Handle git mode vs url mode For git mode: set url_var to git_url, tag_var to git_tag For url
+  # mode: set url_var to url, tag_var to empty, and set _rapids_url_hash in parent scope
+  if(has_url_mode)
+    cmake_language(EVAL CODE "set(url ${url})")
+    set(${version_var} ${version} PARENT_SCOPE)
+    set(${url_var} "${url}" PARENT_SCOPE)
+    set(${tag_var} "" PARENT_SCOPE)
+    set(_rapids_url_hash "${url_hash}" PARENT_SCOPE)
+  else()
+    cmake_language(EVAL CODE "set(git_tag ${git_tag})")
+    cmake_language(EVAL CODE "set(git_url ${git_url})")
+    set(${version_var} ${version} PARENT_SCOPE)
+    set(${url_var} "${git_url}" PARENT_SCOPE)
+    set(${tag_var} "${git_tag}" PARENT_SCOPE)
   endif()
-
-  set(${version_var} ${version} PARENT_SCOPE)
-  set(${url_var} ${git_url} PARENT_SCOPE)
-  set(${tag_var} ${git_tag} PARENT_SCOPE)
   set(${shallow_var} ${git_shallow} PARENT_SCOPE)
   set(${exclude_from_all_var} ${exclude_from_all} PARENT_SCOPE)
   if(DEFINED source_subdir)

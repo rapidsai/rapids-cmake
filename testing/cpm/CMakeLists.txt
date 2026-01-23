@@ -68,9 +68,9 @@ add_cmake_config_test(cpm_package_override-obey-cpm-source-var.cmake)
 add_cmake_config_test(cpm_package_override-patches.cmake)
 add_cmake_config_test(cpm_package_override-source-subdir.cmake)
 add_cmake_config_test(cpm_package_override-simple.cmake)
-add_cmake_config_test(cpm_package_override-use-github-tarball.cmake)
+add_cmake_config_test(cpm_package_override-url-mode.cmake)
 
-add_cmake_config_test(cpm_package_info-use-github-tarball.cmake)
+add_cmake_config_test(cpm_package_info-url-mode.cmake)
 
 add_cmake_config_test(cpm_generate_patch_command-invalid.cmake)
 add_cmake_config_test(cpm_generate_patch_command-override-case-insensitive.cmake)
