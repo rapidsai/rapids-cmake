@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2025-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -26,6 +26,7 @@ Result Variables
 
 
 #]=======================================================================]
+# cmake-lint: disable=R0915
 function(rapids_cpm_package_info package_name)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.rapids_cpm_package_info")
 
@@ -54,11 +55,21 @@ function(rapids_cpm_package_info package_name)
     #
     # The cpm content is all the boiler plate info CPM needs such as GIT_REPO GIT_TAG GIT_SHALLOW
     # PATCH details SOURCE_SUBDIR -> todo EXCLUDE_FROM_ALL
-    set(_rapids_cpm_content "GIT_REPOSITORY" "${_rapids_url}" "GIT_TAG" "${_rapids_tag}")
+    if(_rapids_tag)
+      set(_rapids_cpm_content "GIT_REPOSITORY" "${_rapids_url}" "GIT_TAG" "${_rapids_tag}")
+      if(NOT _RAPIDS_FOR_FETCH_CONTENT)
+        list(APPEND _rapids_cpm_content "GIT_SHALLOW" "${_rapids_shallow}")
+      endif()
+    else()
+      # When _rapids_tag is empty, we're using URL-based fetching (tarball) instead of git
+      set(_rapids_cpm_content "URL" "${_rapids_url}")
+      if(_rapids_url_hash)
+        list(APPEND _rapids_cpm_content "URL_HASH" "${_rapids_url_hash}")
+      endif()
+    endif()
 
     if(NOT _RAPIDS_FOR_FETCH_CONTENT)
-      list(APPEND _rapids_cpm_content "GIT_SHALLOW" "${_rapids_shallow}" "EXCLUDE_FROM_ALL"
-           "${_rapids_exclude_from_all}")
+      list(APPEND _rapids_cpm_content "EXCLUDE_FROM_ALL" "${_rapids_exclude_from_all}")
     endif()
     if(patch_command)
       list(APPEND _rapids_cpm_content "${patch_command}")
