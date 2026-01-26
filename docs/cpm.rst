@@ -126,7 +126,8 @@ Project Object Fields
 
 Each ``project`` object must contain the following fields so that
 rapids-cmake can properly use CPM to find or download the project
-as needed.
+as needed. Each project must define ``version`` and either
+(``git_url`` + ``git_tag``) or (``url`` + ``url_hash``).
 
 ``version``
 
@@ -160,6 +161,22 @@ as needed.
         - ``${rapids-cmake-version}`` will be evaluated to 'major.minor' of the current rapids-cmake cal-ver value.
         - ``${version}`` will be evaluated to the contents of the ``version`` field.
         - ``$ENV{variable}`` will be evaluated to the contents of the listed environment variable
+
+``url``
+
+    A required string representing a URL to a source tarball.
+    When ``url`` is provided, ``url_hash`` must also be supplied and
+    ``git_url``/``git_tag`` must not be present.
+
+    Supports the following placeholders:
+        - ``${rapids-cmake-version}`` will be evaluated to 'major.minor' of the current rapids-cmake cal-ver value.
+        - ``${version}`` will be evaluated to the contents of the ``version`` field.
+        - ``$ENV{variable}`` will be evaluated to the contents of the listed environment variable
+
+``url_hash``
+
+    A required string representing the `URL_HASH` value used by CPM when
+    downloading the tarball (for example ``SHA256=<hash>``).
 
 ``git_shallow``
 
@@ -195,7 +212,7 @@ as needed.
 
     The default value for this field is ``false`` unless all of the following criteria is met.
         - The projects exists in both the default and override files
-        - The ``git_url``, ``git_tag``, ``patches`` keys exist in the override
+        - The fetch keys (``git_url``/``git_tag`` or ``url``/``url_hash``) and ``patches`` exist in the override
         - Existence of a patch entry in the definition
 
 ``patches``
