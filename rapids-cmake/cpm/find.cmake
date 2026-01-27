@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2020-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2020-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -174,8 +174,11 @@ function(rapids_cpm_find name version)
   if(_RAPIDS_COMPONENTS)
     # We need to pass the set of components as a space separated string and not a list
     string(REPLACE ";" " " _RAPIDS_COMPONENTS "${_RAPIDS_COMPONENTS}")
-    list(APPEND _RAPIDS_UNPARSED_ARGUMENTS "FIND_PACKAGE_ARGUMENTS"
-         "COMPONENTS ${_RAPIDS_COMPONENTS}")
+    list(
+      APPEND _RAPIDS_UNPARSED_ARGUMENTS
+      "FIND_PACKAGE_ARGUMENTS"
+      "COMPONENTS ${_RAPIDS_COMPONENTS}"
+    )
   endif()
 
   if(_RAPIDS_SOURCE_SUBDIR)
@@ -189,13 +192,15 @@ function(rapids_cpm_find name version)
   if(package_needs_to_be_added)
     # Any non-build patch command triggers CPMAddPackage.
     if(CPM_${name}_SOURCE OR has_non_build_patch)
-      message(DEBUG
-              "rapids.cpm.rapids_find: CPMAddPackage(NAME ${name} VERSION ${version} ${_RAPIDS_UNPARSED_ARGUMENTS})"
+      message(
+        DEBUG
+        "rapids.cpm.rapids_find: CPMAddPackage(NAME ${name} VERSION ${version} ${_RAPIDS_UNPARSED_ARGUMENTS})"
       )
       CPMAddPackage(NAME ${name} VERSION ${version} ${_RAPIDS_UNPARSED_ARGUMENTS})
     else()
-      message(DEBUG
-              "rapids.cpm.rapids_find CPMFindPackage(NAME ${name} VERSION ${version} ${_RAPIDS_UNPARSED_ARGUMENTS})"
+      message(
+        DEBUG
+        "rapids.cpm.rapids_find CPMFindPackage(NAME ${name} VERSION ${version} ${_RAPIDS_UNPARSED_ARGUMENTS})"
       )
       CPMFindPackage(NAME ${name} VERSION ${version} ${_RAPIDS_UNPARSED_ARGUMENTS})
     endif()
@@ -217,9 +222,12 @@ function(rapids_cpm_find name version)
 
   if(_RAPIDS_BUILD_EXPORT_SET)
     include("${rapids-cmake-dir}/export/cpm.cmake")
-    rapids_export_cpm(BUILD ${name} ${_RAPIDS_BUILD_EXPORT_SET}
-                      CPM_ARGS NAME ${name} VERSION ${version} ${_RAPIDS_UNPARSED_ARGUMENTS}
-                               ${_rapids_extra_info})
+    rapids_export_cpm(
+      BUILD
+      ${name}
+      ${_RAPIDS_BUILD_EXPORT_SET}
+      CPM_ARGS NAME ${name} VERSION ${version} ${_RAPIDS_UNPARSED_ARGUMENTS} ${_rapids_extra_info}
+    )
   endif()
 
   if(_RAPIDS_INSTALL_EXPORT_SET)
@@ -228,13 +236,17 @@ function(rapids_cpm_find name version)
     if(_RAPIDS_COMPONENTS)
       list(APPEND _rapids_extra_info "COMPONENTS" ${_RAPIDS_COMPONENTS})
     endif()
-    rapids_export_package(INSTALL ${name} ${_RAPIDS_INSTALL_EXPORT_SET} VERSION ${version}
-                                                                        ${_rapids_extra_info})
+    rapids_export_package(
+      INSTALL
+      ${name}
+      ${_RAPIDS_INSTALL_EXPORT_SET}
+      VERSION ${version}
+      ${_rapids_extra_info}
+    )
   endif()
 
   # Propagate up variables that CPMFindPackage provide
   set(${name}_SOURCE_DIR "${${name}_SOURCE_DIR}" PARENT_SCOPE)
   set(${name}_BINARY_DIR "${${name}_BINARY_DIR}" PARENT_SCOPE)
   set(${name}_ADDED "${${name}_ADDED}" PARENT_SCOPE)
-
 endfunction()

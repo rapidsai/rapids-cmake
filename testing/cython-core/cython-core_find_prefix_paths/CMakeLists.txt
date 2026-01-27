@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2025-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -19,17 +19,23 @@ execute_process(COMMAND ${Python_EXECUTABLE} -m "venv" "${env_dir}")
 
 set(Python_EXECUTABLE "${env_dir}/bin/python")
 
-execute_process(COMMAND "${Python_EXECUTABLE}" "-m" "pip" "install" "libucx-cu13")
+execute_process(
+  COMMAND "${Python_EXECUTABLE}" "-m" "pip" "install" "libucx-cu13"
+)
 rapids_cython_find_prefix_paths("${Python_EXECUTABLE}" prefix_paths)
 
-set(_get_platlib
-    [=[
+set(
+  _get_platlib
+  [=[
 import sysconfig
 print(sysconfig.get_path("platlib"))
-]=])
+]=]
+)
 
-execute_process(COMMAND "${Python_EXECUTABLE}" "-c" "${_get_platlib}"
-                OUTPUT_VARIABLE site_packages_path)
+execute_process(
+  COMMAND "${Python_EXECUTABLE}" "-c" "${_get_platlib}"
+  OUTPUT_VARIABLE site_packages_path
+)
 string(STRIP "${site_packages_path}" site_packages_path)
 set(libucx_path "${site_packages_path}/libucx")
 

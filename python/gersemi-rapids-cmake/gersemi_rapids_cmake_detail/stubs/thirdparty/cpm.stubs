@@ -1,0 +1,48 @@
+# SPDX-FileCopyrightText: Copyright (c) 2025-2026, NVIDIA CORPORATION. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+
+function(CPMAddPackage)
+  set(options)
+  set(one_value
+    NAME
+    FORCE
+    VERSION
+    GIT_TAG
+    DOWNLOAD_ONLY
+    GITHUB_REPOSITORY
+    GITLAB_REPOSITORY
+    SOURCE_DIR
+    FIND_PACKAGE_ARGUMENTS
+    NO_CACHE
+    SYSTEM
+    GIT_SHALLOW
+    EXCLUDE_FROM_ALL
+    SOURCE_SUBDIR
+    CUSTOM_CACHE_KEY
+  )
+  set(multi_value
+    URL
+    OPTIONS
+    DOWNLOAD_COMMAND
+    PATCHES
+  )
+  cmake_parse_arguments(_CPM "${options}" "${one_value}" "${multi_value}" ${ARGN})
+endfunction()
+
+function(CPMFindPackage)
+  set(options)
+  set(one_value
+    NAME
+    VERSION
+    GIT_TAG
+    FIND_PACKAGE_ARGUMENTS
+  )
+  set(multi_value)
+  cmake_parse_arguments(_CPM "${options}" "${one_value}" "${multi_value}" ${ARGN})
+endfunction()
+
+function(cpm_check_if_package_already_added CPM_ARGS_NAME CPM_ARGS_VERSION)
+endfunction()
+
+macro(cpm_export_variables name)
+endmacro()

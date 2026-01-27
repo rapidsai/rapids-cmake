@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2022-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2022-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -26,6 +26,8 @@ endif()
 # Verify that `verify_alloc` is marked as to be installed
 get_target_property(names rapids_test_install_testing TARGETS_TO_INSTALL)
 if(NOT "verify_alloc" IN_LIST names)
-  message(FATAL_ERROR "Failed to record `verify_alloc` as a target to be installed in the testing component"
+  message(
+    FATAL_ERROR
+    "Failed to record `verify_alloc` as a target to be installed in the testing component"
   )
 endif()

@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2025-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -17,8 +17,9 @@ add_subdirectory(subdir1)
 add_subdirectory(subdir2)
 
 # Add a custom command that verifies that we can use targets that link to nvtx3
-file(WRITE "${CMAKE_BINARY_DIR}/check_uses_nvtx_dir/CMakeLists.txt"
-     "
+file(
+  WRITE "${CMAKE_BINARY_DIR}/check_uses_nvtx_dir/CMakeLists.txt"
+  "
 cmake_minimum_required(VERSION 3.30.4)
 project(verify_nvtx LANGUAGES CXX)
 
@@ -31,9 +32,14 @@ endif()
 file(WRITE \"\${CMAKE_CURRENT_BINARY_DIR}/stub.cpp\" \" \")
 add_library(uses_nvtx SHARED stub.cpp)
 target_link_libraries(uses_nvtx PRIVATE uses-nvtx3::uses-nvtx3-cpp)
-")
+"
+)
 
-add_custom_target(verify_build_config ALL
-                  COMMAND ${CMAKE_COMMAND} -E rm -rf "${CMAKE_BINARY_DIR}/check_uses_nvtx_dir/build"
-                  COMMAND ${CMAKE_COMMAND} -S="${CMAKE_BINARY_DIR}/check_uses_nvtx_dir"
-                          -B="${CMAKE_BINARY_DIR}/check_uses_nvtx_dir/build")
+add_custom_target(
+  verify_build_config
+  ALL
+  COMMAND ${CMAKE_COMMAND} -E rm -rf "${CMAKE_BINARY_DIR}/check_uses_nvtx_dir/build"
+  COMMAND
+    ${CMAKE_COMMAND} -S="${CMAKE_BINARY_DIR}/check_uses_nvtx_dir"
+    -B="${CMAKE_BINARY_DIR}/check_uses_nvtx_dir/build"
+)

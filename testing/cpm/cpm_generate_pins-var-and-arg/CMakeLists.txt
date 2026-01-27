@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2024-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2024-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -11,15 +11,23 @@ include(${rapids-cmake-dir}/cpm/init.cmake)
 include(${rapids-cmake-dir}/cpm/gbench.cmake)
 include(${rapids-cmake-dir}/cpm/gtest.cmake)
 
-set(RAPIDS_CMAKE_CPM_PINNED_VERSIONS_FILE
-    "${CMAKE_CURRENT_BINARY_DIR}/custom_path/pinned_versions.json")
+set(
+  RAPIDS_CMAKE_CPM_PINNED_VERSIONS_FILE
+  "${CMAKE_CURRENT_BINARY_DIR}/custom_path/pinned_versions.json"
+)
 rapids_cpm_init(GENERATE_PINNED_VERSIONS)
 rapids_cpm_gbench()
 rapids_cpm_gtest()
 
 include("${rapids-cmake-testing-dir}/cpm/verify_generated_pins.cmake")
-verify_generated_pins(verify_pins_A PROJECTS benchmark GTest PIN_FILE
-                      "${RAPIDS_CMAKE_CPM_PINNED_VERSIONS_FILE}")
+verify_generated_pins(
+  verify_pins_A
+  PROJECTS benchmark GTest
+  PIN_FILE "${RAPIDS_CMAKE_CPM_PINNED_VERSIONS_FILE}"
+)
 
-verify_generated_pins(verify_pins_B PROJECTS benchmark GTest PIN_FILE
-                      "${CMAKE_BINARY_DIR}/rapids-cmake/pinned_versions.json")
+verify_generated_pins(
+  verify_pins_B
+  PROJECTS benchmark GTest
+  PIN_FILE "${CMAKE_BINARY_DIR}/rapids-cmake/pinned_versions.json"
+)

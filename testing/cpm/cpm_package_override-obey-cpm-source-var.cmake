@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -10,8 +10,9 @@ include(${rapids-cmake-dir}/cpm/package_override.cmake)
 rapids_cpm_init()
 
 # Need to write out an override file
-file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
-     [=[
+file(
+  WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
+  [=[
 {
   "packages": {
     "rmm": {
@@ -28,7 +29,8 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
     }
   }
 }
-  ]=])
+  ]=]
+)
 
 set(CPM_rmm_SOURCE "${CMAKE_CURRENT_BINARY_DIR}")
 set(CPM_not_in_base_SOURCE "${CMAKE_CURRENT_BINARY_DIR}")
@@ -53,7 +55,9 @@ unset(repository)
 unset(tag)
 rapids_cpm_package_details_internal(not_in_base version repository tag src_subdir shallow exclude)
 if(NOT (version AND repository AND tag))
-  message(FATAL_ERROR "rapids_cpm_package_details should still have details for package that doesn't exist"
+  message(
+    FATAL_ERROR
+    "rapids_cpm_package_details should still have details for package that doesn't exist"
   )
 endif()
 

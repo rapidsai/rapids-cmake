@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2023-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -27,8 +27,11 @@ endif()
 # Test that the dependency file was created properly.
 cmake_path(SET depfile NORMALIZE "${CMAKE_CURRENT_BINARY_DIR}/test.c.dep")
 add_custom_target(check_depfile_exists ALL DEPENDS test)
-add_custom_command(TARGET check_depfile_exists
-                   POST_BUILD
-                   COMMAND ${CMAKE_COMMAND} -DDEPFILE="${depfile}" -P
-                           ${CMAKE_CURRENT_SOURCE_DIR}/check_depfile_exists.cmake
-                   COMMENT "Checking for existence of dependency file")
+add_custom_command(
+  TARGET check_depfile_exists
+  POST_BUILD
+  COMMAND
+    ${CMAKE_COMMAND} -DDEPFILE="${depfile}" -P
+    ${CMAKE_CURRENT_SOURCE_DIR}/check_depfile_exists.cmake
+  COMMENT "Checking for existence of dependency file"
+)

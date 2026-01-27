@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2018-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2018-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -19,6 +19,8 @@ set(to_match_string [=[COMPONENTS 14.7.2)]=])
 file(READ "${path}" contents)
 string(FIND "${contents}" "${to_match_string}" is_found)
 if(is_found EQUAL -1)
-  message(FATAL_ERROR "rapids_export_package failed to generate a find_package configuration with COMPONENTS"
+  message(
+    FATAL_ERROR
+    "rapids_export_package failed to generate a find_package configuration with COMPONENTS"
   )
 endif()

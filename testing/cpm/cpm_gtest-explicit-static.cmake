@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2024-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2024-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -15,8 +15,9 @@ if(NOT type STREQUAL STATIC_LIBRARY)
   message(FATAL_ERROR "rapids_cpm_gtest failed to get a static version of gtest")
 endif()
 
-file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/use_gtest.cpp"
-     [=[
+file(
+  WRITE "${CMAKE_CURRENT_BINARY_DIR}/use_gtest.cpp"
+  [=[
 #include <gtest/gtest.h>
 
 // The fixture for testing class Foo.
@@ -28,6 +29,7 @@ class FooTest : public testing::Test {
   void SetUp() override {}
   void TearDown() override {}
 };
-]=])
+]=]
+)
 add_library(uses_gtest SHARED ${CMAKE_CURRENT_BINARY_DIR}/use_gtest.cpp)
 target_link_libraries(uses_gtest PRIVATE GTest::gtest)

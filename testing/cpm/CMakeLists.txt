@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -22,8 +22,12 @@ add_cmake_config_test(cpm_find-options-escaped)
 add_cmake_config_test(cpm_find-patch-command NO_CPM_CACHE)
 add_cmake_config_test(cpm_find-patch-command-embedded NO_CPM_CACHE)
 add_cmake_config_test(cpm_find-patch-command-required NO_CPM_CACHE)
-add_cmake_config_test(cpm_find-patch-command-required-fails NO_CPM_CACHE SHOULD_FAIL
-                      "rapids-cmake [GTest]: failed to apply patch")
+add_cmake_config_test(
+  cpm_find-patch-command-required-fails
+  NO_CPM_CACHE
+  SHOULD_FAIL
+  "rapids-cmake [GTest]: failed to apply patch"
+)
 add_cmake_config_test(cpm_find-restore-cpm-vars)
 add_cmake_config_test(cpm_find-version-explicit-install.cmake)
 
@@ -40,10 +44,16 @@ add_cmake_config_test(cpm_convert_patch_json-special-chars.cmake)
 
 add_cmake_config_test(cpm_init-bad-default-path.cmake SHOULD_FAIL "rapids_cpm_init can't load")
 add_cmake_config_test(cpm_init-bad-default-cmake-var.cmake SHOULD_FAIL "rapids_cpm_init can't load")
-add_cmake_config_test(cpm_init-bad-override-path.cmake SHOULD_FAIL
-                      "rapids_cpm_package_override can't load")
-add_cmake_config_test(cpm_init-bad-override-cmake-var.cmake SHOULD_FAIL
-                      "rapids_cpm_package_override can't load")
+add_cmake_config_test(
+  cpm_init-bad-override-path.cmake
+  SHOULD_FAIL
+  "rapids_cpm_package_override can't load"
+)
+add_cmake_config_test(
+  cpm_init-bad-override-cmake-var.cmake
+  SHOULD_FAIL
+  "rapids_cpm_package_override can't load"
+)
 add_cmake_config_test(cpm_init-custom-default-simple.cmake)
 add_cmake_config_test(cpm_init-custom-default-multiple.cmake)
 add_cmake_config_test(cpm_init-custom-default-via-cmake-var.cmake)
@@ -52,8 +62,11 @@ add_cmake_config_test(cpm_init-override-simple.cmake)
 add_cmake_config_test(cpm_init-override-via-cmake-var.cmake)
 
 add_cmake_config_test(cpm_package_override-add-new-project.cmake)
-add_cmake_config_test(cpm_package_override-bad-path.cmake SHOULD_FAIL
-                      "rapids_cpm_package_override can't load")
+add_cmake_config_test(
+  cpm_package_override-bad-path.cmake
+  SHOULD_FAIL
+  "rapids_cpm_package_override can't load"
+)
 add_cmake_config_test(cpm_package_override-before-init.cmake)
 add_cmake_config_test(cpm_package_override-defaults-with-different-casing.cmake)
 add_cmake_config_test(cpm_package_override-defaults-with-different-casing-warning.cmake)
@@ -62,8 +75,11 @@ add_cmake_config_test(cpm_package_override-empty.cmake)
 add_cmake_config_test(cpm_package_override-env-var-support.cmake)
 add_cmake_config_test(cpm_package_override-multiple-cmake-var.cmake)
 add_cmake_config_test(cpm_package_override-multiple.cmake)
-add_cmake_config_test(cpm_package_override-no-version-value.cmake SHOULD_FAIL
-                      "rapids_cmake can't parse")
+add_cmake_config_test(
+  cpm_package_override-no-version-value.cmake
+  SHOULD_FAIL
+  "rapids_cmake can't parse"
+)
 add_cmake_config_test(cpm_package_override-obey-cpm-source-var.cmake)
 add_cmake_config_test(cpm_package_override-patches.cmake)
 add_cmake_config_test(cpm_package_override-source-subdir.cmake)

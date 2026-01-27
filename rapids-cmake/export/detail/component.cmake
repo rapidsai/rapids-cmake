@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2023-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -26,7 +26,15 @@ components.
 
 #]=======================================================================]
 # cmake-lint: disable=W0105,R0913
-function(rapids_export_component type project_name component_name export_set unique_name namespace)
+function(
+  rapids_export_component
+  type
+  project_name
+  component_name
+  export_set
+  unique_name
+  namespace
+)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.export.rapids_export_component")
 
   string(TOLOWER ${type} type)
@@ -37,40 +45,56 @@ function(rapids_export_component type project_name component_name export_set uni
     rapids_cmake_install_lib_dir(install_location)
     set(install_location "${install_location}/cmake/${project_name}")
 
-    set(deps_destination
-        "${PROJECT_BINARY_DIR}/rapids-cmake/${project_name}/export/${component_name}/")
+    set(
+      deps_destination
+      "${PROJECT_BINARY_DIR}/rapids-cmake/${project_name}/export/${component_name}/"
+    )
     file(MAKE_DIRECTORY "${deps_destination}")
-    install(DIRECTORY "${deps_destination}" DESTINATION "${install_location}"
-            COMPONENT ${component_name})
+    install(
+      DIRECTORY "${deps_destination}"
+      DESTINATION "${install_location}"
+      COMPONENT ${component_name}
+    )
     if(namespace STREQUAL "")
-      install(EXPORT ${export_set} FILE ${project_name}-${unique_name}-targets.cmake
-              DESTINATION "${install_location}" COMPONENT ${component_name})
+      install(
+        EXPORT ${export_set}
+        FILE ${project_name}-${unique_name}-targets.cmake
+        DESTINATION "${install_location}"
+        COMPONENT ${component_name}
+      )
     else()
-      install(EXPORT ${export_set}
-              FILE ${project_name}-${unique_name}-targets.cmake
-              DESTINATION "${install_location}"
-              COMPONENT ${component_name}
-              NAMESPACE ${namespace})
+      install(
+        EXPORT ${export_set}
+        FILE ${project_name}-${unique_name}-targets.cmake
+        DESTINATION "${install_location}"
+        COMPONENT ${component_name}
+        NAMESPACE ${namespace}
+      )
     endif()
-
   else()
     set(install_location "${PROJECT_BINARY_DIR}")
     set(deps_destination "${install_location}/")
 
     if(namespace STREQUAL "")
-      export(EXPORT ${export_set}
-             FILE "${install_location}/${project_name}-${unique_name}-targets.cmake")
+      export(
+        EXPORT ${export_set}
+        FILE "${install_location}/${project_name}-${unique_name}-targets.cmake"
+      )
     else()
-      export(EXPORT ${export_set} NAMESPACE ${namespace}
-             FILE "${install_location}/${project_name}-${unique_name}-targets.cmake")
+      export(
+        EXPORT ${export_set}
+        NAMESPACE ${namespace}
+        FILE "${install_location}/${project_name}-${unique_name}-targets.cmake"
+      )
     endif()
-
   endif()
 
   if(TARGET rapids_export_${type}_${export_set})
     include("${rapids-cmake-dir}/export/write_dependencies.cmake")
     rapids_export_write_dependencies(
-      ${type} ${export_set} "${deps_destination}/${project_name}-${unique_name}-dependencies.cmake")
+      ${type}
+      ${export_set}
+      "${deps_destination}/${project_name}-${unique_name}-dependencies.cmake"
+    )
   endif()
-
 endfunction()

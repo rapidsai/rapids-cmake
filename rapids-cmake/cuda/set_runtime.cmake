@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2023-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -59,5 +59,4 @@ function(rapids_cuda_set_runtime target use_static value)
     set_target_properties(${target} PROPERTIES CUDA_RUNTIME_LIBRARY Shared)
     target_link_libraries(${target} ${mode} $<TARGET_NAME_IF_EXISTS:CUDA::cudart>)
   endif()
-
 endfunction()

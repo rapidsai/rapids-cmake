@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2023-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -35,16 +35,22 @@ macro(rapids_cython_init)
   if(NOT DEFINED RAPIDS_CYTHON_INITIALIZED)
     # Verify that we are using scikit-build.
     if(NOT DEFINED SKBUILD)
-      message(WARNING "rapids-cython expects scikit-build-core to be active before being used. \
+      message(
+        WARNING
+        "rapids-cython expects scikit-build-core to be active before being used. \
           The SKBUILD variable is not currently set, indicating that scikit-build-core \
-          is not active, so builds may behave unexpectedly.")
+          is not active, so builds may behave unexpectedly."
+      )
     else()
       # Access the variable to avoid unused variable warnings."
       message(TRACE "Accessing SKBUILD variable ${SKBUILD}")
     endif()
 
-    find_package(Python REQUIRED COMPONENTS Interpreter Development.Module
-                                            ${SKBUILD_SABI_COMPONENT})
+    find_package(
+      Python
+      REQUIRED
+      COMPONENTS Interpreter Development.Module ${SKBUILD_SABI_COMPONENT}
+    )
     find_program(CYTHON "cython" REQUIRED)
 
     if(NOT CYTHON_FLAGS)

@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -75,7 +75,9 @@ function(rapids_export_find_package_file type file_path)
   # Don't remove duplicates here as that cost should only be paid once per export set. So that
   # should occur in `write_dependencies`
 
-  set_property(TARGET rapids_export_${type}_${export_set} APPEND PROPERTY "FIND_PACKAGES_TO_INSTALL"
-                                                                          "${file_path}")
-
+  set_property(
+    TARGET rapids_export_${type}_${export_set}
+    APPEND
+    PROPERTY "FIND_PACKAGES_TO_INSTALL" "${file_path}"
+  )
 endfunction()

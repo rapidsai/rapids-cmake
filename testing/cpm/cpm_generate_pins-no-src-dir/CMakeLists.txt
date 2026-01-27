@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2024-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2024-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -16,14 +16,17 @@ rapids_cpm_generate_pinned_versions(OUTPUT "${CMAKE_BINARY_DIR}/output_pinned_ve
 
 set(PKG_VERSION 0.6.2)
 set(PKG_REPOSITORY https://github.com/nmslib/hnswlib.git)
-rapids_cpm_find(hnswlib ${PKG_VERSION}
-                GLOBAL_TARGETS hnswlib::hnswlib
-                CPM_ARGS
-                GIT_REPOSITORY ${PKG_REPOSITORY}
-                GIT_TAG v${PKG_VERSION}
-                GIT_SHALLOW TRUE
-                DOWNLOAD_ONLY ON
-                EXCLUDE_FROM_ALL ON)
+rapids_cpm_find(
+  hnswlib
+  ${PKG_VERSION}
+  GLOBAL_TARGETS hnswlib::hnswlib
+  CPM_ARGS
+    GIT_REPOSITORY ${PKG_REPOSITORY}
+    GIT_TAG v${PKG_VERSION}
+    GIT_SHALLOW TRUE
+    DOWNLOAD_ONLY ON
+    EXCLUDE_FROM_ALL ON
+)
 
 # rapids_find_package should never be in CPM packages, but lets double check
 rapids_find_package(Threads REQUIRED)
@@ -33,5 +36,9 @@ rapids_find_package(Threads REQUIRED)
 rapids_cpm_find(ZLIB 1.0 REQUIRED)
 
 include("${rapids-cmake-testing-dir}/cpm/verify_generated_pins.cmake")
-verify_generated_pins(verify_pins PROJECTS hnswlib PROJECTS_NOT_EXIST ZLIB Threads PIN_FILE
-                      "${CMAKE_BINARY_DIR}/output_pinned_versions.json")
+verify_generated_pins(
+  verify_pins
+  PROJECTS hnswlib
+  PROJECTS_NOT_EXIST ZLIB Threads
+  PIN_FILE "${CMAKE_BINARY_DIR}/output_pinned_versions.json"
+)
