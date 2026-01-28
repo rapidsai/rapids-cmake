@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -31,5 +31,6 @@ if(RAPIDS_CMAKE_ENABLE_DOWNLOAD_TESTS)
 
   add_subdirectory(cpm)
   add_subdirectory(cython-core)
+  add_subdirectory(examples)
   add_subdirectory(other)
 endif()
