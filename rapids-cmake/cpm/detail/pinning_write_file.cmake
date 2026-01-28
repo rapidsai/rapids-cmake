@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2024-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2024-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -258,7 +258,7 @@ Parameters:
     scope.
 
 #]=======================================================================]
-# cmake-lint: disable=R0915,E1120
+# cmake-lint: disable=R0912,R0915,E1120
 function(rapids_cpm_pinning_add_json_entry package_name json_var)
 
   # Make sure variables from the callers scope doesn't break us
@@ -272,28 +272,60 @@ function(rapids_cpm_pinning_add_json_entry package_name json_var)
   get_default_json(${package_name} json_data)
   get_override_json(${package_name} override_json_data)
 
-  set(baseline_arg)
-  string(JSON value ERROR_VARIABLE have_error GET "${override_json_data}" git_tag)
-  if(have_error)
-    string(JSON value ERROR_VARIABLE have_error GET "${json_data}" git_tag)
-  endif()
-  if(NOT have_error)
-    set(baseline_arg REQUESTED_GIT_TAG "${value}")
+  # Determine if this package uses URL mode (url + url_hash) or git mode (git_url + git_tag) Check
+  # override first, then default
+  set(is_url_mode FALSE)
+  string(JSON url_value ERROR_VARIABLE no_url_override GET "${override_json_data}" url)
+  string(JSON url_hash_value ERROR_VARIABLE no_url_hash_override GET "${override_json_data}"
+         url_hash)
+  if(NOT no_url_override AND NOT no_url_hash_override)
+    set(is_url_mode TRUE)
+  else()
+    string(JSON url_value ERROR_VARIABLE no_url GET "${json_data}" url)
+    string(JSON url_hash_value ERROR_VARIABLE no_url_hash GET "${json_data}" url_hash)
+    if(NOT no_url AND NOT no_url_hash)
+      set(is_url_mode TRUE)
+    endif()
   endif()
 
-  rapids_cpm_pinning_extract_source_git_info(${package} git_url git_sha ${baseline_arg})
   rapids_cpm_pinning_extract_source_subdir(${package} source_subdir)
-  if(git_url)
-    string(CONFIGURE [=["git_url": "${git_url}",]=] url_string)
-  endif()
-  if(git_sha)
-    string(CONFIGURE [=["git_tag": "${git_sha}",]=] sha_string)
-  endif()
   if(source_subdir)
     string(CONFIGURE [=["source_subdir": "${source_subdir}",]=] subdir_string)
   endif()
-  # We start with a default template, and only add members that don't exist
-  string(CONFIGURE [=[{
+
+  if(is_url_mode)
+    # For URL mode packages, preserve the original url and url_hash URL mode packages are already
+    # pinned by hash, so no git SHA extraction is needed
+    string(CONFIGURE [=["url": "${url_value}",]=] url_string)
+    string(CONFIGURE [=["url_hash": "${url_hash_value}",]=] hash_string)
+    string(CONFIGURE [=[{
+  "version": "${CPM_PACKAGE_${package_name}_VERSION}",
+  ${url_string}
+  ${hash_string}
+  ${subdir_string}
+  "always_download": true
+  }]=]
+                     pinned_json_entry)
+  else()
+    # For git mode packages, extract the git SHA for pinning
+    set(baseline_arg)
+    string(JSON value ERROR_VARIABLE have_error GET "${override_json_data}" git_tag)
+    if(have_error)
+      string(JSON value ERROR_VARIABLE have_error GET "${json_data}" git_tag)
+    endif()
+    if(NOT have_error)
+      set(baseline_arg REQUESTED_GIT_TAG "${value}")
+    endif()
+
+    rapids_cpm_pinning_extract_source_git_info(${package} git_url git_sha ${baseline_arg})
+    if(git_url)
+      string(CONFIGURE [=["git_url": "${git_url}",]=] url_string)
+    endif()
+    if(git_sha)
+      string(CONFIGURE [=["git_tag": "${git_sha}",]=] sha_string)
+    endif()
+    # We start with a default template, and only add members that don't exist
+    string(CONFIGURE [=[{
   "version": "${CPM_PACKAGE_${package_name}_VERSION}",
   ${url_string}
   ${sha_string}
@@ -301,13 +333,25 @@ function(rapids_cpm_pinning_add_json_entry package_name json_var)
   "git_shallow": false,
   "always_download": true
   }]=]
-                   pinned_json_entry)
+                     pinned_json_entry)
+  endif()
 
   set(override_exclusion_list "")
   set(json_exclusion_list "")
   # patch and proprietary_binary can't propagate if an override exists
   if(override_json_data)
     list(APPEND json_exclusion_list "patch" "proprietary_binary")
+  endif()
+
+  # Prevent mixing URL mode and git mode fields
+  if(is_url_mode)
+    # For URL mode packages, exclude git fields from being merged in
+    list(APPEND override_exclusion_list "git_url" "git_tag" "git_shallow")
+    list(APPEND json_exclusion_list "git_url" "git_tag" "git_shallow")
+  else()
+    # For git mode packages, exclude URL fields from being merged in
+    list(APPEND override_exclusion_list "url" "url_hash")
+    list(APPEND json_exclusion_list "url" "url_hash")
   endif()
 
   set(data_list override_json_data json_data)
