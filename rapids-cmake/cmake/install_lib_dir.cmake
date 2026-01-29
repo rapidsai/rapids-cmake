@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -66,5 +66,4 @@ function(rapids_cmake_install_lib_dir out_variable_name)
   endif()
 
   set(${out_variable_name} ${computed_path} PARENT_SCOPE)
-
 endfunction()

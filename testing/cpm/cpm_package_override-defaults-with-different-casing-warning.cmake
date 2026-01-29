@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2024-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2024-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -8,6 +8,9 @@
 # we expect
 set(rmm_string "RAPIDS-CMake is assuming the override rMm is meant for the rmm package")
 set(gtest_string "RAPIDS-CMake is assuming the override gtest is meant for the GTest package")
+
+function(_message)
+endfunction()
 
 function(message mode content)
   if(mode STREQUAL "AUTHOR_WARNING")
@@ -29,8 +32,9 @@ include(${rapids-cmake-dir}/cpm/package_override.cmake)
 rapids_cpm_init()
 
 # Need to write out an override file
-file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
-     [=[
+file(
+  WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
+  [=[
 {
   "packages": {
     "rMm": {
@@ -43,7 +47,8 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
     }
   }
 }
-  ]=])
+  ]=]
+)
 
 rapids_cpm_package_override(${CMAKE_CURRENT_BINARY_DIR}/override.json)
 include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")

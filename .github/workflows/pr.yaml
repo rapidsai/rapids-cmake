@@ -15,6 +15,8 @@ jobs:
       - checks
       - conda-cpp-tests
       - docs-build
+      - wheel-build-gersemi-rapids-cmake
+      - wheel-tests-gersemi-rapids-cmake
       - telemetry-setup
     secrets: inherit
     uses: rapidsai/shared-workflows/.github/workflows/pr-builder.yaml@main
@@ -50,6 +52,28 @@ jobs:
       arch: "amd64"
       container_image: "rapidsai/ci-conda:26.04-latest"
       script: "ci/build_docs.sh"
+  wheel-build-gersemi-rapids-cmake:
+    needs: telemetry-setup
+    secrets: inherit
+    uses: rapidsai/shared-workflows/.github/workflows/wheels-build.yaml@main
+    with:
+      build_type: pull-request
+      script: ci/build_wheel_gersemi_rapids_cmake.sh
+      package-name: gersemi-rapids-cmake
+      package-type: python
+      pure-wheel: true
+      append-cuda-suffix: false
+      # This selects "ARCH=amd64 + the earliest supported Python + CUDA".
+      matrix_filter: map(select(.ARCH == "amd64")) | min_by([(.PY_VER|split(".")|map(tonumber)), (.CUDA_VER|split(".")|map(tonumber))]) | [.]
+  wheel-tests-gersemi-rapids-cmake:
+    needs: wheel-build-gersemi-rapids-cmake
+    secrets: inherit
+    uses: rapidsai/shared-workflows/.github/workflows/wheels-test.yaml@main
+    with:
+      build_type: pull-request
+      script: ci/test_wheel_gersemi_rapids_cmake.sh
+      # This selects "ARCH=amd64 + the earliest supported Python + CUDA".
+      matrix_filter: map(select(.ARCH == "amd64")) | min_by([(.PY_VER|split(".")|map(tonumber)), (.CUDA_VER|split(".")|map(tonumber))]) | [.]
   telemetry-summarize:
     # This job must use a self-hosted runner to record telemetry traces.
     runs-on: linux-amd64-cpu4

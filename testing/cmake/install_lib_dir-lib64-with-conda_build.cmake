@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -19,7 +19,9 @@ endif()
 
 # verify CMAKE_INSTALL_LIBDIR doesn't exist
 if(NOT CMAKE_INSTALL_LIBDIR STREQUAL "lib64")
-  message(FATAL_ERROR "CMAKE_INSTALL_LIBDIR now set to '${CMAKE_INSTALL_LIBDIR}', but we expected 'lib64'"
+  message(
+    FATAL_ERROR
+    "CMAKE_INSTALL_LIBDIR now set to '${CMAKE_INSTALL_LIBDIR}', but we expected 'lib64'"
   )
 endif()
 
@@ -35,7 +37,9 @@ endif()
 
 # verify CMAKE_INSTALL_LIBDIR doesn't exist
 if(NOT CMAKE_INSTALL_LIBDIR STREQUAL "lib")
-  message(FATAL_ERROR "CMAKE_INSTALL_LIBDIR now set to '${CMAKE_INSTALL_LIBDIR}', but we expected 'lib'"
+  message(
+    FATAL_ERROR
+    "CMAKE_INSTALL_LIBDIR now set to '${CMAKE_INSTALL_LIBDIR}', but we expected 'lib'"
   )
 endif()
 

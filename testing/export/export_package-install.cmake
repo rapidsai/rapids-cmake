@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -32,13 +32,17 @@ if(NOT "PNG::PNG_V2" IN_LIST global_targets)
 endif()
 
 # Verify that temp install package configuration files exist
-if(NOT EXISTS "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/install/package_ZLIB.cmake"
-   OR NOT EXISTS "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/install/package_PNG.cmake")
+if(
+  NOT EXISTS "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/install/package_ZLIB.cmake"
+  OR NOT EXISTS "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/install/package_PNG.cmake"
+)
   message(FATAL_ERROR "rapids_export_package failed to generate a find_package configuration")
 endif()
 
 # Verify that temp build package configuration files don't exist
-if(EXISTS "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/build/package_ZLIB.cmake"
-   OR EXISTS "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/build/package_PNG.cmake")
+if(
+  EXISTS "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/build/package_ZLIB.cmake"
+  OR EXISTS "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/build/package_PNG.cmake"
+)
   message(FATAL_ERROR "rapids_export_package(INSTALL) generated temp files in the wrong directory")
 endif()

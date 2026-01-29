@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2023-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -18,17 +18,21 @@ install(TARGETS fakeLib_c1 EXPORT fake_set_c1_export)
 include(${rapids-cmake-dir}/export/package.cmake)
 rapids_export_package(build CUDAToolkit fake_set_c1_export)
 
-rapids_export(BUILD FakEProJecT
-              EXPORT_SET fake_set
-              COMPONENTS c1
-              COMPONENTS_EXPORT_SET fake_set_c1_export
-              LANGUAGES CXX
-              NAMESPACE test::)
+rapids_export(
+  BUILD
+  FakEProJecT
+  EXPORT_SET fake_set
+  COMPONENTS c1
+  COMPONENTS_EXPORT_SET fake_set_c1_export
+  LANGUAGES CXX
+  NAMESPACE test::
+)
 
 # Add a custom command that generates a second project that verifies our component targets are
 # exported correctly
-file(WRITE "${CMAKE_BINARY_DIR}/verify-1/CMakeLists.txt"
-     [=[
+file(
+  WRITE "${CMAKE_BINARY_DIR}/verify-1/CMakeLists.txt"
+  [=[
 cmake_minimum_required(VERSION 3.20)
 project(verify_build_targets LANGUAGES CXX)
 set(nice_names c1-fake_set)
@@ -38,17 +42,21 @@ foreach(nice_name IN ZIP_LISTS components export_sets)
     message(FATAL_ERROR "rapids_export failed to generate correct dependencies imports[fakeproject-${nice_names}-dependencies.cmake]")
   endif()
 endforeach()
-]=])
+]=]
+)
 
-add_custom_target(verify_target_dependencies_files ALL
-                  COMMAND ${CMAKE_COMMAND} -E rm -rf "${CMAKE_BINARY_DIR}/verify-1/build"
-                  COMMAND ${CMAKE_COMMAND} -S="${CMAKE_BINARY_DIR}/verify-1"
-                          -B="${CMAKE_BINARY_DIR}/verify-1/build")
+add_custom_target(
+  verify_target_dependencies_files
+  ALL
+  COMMAND ${CMAKE_COMMAND} -E rm -rf "${CMAKE_BINARY_DIR}/verify-1/build"
+  COMMAND ${CMAKE_COMMAND} -S="${CMAKE_BINARY_DIR}/verify-1" -B="${CMAKE_BINARY_DIR}/verify-1/build"
+)
 
 # Add a custom command that generates a second project that verifies our component targets are
 # exported correctly
-file(WRITE "${CMAKE_BINARY_DIR}/verify-2/CMakeLists.txt"
-     [=[
+file(
+  WRITE "${CMAKE_BINARY_DIR}/verify-2/CMakeLists.txt"
+  [=[
 cmake_minimum_required(VERSION 3.20)
 project(verify_build_targets LANGUAGES CXX)
 
@@ -57,9 +65,12 @@ find_package(fakeproject COMPONENTS c1 REQUIRED)
 if(NOT TARGET CUDA::toolkit)
   message(FATAL_ERROR "rapids_export failed to generate correct dependencies imports")
 endif()
-]=])
+]=]
+)
 
-add_custom_target(verify_target_dependencies_find ALL
-                  COMMAND ${CMAKE_COMMAND} -E rm -rf "${CMAKE_BINARY_DIR}/verify-2/build"
-                  COMMAND ${CMAKE_COMMAND} -S="${CMAKE_BINARY_DIR}/verify-2"
-                          -B="${CMAKE_BINARY_DIR}/verify-2/build")
+add_custom_target(
+  verify_target_dependencies_find
+  ALL
+  COMMAND ${CMAKE_COMMAND} -E rm -rf "${CMAKE_BINARY_DIR}/verify-2/build"
+  COMMAND ${CMAKE_COMMAND} -S="${CMAKE_BINARY_DIR}/verify-2" -B="${CMAKE_BINARY_DIR}/verify-2/build"
+)

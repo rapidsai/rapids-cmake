@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2025-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -71,8 +71,9 @@ function(rapids_cuda_enable_fatbin_compression)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cuda.enable_fatbin_compression")
 
   if(NOT CMAKE_CUDA_COMPILER_ID STREQUAL "NVIDIA")
-    message(VERBOSE
-            "rapids_cuda_enable_fatbin_compression call ignored due to CUDA language not being enabled"
+    message(
+      VERBOSE
+      "rapids_cuda_enable_fatbin_compression call ignored due to CUDA language not being enabled"
     )
     return()
   endif()
@@ -83,7 +84,9 @@ function(rapids_cuda_enable_fatbin_compression)
   cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
   if(NOT _RAPIDS_TARGET AND NOT _RAPIDS_VARIABLE)
-    message(FATAL_ERROR "rapids_cuda_enable_fatbin_compression requires either the `TARGET` or `VARIABLE` option be provided"
+    message(
+      FATAL_ERROR
+      "rapids_cuda_enable_fatbin_compression requires either the `TARGET` or `VARIABLE` option be provided"
     )
   endif()
 
@@ -91,8 +94,10 @@ function(rapids_cuda_enable_fatbin_compression)
   set(_rapids_cuda_flags "-Xfatbin=-compress-all")
 
   # CUDA 12.X logic
-  if(CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL 12.0.0 AND CMAKE_CUDA_COMPILER_VERSION
-                                                                  VERSION_LESS 13.0.0)
+  if(
+    CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL 12.0.0
+    AND CMAKE_CUDA_COMPILER_VERSION VERSION_LESS 13.0.0
+  )
     set(balanced_flag --compress-mode=balance)
     set(rapids_flag)
     set(runtime_perf_flag --compress-mode=speed)
@@ -104,8 +109,10 @@ function(rapids_cuda_enable_fatbin_compression)
   endif()
 
   # CUDA 13.X logic
-  if(CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL 13.0.0 AND CMAKE_CUDA_COMPILER_VERSION
-                                                                  VERSION_LESS 14.0.0)
+  if(
+    CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL 13.0.0
+    AND CMAKE_CUDA_COMPILER_VERSION VERSION_LESS 14.0.0
+  )
     set(balanced_flag --compress-mode=balance)
     set(rapids_flag --compress-mode=size)
     set(runtime_perf_flag --compress-mode=speed)
@@ -119,7 +126,9 @@ function(rapids_cuda_enable_fatbin_compression)
     # rapids flag variable can be empty
     list(APPEND _rapids_cuda_flags "${${_rapids_tune_for_lower}_flag}")
   else()
-    message(FATAL_ERROR "rapids_cuda_enable_fatbin_compression `TUNE_FOR` option was provided an unsupported value of ${_RAPIDS_TUNE_FOR}"
+    message(
+      FATAL_ERROR
+      "rapids_cuda_enable_fatbin_compression `TUNE_FOR` option was provided an unsupported value of ${_RAPIDS_TUNE_FOR}"
     )
   endif()
 
@@ -134,8 +143,10 @@ function(rapids_cuda_enable_fatbin_compression)
       add_library(${_RAPIDS_TARGET} INTERFACE)
       set(usage_requirement "INTERFACE")
     endif()
-    target_compile_options(${_RAPIDS_TARGET} ${usage_requirement}
-                           "$<$<COMPILE_LANGUAGE:CUDA>:${_rapids_cuda_flags}>")
+    target_compile_options(
+      ${_RAPIDS_TARGET}
+      ${usage_requirement}
+      "$<$<COMPILE_LANGUAGE:CUDA>:${_rapids_cuda_flags}>"
+    )
   endif()
-
 endfunction()

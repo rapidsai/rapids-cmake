@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -24,8 +24,9 @@ function(rapids_cuda_detect_architectures possible_archs_var gpu_archs)
   endif()
 
   if(NOT EXISTS "${eval_exe}")
-    file(WRITE ${eval_file}
-         "
+    file(
+      WRITE ${eval_file}
+      "
 #include <cstdio>
 #include <cuda_runtime.h>
 #include <set>
@@ -61,19 +62,25 @@ int main(int argc, char** argv)
   printf(\"\\n\");
   return 0;
 }
-  ")
-    execute_process(COMMAND ${CMAKE_CUDA_COMPILER} -std=c++17 -o "${eval_exe}" "${eval_file}"
-                    ERROR_FILE "${error_file}")
+  "
+    )
+    execute_process(
+      COMMAND ${CMAKE_CUDA_COMPILER} -std=c++17 -o "${eval_exe}" "${eval_file}"
+      ERROR_FILE "${error_file}"
+    )
   endif()
 
   if(EXISTS "${eval_exe}")
-    execute_process(COMMAND "${eval_exe}" OUTPUT_VARIABLE __gpu_archs
-                    OUTPUT_STRIP_TRAILING_WHITESPACE ERROR_FILE "${error_file}")
+    execute_process(
+      COMMAND "${eval_exe}"
+      OUTPUT_VARIABLE __gpu_archs
+      OUTPUT_STRIP_TRAILING_WHITESPACE
+      ERROR_FILE "${error_file}"
+    )
     message(STATUS "Using auto detection of gpu-archs: ${__gpu_archs}")
   else()
     message(STATUS "Failed auto detection of gpu-archs. Falling back to using ${__gpu_archs}.")
   endif()
 
   set(${gpu_archs} ${__gpu_archs} PARENT_SCOPE)
-
 endfunction()

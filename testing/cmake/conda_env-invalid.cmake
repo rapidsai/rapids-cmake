@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -24,6 +24,8 @@ if(TARGET conda_env2)
 endif()
 
 if(NOT "${before_call_value}" STREQUAL "${CMAKE_PREFIX_PATH}")
-  message(FATAL_ERROR "Not expected for `rapids_cmake_support_conda_env` to modify CMAKE_PREFIX_PATH"
+  message(
+    FATAL_ERROR
+    "Not expected for `rapids_cmake_support_conda_env` to modify CMAKE_PREFIX_PATH"
   )
 endif()

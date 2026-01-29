@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -58,6 +58,8 @@ if(NOT old_binary_dir STREQUAL ZLIB_BINARY_DIR)
   message(FATAL_ERROR "rapids_cpm_find failed to restore correct ZLIB_BINARY_DIR path")
 endif()
 if(ZLIB_ADDED)
-  message(FATAL_ERROR "rapids_cpm_find failed to restore correct ZLIB_ADDED state ( second call should be ZLIB_ADDED=false )"
+  message(
+    FATAL_ERROR
+    "rapids_cpm_find failed to restore correct ZLIB_ADDED state ( second call should be ZLIB_ADDED=false )"
   )
 endif()

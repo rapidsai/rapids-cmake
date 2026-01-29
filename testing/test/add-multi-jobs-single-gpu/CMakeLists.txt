@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2022-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2022-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -22,6 +22,10 @@ enable_testing()
 
 foreach(v RANGE 5)
   # this way all our tests can reside on the same gpu
-  rapids_test_add(NAME concurrent_test_${v} COMMAND verify_multi_concurrent ${v} GPUS 1
-                  PERCENT 1${v})
+  rapids_test_add(
+    NAME concurrent_test_${v}
+    COMMAND verify_multi_concurrent ${v}
+    GPUS 1
+    PERCENT 1${v}
+  )
 endforeach()

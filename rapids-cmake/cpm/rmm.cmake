@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -45,13 +45,23 @@ function(rapids_cpm_rmm)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.rmm")
 
   include("${rapids-cmake-dir}/cpm/detail/package_info.cmake")
-  rapids_cpm_package_info(rmm ${ARGN} VERSION_VAR version FIND_VAR find_args CPM_VAR cpm_find_info
-                          TO_INSTALL_VAR to_install)
+  rapids_cpm_package_info(
+    rmm
+    ${ARGN}
+    VERSION_VAR version
+    FIND_VAR find_args
+    CPM_VAR cpm_find_info
+    TO_INSTALL_VAR to_install
+  )
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
-  rapids_cpm_find(rmm ${version} ${find_args} GLOBAL_TARGETS rmm::rmm rmm::rmm_logger
-                                                             rmm::rmm_logger_impl
-                  CPM_ARGS ${cpm_find_info} OPTIONS "BUILD_TESTS OFF" "BUILD_BENCHMARKS OFF")
+  rapids_cpm_find(
+    rmm
+    ${version}
+    ${find_args}
+    GLOBAL_TARGETS rmm::rmm rmm::rmm_logger rmm::rmm_logger_impl
+    CPM_ARGS ${cpm_find_info} OPTIONS "BUILD_TESTS OFF" "BUILD_BENCHMARKS OFF"
+  )
 
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
   rapids_cpm_display_patch_status(rmm)

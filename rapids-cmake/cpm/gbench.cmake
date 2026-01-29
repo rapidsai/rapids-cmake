@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2022-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2022-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -55,19 +55,33 @@ function(rapids_cpm_gbench)
   endif()
 
   include("${rapids-cmake-dir}/cpm/detail/package_info.cmake")
-  rapids_cpm_package_info(benchmark ${ARGN} VERSION_VAR version FIND_VAR find_args CPM_VAR
-                          cpm_find_info TO_INSTALL_VAR to_install)
+  rapids_cpm_package_info(
+    benchmark
+    ${ARGN}
+    VERSION_VAR version
+    FIND_VAR find_args
+    CPM_VAR cpm_find_info
+    TO_INSTALL_VAR to_install
+  )
 
   include("${rapids-cmake-dir}/cmake/install_lib_dir.cmake")
   rapids_cmake_install_lib_dir(lib_dir)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
-  rapids_cpm_find(benchmark ${version} ${find_args}
-                  GLOBAL_TARGETS benchmark::benchmark benchmark::benchmark_main
-                  CPM_ARGS ${cpm_find_info}
-                  OPTIONS "BENCHMARK_ENABLE_GTEST_TESTS OFF" "BENCHMARK_ENABLE_TESTING OFF"
-                          "BENCHMARK_ENABLE_INSTALL ${to_install}"
-                          "CMAKE_INSTALL_LIBDIR ${lib_dir}" "BUILD_SHARED_LIBS ${build_shared}")
+  rapids_cpm_find(
+    benchmark
+    ${version}
+    ${find_args}
+    GLOBAL_TARGETS benchmark::benchmark benchmark::benchmark_main
+    CPM_ARGS
+      ${cpm_find_info}
+      OPTIONS
+        "BENCHMARK_ENABLE_GTEST_TESTS OFF"
+        "BENCHMARK_ENABLE_TESTING OFF"
+        "BENCHMARK_ENABLE_INSTALL ${to_install}"
+        "CMAKE_INSTALL_LIBDIR ${lib_dir}"
+        "BUILD_SHARED_LIBS ${build_shared}"
+  )
 
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
   rapids_cpm_display_patch_status(benchmark)

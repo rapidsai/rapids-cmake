@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2023-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -33,16 +33,27 @@ function(rapids_cpm_get_proprietary_binary_url package_name version url_var)
   set(key "${CMAKE_SYSTEM_PROCESSOR}-${CMAKE_SYSTEM_NAME}")
   string(TOLOWER ${key} key)
   if(override_json_data)
-    string(JSON proprietary_binary ERROR_VARIABLE have_error GET "${override_json_data}"
-           "proprietary_binary" "${key}")
+    string(
+      JSON proprietary_binary
+      ERROR_VARIABLE have_error
+      GET "${override_json_data}"
+      "proprietary_binary"
+      "${key}"
+    )
   else()
-    string(JSON proprietary_binary ERROR_VARIABLE have_error GET "${json_data}"
-           "proprietary_binary" "${key}")
+    string(
+      JSON proprietary_binary
+      ERROR_VARIABLE have_error
+      GET "${json_data}"
+      "proprietary_binary"
+      "${key}"
+    )
   endif()
 
   if(have_error)
-    message(VERBOSE
-            "${package_name} requested usage of a proprietary_binary but none exist for ${CMAKE_SYSTEM_PROCESSOR}"
+    message(
+      VERBOSE
+      "${package_name} requested usage of a proprietary_binary but none exist for ${CMAKE_SYSTEM_PROCESSOR}"
     )
     return()
   endif()
@@ -56,12 +67,21 @@ function(rapids_cpm_get_proprietary_binary_url package_name version url_var)
     set(cuda-toolkit-version-major ${CUDAToolkit_VERSION_MAJOR})
 
     # See if we have a CUDA Toolkit version mapping entry and load it as needed
-    string(JSON cuda-toolkit-version-mapping ERROR_VARIABLE have_error_mapping GET
-           "${override_json_data}" "proprietary_binary_cuda_version_mapping"
-           "${cuda-toolkit-version-major}")
+    string(
+      JSON cuda-toolkit-version-mapping
+      ERROR_VARIABLE have_error_mapping
+      GET "${override_json_data}"
+      "proprietary_binary_cuda_version_mapping"
+      "${cuda-toolkit-version-major}"
+    )
     if(have_error_mapping)
-      string(JSON cuda-toolkit-version-mapping ERROR_VARIABLE have_error_mapping GET "${json_data}"
-             "proprietary_binary_cuda_version_mapping" "${cuda-toolkit-version-major}")
+      string(
+        JSON cuda-toolkit-version-mapping
+        ERROR_VARIABLE have_error_mapping
+        GET "${json_data}"
+        "proprietary_binary_cuda_version_mapping"
+        "${cuda-toolkit-version-major}"
+      )
     endif()
   endif()
 

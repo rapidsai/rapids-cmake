@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -13,34 +13,46 @@ set(CMAKE_INSTALL_PREFIX "/opt/conda/prefix")
 rapids_cmake_install_lib_dir(lib_dir)
 
 if(NOT lib_dir STREQUAL "lib")
-  message(FATAL_ERROR "rapids_cmake_install_lib_dir computed '${lib_dir}', but we expected 'lib' as we are in a CONDA env"
+  message(
+    FATAL_ERROR
+    "rapids_cmake_install_lib_dir computed '${lib_dir}', but we expected 'lib' as we are in a CONDA env"
   )
 endif()
 
 # verify CMAKE_INSTALL_LIBDIR doesn't exist
 if(DEFINED CMAKE_INSTALL_LIBDIR)
-  message(FATAL_ERROR "rapids_cmake_install_lib_dir shouldn't have caused the CMAKE_INSTALL_LIBDIR variable to exist"
+  message(
+    FATAL_ERROR
+    "rapids_cmake_install_lib_dir shouldn't have caused the CMAKE_INSTALL_LIBDIR variable to exist"
   )
 endif()
 
 rapids_cmake_install_lib_dir(lib_dir MODIFY_INSTALL_LIBDIR)
 
 if(NOT lib_dir STREQUAL "lib")
-  message(FATAL_ERROR "rapids_cmake_install_lib_dir computed '${lib_dir}', but we expected 'lib' as we are in a CONDA env"
+  message(
+    FATAL_ERROR
+    "rapids_cmake_install_lib_dir computed '${lib_dir}', but we expected 'lib' as we are in a CONDA env"
   )
 endif()
 if(NOT CMAKE_INSTALL_LIBDIR STREQUAL "lib")
-  message(FATAL_ERROR "CMAKE_INSTALL_LIBDIR computed to '${CMAKE_INSTALL_LIBDIR}', but we expected 'lib' as we are in a CONDA env"
+  message(
+    FATAL_ERROR
+    "CMAKE_INSTALL_LIBDIR computed to '${CMAKE_INSTALL_LIBDIR}', but we expected 'lib' as we are in a CONDA env"
   )
 endif()
 if(NOT $CACHE{CMAKE_INSTALL_LIBDIR} STREQUAL "lib")
-  message(FATAL_ERROR "CACHE{CMAKE_INSTALL_LIBDIR} computed to '${CMAKE_INSTALL_LIBDIR}', but we expected 'lib' as we are in a CONDA env"
+  message(
+    FATAL_ERROR
+    "CACHE{CMAKE_INSTALL_LIBDIR} computed to '${CMAKE_INSTALL_LIBDIR}', but we expected 'lib' as we are in a CONDA env"
   )
 endif()
 
 # verify CMAKE_INSTALL_LIBDIR touched
 if(NOT DEFINED CMAKE_INSTALL_LIBDIR)
-  message(FATAL_ERROR "rapids_cmake_install_lib_dir should have caused the CMAKE_INSTALL_LIBDIR to be a local variable"
+  message(
+    FATAL_ERROR
+    "rapids_cmake_install_lib_dir should have caused the CMAKE_INSTALL_LIBDIR to be a local variable"
   )
 endif()
 

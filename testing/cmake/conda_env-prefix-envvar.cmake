@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2023-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -37,15 +37,21 @@ endif()
 
 get_target_property(link_options conda_env INTERFACE_LINK_OPTIONS)
 if("$<HOST_LINK:SHELL:LINKER:-rpath-link=$ENV{BUILD_PREFIX}/lib>" IN_LIST link_options)
-  message(FATAL_ERROR "Not expected rpath-link=env{BUILD_PREFIX} to be in the link options of `conda_env`"
+  message(
+    FATAL_ERROR
+    "Not expected rpath-link=env{BUILD_PREFIX} to be in the link options of `conda_env`"
   )
 endif()
 if("$<HOST_LINK:SHELL:LINKER:-rpath-link=$ENV{PREFIX}/lib>" IN_LIST link_options)
-  message(FATAL_ERROR "Not expected rpath-link=env{PREFIX} to be in the link options of `conda_env`"
+  message(
+    FATAL_ERROR
+    "Not expected rpath-link=env{PREFIX} to be in the link options of `conda_env`"
   )
 endif()
 if(NOT "$<HOST_LINK:SHELL:LINKER:-rpath-link=$ENV{CONDA_PREFIX}/lib>" IN_LIST link_options)
-  message(FATAL_ERROR "Expected for rpath-link=env{CONDA_PREFIX} to be in the link options of `conda_env`"
+  message(
+    FATAL_ERROR
+    "Expected for rpath-link=env{CONDA_PREFIX} to be in the link options of `conda_env`"
   )
 endif()
 

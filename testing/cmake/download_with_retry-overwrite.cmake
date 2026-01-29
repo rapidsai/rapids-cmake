@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2024-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2024-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -11,11 +11,13 @@ file(REMOVE_RECURSE "${CMAKE_CURRENT_BINARY_DIR}/download_test")
 file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/download_test")
 
 # Test URLs - using static test files with known contents
-set(test_url1
-    "https://raw.githubusercontent.com/rapidsai/rapids-cmake/c0d8c09c5590ecf38a9f9897c93e686e3da1858b/testing/cmake/test_files/test1.txt"
+set(
+  test_url1
+  "https://raw.githubusercontent.com/rapidsai/rapids-cmake/c0d8c09c5590ecf38a9f9897c93e686e3da1858b/testing/cmake/test_files/test1.txt"
 )
-set(test_url2
-    "https://raw.githubusercontent.com/rapidsai/rapids-cmake/c0d8c09c5590ecf38a9f9897c93e686e3da1858b/testing/cmake/test_files/test2.txt"
+set(
+  test_url2
+  "https://raw.githubusercontent.com/rapidsai/rapids-cmake/c0d8c09c5590ecf38a9f9897c93e686e3da1858b/testing/cmake/test_files/test2.txt"
 )
 set(output_file "${CMAKE_CURRENT_BINARY_DIR}/download_test/overwrite_test.txt")
 

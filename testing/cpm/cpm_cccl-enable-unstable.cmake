@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2025-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -18,7 +18,14 @@ endif()
 rapids_cpm_cccl(ENABLE_UNSTABLE)
 
 # Test that all expected targets exist, including CCCL::cudax
-set(targets CCCL::CCCL CCCL::CUB CCCL::libcudacxx CCCL::Thrust CCCL::cudax)
+set(
+  targets
+  CCCL::CCCL
+  CCCL::CUB
+  CCCL::libcudacxx
+  CCCL::Thrust
+  CCCL::cudax
+)
 foreach(target IN LISTS targets)
   if(NOT TARGET ${target})
     message(FATAL_ERROR "Expected ${target} to exist")

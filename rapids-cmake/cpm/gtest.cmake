@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -56,15 +56,29 @@ function(rapids_cpm_gtest)
   endif()
 
   include("${rapids-cmake-dir}/cpm/detail/package_info.cmake")
-  rapids_cpm_package_info(GTest ${ARGN} VERSION_VAR version FIND_VAR find_args CPM_VAR
-                          cpm_find_info TO_INSTALL_VAR to_install)
+  rapids_cpm_package_info(
+    GTest
+    ${ARGN}
+    VERSION_VAR version
+    FIND_VAR find_args
+    CPM_VAR cpm_find_info
+    TO_INSTALL_VAR to_install
+  )
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
-  rapids_cpm_find(GTest ${version} ${find_args}
-                  GLOBAL_TARGETS GTest::gtest GTest::gmock GTest::gtest_main GTest::gmock_main
-                  CPM_ARGS FIND_PACKAGE_ARGUMENTS "EXACT" ${cpm_find_info}
-                  OPTIONS "INSTALL_GTEST ${to_install}" "CMAKE_POSITION_INDEPENDENT_CODE ON"
-                          "BUILD_SHARED_LIBS ${build_shared}")
+  rapids_cpm_find(
+    GTest
+    ${version}
+    ${find_args}
+    GLOBAL_TARGETS GTest::gtest GTest::gmock GTest::gtest_main GTest::gmock_main
+    CPM_ARGS
+      FIND_PACKAGE_ARGUMENTS "EXACT"
+      ${cpm_find_info}
+      OPTIONS
+        "INSTALL_GTEST ${to_install}"
+        "CMAKE_POSITION_INDEPENDENT_CODE ON"
+        "BUILD_SHARED_LIBS ${build_shared}"
+  )
 
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
   rapids_cpm_display_patch_status(GTest)
@@ -76,8 +90,11 @@ function(rapids_cpm_gtest)
   set(GTest_VERSION ${version} PARENT_SCOPE)
 
   if(TARGET GTest::gtest AND NOT TARGET GTest::gmock)
-    message(WARNING "The GTest package found doesn't provide gmock. If you run into 'GTest::gmock target not found' issues you need to use a different version of GTest.The easiest way is to request building GTest from source by adding the following to the cmake invocation:
-  '-DCPM_DOWNLOAD_GTest=ON'")
+    message(
+      WARNING
+      "The GTest package found doesn't provide gmock. If you run into 'GTest::gmock target not found' issues you need to use a different version of GTest.The easiest way is to request building GTest from source by adding the following to the cmake invocation:
+  '-DCPM_DOWNLOAD_GTest=ON'"
+    )
   endif()
 
   if(NOT TARGET GTest::gtest AND TARGET gtest)

@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -8,8 +8,13 @@ include(${rapids-cmake-dir}/export/cpm.cmake)
 
 rapids_export_cpm(build FAKE_CPM_PACKAGE test_export_set CPM_ARGS FAKE_PACKAGE_ARGS TRUE)
 
-rapids_export_cpm(BUILD SECOND_FAKE_CPM_PACKAGE test_export_set CPM_ARGS VERSION 2.0
-                  GLOBAL_TARGETS ABC::ABC ABC::CBA)
+rapids_export_cpm(
+  BUILD
+  SECOND_FAKE_CPM_PACKAGE
+  test_export_set
+  CPM_ARGS VERSION 2.0
+  GLOBAL_TARGETS ABC::ABC ABC::CBA
+)
 
 if(NOT TARGET rapids_export_build_test_export_set)
   message(FATAL_ERROR "rapids_export_cpm failed to generate target for build")
@@ -21,7 +26,9 @@ if(NOT FAKE_CPM_PACKAGE IN_LIST packages)
   message(FATAL_ERROR "rapids_export_cpm failed to record FAKE_CPM_PACKAGE needs to be exported")
 endif()
 if(NOT SECOND_FAKE_CPM_PACKAGE IN_LIST packages)
-  message(FATAL_ERROR "rapids_export_cpm failed to record SECOND_FAKE_CPM_PACKAGE needs to be exported"
+  message(
+    FATAL_ERROR
+    "rapids_export_cpm failed to record SECOND_FAKE_CPM_PACKAGE needs to be exported"
   )
 endif()
 
@@ -41,8 +48,12 @@ if(NOT requires_cpm)
 endif()
 
 # Verify that cpm configuration files exist
-if(NOT EXISTS "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/build/cpm_FAKE_CPM_PACKAGE.cmake"
-   OR NOT EXISTS
-      "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/build/cpm_SECOND_FAKE_CPM_PACKAGE.cmake")
+if(
+  NOT EXISTS "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/build/cpm_FAKE_CPM_PACKAGE.cmake"
+  OR
+    NOT
+      EXISTS
+        "${CMAKE_BINARY_DIR}/rapids-cmake/test_export_set/build/cpm_SECOND_FAKE_CPM_PACKAGE.cmake"
+)
   message(FATAL_ERROR "rapids_export_cpm failed to generate a CPM configuration")
 endif()

@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -85,7 +85,6 @@ function(rapids_cmake_support_conda_env target)
   endif()
 
   if(in_conda_build OR in_conda_prefix)
-
     # comment needed here due to cmake-lint bug
     macro(modify_cmake_prefix_path_global)
       cmake_parse_arguments(_RAPIDS "" "" "PATHS" ${ARGN})
@@ -146,29 +145,41 @@ function(rapids_cmake_support_conda_env target)
         set(targetsDir "targets/sbsa-linux")
       endif()
 
-      target_include_directories(${target} SYSTEM INTERFACE "$ENV{PREFIX}/include"
-                                                            "$ENV{BUILD_PREFIX}/include")
+      target_include_directories(
+        ${target}
+        SYSTEM
+        INTERFACE "$ENV{PREFIX}/include" "$ENV{BUILD_PREFIX}/include"
+      )
       target_link_directories(${target} INTERFACE "$ENV{PREFIX}/lib" "$ENV{BUILD_PREFIX}/lib")
 
-      if(DEFINED CMAKE_SHARED_LIBRARY_RPATH_LINK_CUDA_FLAG
-         OR DEFINED CMAKE_SHARED_LIBRARY_RPATH_LINK_CXX_FLAG)
+      if(
+        DEFINED CMAKE_SHARED_LIBRARY_RPATH_LINK_CUDA_FLAG
+        OR DEFINED CMAKE_SHARED_LIBRARY_RPATH_LINK_CXX_FLAG
+      )
         if(DEFINED targetsDir)
-          target_link_options(${target} INTERFACE
-                              "$<HOST_LINK:SHELL:LINKER:-rpath-link=$ENV{PREFIX}/${targetsDir}/lib>"
+          target_link_options(
+            ${target}
+            INTERFACE "$<HOST_LINK:SHELL:LINKER:-rpath-link=$ENV{PREFIX}/${targetsDir}/lib>"
           )
         endif()
-        target_link_options(${target} INTERFACE
-                            "$<HOST_LINK:SHELL:LINKER:-rpath-link=$ENV{PREFIX}/lib>")
-        target_link_options(${target} INTERFACE
-                            "$<HOST_LINK:SHELL:LINKER:-rpath-link=$ENV{BUILD_PREFIX}/lib>")
+        target_link_options(
+          ${target}
+          INTERFACE "$<HOST_LINK:SHELL:LINKER:-rpath-link=$ENV{PREFIX}/lib>"
+        )
+        target_link_options(
+          ${target}
+          INTERFACE "$<HOST_LINK:SHELL:LINKER:-rpath-link=$ENV{BUILD_PREFIX}/lib>"
+        )
       endif()
 
       # For built binaries (like libraries), remap environment absolute paths (`$PREFIX/<path>`) to
       # paths relative to the environment `$PREFIX` (`<path>`).
-      target_compile_options(${target}
-                             INTERFACE "$<$<COMPILE_LANGUAGE:C>:-ffile-prefix-map=$ENV{PREFIX}/=''>"
-                                       "$<$<COMPILE_LANGUAGE:CXX>:-ffile-prefix-map=$ENV{PREFIX}/=''>"
-                                       "$<$<COMPILE_LANGUAGE:CUDA>:-Xcompiler=-ffile-prefix-map=$ENV{PREFIX}/=''>"
+      target_compile_options(
+        ${target}
+        INTERFACE
+          "$<$<COMPILE_LANGUAGE:C>:-ffile-prefix-map=$ENV{PREFIX}/=''>"
+          "$<$<COMPILE_LANGUAGE:CXX>:-ffile-prefix-map=$ENV{PREFIX}/=''>"
+          "$<$<COMPILE_LANGUAGE:CUDA>:-Xcompiler=-ffile-prefix-map=$ENV{PREFIX}/=''>"
       )
 
       if(modify_prefix_path)
@@ -179,14 +190,17 @@ function(rapids_cmake_support_conda_env target)
         endif()
         modify_cmake_prefix_path(PATHS ${prefix_paths})
       endif()
-
     elseif(in_conda_prefix)
       target_include_directories(${target} SYSTEM INTERFACE "$ENV{CONDA_PREFIX}/include")
       target_link_directories(${target} INTERFACE "$ENV{CONDA_PREFIX}/lib")
-      if(DEFINED CMAKE_SHARED_LIBRARY_RPATH_LINK_CUDA_FLAG
-         OR DEFINED CMAKE_SHARED_LIBRARY_RPATH_LINK_CXX_FLAG)
-        target_link_options(${target} INTERFACE
-                            "$<HOST_LINK:SHELL:LINKER:-rpath-link=$ENV{CONDA_PREFIX}/lib>")
+      if(
+        DEFINED CMAKE_SHARED_LIBRARY_RPATH_LINK_CUDA_FLAG
+        OR DEFINED CMAKE_SHARED_LIBRARY_RPATH_LINK_CXX_FLAG
+      )
+        target_link_options(
+          ${target}
+          INTERFACE "$<HOST_LINK:SHELL:LINKER:-rpath-link=$ENV{CONDA_PREFIX}/lib>"
+        )
       endif()
 
       if(modify_prefix_path)

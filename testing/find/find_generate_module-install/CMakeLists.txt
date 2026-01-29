@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -12,11 +12,13 @@ project(rapids-test-project LANGUAGES CXX)
 set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}")
 
 # Generate the find module
-rapids_find_generate_module(RapidsTest
-                            HEADER_NAMES rapids-cmake-test-header.h
-                            LIBRARY_NAMES rapids-cmake-test
-                            INCLUDE_SUFFIXES rapids-cmake
-                            INSTALL_EXPORT_SET test_set)
+rapids_find_generate_module(
+  RapidsTest
+  HEADER_NAMES rapids-cmake-test-header.h
+  LIBRARY_NAMES rapids-cmake-test
+  INCLUDE_SUFFIXES rapids-cmake
+  INSTALL_EXPORT_SET test_set
+)
 
 find_package(RapidsTest REQUIRED)
 
@@ -37,7 +39,9 @@ get_target_property(debug_lib RapidsTest::RapidsTest IMPORTED_LOCATION_DEBUG)
 get_target_property(is_global RapidsTest::RapidsTest IMPORTED_GLOBAL)
 
 if(NOT IS_DIRECTORY "${include_dir}")
-  message(FATAL_ERROR "rapids_find_generate_module failed to generate correct include dir search logic"
+  message(
+    FATAL_ERROR
+    "rapids_find_generate_module failed to generate correct include dir search logic"
   )
 endif()
 
@@ -54,7 +58,10 @@ if(NOT is_global)
 endif()
 
 # verify header only lib
-rapids_find_generate_module(RapidsTestHeaderOnly HEADER_NAMES rapids-cmake-test-header_only.hpp
-                            INSTALL_EXPORT_SET test_set)
+rapids_find_generate_module(
+  RapidsTestHeaderOnly
+  HEADER_NAMES rapids-cmake-test-header_only.hpp
+  INSTALL_EXPORT_SET test_set
+)
 
 find_package(RapidsTest REQUIRED)

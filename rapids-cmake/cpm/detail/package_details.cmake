@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -27,18 +27,34 @@ Result Variables
 
 #]=======================================================================]
 # cmake-lint: disable=R0913
-function(rapids_cpm_package_details package_name version_var url_var tag_var shallow_var
-         exclude_from_all_var)
+function(
+  rapids_cpm_package_details
+  package_name
+  version_var
+  url_var
+  tag_var
+  shallow_var
+  exclude_from_all_var
+)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.rapids_cpm_package_details")
 
   include("${rapids-cmake-dir}/cmake/detail/policy.cmake")
-  rapids_cmake_policy(DEPRECATED_IN 25.10
-                      REMOVED_IN 26.02
-                      MESSAGE [=[`rapids_cpm_package_details` is deprecated. Please use `rapids_cpm_package_info` instead.]=]
+  rapids_cmake_policy(
+    DEPRECATED_IN 25.10
+    REMOVED_IN 26.02
+    MESSAGE
+      [=[`rapids_cpm_package_details` is deprecated. Please use `rapids_cpm_package_info` instead.]=]
   )
 
-  rapids_cpm_package_details_internal(${package_name} ${version_var} ${url_var} ${tag_var}
-                                      src_subdir ${shallow_var} ${exclude_from_all_var})
+  rapids_cpm_package_details_internal(
+    ${package_name}
+    ${version_var}
+    ${url_var}
+    ${tag_var}
+    src_subdir
+    ${shallow_var}
+    ${exclude_from_all_var}
+  )
   set(${version_var} ${${version_var}} PARENT_SCOPE)
   set(${url_var} ${${url_var}} PARENT_SCOPE)
   set(${tag_var} ${${tag_var}} PARENT_SCOPE)
@@ -48,12 +64,19 @@ function(rapids_cpm_package_details package_name version_var url_var tag_var sha
     set(rapids_cmake_always_download ${rapids_cmake_always_download} PARENT_SCOPE)
     set(CPM_DOWNLOAD_ALL ${CPM_DOWNLOAD_ALL} PARENT_SCOPE)
   endif()
-
 endfunction()
 
 # cmake-lint: disable=R0913,R0915
-function(rapids_cpm_package_details_internal package_name version_var url_var tag_var subdir_var
-         shallow_var exclude_from_all_var)
+function(
+  rapids_cpm_package_details_internal
+  package_name
+  version_var
+  url_var
+  tag_var
+  subdir_var
+  shallow_var
+  exclude_from_all_var
+)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.rapids_cpm_package_details_internal")
 
   include("${rapids-cmake-dir}/cpm/detail/load_preset_versions.cmake")
@@ -65,7 +88,7 @@ function(rapids_cpm_package_details_internal package_name version_var url_var ta
   get_override_json(${package_name} override_json_data)
 
   # Parse required fields
-  function(rapids_cpm_json_get_value name)
+  function(package_details_json_get_value name)
     string(JSON value ERROR_VARIABLE have_error GET "${override_json_data}" ${name})
     if(have_error)
       string(JSON value ERROR_VARIABLE have_error GET "${json_data}" ${name})
@@ -76,16 +99,18 @@ function(rapids_cpm_package_details_internal package_name version_var url_var ta
     endif()
   endfunction()
 
-  rapids_cpm_json_get_value(version)
-  rapids_cpm_json_get_value(git_url)
-  rapids_cpm_json_get_value(git_tag)
+  package_details_json_get_value(version)
+  package_details_json_get_value(git_url)
+  package_details_json_get_value(git_tag)
 
   # Only do validation if we have an entry
   if(json_data OR override_json_data)
     # Validate that we have the required fields
     foreach(var IN ITEMS version git_url git_tag)
       if(NOT ${var})
-        message(FATAL_ERROR "rapids_cmake can't parse '${package_name}' json entry, it is missing a `${var}` entry"
+        message(
+          FATAL_ERROR
+          "rapids_cmake can't parse '${package_name}' json entry, it is missing a `${var}` entry"
         )
       endif()
     endforeach()
@@ -103,13 +128,13 @@ function(rapids_cpm_package_details_internal package_name version_var url_var ta
 
   # Parse optional fields, set the variable to the 'default' value first
   set(git_shallow ON)
-  rapids_cpm_json_get_value(git_shallow)
+  package_details_json_get_value(git_shallow)
 
   unset(source_subdir)
-  rapids_cpm_json_get_value(source_subdir)
+  package_details_json_get_value(source_subdir)
 
   set(exclude_from_all OFF)
-  rapids_cpm_json_get_value(exclude_from_all)
+  package_details_json_get_value(exclude_from_all)
 
   # Ensure that always_download is not set by default so that the if(DEFINED always_download) check
   # below works as expected in the default case.
@@ -120,13 +145,16 @@ function(rapids_cpm_package_details_internal package_name version_var url_var ta
     # and that the git url / git tag have been modified. We also need to make sure that when using
     # an override that it isn't disabled due to `CPM_<pkg>_SOURCE`
     string(TOLOWER "${package_name}" normalized_pkg_name)
-    get_property(override_ignored GLOBAL
-                 PROPERTY rapids_cpm_${normalized_pkg_name}_override_ignored)
+    get_property(
+      override_ignored
+      GLOBAL
+      PROPERTY rapids_cpm_${normalized_pkg_name}_override_ignored
+    )
     if(NOT (override_ignored OR DEFINED CPM_${package_name}_SOURCE))
       set(always_download ON)
     endif()
   endif()
-  rapids_cpm_json_get_value(always_download)
+  package_details_json_get_value(always_download)
 
   # Evaluate any magic placeholders in the version or tag components including the
   # `rapids-cmake-version` and `rapids-cmake-checkout-tag` values
@@ -148,5 +176,4 @@ function(rapids_cpm_package_details_internal package_name version_var url_var ta
     set(rapids_cmake_always_download ${always_download} PARENT_SCOPE)
     set(CPM_DOWNLOAD_ALL ${always_download} PARENT_SCOPE)
   endif()
-
 endfunction()

@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2023-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -29,12 +29,16 @@ call_cccl_with_custom_install_loc()
 rapids_cpm_cccl(INSTALL_EXPORT_SET export_set)
 
 # Install our project so we can verify `cccl`/`thrust` has preserved the correct install location
-add_custom_target(install_project ALL COMMAND ${CMAKE_COMMAND} --install "${CMAKE_BINARY_DIR}"
-                                              --prefix check_thrust/install/)
+add_custom_target(
+  install_project
+  ALL
+  COMMAND ${CMAKE_COMMAND} --install "${CMAKE_BINARY_DIR}" --prefix check_thrust/install/
+)
 
 # Add a custom command that verifies that the expect files have been installed for each component
-file(WRITE "${CMAKE_BINARY_DIR}/check_thrust/CMakeLists.txt"
-     [=[
+file(
+  WRITE "${CMAKE_BINARY_DIR}/check_thrust/CMakeLists.txt"
+  [=[
 cmake_minimum_required(VERSION 3.20)
 project(verify_install_targets LANGUAGES CXX)
 
@@ -52,10 +56,14 @@ set(expected "../../../../../../")
 if(NOT from_install_prefix STREQUAL expected)
   message(FATAL_ERROR "thrust-header-search.cmake contains the wrong 'from_install_prefix'. Expected '${expected}' but found '${from_install_prefix}'")
 endif()
-]=])
+]=]
+)
 
-add_custom_target(verify_thrust_header_search ALL
-                  COMMAND ${CMAKE_COMMAND} -E rm -rf "${CMAKE_BINARY_DIR}/check_thrust/build"
-                  COMMAND ${CMAKE_COMMAND} -S="${CMAKE_BINARY_DIR}/check_thrust"
-                          -B="${CMAKE_BINARY_DIR}/install/build")
+add_custom_target(
+  verify_thrust_header_search
+  ALL
+  COMMAND ${CMAKE_COMMAND} -E rm -rf "${CMAKE_BINARY_DIR}/check_thrust/build"
+  COMMAND
+    ${CMAKE_COMMAND} -S="${CMAKE_BINARY_DIR}/check_thrust" -B="${CMAKE_BINARY_DIR}/install/build"
+)
 add_dependencies(verify_thrust_header_search install_project)

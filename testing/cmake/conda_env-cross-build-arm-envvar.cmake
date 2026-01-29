@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2023-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -42,19 +42,27 @@ endif()
 get_target_property(link_options conda_env INTERFACE_LINK_OPTIONS)
 message(STATUS "link_options: ${link_options}")
 if(NOT "$<HOST_LINK:SHELL:LINKER:-rpath-link=$ENV{BUILD_PREFIX}/lib>" IN_LIST link_options)
-  message(FATAL_ERROR "Expected rpath-link=env{BUILD_PREFIX} to be in the link options of `conda_env`"
+  message(
+    FATAL_ERROR
+    "Expected rpath-link=env{BUILD_PREFIX} to be in the link options of `conda_env`"
   )
 endif()
 if(NOT "$<HOST_LINK:SHELL:LINKER:-rpath-link=$ENV{PREFIX}/lib>" IN_LIST link_options)
   message(FATAL_ERROR "Expected rpath-link=env{PREFIX} to be in the link options of `conda_env`")
 endif()
-if(NOT "$<HOST_LINK:SHELL:LINKER:-rpath-link=$ENV{PREFIX}/targets/sbsa-linux/lib>" IN_LIST
-   link_options)
-  message(FATAL_ERROR "Expected rpath-link=env{PREFIX}/targets/sbsa-linux/ to be in the link options of `conda_env`"
+if(
+  NOT
+    "$<HOST_LINK:SHELL:LINKER:-rpath-link=$ENV{PREFIX}/targets/sbsa-linux/lib>" IN_LIST link_options
+)
+  message(
+    FATAL_ERROR
+    "Expected rpath-link=env{PREFIX}/targets/sbsa-linux/ to be in the link options of `conda_env`"
   )
 endif()
 if("$<HOST_LINK:SHELL:LINKER:-rpath-link=$ENV{CONDA_PREFIX}/lib>" IN_LIST link_options)
-  message(FATAL_ERROR "Not expected for rpath-link=env{CONDA_PREFIX} to be in the link options of `conda_env`"
+  message(
+    FATAL_ERROR
+    "Not expected for rpath-link=env{CONDA_PREFIX} to be in the link options of `conda_env`"
   )
 endif()
 
@@ -62,7 +70,9 @@ endif()
 set(before_call_value "$ENV{CMAKE_PREFIX_PATH}")
 rapids_cmake_support_conda_env(conda_env MODIFY_PREFIX_PATH)
 if(NOT ("${before_call_value}" STREQUAL "$ENV{CMAKE_PREFIX_PATH}"))
-  message(FATAL_ERROR "Expected rapids_cmake_support_conda_env not to change ENV{CMAKE_PREFIX_PATH}"
+  message(
+    FATAL_ERROR
+    "Expected rapids_cmake_support_conda_env not to change ENV{CMAKE_PREFIX_PATH}"
   )
 endif()
 
@@ -84,8 +94,13 @@ list(GET env_cmake_prefix_path 0 first_value)
 list(GET env_cmake_prefix_path 1 second_value)
 list(GET env_cmake_prefix_path 2 third_value)
 list(GET env_cmake_prefix_path 3 fourth_value)
-set(correct_list "placeholder" "$ENV{PREFIX}/targets/sbsa-linux" "$ENV{PREFIX}"
-                 "$ENV{BUILD_PREFIX}")
+set(
+  correct_list
+  "placeholder"
+  "$ENV{PREFIX}/targets/sbsa-linux"
+  "$ENV{PREFIX}"
+  "$ENV{BUILD_PREFIX}"
+)
 set(actual_list "${first_value}" "${second_value}" "${third_value}" "${fourth_value}")
 foreach(correct actual IN ZIP_LISTS correct_list actual_list)
   if(NOT correct STREQUAL actual)

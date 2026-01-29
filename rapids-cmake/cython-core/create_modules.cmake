@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2023-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -87,8 +87,13 @@ function(rapids_cython_create_modules)
   set(_rapids_cython_options CXX)
   set(_rapids_cython_one_value INSTALL_DIR MODULE_PREFIX COMPONENT)
   set(_rapids_cython_multi_value SOURCE_FILES LINKED_LIBRARIES ASSOCIATED_TARGETS)
-  cmake_parse_arguments(_RAPIDS_CYTHON "${_rapids_cython_options}" "${_rapids_cython_one_value}"
-                        "${_rapids_cython_multi_value}" ${ARGN})
+  cmake_parse_arguments(
+    _RAPIDS_CYTHON
+    "${_rapids_cython_options}"
+    "${_rapids_cython_one_value}"
+    "${_rapids_cython_multi_value}"
+    ${ARGN}
+  )
 
   set(_ext ".c")
   set(_language_flag "")
@@ -117,21 +122,33 @@ function(rapids_cython_create_modules)
     # Generate C++ from Cython and create a library for the resulting extension module to compile.
     # TODO: Probably want to generalize this to a helper function for invoking Cython.
     string(REPLACE " " ";" CYTHON_FLAGS_LIST "${CYTHON_FLAGS}")
-    add_custom_command(OUTPUT ${cpp_filename}
-                       DEPENDS ${cython_filename}
-                       VERBATIM
-                       COMMAND "${CYTHON}" ARGS ${_language_flag} -3 ${CYTHON_FLAGS_LIST}
-                               "${CMAKE_CURRENT_SOURCE_DIR}/${cython_filename}" --output-file
-                               "${CMAKE_CURRENT_BINARY_DIR}/${cpp_filename}" --depfile
-                       DEPFILE ${depfile}
-                       COMMENT "Transpiling ${cython_filename} to ${cpp_filename}")
+    add_custom_command(
+      OUTPUT ${cpp_filename}
+      DEPENDS ${cython_filename}
+      VERBATIM
+      COMMAND "${CYTHON}"
+      ARGS
+        ${_language_flag} -3 ${CYTHON_FLAGS_LIST} "${CMAKE_CURRENT_SOURCE_DIR}/${cython_filename}"
+        --output-file "${CMAKE_CURRENT_BINARY_DIR}/${cpp_filename}" --depfile
+      DEPFILE ${depfile}
+      COMMENT "Transpiling ${cython_filename} to ${cpp_filename}"
+    )
 
     if(NOT "${SKBUILD_SABI_VERSION}" STREQUAL "")
-      python_add_library(${cython_module} MODULE "${CMAKE_CURRENT_BINARY_DIR}/${cpp_filename}"
-                         WITH_SOABI USE_SABI ${SKBUILD_SABI_VERSION})
+      python_add_library(
+        ${cython_module}
+        MODULE
+        "${CMAKE_CURRENT_BINARY_DIR}/${cpp_filename}"
+        WITH_SOABI
+        USE_SABI ${SKBUILD_SABI_VERSION}
+      )
     else()
-      python_add_library(${cython_module} MODULE "${CMAKE_CURRENT_BINARY_DIR}/${cpp_filename}"
-                         WITH_SOABI)
+      python_add_library(
+        ${cython_module}
+        MODULE
+        "${CMAKE_CURRENT_BINARY_DIR}/${cpp_filename}"
+        WITH_SOABI
+      )
     endif()
 
     # The final library name must match the original filename and must ignore the prefix.
@@ -145,8 +162,11 @@ function(rapids_cython_create_modules)
     # Compute the install directory relative to the source and rely on installs being relative to
     # the CMAKE_PREFIX_PATH for e.g. editable installs.
     if(NOT DEFINED _RAPIDS_CYTHON_INSTALL_DIR)
-      cmake_path(RELATIVE_PATH CMAKE_CURRENT_SOURCE_DIR BASE_DIRECTORY "${PROJECT_SOURCE_DIR}"
-                 OUTPUT_VARIABLE _RAPIDS_CYTHON_INSTALL_DIR)
+      cmake_path(
+        RELATIVE_PATH CMAKE_CURRENT_SOURCE_DIR
+        BASE_DIRECTORY "${PROJECT_SOURCE_DIR}"
+        OUTPUT_VARIABLE _RAPIDS_CYTHON_INSTALL_DIR
+      )
     endif()
     set(component_arg)
     if(DEFINED _RAPIDS_CYTHON_COMPONENT)
@@ -164,8 +184,11 @@ function(rapids_cython_create_modules)
 
     # Store any provided associated targets in a global list
     foreach(associated_target IN LISTS _RAPIDS_CYTHON_ASSOCIATED_TARGETS)
-      set_property(GLOBAL PROPERTY "rapids_cython_associations_${associated_target}"
-                                   "${cython_module}" APPEND)
+      set_property(
+        GLOBAL
+        PROPERTY "rapids_cython_associations_${associated_target}" "${cython_module}"
+        APPEND
+      )
     endforeach()
 
     list(APPEND CREATED_TARGETS "${cython_module}")

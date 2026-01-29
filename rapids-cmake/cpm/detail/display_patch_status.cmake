@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2022-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2022-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -36,6 +36,5 @@ function(rapids_cpm_display_patch_status package_name)
       file(READ "${err_file}" contents)
       message(FATAL_ERROR "${contents}")
     endif()
-
   endif()
 endfunction()

@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2022-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2022-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -52,5 +52,4 @@ function(rapids_test_init)
   if(NOT CTEST_RESOURCE_SPEC_FILE)
     rapids_test_generate_resource_spec(DESTINATION "${rapids_test_spec_file}")
   endif()
-
 endfunction()

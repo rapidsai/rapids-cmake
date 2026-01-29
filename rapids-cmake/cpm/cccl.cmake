@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2023-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -64,8 +64,14 @@ function(rapids_cpm_cccl)
   cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
   include("${rapids-cmake-dir}/cpm/detail/package_info.cmake")
-  rapids_cpm_package_info(CCCL ${_RAPIDS_UNPARSED_ARGUMENTS} VERSION_VAR version FIND_VAR find_args
-                          CPM_VAR cpm_find_info TO_INSTALL_VAR to_install)
+  rapids_cpm_package_info(
+    CCCL
+    ${_RAPIDS_UNPARSED_ARGUMENTS}
+    VERSION_VAR version
+    FIND_VAR find_args
+    CPM_VAR cpm_find_info
+    TO_INSTALL_VAR to_install
+  )
 
   if(_RAPIDS_ENABLE_UNSTABLE)
     list(APPEND cpm_find_info OPTIONS "CCCL_ENABLE_UNSTABLE ON")
@@ -79,8 +85,12 @@ function(rapids_cpm_cccl)
     # We don't specify `CCCL_ENABLE_INSTALL_RULES` as a `rapids_cpm_find` argument so that it isn't
     # propagated to users of the build export file which would cause them to also install parts of
     # CCCL by mistake ( and in a wrong directory )
-    get_property(rapids_cccl_install_rules_already_called GLOBAL
-                 PROPERTY rapids_cmake_cccl_install_rules SET)
+    get_property(
+      rapids_cccl_install_rules_already_called
+      GLOBAL
+      PROPERTY rapids_cmake_cccl_install_rules
+      SET
+    )
     if(NOT rapids_cccl_install_rules_already_called)
       set(CCCL_ENABLE_INSTALL_RULES ON)
       set(CUB_ENABLE_INSTALL_RULES ON)
@@ -96,9 +106,13 @@ function(rapids_cpm_cccl)
   set(CCCL_TOPLEVEL_PROJECT OFF)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
-  rapids_cpm_find(CCCL ${version} ${find_args} GLOBAL_TARGETS CCCL CCCL::CCCL CCCL::CUB
-                                                              CCCL::libcudacxx CCCL::cudax
-                  CPM_ARGS FIND_PACKAGE_ARGUMENTS EXACT ${cpm_find_info})
+  rapids_cpm_find(
+    CCCL
+    ${version}
+    ${find_args}
+    GLOBAL_TARGETS CCCL CCCL::CCCL CCCL::CUB CCCL::libcudacxx CCCL::cudax
+    CPM_ARGS FIND_PACKAGE_ARGUMENTS EXACT ${cpm_find_info}
+  )
 
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
   rapids_cpm_display_patch_status(CCCL)
@@ -106,11 +120,19 @@ function(rapids_cpm_cccl)
   if(CCCL_SOURCE_DIR)
     # Store where CMake can find the cccl-config.cmake
     include("${rapids-cmake-dir}/export/find_package_root.cmake")
-    rapids_export_find_package_root(BUILD CCCL "${CCCL_SOURCE_DIR}/lib/cmake/cccl"
-                                    EXPORT_SET ${_RAPIDS_BUILD_EXPORT_SET})
-    rapids_export_find_package_root(INSTALL CCCL
-                                    [=[${CMAKE_CURRENT_LIST_DIR}/../../rapids/cmake/cccl]=]
-                                    EXPORT_SET ${_RAPIDS_INSTALL_EXPORT_SET} CONDITION to_install)
+    rapids_export_find_package_root(
+      BUILD
+      CCCL
+      "${CCCL_SOURCE_DIR}/lib/cmake/cccl"
+      EXPORT_SET ${_RAPIDS_BUILD_EXPORT_SET}
+    )
+    rapids_export_find_package_root(
+      INSTALL
+      CCCL
+      [=[${CMAKE_CURRENT_LIST_DIR}/../../rapids/cmake/cccl]=]
+      EXPORT_SET ${_RAPIDS_INSTALL_EXPORT_SET}
+      CONDITION to_install
+    )
   endif()
 
   if(TARGET CCCL::CCCL)
@@ -119,19 +141,30 @@ function(rapids_cpm_cccl)
     target_compile_definitions(CCCL::CCCL INTERFACE THRUST_DISABLE_ABI_NAMESPACE)
     target_compile_definitions(CCCL::CCCL INTERFACE THRUST_IGNORE_ABI_NAMESPACE_ERROR)
     target_compile_definitions(CCCL::CCCL INTERFACE CCCL_DISABLE_PDL)
-    set(post_find_code
-        [=[
+    set(
+      post_find_code
+      [=[
     target_compile_definitions(CCCL::CCCL INTERFACE CUB_DISABLE_NAMESPACE_MAGIC)
     target_compile_definitions(CCCL::CCCL INTERFACE CUB_IGNORE_NAMESPACE_MAGIC_ERROR)
     target_compile_definitions(CCCL::CCCL INTERFACE THRUST_DISABLE_ABI_NAMESPACE)
     target_compile_definitions(CCCL::CCCL INTERFACE THRUST_IGNORE_ABI_NAMESPACE_ERROR)
     target_compile_definitions(CCCL::CCCL INTERFACE CCCL_DISABLE_PDL)
-    ]=])
+    ]=]
+    )
     include("${rapids-cmake-dir}/export/detail/post_find_package_code.cmake")
-    rapids_export_post_find_package_code(BUILD CCCL "${post_find_code}" EXPORT_SET
-                                         ${_RAPIDS_BUILD_EXPORT_SET})
-    rapids_export_post_find_package_code(INSTALL CCCL "${post_find_code}" EXPORT_SET
-                                         ${_RAPIDS_INSTALL_EXPORT_SET} CONDITION to_install)
+    rapids_export_post_find_package_code(
+      BUILD
+      CCCL
+      "${post_find_code}"
+      EXPORT_SET ${_RAPIDS_BUILD_EXPORT_SET}
+    )
+    rapids_export_post_find_package_code(
+      INSTALL
+      CCCL
+      "${post_find_code}"
+      EXPORT_SET ${_RAPIDS_INSTALL_EXPORT_SET}
+      CONDITION to_install
+    )
   endif()
 
   # Propagate up variables that CPMFindPackage provides
@@ -139,5 +172,4 @@ function(rapids_cpm_cccl)
   set(CCCL_BINARY_DIR "${CCCL_BINARY_DIR}" PARENT_SCOPE)
   set(CCCL_ADDED "${CCCL_ADDED}" PARENT_SCOPE)
   set(CCCL_VERSION ${version} PARENT_SCOPE)
-
 endfunction()

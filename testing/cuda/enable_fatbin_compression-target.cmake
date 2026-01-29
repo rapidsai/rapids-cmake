@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2025-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -32,7 +32,9 @@ foreach(suffix mode option IN ZIP_LISTS name_suffix modes compile_options)
       message(FATAL_ERROR "${target} missing the compress-all compile flag")
     endif()
     if(NOT compile_opts MATCHES "--compress-mode=${option}")
-      message(FATAL_ERROR "${target} missing the proper compress-mode flag of ${option} instead has ${compile_opts}"
+      message(
+        FATAL_ERROR
+        "${target} missing the proper compress-mode flag of ${option} instead has ${compile_opts}"
       )
     endif()
   endforeach()
@@ -51,14 +53,18 @@ foreach(target property IN ZIP_LISTS targets properties)
   get_target_property(compile_opts_a ${target} ${property})
   get_target_property(compile_opts_b ${target}_rapids ${property})
   if(NOT compile_opts_a STREQUAL compile_opts_b)
-    message(FATAL_ERROR "rapids_cuda_enable_fatbin_compression without any TUNE_FOR should match 'rapids'"
+    message(
+      FATAL_ERROR
+      "rapids_cuda_enable_fatbin_compression without any TUNE_FOR should match 'rapids'"
     )
   endif()
   if(NOT compile_opts_a MATCHES "-Xfatbin=-compress-all")
     message(FATAL_ERROR "${target} missing the compress-all compile flag")
   endif()
-  if(CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL 13.0.0 AND NOT compile_opts_a MATCHES
-                                                                  "--compress-mode")
+  if(
+    CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL 13.0.0
+    AND NOT compile_opts_a MATCHES "--compress-mode"
+  )
     message(FATAL_ERROR "${target} missing the compress-mode compile flag")
   endif()
 endforeach()

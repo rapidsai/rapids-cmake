@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2022-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2022-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -23,5 +23,8 @@ if(DEFINED ENV{CTEST_RESOURCE_GROUP_COUNT})
     endif()
   endforeach()
 endif()
-execute_process(COMMAND ${command_to_run} ${command_args} COMMAND_ECHO STDOUT
-                        COMMAND_ERROR_IS_FATAL ANY)
+execute_process(
+  COMMAND ${command_to_run} ${command_args}
+  COMMAND_ECHO STDOUT
+  COMMAND_ERROR_IS_FATAL ANY
+)

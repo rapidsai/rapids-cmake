@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2023-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -17,8 +17,11 @@ if(NOT a)
 endif()
 
 include(${rapids-cmake-dir}/export/write_dependencies.cmake)
-rapids_export_write_dependencies(INSTALL test_export_set
-                                 "${CMAKE_CURRENT_BINARY_DIR}/install_export_set.cmake")
+rapids_export_write_dependencies(
+  INSTALL
+  test_export_set
+  "${CMAKE_CURRENT_BINARY_DIR}/install_export_set.cmake"
+)
 
 set(to_match [=[if(FAKE_PACKAGE_FOUND)_set(a ON)__endif()]=])
 
@@ -27,6 +30,8 @@ string(REPLACE "\n" "_" contents "${contents}")
 
 string(FIND "${contents}" "${to_match}" is_found)
 if(is_found EQUAL -1)
-  message(FATAL_ERROR "rapids_export_write_dependencies(INSTALL) failed to record rapids_export_post_find_package_code"
+  message(
+    FATAL_ERROR
+    "rapids_export_write_dependencies(INSTALL) failed to record rapids_export_post_find_package_code"
   )
 endif()

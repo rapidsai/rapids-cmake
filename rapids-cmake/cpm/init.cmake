@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -99,8 +99,13 @@ function(rapids_cpm_init)
   set(_rapids_options GENERATE_PINNED_VERSIONS)
   set(_rapids_one_value CUSTOM_DEFAULT_VERSION_FILE OVERRIDE)
   set(_rapids_multi_value)
-  cmake_parse_arguments(_RAPIDS "${_rapids_options}" "${_rapids_one_value}"
-                        "${_rapids_multi_value}" ${ARGN})
+  cmake_parse_arguments(
+    _RAPIDS
+    "${_rapids_options}"
+    "${_rapids_one_value}"
+    "${_rapids_multi_value}"
+    ${ARGN}
+  )
 
   include("${rapids-cmake-dir}/cpm/detail/load_preset_versions.cmake")
 
@@ -121,7 +126,8 @@ function(rapids_cpm_init)
   if(_RAPIDS_GENERATE_PINNED_VERSIONS)
     include("${rapids-cmake-dir}/cpm/generate_pinned_versions.cmake")
     rapids_cpm_generate_pinned_versions(
-      OUTPUT "${CMAKE_BINARY_DIR}/rapids-cmake/pinned_versions.json")
+      OUTPUT "${CMAKE_BINARY_DIR}/rapids-cmake/pinned_versions.json"
+    )
   endif()
 
   if(DEFINED RAPIDS_CMAKE_CPM_PINNED_VERSIONS_FILE)

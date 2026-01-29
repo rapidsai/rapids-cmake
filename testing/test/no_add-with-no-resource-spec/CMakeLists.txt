@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2022-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2022-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -25,5 +25,7 @@ add_test(NAME simple_test COMMAND verify_no_alloc)
 rapids_test_gpu_requirements(simple_test GPUS 1)
 
 # Validate that the test runs correctly
-set_tests_properties(simple_test PROPERTIES PASS_REGULAR_EXPRESSION
-                                            "failed to have a resource file")
+set_tests_properties(
+  simple_test
+  PROPERTIES PASS_REGULAR_EXPRESSION "failed to have a resource file"
+)

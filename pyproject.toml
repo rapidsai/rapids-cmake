@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2024, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2024-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 
 [tool.codespell]
@@ -9,3 +9,6 @@ skip = "./.git,./rapids-cmake/cpm/patches/"
 ignore-regex = "\\b(.{1,4}|[A-Z]\\w*T)\\b"
 builtin = "clear"
 quiet-level = 3
+
+[tool.ruff.lint]
+select = ["E", "F", "W"]

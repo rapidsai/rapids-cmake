@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2022-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2022-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -70,7 +70,9 @@ function(rapids_test_install_relocatable)
   list(JOIN from_install_prefix "" from_install_prefix)
 
   # cmake-lint: disable=W0106
-  install(CODE "
+  install(
+    CODE
+      "
     # set variables needed by `generate_installed_CTestTestfile.cmake`
     set(_RAPIDS_TEST_DESTINATION \"${_RAPIDS_TEST_DESTINATION}\")
     set(_RAPIDS_INSTALL_PREFIX \"${from_install_prefix}\")
@@ -89,23 +91,35 @@ function(rapids_test_install_relocatable)
     # install `test_launcher_file`
     file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${_RAPIDS_TEST_DESTINATION}\" TYPE FILE RENAME \"CTestTestfile.cmake\" FILES \"\${test_launcher_file}\")
     "
-          COMPONENT ${_RAPIDS_TEST_INSTALL_COMPONENT_SET}
-          ${to_exclude})
+    COMPONENT ${_RAPIDS_TEST_INSTALL_COMPONENT_SET}
+    ${to_exclude}
+  )
 
   # We need to install the rapids-test gpu detector, and the json script we also need to write out /
   # install the new CTestTestfile.cmake
   include(${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/default_names.cmake)
   if(TARGET generate_ctest_json)
-    install(TARGETS generate_ctest_json COMPONENT ${_RAPIDS_TEST_INSTALL_COMPONENT_SET}
-            DESTINATION ${_RAPIDS_TEST_DESTINATION} ${to_exclude})
+    install(
+      TARGETS generate_ctest_json
+      COMPONENT ${_RAPIDS_TEST_INSTALL_COMPONENT_SET}
+      DESTINATION ${_RAPIDS_TEST_DESTINATION}
+      ${to_exclude}
+    )
   endif()
   if(EXISTS "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/run_gpu_test.cmake")
-    install(FILES "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/run_gpu_test.cmake"
-            COMPONENT ${_RAPIDS_TEST_INSTALL_COMPONENT_SET} DESTINATION ${_RAPIDS_TEST_DESTINATION}
-            ${to_exclude})
+    install(
+      FILES "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/run_gpu_test.cmake"
+      COMPONENT ${_RAPIDS_TEST_INSTALL_COMPONENT_SET}
+      DESTINATION ${_RAPIDS_TEST_DESTINATION}
+      ${to_exclude}
+    )
   endif()
   if(targets_to_install)
-    install(TARGETS ${targets_to_install} COMPONENT ${_RAPIDS_TEST_INSTALL_COMPONENT_SET}
-            DESTINATION ${_RAPIDS_TEST_DESTINATION} ${to_exclude})
+    install(
+      TARGETS ${targets_to_install}
+      COMPONENT ${_RAPIDS_TEST_INSTALL_COMPONENT_SET}
+      DESTINATION ${_RAPIDS_TEST_DESTINATION}
+      ${to_exclude}
+    )
   endif()
 endfunction()

@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -45,8 +45,16 @@ if(NOT normal_len EQUAL rapids_len)
 endif()
 
 track_normal_find_package(normal_len ZLIB)
-track_rapids_find_package(rapids_len ZLIB INSTALL_EXPORT_SET test_export_set BUILD_EXPORT_SET
-                          test_export_set GLOBAL_TARGETS ZLIB::ZLIB)
+track_rapids_find_package(
+  rapids_len
+  ZLIB
+  INSTALL_EXPORT_SET
+  test_export_set
+  BUILD_EXPORT_SET
+  test_export_set
+  GLOBAL_TARGETS
+  ZLIB::ZLIB
+)
 
 if(NOT normal_len EQUAL rapids_len)
   message(FATAL_ERROR "A complex rapids_find_package leaked variables!")

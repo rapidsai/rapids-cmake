@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2022-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2022-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -19,6 +19,8 @@ rapids_test_add(NAME simple_test COMMAND verify_alloc INSTALL_COMPONENT_SET test
 
 get_test_property(simple_test RESOURCE_GROUPS value)
 if(value)
-  message(FATAL_ERROR "Unexpected RESOURCE_GROUPS test property value(${value}) found, should not be set"
+  message(
+    FATAL_ERROR
+    "Unexpected RESOURCE_GROUPS test property value(${value}) found, should not be set"
   )
 endif()

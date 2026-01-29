@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2022-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2022-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -54,7 +54,9 @@ function(rapids_test_gpu_requirements test_name)
   cmake_parse_arguments(_RAPIDS_TEST "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
   if(DEFINED _RAPIDS_TEST_PERCENT AND NOT DEFINED _RAPIDS_TEST_GPUS)
-    message(FATAL_ERROR "rapids_test_gpu_requirements requires the GPUS option to be provided when PERCENT is"
+    message(
+      FATAL_ERROR
+      "rapids_test_gpu_requirements requires the GPUS option to be provided when PERCENT is"
     )
   endif()
 
@@ -80,5 +82,4 @@ function(rapids_test_gpu_requirements test_name)
     set_property(TEST ${test_name} PROPERTY RESOURCE_GROUPS "${gpus},gpus:${percent}")
     set_property(TEST ${test_name} PROPERTY FIXTURES_REQUIRED resource_spec)
   endif()
-
 endfunction()
