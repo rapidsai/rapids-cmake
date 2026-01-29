@@ -1,0 +1,41 @@
+{
+  "packages": {
+    "CCCL": {
+      "always_download": true,
+      "git_shallow": false,
+      "git_tag": "8c04b6539859932f5602e86d38314e4d87f96420",
+      "git_url": "https://github.com/NVIDIA/cccl.git",
+      "version": "3.0.3"
+    },
+    "nvtx3": {
+      "always_download": true,
+      "git_shallow": false,
+      "git_tag": "69c9949150ac1c310758a304082228a36d5e4758",
+      "git_url": "https://github.com/NVIDIA/NVTX.git",
+      "source_subdir": "c",
+      "version": "3.2.0"
+    },
+    "rapids_logger": {
+      "always_download": true,
+      "git_shallow": false,
+      "git_tag": "4c72b598f99c8aa06af49468b3fc82f3931c6bf6",
+      "git_url": "https://github.com/rapidsai/rapids-logger.git",
+      "version": "0.2.3"
+    },
+    "rmm": {
+      "always_download": true,
+      "git_shallow": false,
+      "git_tag": "271346cb2d20a425735cd02b5d11c36c82615815",
+      "git_url": "https://github.com/rapidsai/rmm.git",
+      "source_subdir": "cpp",
+      "version": "25.10.00"
+    },
+    "spdlog": {
+      "always_download": true,
+      "git_shallow": false,
+      "git_tag": "27cb4c76708608465c413f6d0e6b8d99a4d84302",
+      "git_url": "https://github.com/gabime/spdlog.git",
+      "version": "1.14.1"
+    }
+  }
+}
