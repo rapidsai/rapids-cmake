@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2023-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 
 repos:
@@ -68,7 +68,7 @@ repos:
             ^testing/.*$
           )
   - repo: https://github.com/rapidsai/pre-commit-hooks
-    rev: v1.2.1
+    rev: v1.3.3
     hooks:
       - id: verify-copyright
         args: [--fix, --spdx]
@@ -83,6 +83,7 @@ repos:
             ^[.]pre-commit-config[.]yaml$
       - id: verify-codeowners
         args: [--fix, --project-prefix=rapids, --no-cpp, --no-python]
+      - id: verify-hardcoded-version
   - repo: https://github.com/shellcheck-py/shellcheck-py
     rev: v0.10.0.1
     hooks:

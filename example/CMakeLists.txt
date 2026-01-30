@@ -21,6 +21,7 @@ include(rapids-find)
 
 rapids_cuda_init_architectures(integration)
 
+# rapids-pre-commit-hooks: disable-next-line[verify-hardcoded-version]
 project(integration VERSION 26.04 LANGUAGES C CXX CUDA)
 message(STATUS "Example: CMAKE_CUDA_ARCHITECTURES: ${CMAKE_CUDA_ARCHITECTURES}")
 
