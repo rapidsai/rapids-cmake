@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2025-2026, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -66,8 +66,8 @@ set_target_properties(export_example
 # Link dependencies
 target_link_libraries(export_example PUBLIC CUDA::cudart PRIVATE fmt::fmt)
 
-# Installation rules
-include(GNUInstallDirs)
+# Installation rules - use rapids_cmake_install_lib_dir for CONDA-aware lib directory
+rapids_cmake_install_lib_dir(lib_dir MODIFY_INSTALL_LIBDIR)
 install(TARGETS export_example
         EXPORT export_example_targets
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}

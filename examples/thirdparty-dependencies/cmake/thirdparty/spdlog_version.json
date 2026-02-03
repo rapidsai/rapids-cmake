@@ -1,0 +1,17 @@
+{
+  "packages": {
+    "spdlog": {
+      "version": "1.12.0",
+      "git_url": "https://github.com/gabime/spdlog.git",
+      "git_tag": "v${version}",
+      "git_shallow": true,
+      "patches": [
+        {
+          "file": "${current_json_dir}/../patches/spdlog_readme.patch",
+          "issue": "Example demonstrating rapids_cpm_package_override patch mechanism",
+          "fixed_in": ""
+        }
+      ]
+    }
+  }
+}
