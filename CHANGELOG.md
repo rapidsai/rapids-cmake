@@ -1,3 +1,34 @@
+# rapids-cmake 26.02.00 (4 Feb 2026)
+
+### 🚨 Breaking Changes
+* Default to static linking of libcudart by @bdice in https://github.com/rapidsai/rapids-cmake/pull/949
+* Update to CCCL v3.2.0 by @bdice in https://github.com/rapidsai/rapids-cmake/pull/955
+### 🐛 Bug Fixes
+* Update to a newer CCCL 3.2.x prerelease with a fix for environment queries by @bdice in https://github.com/rapidsai/rapids-cmake/pull/967
+### 🚀 New Features
+* Add support for finding CMake prefixes exported by Python packages by @vyasr in https://github.com/rapidsai/rapids-cmake/pull/951
+### 🛠️ Improvements
+* Use strict priority in CI conda tests by @bdice in https://github.com/rapidsai/rapids-cmake/pull/942
+* Use strict priority in CI conda tests by @bdice in https://github.com/rapidsai/rapids-cmake/pull/947
+* Upgrade to nvCOMP 5.1.0.21 by @bdice in https://github.com/rapidsai/rapids-cmake/pull/946
+* Enable merge barriers by @KyleFromNVIDIA in https://github.com/rapidsai/rapids-cmake/pull/948
+* feat(SABI): use stable abi naming when requested by @gforsyth in https://github.com/rapidsai/rapids-cmake/pull/954
+* Bump cuco version to fetch HLL fix by @PointKernel in https://github.com/rapidsai/rapids-cmake/pull/952
+* Clarify docs for `rapids_cuda_init_architectures()` by @KyleFromNVIDIA in https://github.com/rapidsai/rapids-cmake/pull/956
+* Add CUDA 13.1 support by @bdice in https://github.com/rapidsai/rapids-cmake/pull/953
+* Bump cuco version to fetch new HLL add_if API and bug fixes by @PointKernel in https://github.com/rapidsai/rapids-cmake/pull/958
+* build and test against CUDA 13.1.0 by @jameslamb in https://github.com/rapidsai/rapids-cmake/pull/960
+* Update to a newer CCCL 3.2.x prerelease with a fix for mdspan by @bdice in https://github.com/rapidsai/rapids-cmake/pull/959
+* Update to a newer CCCL 3.2.x prelease  by @nirandaperera in https://github.com/rapidsai/rapids-cmake/pull/961
+* Use main shared-workflows branch by @jameslamb in https://github.com/rapidsai/rapids-cmake/pull/962
+* Cherry-pick 25.12 changelog to main by @AyodeAwe in https://github.com/rapidsai/rapids-cmake/pull/963
+* Fix update-version.sh to not modify cmake_minimum_required by @AyodeAwe in https://github.com/rapidsai/rapids-cmake/pull/964
+* fix(build): build package on merge to `release/*` branch by @gforsyth in https://github.com/rapidsai/rapids-cmake/pull/971
+* Update CCCL to final v3.2.0 release by @bdice in https://github.com/rapidsai/rapids-cmake/pull/970
+
+
+**Full Changelog**: https://github.com/rapidsai/rapids-cmake/compare/v26.02.00a...release/26.02
+
 # rapids-cmake 25.12.00 (10 Dec 2025)
 
 ### 🚨 Breaking Changes
