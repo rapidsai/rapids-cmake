@@ -28,6 +28,7 @@ include(rapids-cuda)
 
 rapids_cuda_init_architectures(conda_support_example)
 
+# rapids-pre-commit-hooks: disable-next-line[verify-hardcoded-version]
 project(conda_support_example VERSION 1.0 LANGUAGES CXX CUDA)
 
 rapids_cmake_build_type(Release)

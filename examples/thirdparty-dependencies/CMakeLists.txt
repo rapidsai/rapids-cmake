@@ -24,6 +24,7 @@ include(rapids-cmake)
 include(rapids-cpm)
 include(rapids-export)
 
+# rapids-pre-commit-hooks: disable-next-line[verify-hardcoded-version]
 project(third-party_dependencies_example VERSION 1.0 LANGUAGES CXX)
 
 rapids_cmake_build_type(Release)

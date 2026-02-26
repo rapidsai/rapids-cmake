@@ -57,7 +57,8 @@ else()
 endif()
 
 # STEP 1: Define project with version The VERSION is parsed into PROJECT_VERSION_MAJOR,
-# PROJECT_VERSION_MINOR, PROJECT_VERSION_PATCH
+# PROJECT_VERSION_MINOR, PROJECT_VERSION_PATCH rapids-pre-commit-hooks:
+# disable-next-line[verify-hardcoded-version]
 project(version_header_example VERSION ${_VERSION} LANGUAGES CXX)
 
 rapids_cmake_build_type(Release)

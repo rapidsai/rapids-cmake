@@ -38,7 +38,8 @@ include(rapids-cuda)
 # STEP 3: Initialize CUDA architectures (must be before project())
 rapids_cuda_init_architectures(project_bootstrap_example)
 
-# STEP 4: Define project using VERSION from rapids_config.cmake
+# STEP 4: Define project using VERSION from rapids_config.cmake rapids-pre-commit-hooks:
+# disable-next-line[verify-hardcoded-version]
 project(project_bootstrap_example VERSION "${RAPIDS_VERSION}" # Set by rapids_config.cmake
         LANGUAGES CXX CUDA)
 
