@@ -17,6 +17,7 @@ function(find_and_configure_spdlog)
 
   include(${rapids-cmake-dir}/cpm/find.cmake)
 
+  set(CMAKE_CXX_STANDARD 17)
   rapids_cpm_find(spdlog ${spdlog_version}
                   GLOBAL_TARGETS spdlog::spdlog
                   BUILD_EXPORT_SET thirdparty_exports
