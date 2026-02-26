@@ -29,6 +29,7 @@ include(rapids-cuda)
 
 rapids_cuda_init_architectures(project_override_example)
 
+# rapids-pre-commit-hooks: disable-next-line[verify-hardcoded-version]
 project(project_override_example VERSION 1.0 LANGUAGES CXX CUDA)
 
 rapids_cmake_build_type(Release)

@@ -31,6 +31,7 @@ include(rapids-find)
 
 rapids_cuda_init_architectures(export_example)
 
+# rapids-pre-commit-hooks: disable-next-line[verify-hardcoded-version]
 project(export_example VERSION 1.0 LANGUAGES CXX CUDA)
 
 rapids_cmake_build_type(Release)

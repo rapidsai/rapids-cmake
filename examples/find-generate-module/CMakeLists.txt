@@ -27,6 +27,7 @@ include(rapids-cmake)
 include(rapids-export)
 include(rapids-find)
 
+# rapids-pre-commit-hooks: disable-next-line[verify-hardcoded-version]
 project(find_generate_module_example VERSION 1.0 LANGUAGES CXX)
 
 rapids_cmake_build_type(Release)
@@ -108,7 +109,7 @@ They automatically get:
 
 WITHOUT rapids_find_generate_module:
 - Downstream projects would fail to configure
-- They couldn't find MyZLIB dependency
+- They will not find MyZLIB dependency
 - No way to use example_lib
 
 WITH rapids_find_generate_module:

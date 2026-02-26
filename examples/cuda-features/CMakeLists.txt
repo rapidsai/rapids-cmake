@@ -30,6 +30,7 @@ include(${rapids-cmake-dir}/cuda/enable_fatbin_compression.cmake)
 # Initialize CUDA architectures before project() call
 rapids_cuda_init_architectures(cuda_features_example)
 
+# rapids-pre-commit-hooks: disable-next-line[verify-hardcoded-version]
 project(cuda_features_example VERSION 1.0 LANGUAGES CXX CUDA)
 
 option(CUDA_STATIC_RUNTIME "Use CUDA static runtime" OFF)

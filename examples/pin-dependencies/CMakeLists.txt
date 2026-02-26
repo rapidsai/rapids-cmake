@@ -29,6 +29,7 @@ include(rapids-cuda)
 
 rapids_cuda_init_architectures(pin_dependencies_example)
 
+# rapids-pre-commit-hooks: disable-next-line[verify-hardcoded-version]
 project(pin_dependencies_example VERSION 1.0 LANGUAGES CXX CUDA)
 
 rapids_cmake_build_type(Release)
