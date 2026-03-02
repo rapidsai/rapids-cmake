@@ -17,6 +17,8 @@ function(find_and_configure_spdlog)
 
   include(${rapids-cmake-dir}/cpm/find.cmake)
 
+  list(APPEND fmt_ROOT ${spdlog_ROOT})
+
   set(CMAKE_CXX_STANDARD 17)
   rapids_cpm_find(spdlog ${spdlog_version}
                   GLOBAL_TARGETS spdlog::spdlog
@@ -24,7 +26,7 @@ function(find_and_configure_spdlog)
                   INSTALL_EXPORT_SET thirdparty_exports
                   CPM_ARGS ${spdlog_cpm_args}
                   OPTIONS "SPDLOG_INSTALL ON" "SPDLOG_BUILD_EXAMPLE OFF" "SPDLOG_BUILD_TESTS OFF"
-                          "SPDLOG_FMT_EXTERNAL ON" "CMAKE_POSITION_INDEPENDENT_CODE ON")
+                          "SPDLOG_FMT_EXTERNAL_HO ON" "CMAKE_POSITION_INDEPENDENT_CODE ON")
 endfunction()
 
 find_and_configure_spdlog()
