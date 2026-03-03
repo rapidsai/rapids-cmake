@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -93,12 +93,9 @@ function(rapids_cuda_init_architectures project_name)
     # Setup to call to set CMAKE_CUDA_ARCHITECTURES values to occur right after the project call
     # https://cmake.org/cmake/help/latest/command/project.html#code-injection
     #
-    # If an existing file was specified for loading post `project` we will chain include them
-    if(DEFINED CMAKE_PROJECT_${project_name}_INCLUDE)
-      set(_RAPIDS_PREVIOUS_CMAKE_PROJECT_INCLUDE "${CMAKE_PROJECT_${project_name}_INCLUDE}"
-          PARENT_SCOPE)
-    endif()
-    set(CMAKE_PROJECT_${project_name}_INCLUDE "${load_file}" PARENT_SCOPE)
+    list(APPEND CMAKE_PROJECT_${project_name}_INCLUDE "${load_file}")
+    set(CMAKE_PROJECT_${project_name}_INCLUDE "${CMAKE_PROJECT_${project_name}_INCLUDE}"
+        PARENT_SCOPE)
   endif()
 
 endfunction()
