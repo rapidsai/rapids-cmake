@@ -1,0 +1,21 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: rapids-cmake <rapids.cmake@rapids.ai>
+Date: Tue, 3 Feb 2026 16:35:00 -0500
+Subject: [PATCH] Add rapids-cmake patch marker file
+
+---
+ RAPIDS_CMAKE_PATCHED.txt | 3 +++
+ 1 file changed, 3 insertions(+)
+ create mode 100644 RAPIDS_CMAKE_PATCHED.txt
+
+diff --git a/RAPIDS_CMAKE_PATCHED.txt b/RAPIDS_CMAKE_PATCHED.txt
+new file mode 100644
+index 0000000..5e8c4d8
+--- /dev/null
++++ b/RAPIDS_CMAKE_PATCHED.txt
+@@ -0,0 +1,3 @@
++This file was added by the rapids-cmake third-party-dependencies example.
++It demonstrates that rapids_cpm_package_override() patches are being applied.
++The patch was specified in cmake/thirdparty/spdlog_version.json
+--
+2.52.0
