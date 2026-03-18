@@ -86,12 +86,7 @@ repos:
       - id: verify-hardcoded-version
         exclude: |
           (?x)
-          (^|/)devcontainer[.]json$|
-          (^|/)dependencies[.]yaml$|
-          ^[.]github/(workflows|ISSUE_TEMPLATE)/|
-          (^|/)pom[.]xml$|
-          ^[.]pre-commit-config[.]yaml$|
-          ^conda/environments/|
+          ^[.]github/workflows/|
           (^|/)RAPIDS_BRANCH$|
           [.](md|rst)$
   - repo: https://github.com/shellcheck-py/shellcheck-py
