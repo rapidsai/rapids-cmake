@@ -84,6 +84,11 @@ repos:
       - id: verify-codeowners
         args: [--fix, --project-prefix=rapids, --no-cpp, --no-python]
       - id: verify-hardcoded-version
+        exclude: |
+          (?x)
+          ^[.]github/workflows/|
+          (^|/)RAPIDS_BRANCH$|
+          [.](md|rst)$
   - repo: https://github.com/shellcheck-py/shellcheck-py
     rev: v0.10.0.1
     hooks:
