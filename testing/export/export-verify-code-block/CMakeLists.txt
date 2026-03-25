@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -15,6 +15,9 @@ install(TARGETS fakeLib EXPORT fake_set)
 set(code_block
     [=[
 set(code_block_variable "Unique String To Verify")
+if(NOT DEFINED rapids_namespaced_global_targets)
+  message(FATAL_ERROR "rapids_export failed giving global targets to FINAL_CODE_BLOCK")
+endif()
 ]=])
 
 rapids_export(BUILD FakEProJecT EXPORT_SET fake_set NAMESPACE test:: FINAL_CODE_BLOCK code_block)
