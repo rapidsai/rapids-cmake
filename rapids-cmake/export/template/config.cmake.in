@@ -99,10 +99,6 @@ if("rapids_config_@type@" STREQUAL "rapids_config_build")
   endforeach()
 endif()
 
-unset(rapids_comp_names)
-unset(rapids_comp_unique_ids)
-unset(rapids_global_targets)
-unset(rapids_namespaced_global_targets)
 
 check_required_components(@project_name@)
 
@@ -112,3 +108,6 @@ include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(${CMAKE_FIND_PACKAGE_NAME} CONFIG_MODE)
 
 @_RAPIDS_PROJECT_FINAL_CODE_BLOCK@
+
+unset(rapids_global_targets)
+unset(rapids_namespaced_global_targets)
