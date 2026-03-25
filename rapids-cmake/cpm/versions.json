@@ -1,10 +1,9 @@
 {
   "packages": {
     "benchmark": {
-      "version": "1.8.0",
-      "git_shallow": false,
+      "version": "1.9.5",
       "git_url": "https://github.com/google/benchmark.git",
-      "git_tag": "2dd015dfef425c866d9a43f2c67d8b52d709acb6"
+      "git_tag": "192ef10025eb2c4cdd392bc502f0c852196baa48"
     },
     "bs_thread_pool": {
       "version": "4.1.0",
