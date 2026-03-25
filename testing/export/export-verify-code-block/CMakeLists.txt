@@ -20,7 +20,11 @@ if(NOT DEFINED rapids_namespaced_global_targets)
 endif()
 ]=])
 
-rapids_export(BUILD FakEProJecT EXPORT_SET fake_set NAMESPACE test:: FINAL_CODE_BLOCK code_block)
+rapids_export(BUILD FakEProJecT
+              EXPORT_SET fake_set
+              NAMESPACE test::
+              GLOBAL_TARGETS fakeLib
+              FINAL_CODE_BLOCK code_block)
 
 # Add a custom command that generates a second project that verifies our target was exported with
 # the correct namespace
