@@ -32,7 +32,7 @@ Demonstrates the rapids-cmake export system for creating reusable CMake packages
 - `rapids_export()` - Generate BUILD and INSTALL exports
 - `rapids_find_package()` - Find dependencies and track in export sets
 - `rapids_cpm_find()` - Fetch dependencies via CPM and add to export sets
-- `rapids_cmake_install_lib_dir()` - CONDA-aware library installation directory
+- `rapids_cmake_install_lib_dir()` - conda-aware library installation directory
 
 Shows how to create a library that can be consumed by downstream projects via find_package().
 

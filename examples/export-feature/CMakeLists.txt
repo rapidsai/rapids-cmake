@@ -67,7 +67,10 @@ set_target_properties(export_example
 # Link dependencies
 target_link_libraries(export_example PUBLIC CUDA::cudart PRIVATE fmt::fmt)
 
-# Installation rules - use rapids_cmake_install_lib_dir for CONDA-aware lib directory
+# cmake-format: off
+# Installation rules
+# - use rapids_cmake_install_lib_dir for conda-aware lib directory
+# cmake-format: on
 rapids_cmake_install_lib_dir(lib_dir MODIFY_INSTALL_LIBDIR)
 install(TARGETS export_example
         EXPORT export_example_targets
