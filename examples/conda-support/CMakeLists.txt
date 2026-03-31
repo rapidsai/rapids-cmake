@@ -33,10 +33,14 @@ project(conda_support_example VERSION 1.0 LANGUAGES CXX CUDA)
 
 rapids_cmake_build_type(Release)
 
-# Create conda environment support target This target provides: - Conda include directories (as
-# SYSTEM to match conda behavior) - Conda library directories - Proper rpath-link settings for conda
-# environments - Debug build optimization override (-O0 instead of conda's -O2) - File prefix
-# remapping for reproducible builds
+# cmake-format: off
+# Create conda environment support target This target provides:
+# - Conda include directories (as SYSTEM to match conda behavior)
+# - Conda library directories
+# - Proper rpath-link settings for conda environments
+# - Debug build optimization override (-O0 instead of conda's -O2)
+# - File prefix remapping for reproducible builds
+# cmake-format: on
 rapids_cmake_support_conda_env(conda_env MODIFY_PREFIX_PATH)
 
 # Create a simple CUDA library
@@ -49,8 +53,7 @@ set_target_properties(conda_support_lib
                                  CUDA_STANDARD_REQUIRED ON
                                  POSITION_INDEPENDENT_CODE ON)
 
-# Link the conda environment target if it exists The target is only created when running in a conda
-# environment
+# Link to the conda environment target if it exists
 if(TARGET conda_env)
   target_link_libraries(conda_support_lib PRIVATE conda_env)
   message(STATUS "Conda environment support enabled")
