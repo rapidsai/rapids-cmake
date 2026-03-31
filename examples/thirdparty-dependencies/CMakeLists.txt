@@ -37,7 +37,7 @@ include(cmake/thirdparty/get_spdlog.cmake)
 add_library(third-party_example SHARED lib.cpp)
 
 set_target_properties(third-party_example
-                      PROPERTIES CXX_STANDARD 17
+                      PROPERTIES CXX_STANDARD 20
                                  CXX_STANDARD_REQUIRED ON
                                  POSITION_INDEPENDENT_CODE ON
                                  VERSION ${PROJECT_VERSION}
@@ -48,7 +48,7 @@ target_link_libraries(third-party_example PUBLIC fmt::fmt PRIVATE spdlog::spdlog
 add_executable(third-party_example_app main.cpp)
 target_link_libraries(third-party_example_app PRIVATE third-party_example)
 
-set_target_properties(third-party_example_app PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
+set_target_properties(third-party_example_app PROPERTIES CXX_STANDARD 20 CXX_STANDARD_REQUIRED ON)
 
 include(GNUInstallDirs)
 

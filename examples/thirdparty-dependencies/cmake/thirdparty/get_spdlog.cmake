@@ -19,7 +19,7 @@ function(find_and_configure_spdlog)
 
   list(APPEND fmt_ROOT ${spdlog_ROOT})
 
-  set(CMAKE_CXX_STANDARD 17)
+  set(CMAKE_CXX_STANDARD 20)
   rapids_cpm_find(spdlog ${spdlog_version}
                   GLOBAL_TARGETS spdlog::spdlog
                   BUILD_EXPORT_SET thirdparty_exports

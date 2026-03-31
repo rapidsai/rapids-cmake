@@ -47,9 +47,9 @@ rapids_cmake_support_conda_env(conda_env MODIFY_PREFIX_PATH)
 add_library(conda_support_lib SHARED lib.cu)
 
 set_target_properties(conda_support_lib
-                      PROPERTIES CXX_STANDARD 17
+                      PROPERTIES CXX_STANDARD 20
                                  CXX_STANDARD_REQUIRED ON
-                                 CUDA_STANDARD 17
+                                 CUDA_STANDARD 20
                                  CUDA_STANDARD_REQUIRED ON
                                  POSITION_INDEPENDENT_CODE ON)
 
@@ -65,8 +65,8 @@ endif()
 add_executable(conda_support_example main.cu)
 target_link_libraries(conda_support_example PRIVATE conda_support_lib)
 
-set_target_properties(conda_support_example PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON
-                                                       CUDA_STANDARD 17 CUDA_STANDARD_REQUIRED ON)
+set_target_properties(conda_support_example PROPERTIES CXX_STANDARD 20 CXX_STANDARD_REQUIRED ON
+                                                       CUDA_STANDARD 20 CUDA_STANDARD_REQUIRED ON)
 
 if(TARGET conda_env)
   target_link_libraries(conda_support_example PRIVATE conda_env)

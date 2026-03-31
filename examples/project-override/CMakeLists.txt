@@ -47,7 +47,7 @@ message(STATUS "cccl version: ${CCCL_VERSION}")
 add_executable(project_override_example main.cu)
 
 set_target_properties(project_override_example
-                      PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON CUDA_STANDARD 17
+                      PROPERTIES CXX_STANDARD 20 CXX_STANDARD_REQUIRED ON CUDA_STANDARD 20
                                  CUDA_STANDARD_REQUIRED ON)
 
 target_link_libraries(project_override_example PRIVATE Thrust::Thrust)

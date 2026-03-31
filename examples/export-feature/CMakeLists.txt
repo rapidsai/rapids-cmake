@@ -56,9 +56,9 @@ rapids_cpm_find(fmt 10.2.1
 add_library(export_example SHARED lib.cu)
 
 set_target_properties(export_example
-                      PROPERTIES CXX_STANDARD 17
+                      PROPERTIES CXX_STANDARD 20
                                  CXX_STANDARD_REQUIRED ON
-                                 CUDA_STANDARD 17
+                                 CUDA_STANDARD 20
                                  CUDA_STANDARD_REQUIRED ON
                                  POSITION_INDEPENDENT_CODE ON
                                  VERSION ${PROJECT_VERSION}

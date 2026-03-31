@@ -44,8 +44,8 @@ rapids_cuda_init_runtime(USE_STATIC ${CUDA_STATIC_RUNTIME})
 # Create a simple CUDA executable
 add_executable(cuda_features_example main.cu)
 
-set_target_properties(cuda_features_example PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON
-                                                       CUDA_STANDARD 17 CUDA_STANDARD_REQUIRED ON)
+set_target_properties(cuda_features_example PROPERTIES CXX_STANDARD 20 CXX_STANDARD_REQUIRED ON
+                                                       CUDA_STANDARD 20 CUDA_STANDARD_REQUIRED ON)
 
 # Enable fatbin compression on the target
 rapids_cuda_enable_fatbin_compression(TARGET cuda_features_example)

@@ -75,7 +75,7 @@ rapids_find_package(MyZLIB REQUIRED BUILD_EXPORT_SET example_exports
 add_library(example_lib lib.cpp)
 
 set_target_properties(example_lib
-                      PROPERTIES CXX_STANDARD 17
+                      PROPERTIES CXX_STANDARD 20
                                  CXX_STANDARD_REQUIRED ON
                                  POSITION_INDEPENDENT_CODE ON
                                  VERSION ${PROJECT_VERSION}

@@ -58,9 +58,9 @@ message(STATUS "rapids-cmake version: ${rapids-cmake-version}")
 add_library(bootstrap_lib SHARED lib.cu)
 
 set_target_properties(bootstrap_lib
-                      PROPERTIES CXX_STANDARD 17
+                      PROPERTIES CXX_STANDARD 20
                                  CXX_STANDARD_REQUIRED ON
-                                 CUDA_STANDARD 17
+                                 CUDA_STANDARD 20
                                  CUDA_STANDARD_REQUIRED ON
                                  POSITION_INDEPENDENT_CODE ON
                                  VERSION ${PROJECT_VERSION}
@@ -70,5 +70,5 @@ set_target_properties(bootstrap_lib
 add_executable(bootstrap_example main.cu)
 target_link_libraries(bootstrap_example PRIVATE bootstrap_lib)
 
-set_target_properties(bootstrap_example PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON
-                                                   CUDA_STANDARD 17 CUDA_STANDARD_REQUIRED ON)
+set_target_properties(bootstrap_example PROPERTIES CXX_STANDARD 20 CXX_STANDARD_REQUIRED ON
+                                                   CUDA_STANDARD 20 CUDA_STANDARD_REQUIRED ON)

@@ -88,7 +88,7 @@ message(STATUS "Generated version header: ${CMAKE_CURRENT_BINARY_DIR}/include/ve
 add_library(version_example SHARED lib.cpp)
 
 set_target_properties(version_example
-                      PROPERTIES CXX_STANDARD 17
+                      PROPERTIES CXX_STANDARD 20
                                  CXX_STANDARD_REQUIRED ON
                                  POSITION_INDEPENDENT_CODE ON
                                  VERSION ${PROJECT_VERSION}
@@ -104,7 +104,7 @@ target_include_directories(version_example
 add_executable(version_example_app main.cpp)
 target_link_libraries(version_example_app PRIVATE version_example)
 
-set_target_properties(version_example_app PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
+set_target_properties(version_example_app PROPERTIES CXX_STANDARD 20 CXX_STANDARD_REQUIRED ON)
 
 # STEP 5: Install the library and the generated header
 include(GNUInstallDirs)

@@ -50,7 +50,7 @@ rapids_cpm_rmm()
 add_executable(pin_dependencies_example main.cu)
 
 set_target_properties(pin_dependencies_example
-                      PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON CUDA_STANDARD 17
+                      PROPERTIES CXX_STANDARD 20 CXX_STANDARD_REQUIRED ON CUDA_STANDARD 20
                                  CUDA_STANDARD_REQUIRED ON)
 
 target_link_libraries(pin_dependencies_example PRIVATE Thrust::Thrust rmm::rmm)
