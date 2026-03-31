@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -29,6 +29,7 @@ adds a test for each generator:
                          [NO_DEV_ERRORS]
                          [NO_CPM_CACHE]
                          [NO_RAPIDS_CMAKE_HOOKS]
+                         [SOURCE_DIR <absolute_path>]
                          [SHOULD_FAIL <expected error message string>]
                       )
 
@@ -50,10 +51,14 @@ adds a test for each generator:
 ``install``
   - Not implemented
 
+``SOURCE_DIR``
+  Absolute path to the source directory to test. When provided, this overrides
+  the default behavior of computing the source directory from <SourceOrDir>.
+
 #]=======================================================================]
 function(add_cmake_test mode source_or_dir)
   set(options SERIAL NO_DEV_ERRORS NO_CPM_CACHE NO_RAPIDS_CMAKE_HOOKS)
-  set(one_value SHOULD_FAIL)
+  set(one_value SHOULD_FAIL SOURCE_DIR)
   set(multi_value)
   cmake_parse_arguments(RAPIDS_TEST "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
@@ -64,7 +69,10 @@ function(add_cmake_test mode source_or_dir)
 
   # Determine if we are past a relative source file or a directory
   set(have_source_dir FALSE)
-  if(IS_DIRECTORY "${CMAKE_CURRENT_LIST_DIR}/${source_or_dir}")
+  if(RAPIDS_TEST_SOURCE_DIR)
+    # Use the explicitly provided SOURCE_DIR
+    set(src_dir "${RAPIDS_TEST_SOURCE_DIR}/")
+  elseif(IS_DIRECTORY "${CMAKE_CURRENT_LIST_DIR}/${source_or_dir}")
     set(src_dir "${CMAKE_CURRENT_LIST_DIR}/${source_or_dir}/")
   elseif(EXISTS "${CMAKE_CURRENT_LIST_DIR}/${source_or_dir}")
     set(src_dir "${CMAKE_CURRENT_BINARY_DIR}/${test_name_stem}")

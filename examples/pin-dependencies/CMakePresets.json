@@ -1,0 +1,39 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 30,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "default",
+      "displayName": "Default Configuration",
+      "description": "Build without pinned dependencies - generates new pin file",
+      "binaryDir": "${sourceDir}/build",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "with-pins",
+      "displayName": "Configuration with Pinned Dependencies",
+      "description": "Uses pins.json to lock dependency versions",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_MESSAGE_LOG_LEVEL": "VERBOSE",
+        "RAPIDS_CMAKE_CPM_OVERRIDE_VERSION_FILE": "${sourceDir}/pins.json"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "default",
+      "configurePreset": "default"
+    },
+    {
+      "name": "with-pins",
+      "configurePreset": "with-pins"
+    }
+  ]
+}

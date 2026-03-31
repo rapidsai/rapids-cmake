@@ -1,0 +1,39 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 30,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "default",
+      "displayName": "Default Configuration",
+      "description": "Default build configuration",
+      "binaryDir": "${sourceDir}/build",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "with-override",
+      "displayName": "Configuration with Project Override",
+      "description": "Uses override.json to override CCCL version",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_MESSAGE_LOG_LEVEL": "VERBOSE",
+        "RAPIDS_CMAKE_CPM_OVERRIDE_VERSION_FILE": "${sourceDir}/override.json"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "default",
+      "configurePreset": "default"
+    },
+    {
+      "name": "with-override",
+      "configurePreset": "with-override"
+    }
+  ]
+}
