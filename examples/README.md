@@ -65,7 +65,7 @@ Demonstrates the cmake/thirdparty/ organization pattern for managing dependencie
 - `cmake/thirdparty/get_spdlog.cmake` - Dependency with custom PATCH_COMMAND
 - One file per dependency for organization and maintainability
 
-Shows the professional dependency organization pattern used by ALL RAPIDS projects. This pattern scales from small projects to large ones (cuDF manages 15+ dependencies this way). Critical for maintainability as projects grow.
+Shows how RAPIDS projects organize third-party dependencies. This pattern scales from small projects to large ones (cuDF manages 15+ dependencies this way). Critical for maintainability as projects grow.
 
 ### [pin-dependencies](pin-dependencies/)
 Demonstrates dependency pinning for reproducible builds:
