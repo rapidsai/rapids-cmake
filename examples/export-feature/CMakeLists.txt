@@ -44,12 +44,12 @@ rapids_find_package(CUDAToolkit REQUIRED BUILD_EXPORT_SET export_example_targets
 rapids_cpm_init()
 
 # Find fmt using CPM and add to export sets
-rapids_cpm_find(fmt 10.2.1
+rapids_cpm_find(fmt 12.1.0
                 GLOBAL_TARGETS fmt::fmt
                 BUILD_EXPORT_SET export_example_targets
                 INSTALL_EXPORT_SET export_example_targets
                 CPM_ARGS GITHUB_REPOSITORY fmtlib/fmt
-                GIT_TAG 10.2.1
+                GIT_TAG 12.1.0
                 GIT_SHALLOW TRUE)
 
 # Create a CUDA library

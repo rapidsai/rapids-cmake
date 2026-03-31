@@ -22,11 +22,15 @@ endif()
 # Read RAPIDS_BRANCH file
 file(STRINGS "${CMAKE_CURRENT_LIST_DIR}/../RAPIDS_BRANCH" _rapids_branch)
 
-# Set rapids-cmake version and branch if not already set Users can override these variables to test
-# with different rapids-cmake versions: - rapids-cmake-version: Version number (e.g., 26.02) -
-# rapids-cmake-branch: Branch name (e.g., branch-26.02) - rapids-cmake-sha: Specific commit SHA for
-# pinned versions - rapids-cmake-tag: Specific tag for releases - rapids-cmake-repo: Alternative
-# repository (e.g., user/rapids-cmake)
+# cmake-format: off
+# Set rapids-cmake version and branch if not already set
+# Users can override these variables to test with different rapids-cmake versions:
+#   - rapids-cmake-version: Version number (e.g., 26.02)
+#   - rapids-cmake-branch: Branch name (e.g., release/26.02)
+#   - rapids-cmake-sha: Specific commit SHA for pinned versions
+#   - rapids-cmake-tag: Specific tag for releases
+#   - rapids-cmake-repo: Alternative repository (e.g., user/rapids-cmake)
+# cmake-format: on
 if(NOT rapids-cmake-version)
   set(rapids-cmake-version "${RAPIDS_VERSION_MAJOR_MINOR}")
 endif()

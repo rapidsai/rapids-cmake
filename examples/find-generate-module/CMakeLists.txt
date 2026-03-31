@@ -32,30 +32,32 @@ project(find_generate_module_example VERSION 1.0 LANGUAGES CXX)
 
 rapids_cmake_build_type(Release)
 
+# cmake-format: off
 # ##################################################################################################
 # WHY use rapids_find_generate_module?
 # ##################################################################################################
 #
-# Problem: Your library depends on a third-party package (e.g., "SimpleLib") that: 1. Doesn't
-# provide a CMake config file (simplelib-config.cmake) 2. Doesn't have a standard
-# FindSimpleLib.cmake module
+# Problem: Your library depends on a third-party package (e.g., "SimpleLib") that:
+# 1. Doesn't provide a CMake config file (simplelib-config.cmake)
+# 2. Doesn't have a standard FindSimpleLib.cmake module
 #
-# Solution: Generate a FindSimpleLib.cmake module that: 1. Searches for the package's headers and
-# libraries 2. Creates proper CMake targets 3. Is INSTALLED with your package so downstream users
-# can find SimpleLib too
+# Solution: Generate a FindSimpleLib.cmake module that:
+# 1. Searches for the package's headers and libraries
+# 2. Creates proper CMake targets
+# 3. Is INSTALLED with your package so downstream users can find SimpleLib too
 #
-# why: - Without this, downstream projects can't use find_package(YourPackage) because they can't
-# find SimpleLib - The generated FindModule is included in your package's export sets - Downstream
-# projects automatically get the FindModule when they find_package(YourPackage)
+# why:
+# - Without this, downstream projects can't use find_package(YourPackage) because they can't find
+#   SimpleLib
+# - The generated FindModule is included in your package's export sets
+# - Downstream projects automatically get the FindModule when they find_package(YourPackage)
 #
 # ##################################################################################################
 
-# For this example, we'll use ZLIB which DOES have a FindModule, but we'll pretend it doesn't to
-# demonstrate the pattern.
+# For this example, we'll use MyZLIB which doesn't have a FindModule, to demonstrate the pattern.
+# cmake-format: on
 
-# STEP 1: Generate the FindModule
-# ================================
-# This creates FindMyZLIB.cmake and adds it to export sets
+# Generate the FindModule: This creates FindMyZLIB.cmake and adds it to export sets
 rapids_find_generate_module(MyZLIB
                             HEADER_NAMES zlib.h # Required: headers to search for
                             LIBRARY_NAMES z # Optional: libraries to search for
@@ -64,14 +66,11 @@ rapids_find_generate_module(MyZLIB
                             INSTALL_EXPORT_SET example_exports # Add to install export
 )
 
-# STEP 2: Find the package using the generated module
-# ====================================================
-# This uses the FindMyZLIB.cmake we just generated
+# Find the package using the generated module: This uses the FindMyZLIB.cmake we just generated
 rapids_find_package(MyZLIB REQUIRED BUILD_EXPORT_SET example_exports
                     INSTALL_EXPORT_SET example_exports)
 
-# STEP 3: Create your library that uses the dependency
-# =====================================================
+# Create your library that uses the dependency
 add_library(example_lib lib.cpp)
 
 set_target_properties(example_lib
@@ -84,15 +83,14 @@ set_target_properties(example_lib
 # Link against the found package
 target_link_libraries(example_lib PUBLIC MyZLIB::MyZLIB)
 
-# STEP 4: Install the library and headers
-# ========================================
+# Install the library and headers
 include(GNUInstallDirs)
 
 install(TARGETS example_lib EXPORT example_exports LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
-# STEP 5: Export the package (FindMyZLIB.cmake is automatically included!)
-# =========================================================================
+# Export the package (FindMyZLIB.cmake is automatically included!)
+# cmake-format: off
 set(doc_string
     [=[
 Provide targets for the find_generate_module_example library.
@@ -117,6 +115,7 @@ WITH rapids_find_generate_module:
 - Downstream projects automatically find MyZLIB
 - Everything "just works"
 ]=])
+# cmake-format: on
 
 # Create install export (FindMyZLIB.cmake is included in export set)
 rapids_export(INSTALL find_generate_module_example

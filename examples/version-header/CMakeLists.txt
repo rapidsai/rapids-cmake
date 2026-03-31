@@ -5,6 +5,7 @@
 # cmake-format: on
 # =============================================================================
 
+# cmake-format: off
 # ##################################################################################################
 # VERSION HEADER EXAMPLE
 # ##################################################################################################
@@ -12,19 +13,25 @@
 # This example demonstrates rapids_cmake_write_version_file() which generates C++ header files
 # containing version information from your CMake project.
 #
-# WHY THIS IS IMPORTANT: - Runtime version checking: Applications can verify library versions at
-# runtime - Version display: Libraries can report their version (e.g., mylib::version()) -
-# Compatibility checks: Downstream projects can verify version requirements - Debug information:
-# Version info appears in logs, error messages, etc.
+# WHY THIS IS IMPORTANT:
+# - Runtime version checking: Applications can verify library versions at runtime
+# - Version display: Libraries can report their version (e.g., mylib::version())
+# - Compatibility checks: Downstream projects can verify version requirements
+# - Debug information: Version info appears in logs, error messages, etc.
 #
-# USED BY ALL RAPIDS PROJECTS: - RMM: include/rmm/version_config.hpp - cuDF:
-# include/cudf/version_config.hpp - cuVS: include/cuvs/version_config.h
+# USED BY ALL RAPIDS PROJECTS:
+# - RMM: include/rmm/version_config.hpp
+# - cuDF: include/cudf/version_config.hpp
+# - cuVS: include/cuvs/version_config.h
 #
-# WORKFLOW: 1. VERSION file contains project version (YY.MM.PP format) 2. project() command reads
-# version from VERSION file 3. rapids_cmake_write_version_file() generates C++ header with version
-# macros 4. C++ code includes the header and accesses version information
+# WORKFLOW:
+# 1. VERSION file contains project version (YY.MM.PP format)
+# 2. project() command reads version from VERSION file
+# 3. rapids_cmake_write_version_file() generates C++ header with version macros
+# 4. C++ code includes the header and accesses version information
 #
 # ##################################################################################################
+# cmake-format: on
 
 cmake_minimum_required(VERSION 3.30.4 FATAL_ERROR)
 
@@ -56,9 +63,10 @@ else()
   message(FATAL_ERROR "Failed to parse VERSION file")
 endif()
 
-# STEP 1: Define project with version The VERSION is parsed into PROJECT_VERSION_MAJOR,
-# PROJECT_VERSION_MINOR, PROJECT_VERSION_PATCH rapids-pre-commit-hooks:
-# disable-next-line[verify-hardcoded-version]
+# Define project with version; VERSION is parsed into PROJECT_VERSION_MAJOR, PROJECT_VERSION_MINOR,
+# PROJECT_VERSION_PATCH
+
+# rapids-pre-commit-hooks: disable-next-line[verify-hardcoded-version]
 project(version_header_example VERSION ${_VERSION} LANGUAGES CXX)
 
 rapids_cmake_build_type(Release)
@@ -69,22 +77,24 @@ message(STATUS "  Major: ${PROJECT_VERSION_MAJOR}")
 message(STATUS "  Minor: ${PROJECT_VERSION_MINOR}")
 message(STATUS "  Patch: ${PROJECT_VERSION_PATCH}")
 
-# STEP 2: Generate version header file This creates a C++ header with version macros based on
+# cmake-format: off
+# Generate version header file: This creates a C++ header with version macros based on
 # project() VERSION
 #
 # Generated file will contain: #define version_header_example_VERSION_MAJOR 26 #define
 # version_header_example_VERSION_MINOR 2 #define version_header_example_VERSION_PATCH 0
 #
-# MACRO NAMING: Uses lowercase project name with underscores (not uppercase) - Project
-# "version_header_example" → "version_header_example_VERSION_MAJOR" - Project "MyLib" →
-# "MyLib_VERSION_MAJOR"
+# MACRO NAMING: Uses lowercase project name with underscores (not uppercase)
+# - Project "version_header_example" → "version_header_example_VERSION_MAJOR"
+# - Project "MyLib" → "MyLib_VERSION_MAJOR"
 #
+# cmake-format: on
 rapids_cmake_write_version_file(include/version_example/version_config.hpp)
 
 message(STATUS "Generated version header: ${CMAKE_CURRENT_BINARY_DIR}/include/version_example/version_config.hpp"
 )
 
-# STEP 3: Create a library that uses the version header
+# Create a library that uses the version header
 add_library(version_example SHARED lib.cpp)
 
 set_target_properties(version_example
@@ -100,13 +110,13 @@ target_include_directories(version_example
                                   "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>"
                            INTERFACE "$<INSTALL_INTERFACE:include>")
 
-# STEP 4: Create an executable that prints version information
+# Create an executable that prints version information
 add_executable(version_example_app main.cpp)
 target_link_libraries(version_example_app PRIVATE version_example)
 
 set_target_properties(version_example_app PROPERTIES CXX_STANDARD 20 CXX_STANDARD_REQUIRED ON)
 
-# STEP 5: Install the library and the generated header
+# Install the library and the generated header
 include(GNUInstallDirs)
 
 install(TARGETS version_example LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
@@ -119,25 +129,3 @@ install(DIRECTORY include/version_example DESTINATION ${CMAKE_INSTALL_INCLUDEDIR
 # Install the generated version header
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/include/version_example/version_config.hpp
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/version_example)
-
-# ##################################################################################################
-# USAGE NOTES
-# ##################################################################################################
-#
-# The generated header can be used in C++ code:
-#
-# #include <version_example/version_config.hpp>
-#
-# int major = version_header_example_VERSION_MAJOR; int minor =
-# version_header_example_VERSION_MINOR;
-#
-# MACRO NAMING CONVENTION: - Macros use the PROJECT NAME as-is (preserves case and underscores) -
-# Project "version_header_example" → "version_header_example_VERSION_MAJOR" - Project "MyProject" →
-# "MyProject_VERSION_MAJOR" - Macros: <project_name>_VERSION_MAJOR, <project_name>_VERSION_MINOR,
-# etc.
-#
-# BEST PRACTICES: - Always install the generated version header alongside your library - Provide a
-# version() function that returns version as a string - Include version in library error messages
-# and logs - Use version for compatibility checks in downstream projects
-#
-# ##################################################################################################
