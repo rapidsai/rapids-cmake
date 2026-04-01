@@ -136,21 +136,46 @@ completely offline as long as all required packages exist locally.
 
 **Workflow for preparing an offline environment:**
 
-1. On a machine with network access, configure with :cmake:variable:`CPM_SOURCE_CACHE`:
+1. On a machine with network access, configure with :cmake:variable:`CPM_SOURCE_CACHE` to
+   populate the dependency cache:
 
    .. code-block:: bash
 
       cmake -B build -DCPM_SOURCE_CACHE=/path/to/cache ...
-      cmake --build build
 
-2. Transfer the cache directory to the airgapped system
-
-3. Build offline using the same cache path:
+2. Copy the rapids-cmake source tree from the build directory into the cache so it is
+   available on the offline system alongside the other dependencies:
 
    .. code-block:: bash
 
-      cmake -B build -DCPM_SOURCE_CACHE=/path/to/cache ...
+      cp -r build/_deps/rapids-cmake-src /path/to/cache/rapids-cmake
+
+3. Transfer the cache directory to the airgapped system.
+
+4. Build offline using the populated cache. Pass
+   :cmake:variable:`FETCHCONTENT_SOURCE_DIR_RAPIDS-CMAKE` so that dependencies that use
+   rapids-cmake do not attempt to download it from the network:
+
+   .. code-block:: bash
+
+      cmake -B build \
+            -DCPM_SOURCE_CACHE=/path/to/cache \
+            -DFETCHCONTENT_SOURCE_DIR_RAPIDS-CMAKE=/path/to/cache/rapids-cmake \
+            -Drapids-cmake-dir=/path/to/cache/rapids-cmake \
+            ...
       cmake --build build
+
+   Setting :cmake:variable:`FETCHCONTENT_SOURCE_DIR_RAPIDS-CMAKE` causes CMake's
+   :cmake:module:`FetchContent <cmake:module:FetchContent>` to treat rapids-cmake as already
+   populated from the given path, bypassing any network fetch for dependencies that use
+   rapids-cmake.
+
+.. note::
+
+   A fully worked example of this workflow is provided in
+   :file:`examples/offline_build`. It contains shell scripts that automate both the
+   cache-population step (``generate_offline_source_cache.sh``) and the offline build step
+   (``use_offline_source_cache.sh``).
 
 Using Local Package Overrides
 ==============================
