@@ -51,7 +51,7 @@ cmake -S "${SCRIPT_DIR}/src" \
       -DCPM_SOURCE_CACHE="${CACHE_DIR}" \
       -DCPM_USE_LOCAL_PACKAGES=ON \
       -Drapids-cmake-dir="${CACHE_DIR}/rapids-cmake/rapids-cmake/" \
-      -Drapids-cmake_POPULATED=ON \
+      -DFETCHCONTENT_SOURCE_DIR_RAPIDS-CMAKE="${CACHE_DIR}/rapids-cmake/rapids-cmake/" \
       --trace-expand --trace-redirect="${BUILD_DIR}/trace"
 
 echo "Building..."
