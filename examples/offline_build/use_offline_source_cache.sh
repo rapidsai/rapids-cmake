@@ -48,11 +48,11 @@ echo "Configuring offline build using CPM source cache at: ${CACHE_DIR}"
 
 cmake -S "${SCRIPT_DIR}/src" \
       -B "${BUILD_DIR}" \
+      -DRAPIDS_LOGGER_HIDE_ALL_SPDLOG_SYMBOLS=OFF \
       -DCPM_SOURCE_CACHE="${CACHE_DIR}" \
       -DCPM_USE_LOCAL_PACKAGES=ON \
       -Drapids-cmake-dir="${CACHE_DIR}/rapids-cmake/rapids-cmake/" \
-      -DFETCHCONTENT_SOURCE_DIR_RAPIDS-CMAKE="${CACHE_DIR}/rapids-cmake/rapids-cmake/" \
-      --trace-expand --trace-redirect="${BUILD_DIR}/trace"
+      -DFETCHCONTENT_SOURCE_DIR_RAPIDS-CMAKE="${CACHE_DIR}/rapids-cmake/rapids-cmake/"
 
 echo "Building..."
 cmake --build "${BUILD_DIR}"
