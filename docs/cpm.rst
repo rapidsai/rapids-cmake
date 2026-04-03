@@ -150,7 +150,7 @@ completely offline as long as all required packages exist locally.
 
       cp -r build/_deps/rapids-cmake-src /path/to/cache/rapids-cmake
 
-3. Transfer the cache directory to the airgapped system.
+3. Transfer the directory specified in step 1 in `-DCPM_SOURCE_CACHE=` to the airgapped system.
 
 4. Build offline using the populated cache. Pass
    :cmake:variable:`FETCHCONTENT_SOURCE_DIR_RAPIDS-CMAKE` so that dependencies that use

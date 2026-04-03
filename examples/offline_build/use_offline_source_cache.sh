@@ -26,7 +26,7 @@
 # Example:
 #   ./use_offline_source_cache.sh /tmp/my_cpm_cache /tmp/offline-build
 
-set -e
+set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
