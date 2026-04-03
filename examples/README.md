@@ -67,6 +67,18 @@ Demonstrates the cmake/thirdparty/ organization pattern for managing dependencie
 
 Shows how RAPIDS projects organize third-party dependencies. This pattern scales from small projects to large ones (cuDF manages 15+ dependencies this way). Critical for maintainability as projects grow.
 
+### [offline-build](offline_build/)
+Demonstrates the CPM source cache workflow for building in airgapped or offline environments:
+- `CPM_SOURCE_CACHE` - Cache downloaded dependency sources for reuse and offline use
+- `CPM_USE_LOCAL_PACKAGES` - Prefer locally installed packages before falling back to the cache
+- `CPM_LOCAL_PACKAGES_ONLY` - Enforce strictly offline operation; error if any dependency is missing
+- `generate_offline_source_cache.sh` - Populate the CPM source cache on a networked machine
+- `use_offline_source_cache.sh` - Configure and build using only the pre-populated cache
+
+Shows how to prepare a CPM source cache on a machine with network access, then transfer it to an
+airgapped system and perform a fully offline build. The orchestrating `CMakeLists.txt` uses
+`add_custom_command` to drive the generate-then-build workflow as a single CMake build target.
+
 ### [pin-dependencies](pin-dependencies/)
 Demonstrates dependency pinning for reproducible builds:
 - `rapids_cpm_init(GENERATE_PINNED_VERSIONS)` - Generate pinned versions file

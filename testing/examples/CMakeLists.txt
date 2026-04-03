@@ -13,6 +13,8 @@ add_cmake_build_test(export-feature SOURCE_DIR
                      ${CMAKE_CURRENT_SOURCE_DIR}/../../examples/export-feature)
 add_cmake_build_test(find-generate-module SOURCE_DIR
                      ${CMAKE_CURRENT_SOURCE_DIR}/../../examples/find-generate-module)
+add_cmake_build_test(offline-build SOURCE_DIR
+                     ${CMAKE_CURRENT_SOURCE_DIR}/../../examples/offline_build NO_CPM_CACHE)
 add_cmake_build_test(pin-dependencies SOURCE_DIR
                      ${CMAKE_CURRENT_SOURCE_DIR}/../../examples/pin-dependencies NO_CPM_CACHE)
 add_cmake_build_test(project-bootstrap SOURCE_DIR
