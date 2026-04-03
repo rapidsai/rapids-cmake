@@ -46,6 +46,7 @@ fi
 
 echo "Configuring offline build using CPM source cache at: ${CACHE_DIR}"
 
+# Turning off `RAPIDS_LOGGER_HIDE_ALL_SPDLOG_SYMBOLS` is required for CI to not use spdlog from system
 cmake -S "${SCRIPT_DIR}/src" \
       -B "${BUILD_DIR}" \
       -DRAPIDS_LOGGER_HIDE_ALL_SPDLOG_SYMBOLS=OFF \
