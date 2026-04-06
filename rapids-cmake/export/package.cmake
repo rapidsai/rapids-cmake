@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -62,8 +62,12 @@ function(rapids_export_package type name export_set)
   cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
   if(type STREQUAL build)
-    if(DEFINED ${name}_DIR AND ${name}_DIR)
-      # Export out where we found the existing local config module
+    # Export out where we found the existing local config module
+    FetchContent_GetProperties(${name} SOURCE_DIR possible_src_dir)
+    if(EXISTS "${possible_src_dir}")
+      set(possible_dir "${possible_src_dir}")
+    elseif(DEFINED ${name}_DIR AND ${name}_DIR)
+
       set(possible_dir "${${name}_DIR}")
     endif()
   endif()
