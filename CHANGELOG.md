@@ -1,3 +1,24 @@
+# rapids-cmake 26.04.00 (8 Apr 2026)
+
+### 🚨 Breaking Changes
+* Update CCCL to 3.3.0 pre-release by @bdice in https://github.com/rapidsai/rapids-cmake/pull/981
+### 🐛 Bug Fixes
+* FINAL_CODEBLOCK can see targets that should be global by @robertmaynard in https://github.com/rapidsai/rapids-cmake/pull/993
+### 🚀 New Features
+* Add URL option to fetch packages from GitHub tarballs by @bdice in https://github.com/rapidsai/rapids-cmake/pull/968
+* CMake 3.30+ means `CMAKE_PROJECT_INCLUDE` can be a list by @robertmaynard in https://github.com/rapidsai/rapids-cmake/pull/984
+* Update cuco version to fetch the cuda fancy iterators by @PointKernel in https://github.com/rapidsai/rapids-cmake/pull/987
+### 🛠️ Improvements
+* Forward-merge release/26.02 into main by @bdice in https://github.com/rapidsai/rapids-cmake/pull/974
+* Drop Python 3.10 support by @gforsyth in https://github.com/rapidsai/rapids-cmake/pull/975
+* Use verify-hardcoded-version pre-commit hook by @KyleFromNVIDIA in https://github.com/rapidsai/rapids-cmake/pull/977
+* Don't hard-code branch names by @KyleFromNVIDIA in https://github.com/rapidsai/rapids-cmake/pull/978
+* Update CCCL to 3.2.1 pre-release by @bdice in https://github.com/rapidsai/rapids-cmake/pull/979
+* Add support for Python 3.14 by @gforsyth in https://github.com/rapidsai/rapids-cmake/pull/982
+
+
+**Full Changelog**: https://github.com/rapidsai/rapids-cmake/compare/v26.04.00a...release/26.04
+
 # rapids-cmake 26.02.00 (4 Feb 2026)
 
 ### 🚨 Breaking Changes
