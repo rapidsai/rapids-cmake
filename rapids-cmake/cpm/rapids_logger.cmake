@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2025-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -40,6 +40,19 @@ function(rapids_cpm_rapids_logger)
 
   include("${rapids-cmake-dir}/cpm/detail/generate_patch_command.cmake")
   rapids_cpm_generate_patch_command(rapids_logger ${version} patch_command build_patch_only)
+
+  # rapids-logger has BUILD_SHARED_LIBS as an option, so if rapids_cpm_find ends up cloning the repo
+  # rather than finding a preexisting build and it runs the CMakeLists.txt it will make
+  # BUILD_SHARED_LIBS a cache variable that propagates upward. That could potentially affect
+  # subsequent builds. To prevent this, we set BUILD_SHARED_LIBS to OFF before calling
+  # rapids_cpm_find unless the user has explicitly set BUILD_SHARED_LIBS then we will respect that
+  # and not override it, but if they haven't set it then we exploit CMP0077
+  # (https://cmake.org/cmake/help/latest/policy/CMP0077.html#policy:CMP0077) to ensure that
+  # rapids-logger's setting doesn't propagate upwards and affect other dependencies. We set it to ON
+  # because that's the default for rapids-logger.
+  if(NOT DEFINED BUILD_SHARED_LIBS)
+    set(BUILD_SHARED_LIBS ON)
+  endif()
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
   rapids_cpm_find(rapids_logger ${version} ${find_args} CPM_ARGS ${cpm_find_info}
