@@ -95,10 +95,18 @@ function(rapids_cpm_cccl)
   # causing cmake_parse_arguments to misparse the function call. Explicitly set it to OFF.
   set(CCCL_TOPLEVEL_PROJECT OFF)
 
+  # Prevent CPM from writing an empty redirect stub for CCCL to CMAKE_FIND_PACKAGE_REDIRECTS_DIR.
+  # The stub lacks CCCL targets and overwrites CCCL_DIR in the cache, breaking downstream consumers
+  # that resolve CCCL through build exports.
+  set(_rapids_cccl_prev_dont_update_module_path ${CPM_DONT_UPDATE_MODULE_PATH})
+  set(CPM_DONT_UPDATE_MODULE_PATH ON)
+
   include("${rapids-cmake-dir}/cpm/find.cmake")
   rapids_cpm_find(CCCL ${version} ${find_args} GLOBAL_TARGETS CCCL CCCL::CCCL CCCL::CUB
                                                               CCCL::libcudacxx CCCL::cudax
                   CPM_ARGS FIND_PACKAGE_ARGUMENTS EXACT ${cpm_find_info})
+
+  set(CPM_DONT_UPDATE_MODULE_PATH ${_rapids_cccl_prev_dont_update_module_path})
 
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
   rapids_cpm_display_patch_status(CCCL)

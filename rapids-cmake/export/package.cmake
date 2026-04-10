@@ -62,12 +62,8 @@ function(rapids_export_package type name export_set)
   cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
   if(type STREQUAL build)
-    # Export out where we found the existing local config module
-    FetchContent_GetProperties(${name} SOURCE_DIR possible_src_dir)
-    if(EXISTS "${possible_src_dir}")
-      set(possible_dir "${possible_src_dir}")
-    elseif(DEFINED ${name}_DIR AND ${name}_DIR)
-
+    if(DEFINED ${name}_DIR AND ${name}_DIR)
+      # Export out where we found the existing local config module
       set(possible_dir "${${name}_DIR}")
     endif()
   endif()
