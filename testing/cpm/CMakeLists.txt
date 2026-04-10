@@ -141,3 +141,4 @@ add_cmake_config_test(cpm_proprietary-url-no-ctk-parsing.cmake)
 
 add_cmake_config_test(cpm_rmm-export.cmake)
 add_cmake_config_test(cpm_rmm-simple.cmake)
+add_cmake_config_test(cpm_rmm-package-redirect.cmake NO_CPM_CACHE)
