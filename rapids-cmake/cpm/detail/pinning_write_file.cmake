@@ -272,14 +272,35 @@ function(rapids_cpm_pinning_add_json_entry package_name json_var)
   get_default_json(${package_name} json_data)
   get_override_json(${package_name} override_json_data)
 
-  # Determine if this package uses URL mode (url + url_hash) or git mode (git_url + git_tag) Check
-  # override first, then default
+  # Determine if this package uses URL mode (url + url_hash) or git mode (git_url + git_tag). The
+  # override can switch modes: if the override provides git fields, use git mode regardless of the
+  # default. If the override provides url fields, use url mode. Only fall back to the default if the
+  # override doesn't specify either mode.
   set(is_url_mode FALSE)
-  string(JSON url_value ERROR_VARIABLE no_url_override GET "${override_json_data}" url)
-  string(JSON url_hash_value ERROR_VARIABLE no_url_hash_override GET "${override_json_data}"
-         url_hash)
-  if(NOT no_url_override AND NOT no_url_hash_override)
-    set(is_url_mode TRUE)
+  if(override_json_data)
+    string(JSON value ERROR_VARIABLE no_git_url_override GET "${override_json_data}" git_url)
+    string(JSON value ERROR_VARIABLE no_git_tag_override GET "${override_json_data}" git_tag)
+    string(JSON url_value ERROR_VARIABLE no_url_override GET "${override_json_data}" url)
+    string(JSON url_hash_value ERROR_VARIABLE no_url_hash_override GET "${override_json_data}"
+           url_hash)
+    set(override_has_git FALSE)
+    set(override_has_url FALSE)
+    if(NOT no_git_url_override OR NOT no_git_tag_override)
+      set(override_has_git TRUE)
+    endif()
+    if(NOT no_url_override OR NOT no_url_hash_override)
+      set(override_has_url TRUE)
+    endif()
+    if(override_has_url AND NOT override_has_git)
+      set(is_url_mode TRUE)
+    elseif(NOT override_has_url AND NOT override_has_git)
+      # Override doesn't specify mode, fall back to default
+      string(JSON url_value ERROR_VARIABLE no_url GET "${json_data}" url)
+      string(JSON url_hash_value ERROR_VARIABLE no_url_hash GET "${json_data}" url_hash)
+      if(NOT no_url AND NOT no_url_hash)
+        set(is_url_mode TRUE)
+      endif()
+    endif()
   else()
     string(JSON url_value ERROR_VARIABLE no_url GET "${json_data}" url)
     string(JSON url_hash_value ERROR_VARIABLE no_url_hash GET "${json_data}" url_hash)
