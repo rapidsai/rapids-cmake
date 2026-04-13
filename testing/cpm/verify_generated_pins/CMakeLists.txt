@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2024-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2024-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -39,29 +39,54 @@ foreach(proj IN LISTS projects-to-verify)
   # Verify that each git_tag is now different.
   rapids_cpm_package_details_internal(${proj} ${proj}_version ${proj}_repository pin_${proj}_tag
                                       pin_${proj}_src_dir pin_${proj}_shallow ${proj}_exclude)
-  # 160 bits for SHA-1, 256 bits for SHA-256
-  string(LENGTH "${${proj}_tag}" tag_length)
-  if(pin_${proj}_tag STREQUAL ${proj}_tag
-     AND NOT (${proj}_tag MATCHES "^[0-9a-f]+$" AND (tag_length EQUAL 40 OR tag_length EQUAL 64)))
-    _get_json_data()
-    message(FATAL_ERROR "pinned ${proj} tag (${pin_${proj}_tag}) should differ compared to baseline ${${proj}_tag}\npinned_versions.json:\n${pinned_versions}\nversions.json:\n${default_versions}"
-    )
-  elseif(NOT pin_${proj}_tag STREQUAL ${proj}_tag
-         AND (${proj}_tag MATCHES "^[0-9a-f]+$" AND (tag_length EQUAL 40 OR tag_length EQUAL 64)))
-    _get_json_data()
-    message(FATAL_ERROR "pinned ${proj} tag (${pin_${proj}_tag}) should be the same as baseline ${${proj}_tag}\npinned_versions.json:\n${pinned_versions}\nversions.json:\n${default_versions}"
-    )
+
+  # Determine if this is a URL-mode package (tag is empty, url_hash is set)
+  set(is_url_mode_${proj} FALSE)
+  if("${${proj}_tag}" STREQUAL "" AND "${pin_${proj}_tag}" STREQUAL "")
+    set(is_url_mode_${proj} TRUE)
+  endif()
+
+  if(is_url_mode_${proj})
+    # For URL-mode packages, verify that the pinned override has url and url_hash fields
+    get_override_json(${proj} pinned_json_data)
+    if(NOT pinned_json_data)
+      message(FATAL_ERROR "${proj} should exist in pinned_versions.json")
+    endif()
+    string(JSON url_val ERROR_VARIABLE no_url GET "${pinned_json_data}" url)
+    string(JSON hash_val ERROR_VARIABLE no_hash GET "${pinned_json_data}" url_hash)
+    if(no_url)
+      message(FATAL_ERROR "Pinned ${proj} entry should have 'url' field.\nPinned JSON: ${pinned_json_data}"
+      )
+    endif()
+    if(no_hash)
+      message(FATAL_ERROR "Pinned ${proj} entry should have 'url_hash' field.\nPinned JSON: ${pinned_json_data}"
+      )
+    endif()
+  else()
+    # 160 bits for SHA-1, 256 bits for SHA-256
+    string(LENGTH "${${proj}_tag}" tag_length)
+    if(pin_${proj}_tag STREQUAL ${proj}_tag
+       AND NOT (${proj}_tag MATCHES "^[0-9a-f]+$" AND (tag_length EQUAL 40 OR tag_length EQUAL 64)))
+      _get_json_data()
+      message(FATAL_ERROR "pinned ${proj} tag (${pin_${proj}_tag}) should differ compared to baseline ${${proj}_tag}\npinned_versions.json:\n${pinned_versions}\nversions.json:\n${default_versions}"
+      )
+    elseif(NOT pin_${proj}_tag STREQUAL ${proj}_tag
+           AND (${proj}_tag MATCHES "^[0-9a-f]+$" AND (tag_length EQUAL 40 OR tag_length EQUAL 64)))
+      _get_json_data()
+      message(FATAL_ERROR "pinned ${proj} tag (${pin_${proj}_tag}) should be the same as baseline ${${proj}_tag}\npinned_versions.json:\n${pinned_versions}\nversions.json:\n${default_versions}"
+      )
+    endif()
+
+    # git_shallow should be false so that clones by SHA1 work
+    if(pin_${proj}_shallow)
+      _get_json_data()
+      message(FATAL_ERROR "pin_${proj}_shallow is expected to be false, but got ${pin_${proj}_shallow}\npinned_versions.json:\n${pinned_versions}\nversions.json:\n${default_versions}"
+      )
+    endif()
   endif()
 
   if(proj IN_LIST projects-with-subdirs AND NOT pin_${proj}_src_dir)
     message(FATAL_ERROR "pinned ${proj} should have a `source_subdir` entry")
-  endif()
-
-  # Everything should have shallow marked as false so that clones by SHA1 work
-  if(pin_${proj}_shallow)
-    _get_json_data()
-    message(FATAL_ERROR "pin_${proj}_shallow is expected to be false, but got ${pin_${proj}_shallow}\npinned_versions.json:\n${pinned_versions}\nversions.json:\n${default_versions}"
-    )
   endif()
 endforeach()
 
