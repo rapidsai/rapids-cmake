@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2022-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2022-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -22,6 +22,7 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override.json
     "nvcomp": {
       "version": "224",
       "git_url": "https://github.com/NVIDIA/nvcomp.git",
+      "git_tag": "v2.2.0"
     }
   }
 }

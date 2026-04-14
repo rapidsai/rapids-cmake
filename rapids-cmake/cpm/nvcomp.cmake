@@ -67,6 +67,11 @@ function(rapids_cpm_nvcomp)
   set(multi_value)
   cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
+  if(NOT _RAPIDS_USE_PROPRIETARY_BINARY)
+    message(WARNING "rapids_cpm_nvcomp called without USE_PROPRIETARY_BINARY ON. nvcomp can only be found if already installed on the system."
+    )
+  endif()
+
   include("${rapids-cmake-dir}/cpm/detail/package_info.cmake")
   rapids_cpm_package_info(nvcomp ${_RAPIDS_UNPARSED_ARGUMENTS} VERSION_VAR version FIND_VAR
                           find_args CPM_VAR cpm_find_info TO_INSTALL_VAR to_install)
