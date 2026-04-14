@@ -26,7 +26,7 @@ Result Variables
 
 
 #]=======================================================================]
-# cmake-lint: disable=R0915
+# cmake-lint: disable=R0912,R0915
 function(rapids_cpm_package_info package_name)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.rapids_cpm_package_info")
 
@@ -60,12 +60,15 @@ function(rapids_cpm_package_info package_name)
       if(NOT _RAPIDS_FOR_FETCH_CONTENT)
         list(APPEND _rapids_cpm_content "GIT_SHALLOW" "${_rapids_shallow}")
       endif()
-    else()
-      # When _rapids_tag is empty, we're using URL-based fetching (tarball) instead of git
+    elseif(_rapids_url)
+      # When _rapids_tag is empty but _rapids_url is set, we're using URL-based fetching (tarball)
       set(_rapids_cpm_content "URL" "${_rapids_url}")
       if(_rapids_url_hash)
         list(APPEND _rapids_cpm_content "URL_HASH" "${_rapids_url_hash}")
       endif()
+    else()
+      # No fetch source specified (e.g. proprietary-binary-only packages)
+      set(_rapids_cpm_content)
     endif()
 
     if(NOT _RAPIDS_FOR_FETCH_CONTENT)

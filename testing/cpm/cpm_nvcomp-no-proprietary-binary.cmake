@@ -9,4 +9,4 @@ include(${rapids-cmake-dir}/cpm/nvcomp.cmake)
 
 rapids_cpm_init()
 
-rapids_cpm_nvcomp(USE_PROPRIETARY_BINARY OFF)
+rapids_cpm_nvcomp()
