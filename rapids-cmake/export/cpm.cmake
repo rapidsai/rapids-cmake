@@ -62,7 +62,7 @@ function(rapids_export_cpm type name export_set)
     FetchContent_GetProperties(${name} BINARY_DIR possible_build_dirs)
     list(APPEND possible_build_dirs "${${name}_BINARY_DIR}")
 
-    set(possible_build_config_files "${lowercase_name}-config.cmake" "/${name}Config.cmake")
+    set(possible_build_config_files "${lowercase_name}-config.cmake" "${name}Config.cmake")
     set(build_dir_config_found FALSE)
     foreach(bdir IN LISTS possible_build_dirs)
       foreach(config_file IN LISTS possible_build_config_files)
@@ -81,7 +81,7 @@ function(rapids_export_cpm type name export_set)
       # Only when we `<package>_DIR` do we want to see if we can use the FetchContent info. This
       # maintains compatibility with projects where we need to fall-back to the build directory
       set(possible_src_dir "${${name}_DIR}")
-      if(DEFINED ${name}_DIR AND ${name}_DIR)
+      if(${name}_DIR)
         set(possible_dir "${${name}_DIR}")
         if(possible_dir STREQUAL CMAKE_FIND_PACKAGE_REDIRECTS_DIR)
           FetchContent_GetProperties(${name} SOURCE_DIR possible_dir)
