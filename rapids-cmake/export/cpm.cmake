@@ -49,6 +49,7 @@ function(rapids_export_cpm type name export_set)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.export.cpm")
 
   string(TOLOWER ${type} type)
+  string(TOLOWER ${name} lowercase_name)
 
   set(options "")
   set(one_value EXPORT_SET)
@@ -56,12 +57,42 @@ function(rapids_export_cpm type name export_set)
   cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
   if(type STREQUAL build)
-    if(DEFINED ${name}_DIR AND ${name}_DIR)
-      # Export out where we found the existing local config module
-      set(possible_dir "${${name}_DIR}")
+
+    # Check if we have any of the support build directory config files first
+    FetchContent_GetProperties(${name} BINARY_DIR possible_build_dirs)
+    list(APPEND possible_build_dirs "${${name}_BINARY_DIR}")
+
+    set(possible_build_config_files "${lowercase_name}-config.cmake" "${name}Config.cmake")
+    set(build_dir_config_found FALSE)
+    foreach(bdir IN LISTS possible_build_dirs)
+      foreach(config_file IN LISTS possible_build_config_files)
+        if(EXISTS "${bdir}/${config_file}")
+          set(build_dir_config_found TRUE)
+          set(build_dir_config "${bdir}")
+          break()
+        endif()
+      endforeach()
+      if(build_dir_config_found)
+        break()
+      endif()
+    endforeach()
+
+    if(NOT build_dir_config_found)
+      # Only when we `<package>_DIR` do we want to see if we can use the FetchContent info. This
+      # maintains compatibility with projects where we need to fall-back to the build directory
+      set(possible_src_dir "${${name}_DIR}")
+      if(${name}_DIR)
+        set(possible_dir "${${name}_DIR}")
+        if(possible_dir STREQUAL CMAKE_FIND_PACKAGE_REDIRECTS_DIR)
+          FetchContent_GetProperties(${name} SOURCE_DIR possible_dir)
+        endif()
+      else()
+        # Currently required to keep the DIR hints consistent when no src or build dir exists
+        # (export_cpm-build-possible-dir)
+        set(possible_dir "${${name}_BINARY_DIR}")
+      endif()
     else()
-      # Export out the build-dir in case it has build directory find-package support
-      set(possible_dir "${${name}_BINARY_DIR}")
+      set(possible_dir "${build_dir_config}")
     endif()
   endif()
 
