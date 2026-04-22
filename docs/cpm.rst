@@ -279,8 +279,10 @@ Project Object Fields
 
 Each ``project`` object must contain the following fields so that
 rapids-cmake can properly use CPM to find or download the project
-as needed. Each project must define ``version`` and either
-(``git_url`` + ``git_tag``) or (``url`` + ``url_hash``).
+as needed. Each project must define ``version`` and one of the following:
+(``git_url`` + ``git_tag``), (``url`` + ``url_hash``), or ``proprietary_binary``.
+When only ``proprietary_binary`` is provided, ``git_url``/``git_tag`` and
+``url``/``url_hash`` may be omitted entirely.
 
 ``version``
 
@@ -294,10 +296,12 @@ as needed. Each project must define ``version`` and either
 
 ``git_url``
 
-    A required string representing the git url to be used when cloning the
+    A string representing the git url to be used when cloning the
     project locally by the :cmake:command:`rapids_cpm_find` when a locally
-    installed copy of the project can't be found. When ``git_url`` is provided,
-    ``git_tag`` must also be supplied and ``url``/``url_hash`` must not be present.
+    installed copy of the project can't be found. Required unless
+    ``proprietary_binary`` or ``url``/``url_hash`` is provided. When ``git_url``
+    is provided, ``git_tag`` must also be supplied and ``url``/``url_hash``
+    must not be present.
 
     Supports the following placeholders:
         - ``${rapids-cmake-version}`` will be evaluated to 'major.minor' of the current rapids-cmake cal-ver value.
@@ -306,9 +310,10 @@ as needed. Each project must define ``version`` and either
 
 ``git_tag``
 
-    A required string representing the git tag to be used when cloning the
+    A string representing the git tag to be used when cloning the
     project locally by the :cmake:command:`rapids_cpm_find` when a locally
-    installed copy of the project can't be found.
+    installed copy of the project can't be found. Required when ``git_url``
+    is provided.
 
     Supports the following placeholders:
         - ``${rapids-cmake-checkout-tag}`` will be evaluated to ``main`` when using rapids-cmake ``main`` branch, or ``release/<major>.<minor>`` when not on the 'main' branch, using the rapids-cmake CalVer values.
@@ -318,9 +323,10 @@ as needed. Each project must define ``version`` and either
 
 ``url``
 
-    A required string representing a URL to a source tarball.
-    When ``url`` is provided, ``url_hash`` must also be supplied and
-    ``git_url``/``git_tag`` must not be present.
+    A string representing a URL to a source tarball. Required unless
+    ``proprietary_binary`` or ``git_url``/``git_tag`` is provided. When ``url``
+    is provided, ``url_hash`` must also be supplied and ``git_url``/``git_tag``
+    must not be present.
 
     Supports the following placeholders:
         - ``${rapids-cmake-version}`` will be evaluated to 'major.minor' of the current rapids-cmake cal-ver value.
@@ -431,14 +437,15 @@ as needed. Each project must define ``version`` and either
 
 ``proprietary_binary``
 
-    An optional dictionary of cpu architecture and operating system keys to url values that represents a download for a pre-built proprietary version of the library. This creates a new entry in the search
-    logic for a project:
+    An optional dictionary of cpu architecture and operating system keys to url values that represents a download for a pre-built proprietary version of the library. When ``proprietary_binary`` is
+    present, ``git_url``/``git_tag`` and ``url``/``url_hash`` may be omitted, making the proprietary
+    binary the sole fetch mechanism. This creates a new entry in the search logic for a project:
 
         - Search for a local version matching the ``version`` key
             - disabled by ``always_download``
         - Download proprietary version if a valid OS + CPU Arch exists
             - disabled by ``USE_PROPRIETARY_BLOB`` being off
-        - Fallback to using git url and tag
+        - Fallback to using ``git_url``/``git_tag`` or ``url``/``url_hash`` if provided
 
     To determine the correct key, CMake will query for a key that matches the lower case value of `<arch>-<os>` where `arch` maps to
     :cmake:variable:`CMAKE_SYSTEM_PROCESSOR <cmake:variable:CMAKE_SYSTEM_PROCESSOR>` and `os` maps to :cmake:variable:`CMAKE_SYSTEM_NAME <cmake:variable:CMAKE_SYSTEM_NAME>`.
