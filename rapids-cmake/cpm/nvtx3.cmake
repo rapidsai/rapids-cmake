@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2024-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2024-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -46,12 +46,17 @@ function(rapids_cpm_nvtx3)
   rapids_cpm_package_info(nvtx3 ${ARGN} VERSION_VAR version FIND_VAR find_args CPM_VAR
                           cpm_find_info TO_INSTALL_VAR to_install)
 
+  # nvtx3's NVTX3_INSTALL option gates both install rules AND build-tree config generation (export
+  # sets, config files). We need it ON whenever either BUILD_EXPORT_SET or INSTALL_EXPORT_SET is
+  # provided.
+  set(nvtx3_install OFF)
+  if(_RAPIDS_BUILD_EXPORT_SET OR to_install)
+    set(nvtx3_install ON)
+  endif()
+
   include("${rapids-cmake-dir}/cpm/find.cmake")
-  rapids_cpm_find(nvtx3 ${version} ${find_args}
-                  GLOBAL_TARGETS nvtx3-c nvtx3-cpp
-                  CPM_ARGS ${cpm_find_info}
-                  EXCLUDE_FROM_ALL ${exclude}
-                  OPTIONS "NVTX3_INSTALL ON")
+  rapids_cpm_find(nvtx3 ${version} ${find_args} GLOBAL_TARGETS nvtx3-c nvtx3-cpp
+                  CPM_ARGS ${cpm_find_info} OPTIONS "NVTX3_INSTALL ${nvtx3_install}")
 
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
   rapids_cpm_display_patch_status(nvtx3)
