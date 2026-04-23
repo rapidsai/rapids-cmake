@@ -2,14 +2,13 @@
   "packages": {
     "benchmark": {
       "version": "1.9.5",
-      "git_url": "https://github.com/google/benchmark.git",
-      "git_tag": "192ef10025eb2c4cdd392bc502f0c852196baa48"
+      "url": "https://github.com/google/benchmark/archive/192ef10025eb2c4cdd392bc502f0c852196baa48.tar.gz",
+      "url_hash": "SHA256=f82705a2726d8f6cdcda274b841f6314dbfc6f731cdda06c946f310ec1cc3ad9"
     },
     "bs_thread_pool": {
       "version": "4.1.0",
-      "git_shallow": false,
-      "git_url": "https://github.com/bshoshany/thread-pool.git",
-      "git_tag": "097aa718f25d44315cadb80b407144ad455ee4f9"
+      "url": "https://github.com/bshoshany/thread-pool/archive/097aa718f25d44315cadb80b407144ad455ee4f9.tar.gz",
+      "url_hash": "SHA256=8e54280b4d9af3e4d2fd3dfa3f8d1198fc1c3a572d6f22c5eaf1abe38f2db0a8"
     },
     "CCCL": {
       "version": "3.4.0",
@@ -18,27 +17,24 @@
     },
     "cuco": {
       "version": "0.0.1",
-      "git_shallow": false,
       "always_download": true,
-      "git_url": "https://github.com/NVIDIA/cuCollections.git",
-      "git_tag": "f517bbb1277753b1852dfd388993383e401eaa38"
+      "url": "https://github.com/NVIDIA/cuCollections/archive/f517bbb1277753b1852dfd388993383e401eaa38.tar.gz",
+      "url_hash": "SHA256=d17e2f6d58cfb2cd473efcbd741c633e7607717102cedc08173a4a69bb2a8ba9"
     },
     "rapids_logger": {
       "version": "0.2.3",
-      "git_url": "https://github.com/rapidsai/rapids-logger.git",
-      "git_tag": "4c72b598f99c8aa06af49468b3fc82f3931c6bf6"
+      "url": "https://github.com/rapidsai/rapids-logger/archive/4c72b598f99c8aa06af49468b3fc82f3931c6bf6.tar.gz",
+      "url_hash": "SHA256=4e7cbbde62ba8517dabd1a327b45955d50db2dfa1240d0124662071ce8f1afc9"
     },
     "GTest": {
       "version": "1.16.0",
-      "git_shallow": false,
-      "git_url": "https://github.com/google/googletest.git",
-      "git_tag": "6910c9d9165801d8827d628cb72eb7ea9dd538c5"
+      "url": "https://github.com/google/googletest/archive/6910c9d9165801d8827d628cb72eb7ea9dd538c5.tar.gz",
+      "url_hash": "SHA256=bde221be7f3841fcbc3971665d77d717116394a42155d988ee6407dfc39f1f09"
     },
     "nvbench": {
       "version": "0.0",
-      "git_shallow": false,
-      "git_url": "https://github.com/NVIDIA/nvbench.git",
-      "git_tag": "b88a45f4170af4e907e69af22a55af67859d3b49"
+      "url": "https://github.com/NVIDIA/nvbench/archive/b88a45f4170af4e907e69af22a55af67859d3b49.tar.gz",
+      "url_hash": "SHA256=9e51887fed9f5b09b2690e7f7ba20a810c3af1478fef3115652644a592fdcb7e"
     },
     "nvcomp": {
       "version": "5.2.0.10",
@@ -53,9 +49,8 @@
     },
     "nvtx3": {
       "version": "3.2.0",
-      "git_shallow": false,
-      "git_url": "https://github.com/NVIDIA/NVTX.git",
-      "git_tag": "69c9949150ac1c310758a304082228a36d5e4758",
+      "url": "https://github.com/NVIDIA/NVTX/archive/69c9949150ac1c310758a304082228a36d5e4758.tar.gz",
+      "url_hash": "SHA256=8fdf07da6d083c5409b55c9d8f491eddf39ed7bb37c2b29ff71af3f386ae670c",
       "source_subdir": "c"
     },
     "rmm": {

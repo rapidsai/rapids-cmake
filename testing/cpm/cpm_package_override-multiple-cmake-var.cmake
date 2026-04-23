@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2024-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2024-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -13,10 +13,12 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override1.json
 {
   "packages": {
     "nvbench": {
+      "git_url": "https://github.com/NVIDIA/nvbench.git",
       "git_tag": "my_tag"
     },
     "gtest": {
       "version": "2.99",
+      "git_url": "https://github.com/google/googletest.git",
       "git_tag": "v${version}"
     }
   }
@@ -32,6 +34,7 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override2.json
     },
     "GTest": {
       "version": "3.99",
+      "git_url": "https://github.com/google/googletest.git",
       "git_tag": "v${version}"
     }
   }

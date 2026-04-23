@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -24,10 +24,12 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override1.json
 {
   "packages": {
     "nvbench": {
+      "git_url": "https://github.com/NVIDIA/nvbench.git",
       "git_tag": "my_tag"
     },
     "GTest": {
       "version": "2.99",
+      "git_url": "https://github.com/google/googletest.git",
       "git_tag": "v${version}"
     }
   }
@@ -43,6 +45,7 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/override2.json
     },
     "GTest": {
       "version": "3.99",
+      "git_url": "https://github.com/google/googletest.git",
       "git_tag": "v${version}"
     }
   }
@@ -57,8 +60,9 @@ rapids_cpm_package_details_internal(nvbench version repository tag src_subdir sh
 if(NOT version STREQUAL nvbench_version)
   message(FATAL_ERROR "default version field was removed.")
 endif()
-if(NOT repository STREQUAL nvbench_repository)
-  message(FATAL_ERROR "default repository field was removed.")
+if(NOT repository STREQUAL "https://github.com/NVIDIA/nvbench.git")
+  message(FATAL_ERROR "custom git_url field was ignored. ${repository} found instead of expected git url"
+  )
 endif()
 if(NOT tag STREQUAL "my_tag")
   message(FATAL_ERROR "custom git_tag field was ignored. ${tag} found instead of my_url")
