@@ -11,6 +11,7 @@ rapids_cpm_package_info
 -----------------------------
 
   rapids_cpm_package_info(<package_name> args....
+                           [EXCLUDE_FROM_ALL]
                            VERSION_VAR <output_var_name>
                            FIND_VAR <output_var_name>
                            CPM_VAR <output_var_name>
@@ -24,13 +25,14 @@ Result Variables
   :cmake:variable:`_RAPIDS_BUILD_EXPORT_SET` will contain the value of the BUILD_EXPORT entry if it exists.
   :cmake:variable:`_RAPIDS_INSTALL_EXPORT_SET` will contain the value of the INSTALL_EXPORT entry if it exists.
 
+  :cmake:variable:`EXCLUDE_FROM_ALL` if set, overrides the JSON-default value to exclude the package from the default build.
 
 #]=======================================================================]
 # cmake-lint: disable=R0912,R0915
 function(rapids_cpm_package_info package_name)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cpm.rapids_cpm_package_info")
 
-  set(options FOR_FETCH_CONTENT)
+  set(options FOR_FETCH_CONTENT EXCLUDE_FROM_ALL)
   set(one_value VERSION_VAR FIND_VAR CPM_VAR TO_INSTALL_VAR BUILD_EXPORT_SET INSTALL_EXPORT_SET)
   set(multi_value)
   cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
@@ -39,6 +41,10 @@ function(rapids_cpm_package_info package_name)
   include("${rapids-cmake-dir}/cpm/detail/package_details.cmake")
   rapids_cpm_package_details_internal(${package_name} _rapids_version _rapids_url _rapids_tag
                                       _rapids_src_subdir _rapids_shallow _rapids_exclude_from_all)
+
+  if(_RAPIDS_EXCLUDE_FROM_ALL)
+    set(_rapids_exclude_from_all ON)
+  endif()
 
   # Compute all the patch related details
   if(_RAPIDS_CPM_VAR OR _RAPIDS_FIND_VAR)

@@ -22,6 +22,7 @@ across all RAPIDS projects.
 
   rapids_cpm_nvtx3( [BUILD_EXPORT_SET <export-name>]
                     [INSTALL_EXPORT_SET <export-name>]
+                    [EXCLUDE_FROM_ALL]
                     [<CPM_ARGS> ...])
 
 .. |PKG_NAME| replace:: nvtx3

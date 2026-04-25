@@ -28,6 +28,7 @@ file will automatically call `thrust_create_target(CCCL::Thrust FROM_OPTIONS)`.
 
   rapids_cpm_cccl( [BUILD_EXPORT_SET <export-name>]
                    [INSTALL_EXPORT_SET <export-name>]
+                   [EXCLUDE_FROM_ALL]
                    [ENABLE_UNSTABLE]
                    [<CPM_ARGS> ...])
 

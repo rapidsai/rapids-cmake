@@ -78,6 +78,7 @@ add_cmake_config_test(cpm_package_override-url-to-git.cmake)
 add_cmake_config_test(cpm_package_override-git-to-url.cmake)
 
 add_cmake_config_test(cpm_package_info-url-mode.cmake)
+add_cmake_config_test(cpm_package_info-exclude-from-all.cmake)
 
 add_cmake_config_test(cpm_generate_patch_command-invalid.cmake)
 add_cmake_config_test(cpm_generate_patch_command-override-case-insensitive.cmake)
