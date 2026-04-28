@@ -338,9 +338,9 @@ function(rapids_cpm_pinning_add_json_entry package_name json_var)
 
   set(override_exclusion_list "")
   set(json_exclusion_list "")
-  # patch and proprietary_binary can't propagate if an override exists
+  # patch can't propagate if an override exists
   if(override_json_data)
-    list(APPEND json_exclusion_list "patch" "proprietary_binary")
+    list(APPEND json_exclusion_list "patch")
   endif()
 
   # Prevent mixing URL mode and git mode fields
@@ -413,8 +413,8 @@ function(rapids_cpm_pinning_write_file)
     # Only add packages that have a src tree, that way we exclude packages that have been found
     # locally via `CPMFindPackage`
     if(NOT DEFINED CPM_PACKAGE_${package}_SOURCE_DIR)
-      # check to see if we have an rapids_cmake json entry, this catches all packages like nvcomp
-      # that don't have a source tree.
+      # check to see if we have a rapids_cmake json entry for packages that don't have a source
+      # tree.
       include("${rapids-cmake-dir}/cpm/detail/get_default_json.cmake")
       include("${rapids-cmake-dir}/cpm/detail/get_override_json.cmake")
       get_default_json(${package} json_data)

@@ -73,7 +73,7 @@ function(rapids_cpm_package_info package_name)
         list(APPEND _rapids_cpm_content "URL_HASH" "${_rapids_url_hash}")
       endif()
     else()
-      # No fetch source specified (e.g. proprietary-binary-only packages)
+      # No fetch source specified; leave _rapids_cpm_content empty
       set(_rapids_cpm_content)
     endif()
 

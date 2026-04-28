@@ -120,28 +120,12 @@ add_cmake_config_test(cpm_nvbench-already-found-fmt.cmake SERIAL)
 add_cmake_build_test(cpm_nvbench-conda.cmake SERIAL)
 add_cmake_config_test(cpm_nvbench-explicit-static.cmake SERIAL)
 
-add_cmake_config_test(cpm_nvcomp-export.cmake)
-add_cmake_config_test(cpm_nvcomp-no-proprietary-binary.cmake SHOULD_FAIL
-                      "rapids_cpm_nvcomp called without USE_PROPRIETARY_BINARY ON")
-add_cmake_config_test(cpm_nvcomp-proprietary-off.cmake SHOULD_FAIL
-                      "rapids_cpm_nvcomp called without USE_PROPRIETARY_BINARY ON")
-add_cmake_config_test(cpm_nvcomp-proprietary-on.cmake)
-add_cmake_config_test(cpm_nvcomp-simple.cmake)
-add_cmake_config_test(cpm_nvcomp-always-download-proprietary_binary.cmake SERIAL)
-add_cmake_config_test(cpm_nvcomp-override-clears-proprietary_binary.cmake SERIAL)
-add_cmake_build_test(cpm_nvcomp-proprietary_binary-lib-location.cmake SERIAL NO_CPM_CACHE)
-add_cmake_build_test(cpm_nvcomp-proprietary_binary-lib-location-nested.cmake SERIAL NO_CPM_CACHE)
-
 add_cmake_build_test(cpm_nvtx-build-config-works.cmake)
 add_cmake_build_test(cpm_nvtx-install-config-works.cmake)
 add_cmake_config_test(cpm_nvtx-export.cmake)
 add_cmake_config_test(cpm_nvtx-simple.cmake)
 add_cmake_build_test(cpm_nvtx-build-config-subdir)
 add_cmake_build_test(cpm_nvtx-install-config-subdir)
-
-add_cmake_config_test(cpm_proprietary-url-ctk-version-find-ctk.cmake)
-add_cmake_config_test(cpm_proprietary-url-ctk-version.cmake)
-add_cmake_config_test(cpm_proprietary-url-no-ctk-parsing.cmake)
 
 add_cmake_config_test(cpm_rmm-export.cmake)
 add_cmake_config_test(cpm_rmm-simple.cmake)

@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -16,7 +16,6 @@ include(${rapids-cmake-dir}/cpm/gbench.cmake)
 include(${rapids-cmake-dir}/cpm/gtest.cmake)
 include(${rapids-cmake-dir}/cpm/rapids_logger.cmake)
 include(${rapids-cmake-dir}/cpm/nvbench.cmake)
-include(${rapids-cmake-dir}/cpm/nvcomp.cmake)
 include(${rapids-cmake-dir}/cpm/nvtx3.cmake)
 include(${rapids-cmake-dir}/cpm/rmm.cmake)
 
@@ -32,10 +31,6 @@ rapids_cpm_rapids_logger(DOWNLOAD_ONLY ON)
 rapids_cpm_nvbench(DOWNLOAD_ONLY ON)
 rapids_cpm_nvtx3(DOWNLOAD_ONLY ON)
 rapids_cpm_rmm(DOWNLOAD_ONLY ON)
-
-# Download all binary packages
-set(CPM_DOWNLOAD_ALL "OFF")
-rapids_cpm_nvcomp(USE_PROPRIETARY_BINARY ON DOWNLOAD_ONLY ON)
 
 # Print out all the packages in the cache
 get_cmake_property(cpm_packages CACHE_VARIABLES)
