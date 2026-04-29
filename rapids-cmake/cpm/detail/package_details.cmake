@@ -149,17 +149,10 @@ function(rapids_cpm_package_details_internal package_name version_var url_var ta
       set(has_url_mode TRUE)
     endif()
 
-    # Check if a proprietary_binary entry exists, which allows omitting git/url fetch details
-    rapids_cpm_json_get_value(proprietary_binary)
-    set(has_proprietary_binary FALSE)
-    if(proprietary_binary)
-      set(has_proprietary_binary TRUE)
-    endif()
-
     if(has_git_mode AND has_url_mode)
       message(FATAL_ERROR "rapids_cmake can't parse '${package_name}' json entry, it has both git_url/git_tag and url/url_hash. Only one mode is allowed."
       )
-    elseif(NOT has_git_mode AND NOT has_url_mode AND NOT has_proprietary_binary)
+    elseif(NOT has_git_mode AND NOT has_url_mode)
       message(FATAL_ERROR "rapids_cmake can't parse '${package_name}' json entry, it must have either (git_url and git_tag) or (url and url_hash)"
       )
     endif()
@@ -216,7 +209,7 @@ function(rapids_cpm_package_details_internal package_name version_var url_var ta
 
   # Set the output variables based on the active fetch mode. Git mode sets url_var and tag_var to
   # their git equivalents. URL mode sets url_var and clears tag_var, propagating _rapids_url_hash.
-  # Proprietary-binary-only mode sets both url_var and tag_var to empty.
+  # (Both url_var and tag_var will be empty if neither git nor url mode is active.)
   set(${version_var} ${version} PARENT_SCOPE)
   if(has_url_mode)
     cmake_language(EVAL CODE "set(url ${url})")

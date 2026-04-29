@@ -8,5 +8,12 @@
   Installation of |PKG_NAME| will occur if an INSTALL_EXPORT_SET is provided, and |PKG_NAME|
   is added to the project via :cmake:command:`add_subdirectory <cmake:command:add_subdirectory>` by CPM.
 
+``EXCLUDE_FROM_ALL``
+  When provided, marks the package as excluded from the ``install()`` target.
+  This overrides the default value from the versions.json configuration.
+  When ``EXCLUDE_FROM_ALL`` is specified alongside ``INSTALL_EXPORT_SET``,
+  the package will not be installed.
+
+
 ``CPM_ARGS``
   Any arguments after `CPM_ARGS` will be forwarded to the underlying |PKG_NAME| :cmake:command:`CPMFindPackage`()` call

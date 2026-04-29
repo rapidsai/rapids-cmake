@@ -40,17 +40,6 @@
       "git_url": "https://github.com/NVIDIA/nvbench.git",
       "git_tag": "b88a45f4170af4e907e69af22a55af67859d3b49"
     },
-    "nvcomp": {
-      "version": "5.2.0.10",
-      "proprietary_binary_cuda_version_mapping": {
-        "12": "12",
-        "13": "13"
-      },
-      "proprietary_binary": {
-        "x86_64-linux": "https://developer.download.nvidia.com/compute/nvcomp/redist/nvcomp/linux-x86_64/nvcomp-linux-x86_64-${version}_cuda${cuda-toolkit-version-mapping}-archive.tar.xz",
-        "aarch64-linux": "https://developer.download.nvidia.com/compute/nvcomp/redist/nvcomp/linux-sbsa/nvcomp-linux-sbsa-${version}_cuda${cuda-toolkit-version-mapping}-archive.tar.xz"
-      }
-    },
     "nvtx3": {
       "version": "3.2.0",
       "git_shallow": false,

@@ -279,7 +279,7 @@ Project Object Fields
 
 Each ``project`` object must contain the following fields so that
 rapids-cmake can properly use CPM to find or download the project
-as needed. Each project must define ``version`` and either
+as needed. Each project must define ``version`` and one of the following:
 (``git_url`` + ``git_tag``) or (``url`` + ``url_hash``).
 
 ``version``
@@ -294,10 +294,12 @@ as needed. Each project must define ``version`` and either
 
 ``git_url``
 
-    A required string representing the git url to be used when cloning the
+    A string representing the git url to be used when cloning the
     project locally by the :cmake:command:`rapids_cpm_find` when a locally
-    installed copy of the project can't be found. When ``git_url`` is provided,
-    ``git_tag`` must also be supplied and ``url``/``url_hash`` must not be present.
+    installed copy of the project can't be found. Required unless
+    ``url``/``url_hash`` is provided. When ``git_url``
+    is provided, ``git_tag`` must also be supplied and ``url``/``url_hash``
+    must not be present.
 
     Supports the following placeholders:
         - ``${rapids-cmake-version}`` will be evaluated to 'major.minor' of the current rapids-cmake cal-ver value.
@@ -306,9 +308,10 @@ as needed. Each project must define ``version`` and either
 
 ``git_tag``
 
-    A required string representing the git tag to be used when cloning the
+    A string representing the git tag to be used when cloning the
     project locally by the :cmake:command:`rapids_cpm_find` when a locally
-    installed copy of the project can't be found.
+    installed copy of the project can't be found. Required when ``git_url``
+    is provided.
 
     Supports the following placeholders:
         - ``${rapids-cmake-checkout-tag}`` will be evaluated to ``main`` when using rapids-cmake ``main`` branch, or ``release/<major>.<minor>`` when not on the 'main' branch, using the rapids-cmake CalVer values.
@@ -318,9 +321,10 @@ as needed. Each project must define ``version`` and either
 
 ``url``
 
-    A required string representing a URL to a source tarball.
-    When ``url`` is provided, ``url_hash`` must also be supplied and
-    ``git_url``/``git_tag`` must not be present.
+    A string representing a URL to a source tarball. Required unless
+    ``git_url``/``git_tag`` is provided. When ``url``
+    is provided, ``url_hash`` must also be supplied and ``git_url``/``git_tag``
+    must not be present.
 
     Supports the following placeholders:
         - ``${rapids-cmake-version}`` will be evaluated to 'major.minor' of the current rapids-cmake cal-ver value.
@@ -374,7 +378,7 @@ as needed. Each project must define ``version`` and either
     when it is built from source.
 
     If this field exists in the default package, the value will be ignored when an override file
-    entry exists for the package. This ensures that patches only git url or `proprietary_binary` entry in the override will be used.
+    entry exists for the package. This ensures that patches only the git url entry in the override will be used.
 
     The existence of a patch entry in the package definition being used will cause the `always_download` value always to be true.
 
@@ -428,55 +432,6 @@ as needed. Each project must define ``version`` and either
             ``find_package()``.
 
             The default value for this field is ``false``.
-
-``proprietary_binary``
-
-    An optional dictionary of cpu architecture and operating system keys to url values that represents a download for a pre-built proprietary version of the library. This creates a new entry in the search
-    logic for a project:
-
-        - Search for a local version matching the ``version`` key
-            - disabled by ``always_download``
-        - Download proprietary version if a valid OS + CPU Arch exists
-            - disabled by ``USE_PROPRIETARY_BLOB`` being off
-        - Fallback to using git url and tag
-
-    To determine the correct key, CMake will query for a key that matches the lower case value of `<arch>-<os>` where `arch` maps to
-    :cmake:variable:`CMAKE_SYSTEM_PROCESSOR <cmake:variable:CMAKE_SYSTEM_PROCESSOR>` and `os` maps to :cmake:variable:`CMAKE_SYSTEM_NAME <cmake:variable:CMAKE_SYSTEM_NAME>`.
-
-    If no such key exists the request to use a `proprietary_binary` will be ignored.
-
-    .. literalinclude:: /packages/proprietary_binary.json
-        :language: json
-
-    As this represents a proprietary binary only the following packages support this command:
-        - nvcomp
-
-    Due to requirements of proprietary binaries, explicit opt-in by the user on usage is required.
-    Therefore for this binary to be used the caller must call the associated `rapids_cpm` command
-    with the ``USE_PROPRIETARY_BLOB`` set to ``ON``.
-
-    Supports the following placeholders:
-        - ``${rapids-cmake-version}`` will be evaluated to 'major.minor' of the current rapids-cmake cal-ver value.
-        - ``${version}`` will be evaluated to the contents of the ``version`` field.
-        - ``${cuda-toolkit-version}`` will be evaluated to 'major.minor' of the current CUDA Toolkit version.
-        - ``${cuda-toolkit-version-major}`` will be evaluated to 'major' of the current CUDA Toolkit version.
-        - ``${cuda-toolkit-version-mapping}`` will be evaluated to the contents of the json `cuda_version_mapping` entry
-          of the current CUDA Toolkit major version value
-        - ``$ENV{variable}`` will be evaluated to the contents of the listed environment variable
-
-    If this field exists in the default package, the value will be ignored when an override file
-    entry exists for the package. This ensures that the git url or `proprietary_binary` entry in the override will be used.
-
-``proprietary_binary_cuda_version_mapping``
-
-    An optional dictionary of CUDA major version keys to arbitrary values that are needed to compute download urls for a pre-built proprietary binaries
-    in the ``proprietary_binary`` dictionary
-
-    .. literalinclude:: /packages/cuda_version_mapping.json
-        :language: json
-
-    As this represents meta information needed by the proprietary binary dictionary only the following packages support this entry:
-        - nvcomp
 
 
 rapids-cmake package versions

@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2024-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2024-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -22,6 +22,7 @@ across all RAPIDS projects.
 
   rapids_cpm_bs_thread_pool( [BUILD_EXPORT_SET <export-name>]
                              [INSTALL_EXPORT_SET <export-name>]
+                             [EXCLUDE_FROM_ALL]
                              [<CPM_ARGS> ...])
 
 .. |PKG_NAME| replace:: bs_thread_pool
