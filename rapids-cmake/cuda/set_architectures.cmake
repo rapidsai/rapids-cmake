@@ -50,10 +50,9 @@ function(rapids_cuda_set_architectures mode)
   if(CMAKE_CUDA_COMPILER_ID STREQUAL "NVIDIA")
 
     if(CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL 13.0.0)
-      set(supported_archs "75-real" "80-real" "86-real" "90a-real" "100f-real" "120a-real" "120")
+      set(supported_archs "75-real" "80-real" "86-real" "90a-real" "100f-real" "110-real"  "120a-real" "120")
     elseif(CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL 12.9.0)
-      set(supported_archs "70-real" "75-real" "80-real" "86-real" "90a-real" "100f-real"
-                          "120a-real" "120")
+      set(supported_archs "70-real" "75-real" "80-real" "86-real" "90a-real" "100f-real" "110-real" "120a-real" "120")
     else()
       set(supported_archs "70-real" "75-real" "80-real" "86-real" "90a-real" "90-virtual")
       if(CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL 12.8.0)
