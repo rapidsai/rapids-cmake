@@ -1,5 +1,4 @@
 name: test
-
 on:
   workflow_dispatch:
     inputs:
@@ -21,10 +20,9 @@ on:
         description: "build_type: one of [branch, nightly, pull-request]"
         type: string
         default: nightly
-
 jobs:
   cpp-tests:
-    secrets: inherit
+    secrets: inherit # zizmor: ignore[secrets-inherit]
     uses: rapidsai/shared-workflows/.github/workflows/conda-cpp-tests.yaml@main
     with:
       build_type: ${{ inputs.build_type }}
