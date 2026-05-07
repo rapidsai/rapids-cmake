@@ -6,6 +6,7 @@
 # =============================================================================
 include_guard(GLOBAL)
 
+# rapids-pre-commit-hooks: disable[verify-hardcoded-version]
 #[=======================================================================[.rst:
 rapids_cuda_init_architectures
 -------------------------------
@@ -57,10 +58,10 @@ Example on how to properly use :cmake:command:`rapids_cuda_init_architectures`:
   rapids_cuda_init_architectures()
   project(ExampleProject ...)
 
-
-
-
 #]=======================================================================]
+
+# rapids-pre-commit-hooks: enable[verify-hardcoded-version]
+
 # cmake-lint: disable=W0105
 function(rapids_cuda_init_architectures)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cuda.init_architectures")
