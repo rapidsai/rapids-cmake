@@ -13,8 +13,8 @@
     },
     "CCCL": {
       "version": "3.4.0",
-      "url": "https://github.com/NVIDIA/cccl/archive/2b7188d2b5e4f2671f68078abc7d842e6b1e3d22.tar.gz",
-      "url_hash": "SHA256=76905e6564507911f2c845156ae6c0c16a4b011227c80fbe4e42c41dbe2093ac"
+      "url": "https://github.com/NVIDIA/cccl/archive/69d3293e1ebbd4aff44a9453491965633937591c.tar.gz",
+      "url_hash": "SHA256=30865f5ccfd367badb36c4ea390bf11ef9962b7db778c8e16b5f9cb9661c77b0"
     },
     "cuco": {
       "version": "0.0.1",
