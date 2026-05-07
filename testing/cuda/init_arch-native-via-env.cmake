@@ -1,13 +1,13 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2022-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2022-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
 include(${rapids-cmake-dir}/cuda/init_architectures.cmake)
 
 set(ENV{CUDAARCHS} "NATIVE")
-rapids_cuda_init_architectures(rapids-project)
+rapids_cuda_init_architectures()
 project(rapids-project LANGUAGES CUDA)
 
 if(NOT DEFINED CMAKE_CUDA_ARCHITECTURES)

@@ -17,7 +17,7 @@ to include support for `RAPIDS` and `NATIVE` to make CUDA architecture compilati
 
   .. code-block:: cmake
 
-    rapids_cuda_init_architectures(<project_name>)
+    rapids_cuda_init_architectures([project_name])
 
 Used before enabling the CUDA language either via :cmake:command:`project() <cmake:command:project>` or
 :cmake:command:`enable_language() <cmake:command:enable_language>` to establish the CUDA architectures
@@ -25,15 +25,19 @@ to be compiled for. Parses the :cmake:envvar:`ENV{CUDAARCHS} <cmake:envvar:CUDAA
 :cmake:variable:`CMAKE_CUDA_ARCHITECTURES <cmake:variable:CMAKE_CUDA_ARCHITECTURES>` for special values
 `RAPIDS`, and `NATIVE`.
 
-.. note::
-  Required to be called before the first :cmake:command:`project() <cmake:command:project>` call.
+.. versionadded:: v26.06.00
 
-  Will automatically call :cmake:command:`rapids_cuda_set_architectures` immediately
-  after :cmake:command:`project() <cmake:command:project>` with the same project name establishing
-  the correct values for :cmake:variable:`CMAKE_CUDA_ARCHITECTURES <cmake:variable:CMAKE_CUDA_ARCHITECTURES>`.
+If not ``project_name`` is specified this will automatically call :cmake:command:`rapids_cuda_set_architectures` immediately
+for any subsequent :cmake:command:`project() <cmake:command:project>` establishing the correct values for
+:cmake:variable:`CMAKE_CUDA_ARCHITECTURES <cmake:variable:CMAKE_CUDA_ARCHITECTURES>`.
+
 
 ``project_name``
-  Name of the project in the subsequent :cmake:command:`project() <cmake:command:project>` call.
+  .. note::
+    If an explicit project name is specified, this must be called before the associated :cmake:command:`project() <cmake:command:project>` call.
+
+  Will restrict the call :cmake:command:`rapids_cuda_set_architectures` to only occur for the
+  subsequent :cmake:command:`project() <cmake:command:project>` with the same project name.
 
 .. include:: supported_cuda_architectures_values.txt
 
@@ -50,7 +54,7 @@ Example on how to properly use :cmake:command:`rapids_cuda_init_architectures`:
   include(${CMAKE_CURRENT_BINARY_DIR}/EXAMPLE_RAPIDS.cmake)
   include(rapids-cuda)
 
-  rapids_cuda_init_architectures(ExampleProject)
+  rapids_cuda_init_architectures()
   project(ExampleProject ...)
 
 
@@ -58,7 +62,7 @@ Example on how to properly use :cmake:command:`rapids_cuda_init_architectures`:
 
 #]=======================================================================]
 # cmake-lint: disable=W0105
-function(rapids_cuda_init_architectures project_name)
+function(rapids_cuda_init_architectures)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cuda.init_architectures")
 
   # If `CMAKE_CUDA_ARCHITECTURES` is not defined, build for all supported architectures. If
@@ -93,9 +97,15 @@ function(rapids_cuda_init_architectures project_name)
     # Setup to call to set CMAKE_CUDA_ARCHITECTURES values to occur right after the project call
     # https://cmake.org/cmake/help/latest/command/project.html#code-injection
     #
-    list(APPEND CMAKE_PROJECT_${project_name}_INCLUDE "${load_file}")
-    set(CMAKE_PROJECT_${project_name}_INCLUDE "${CMAKE_PROJECT_${project_name}_INCLUDE}"
-        PARENT_SCOPE)
+    set(project_name "${ARGV0}")
+    if(project_name)
+      list(APPEND CMAKE_PROJECT_${project_name}_INCLUDE "${load_file}")
+      set(CMAKE_PROJECT_${project_name}_INCLUDE "${CMAKE_PROJECT_${project_name}_INCLUDE}"
+          PARENT_SCOPE)
+    else()
+      list(APPEND CMAKE_PROJECT_INCLUDE "${load_file}")
+      set(CMAKE_PROJECT_INCLUDE "${CMAKE_PROJECT_INCLUDE}" PARENT_SCOPE)
+    endif()
   endif()
 
 endfunction()
