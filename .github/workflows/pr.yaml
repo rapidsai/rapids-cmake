@@ -71,3 +71,5 @@ jobs:
     steps:
       - name: Telemetry summarize
         uses: rapidsai/shared-actions/telemetry-dispatch-summarize@main
+    permissions:
+      actions: write
