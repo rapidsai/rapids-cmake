@@ -5,7 +5,7 @@
 # cmake-format: on
 # =============================================================================
 
-cmake_minimum_required(VERSION 3.30.4 FATAL_ERROR)
+cmake_minimum_required(VERSION 4.0 FATAL_ERROR)
 
 # When running under rapids-cmake testing infrastructure, rapids-cmake-dir is already set and we
 # should use the local version instead of downloading RAPIDS.cmake

@@ -1,12 +1,12 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2023-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
 include_guard(GLOBAL)
 
-cmake_minimum_required(VERSION 3.26...3.29)
+cmake_minimum_required(VERSION 4.0...3.29)
 
 #[=[
 The goal of this script is to re-parse the `CTestTestfile`

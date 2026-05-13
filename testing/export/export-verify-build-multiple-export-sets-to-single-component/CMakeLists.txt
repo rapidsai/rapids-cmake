@@ -1,12 +1,12 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2023-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
 include(${rapids-cmake-dir}/export/export.cmake)
 
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 4.0)
 project(fake LANGUAGES CXX VERSION 3.1.4)
 
 add_library(fakeLib INTERFACE)
@@ -28,7 +28,7 @@ rapids_export(BUILD fake
 # exported correctly
 file(WRITE "${CMAKE_BINARY_DIR}/verify-1/CMakeLists.txt"
      [=[
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 4.0)
 project(verify_build_targets LANGUAGES CXX)
 
 set(export_sets c1 c1-lib)
@@ -49,7 +49,7 @@ add_custom_target(verify_target_component_files ALL
 # with `find_package()`
 file(WRITE "${CMAKE_BINARY_DIR}/verify-2/CMakeLists.txt"
      [=[
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 4.0)
 project(verify_build_targets LANGUAGES CXX)
 
 set(CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../)
@@ -68,7 +68,7 @@ add_custom_target(verify_target_find_package ALL
 # with `find_package(COMPONENTS)`
 file(WRITE "${CMAKE_BINARY_DIR}/verify-3/CMakeLists.txt"
      [=[
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 4.0)
 project(verify_build_targets LANGUAGES CXX)
 
 set(CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../)
