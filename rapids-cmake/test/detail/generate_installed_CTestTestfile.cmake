@@ -6,7 +6,7 @@
 # =============================================================================
 include_guard(GLOBAL)
 
-cmake_minimum_required(VERSION 4.0...3.29)
+cmake_minimum_required(VERSION 4.0...4.3)
 
 #[=[
 The goal of this script is to re-parse the `CTestTestfile`
