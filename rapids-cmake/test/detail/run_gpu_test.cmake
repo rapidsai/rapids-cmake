@@ -1,10 +1,10 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2022-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2022-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
-cmake_minimum_required(VERSION 3.30.4)
+cmake_minimum_required(VERSION 4.0)
 
 if(DEFINED ENV{CTEST_RESOURCE_GROUP_COUNT})
   math(EXPR max_index "$ENV{CTEST_RESOURCE_GROUP_COUNT}-1")

@@ -1,13 +1,13 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2023-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
 include(${rapids-cmake-dir}/export/detail/component.cmake)
 include(${rapids-cmake-dir}/export/package.cmake)
 
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 4.0)
 project(FakEProJecT LANGUAGES CXX VERSION 3.1.4)
 
 add_library(fakeLib INTERFACE)
@@ -21,7 +21,7 @@ rapids_export_component(BUILD fakeproject component1 fake_set fake_set test::c1:
 # exported correctly
 file(WRITE "${CMAKE_BINARY_DIR}/verify-1/CMakeLists.txt"
      [=[
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 4.0)
 project(verify_build_targets LANGUAGES CXX)
 
 message(STATUS "${CMAKE_CURRENT_LIST_DIR}/../fakeproject-component1-targets.cmake")

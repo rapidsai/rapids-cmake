@@ -30,7 +30,7 @@
 #
 # ##################################################################################################
 # cmake-format: on
-cmake_minimum_required(VERSION 3.30.4 FATAL_ERROR)
+cmake_minimum_required(VERSION 4.0 FATAL_ERROR)
 
 # Bootstrap rapids-cmake: This reads VERSION/RAPIDS_BRANCH and downloads rapids-cmake
 include(cmake/rapids_config.cmake)

@@ -1,12 +1,12 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2024-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2024-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
 include(${rapids-cmake-dir}/cuda/init_architectures.cmake)
 
-cmake_minimum_required(VERSION 3.23.1)
+cmake_minimum_required(VERSION 4.0)
 
 set(CMAKE_CUDA_ARCHITECTURES RAPIDS)
 set(ENV{CUDAARCHS} "9000")

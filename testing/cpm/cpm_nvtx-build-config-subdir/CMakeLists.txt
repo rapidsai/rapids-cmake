@@ -1,10 +1,10 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2025-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
-cmake_minimum_required(VERSION 3.30.4)
+cmake_minimum_required(VERSION 4.0)
 project(cpm_nvtx-build-config-subdir)
 
 include(${rapids-cmake-dir}/cpm/init.cmake)
@@ -19,7 +19,7 @@ add_subdirectory(subdir2)
 # Add a custom command that verifies that we can use targets that link to nvtx3
 file(WRITE "${CMAKE_BINARY_DIR}/check_uses_nvtx_dir/CMakeLists.txt"
      "
-cmake_minimum_required(VERSION 3.30.4)
+cmake_minimum_required(VERSION 4.0)
 project(verify_nvtx LANGUAGES CXX)
 
 set(CMAKE_PREFIX_PATH \"${CMAKE_BINARY_DIR}/\")

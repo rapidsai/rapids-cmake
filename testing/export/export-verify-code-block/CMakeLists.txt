@@ -6,7 +6,7 @@
 # =============================================================================
 include(${rapids-cmake-dir}/export/export.cmake)
 
-cmake_minimum_required(VERSION 3.30.4)
+cmake_minimum_required(VERSION 4.0)
 project(FakEProJecT LANGUAGES CXX VERSION 3.1.4)
 
 add_library(fakeLib INTERFACE)
@@ -30,7 +30,7 @@ rapids_export(BUILD FakEProJecT
 # the correct namespace
 file(WRITE "${CMAKE_BINARY_DIR}/verify/CMakeLists.txt"
      [=[
-cmake_minimum_required(VERSION 3.30.4)
+cmake_minimum_required(VERSION 4.0)
 project(verify_build_targets LANGUAGES CXX)
 message(STATUS "${CMAKE_CURRENT_LIST_DIR}/../fakeproject-config.cmake")
 if(NOT EXISTS "${CMAKE_CURRENT_LIST_DIR}/../fakeproject-config.cmake")

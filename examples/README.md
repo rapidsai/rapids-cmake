@@ -108,6 +108,6 @@ cmake --build --preset <preset-name>
 
 ## Requirements
 
-- CMake 3.30.4 or later
+- CMake 4.0 or later
 - CUDA Toolkit
 - C++17 compatible compiler
