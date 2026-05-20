@@ -1,10 +1,10 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2023-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
-cmake_minimum_required(VERSION 3.23)
+cmake_minimum_required(VERSION 4.0)
 
 include(${rapids-cmake-dir}/cpm/init.cmake)
 include(${rapids-cmake-dir}/cpm/cccl.cmake)
@@ -35,7 +35,7 @@ add_custom_target(install_project ALL COMMAND ${CMAKE_COMMAND} --install "${CMAK
 # Add a custom command that verifies that the expect files have been installed for each component
 file(WRITE "${CMAKE_BINARY_DIR}/check_thrust/CMakeLists.txt"
      [=[
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 4.0)
 project(verify_install_targets LANGUAGES CXX)
 
 set(computed_dir "${CMAKE_CURRENT_SOURCE_DIR}/install/custom/lib/aarch64/rapids/cmake/thrust/")

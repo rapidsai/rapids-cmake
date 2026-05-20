@@ -1,12 +1,12 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2023-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
 include(${rapids-cmake-dir}/export/export.cmake)
 
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 4.0)
 project(fake LANGUAGES CXX VERSION 3.1.4)
 
 add_library(fakeLib INTERFACE)
@@ -42,7 +42,7 @@ add_custom_target(install_each_component_files ALL
 # Add a custom command that verifies that the expect files have been installed for each component
 file(WRITE "${CMAKE_BINARY_DIR}/install/CMakeLists.txt"
      [=[
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 4.0)
 project(verify_install_targets LANGUAGES CXX)
 
 set(fake_files

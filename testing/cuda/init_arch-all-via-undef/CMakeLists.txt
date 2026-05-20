@@ -6,7 +6,7 @@
 # =============================================================================
 include(${rapids-cmake-dir}/cuda/init_architectures.cmake)
 
-cmake_minimum_required(VERSION 3.30.4)
+cmake_minimum_required(VERSION 4.0)
 
 unset(CMAKE_CUDA_ARCHITECTURES)
 unset(ENV{CUDAARCHS})
