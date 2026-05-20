@@ -26,9 +26,9 @@ to be compiled for. Parses the :cmake:envvar:`ENV{CUDAARCHS} <cmake:envvar:CUDAA
 :cmake:variable:`CMAKE_CUDA_ARCHITECTURES <cmake:variable:CMAKE_CUDA_ARCHITECTURES>` for special values
 `RAPIDS`, and `NATIVE`.
 
-.. versionadded:: v26.06.00
+.. versionadded:: v26.08.00
 
-If not ``project_name`` is specified this will automatically call :cmake:command:`rapids_cuda_set_architectures` immediately
+If ``project_name`` is not specified this will automatically call :cmake:command:`rapids_cuda_set_architectures` immediately
 for any subsequent :cmake:command:`project() <cmake:command:project>` establishing the correct values for
 :cmake:variable:`CMAKE_CUDA_ARCHITECTURES <cmake:variable:CMAKE_CUDA_ARCHITECTURES>`.
 

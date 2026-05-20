@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -46,6 +46,10 @@ Result Variables
 #]=======================================================================]
 function(rapids_cuda_set_architectures mode)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cuda.set_architectures")
+
+  if(NOT DEFINED CMAKE_CUDA_COMPILER_ID)
+    return()
+  endif()
 
   if(CMAKE_CUDA_COMPILER_ID STREQUAL "NVIDIA")
 
