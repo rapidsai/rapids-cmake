@@ -49,3 +49,25 @@ if(NOT EXISTS "${debug_lib}")
   message(FATAL_ERROR "rapids_find_generate_module failed to generate correct debug/versioned library search logic"
   )
 endif()
+
+# Generate the find module with a custom import target
+rapids_find_generate_module(RapidsTestCustomImport
+                            HEADER_NAMES rapids-cmake-test-header.h
+                            LIBRARY_NAMES rapids-cmake-test
+                            VERSION 42
+                            TARGET_NAME RapidsTest::rapids_test_custom_import
+                            INCLUDE_SUFFIXES rapids-cmake
+                            BUILD_EXPORT_SET test_set)
+
+find_package(RapidsTestCustomImport REQUIRED)
+
+if(NOT RapidsTestCustomImport_FOUND)
+  message(FATAL_ERROR "RapidsTestCustomImport_FOUND should be set to TRUE")
+endif()
+if(NOT RAPIDSTESTCUSTOMIMPORT_FOUND)
+  message(FATAL_ERROR "RAPIDSTESTCUSTOMIMPORT_FOUND should be set to TRUE")
+endif()
+
+if(NOT TARGET RapidsTest::rapids_test_custom_import)
+  message(FATAL_ERROR "RapidsTest::rapids_test_custom_import target should be generated")
+endif()
