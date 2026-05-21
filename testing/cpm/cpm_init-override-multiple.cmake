@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -120,4 +120,13 @@ endif()
 if(CPM_DOWNLOAD_ALL)
   message(FATAL_ERROR "CPM_DOWNLOAD_ALL should be false by default when an override exists that doesn't modify url or tag"
   )
+endif()
+
+# Verify that the default and override files are registered as configure dependencies
+get_property(configure_depends DIRECTORY PROPERTY CMAKE_CONFIGURE_DEPENDS)
+if(NOT "${CMAKE_CURRENT_BINARY_DIR}/default.json" IN_LIST configure_depends)
+  message(FATAL_ERROR "custom default versions.json was not registered as a configure dependency")
+endif()
+if(NOT "${CMAKE_CURRENT_BINARY_DIR}/override.json" IN_LIST configure_depends)
+  message(FATAL_ERROR "override versions.json was not registered as a configure dependency")
 endif()

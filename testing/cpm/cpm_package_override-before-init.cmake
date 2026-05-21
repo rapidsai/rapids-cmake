@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -37,4 +37,15 @@ if(NOT repository STREQUAL "my_url2")
 endif()
 if(NOT tag STREQUAL "my_tag")
   message(FATAL_ERROR "custom git_tag field was ignored. ${tag} found instead of my_tag")
+endif()
+
+# Verify override files loaded before `rapids_cpm_init` are configure dependencies.
+get_property(configure_depends DIRECTORY PROPERTY CMAKE_CONFIGURE_DEPENDS)
+if(NOT "${CMAKE_CURRENT_BINARY_DIR}/simple_override.json" IN_LIST configure_depends)
+  message(FATAL_ERROR "override file was not registered as a configure dependency")
+endif()
+set(default_version_file "${rapids-cmake-dir}/cpm/versions.json")
+cmake_path(ABSOLUTE_PATH default_version_file NORMALIZE)
+if(NOT "${default_version_file}" IN_LIST configure_depends)
+  message(FATAL_ERROR "default versions.json was not registered as a configure dependency")
 endif()

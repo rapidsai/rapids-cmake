@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2024-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2024-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -39,4 +39,16 @@ if(NOT tag STREQUAL "my_tag")
 endif()
 if(CPM_DOWNLOAD_ALL)
   message(FATAL_ERROR "CPM_DOWNLOAD_ALL shouldn't be set to true when using a custom default")
+endif()
+
+# Verify that the custom default file is a configure dependency but rapids-cmake versions.json is
+# not
+get_property(configure_depends DIRECTORY PROPERTY CMAKE_CONFIGURE_DEPENDS)
+if(NOT "${CMAKE_CURRENT_BINARY_DIR}/defaults.json" IN_LIST configure_depends)
+  message(FATAL_ERROR "custom default versions.json was not registered as a configure dependency")
+endif()
+set(default_version_file "${rapids-cmake-dir}/cpm/versions.json")
+cmake_path(ABSOLUTE_PATH default_version_file NORMALIZE)
+if("${default_version_file}" IN_LIST configure_depends)
+  message(FATAL_ERROR "default versions.json should not be registered when using a custom default")
 endif()

@@ -82,3 +82,12 @@ if(NOT tag MATCHES "new_rmm_tag")
   message(FATAL_ERROR "custom version field not used when computing git_tag value. ${tag} was found instead"
   )
 endif()
+
+# Verify each directly loaded override file is registered as a configure dependency.
+get_property(configure_depends DIRECTORY PROPERTY CMAKE_CONFIGURE_DEPENDS)
+foreach(path IN ITEMS "${CMAKE_CURRENT_BINARY_DIR}/override1.json"
+                      "${CMAKE_CURRENT_BINARY_DIR}/override2.json")
+  if(NOT "${path}" IN_LIST configure_depends)
+    message(FATAL_ERROR "${path} was not registered as a configure dependency")
+  endif()
+endforeach()
