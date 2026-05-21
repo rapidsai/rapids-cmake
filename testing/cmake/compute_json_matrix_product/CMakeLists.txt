@@ -104,6 +104,21 @@ Call Stack \(most recent call first\):
 ]*/testing/cmake/compute_json_matrix_product/test_compute_json_matrix_product\.cmake:[0-9]+ \(rapids_cmake_compute_json_matrix_product\)$]==]
 )
 
+# Test that all leaf values are stored properly
+test_compute_json_matrix_product(
+  ARGS
+  MATRIX_STRING
+  [==[{
+    "a": [1, "str", true, null]
+  }]==]
+  EXPECTED_PRODUCT
+  [==[[
+    {"a": 1},
+    {"a": "str"},
+    {"a": true},
+    {"a": null}
+  ]]==])
+
 # Test that keys are sorted
 test_compute_json_matrix_product(
   ARGS
