@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -147,7 +147,8 @@ function(rapids_find_generate_module name)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.find.generate_module")
 
   set(options NO_CONFIG)
-  set(one_value VERSION BUILD_EXPORT_SET INSTALL_EXPORT_SET INITIAL_CODE_BLOCK PRE_FPHSA_CODE_BLOCK FINAL_CODE_BLOCK)
+  set(one_value VERSION BUILD_EXPORT_SET INSTALL_EXPORT_SET INITIAL_CODE_BLOCK PRE_FPHSA_CODE_BLOCK
+                FINAL_CODE_BLOCK)
   set(multi_value HEADER_NAMES LIBRARY_NAMES INCLUDE_SUFFIXES)
   cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
