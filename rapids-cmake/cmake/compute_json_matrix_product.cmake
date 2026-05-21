@@ -316,6 +316,7 @@ simple list of lists. It works as follows:
 For example, consider the following JSON document:
 
   .. code-block:: json
+
     {
       "a": [1, 2],
       "_group": [
@@ -333,6 +334,7 @@ For example, consider the following JSON document:
 Processing this JSON document will result in the following output:
 
   .. code-block:: json
+
     [
       {"a": 1, "b": 3, "c": 4},
       {"a": 2, "b": 3, "c": 4},
@@ -359,7 +361,8 @@ Notice the following details of the output:
 The following JSON document is an error, since it contains primitive values
 with no dictionary ancestors:
 
-  .. json::
+  .. code-block:: json
+
     [1, 2]
 
 The naming convention recommended for this algorithm is that field names that
