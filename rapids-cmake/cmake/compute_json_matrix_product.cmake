@@ -372,7 +372,7 @@ argument is passed.
 
 This function requires CMake 4.3 or newer.
 
-``output_var``
+``out_var``
   Name of the variable in which to store the JSON list output.
 
 ``MATRIX_STRING``
