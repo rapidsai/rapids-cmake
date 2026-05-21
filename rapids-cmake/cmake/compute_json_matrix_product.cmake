@@ -315,7 +315,7 @@ simple list of lists. It works as follows:
 
 For example, consider the following JSON document:
 
-  .. json::
+  .. code-block:: json
     {
       "a": [1, 2],
       "_group": [
@@ -332,7 +332,7 @@ For example, consider the following JSON document:
 
 Processing this JSON document will result in the following output:
 
-  .. json::
+  .. code-block:: json
     [
       {"a": 1, "b": 3, "c": 4},
       {"a": 2, "b": 3, "c": 4},
