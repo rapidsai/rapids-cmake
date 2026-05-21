@@ -13,17 +13,23 @@ set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}")
 
 # Generate the find module
 set(initial_code_block [[set(RapidsTest_INITIAL_CODE_BLOCK TRUE)]])
+set(middle_code_block [[set(RapidsTest_PRE_FPHSA_CODE_BLOCK TRUE)]])
 set(final_code_block [[set(RapidsTest_FINAL_CODE_BLOCK TRUE)]])
 rapids_find_generate_module(RapidsTest
-                            HEADER_NAMES rapids-cmake-test-header_only.hpp INITIAL_CODE_BLOCK
-                                         initial_code_block FINAL_CODE_BLOCK final_code_block
+                            HEADER_NAMES rapids-cmake-test-header_only.hpp
+                            INITIAL_CODE_BLOCK initial_code_block
+                            PRE_FPHSA_CODE_BLOCK middle_code_block
+                            FINAL_CODE_BLOCK final_code_block
                             INSTALL_EXPORT_SET test_set)
 
 find_package(RapidsTest REQUIRED)
 
 if(NOT RapidsTest_INITIAL_CODE_BLOCK)
-  message(FATAL_ERROR "RapidsTest_FOUND should be set to TRUE")
+  message(FATAL_ERROR "RapidsTest_INITIAL_CODE_BLOCK should be set to TRUE")
+endif()
+if(NOT RapidsTest_PRE_FPHSA_CODE_BLOCK)
+  message(FATAL_ERROR "RapidsTest_PRE_FPHSA_CODE_BLOCK should be set to TRUE")
 endif()
 if(NOT RapidsTest_FINAL_CODE_BLOCK)
-  message(FATAL_ERROR "RAPIDSTEST_FOUND should be set to TRUE")
+  message(FATAL_ERROR "RapidsTest_FINAL_CODE_BLOCK should be set to TRUE")
 endif()
