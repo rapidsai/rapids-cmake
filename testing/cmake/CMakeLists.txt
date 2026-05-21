@@ -58,6 +58,7 @@ add_cmake_build_test(write_version-custom-prefix)
 add_cmake_build_test(write_version-leading-zeroes)
 add_cmake_build_test(write_version-relative)
 
+# TODO: Remove this version gate once we require 4.3
 if(CMAKE_VERSION VERSION_GREATER_EQUAL 4.3)
   add_cmake_config_test(compute_json_matrix_product)
 endif()
