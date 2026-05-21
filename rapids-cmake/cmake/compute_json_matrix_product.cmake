@@ -281,7 +281,7 @@ Compute a matrix product from a JSON document.
   .. code-block:: cmake
 
     rapids_cmake_compute_matrix_product(
-      output_var
+      out_var
       [MATRIX_STRING <json_string>]
       [MATRIX_FILE <json_file>]
       [NO_WARN_USED]
