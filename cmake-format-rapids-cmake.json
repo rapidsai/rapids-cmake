@@ -6,6 +6,19 @@
           "nargs": 1
         }
       },
+      "rapids_cmake_compute_matrix_product": {
+        "pargs": {
+          "nargs": 1,
+          "flags": [
+            "NO_WARN_USED",
+            "NO_WARN_UNUSED"
+          ]
+        },
+        "kwargs": {
+          "MATRIX_STRING": 1,
+          "MATRIX_FILE": 1
+        }
+      },
       "rapids_cmake_download_with_retry": {
         "pargs": {
           "nargs": 3

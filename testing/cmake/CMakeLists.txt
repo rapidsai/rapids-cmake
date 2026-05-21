@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -57,3 +57,7 @@ add_cmake_build_test(write_version-all-zeroes)
 add_cmake_build_test(write_version-custom-prefix)
 add_cmake_build_test(write_version-leading-zeroes)
 add_cmake_build_test(write_version-relative)
+
+if(CMAKE_VERSION VERSION_GREATER_EQUAL 4.3)
+  add_cmake_config_test(compute_json_matrix_product)
+endif()
