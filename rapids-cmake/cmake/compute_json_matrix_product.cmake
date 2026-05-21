@@ -326,7 +326,7 @@ For example, consider the following JSON document:
         },
         {
           "b": 6,
-          "c": [7, 8]
+          "c": [7, 8, 9]
         }
       ]
     }
@@ -344,6 +344,8 @@ Processing this JSON document will result in the following output:
       {"a": 2, "b": 6, "c": 7},
       {"a": 1, "b": 6, "c": 8},
       {"a": 2, "b": 6, "c": 8},
+      {"a": 1, "b": 6, "c": 9},
+      {"a": 2, "b": 6, "c": 9}
     ]
 
 Notice the following details of the output:
