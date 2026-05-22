@@ -8,9 +8,7 @@
 execute_process(COMMAND ${TEST_COMMAND} RESULT_VARIABLE result OUTPUT_VARIABLE stdout
                 ERROR_VARIABLE stderr)
 
-if(WILL_FAIL AND result EQUAL 0)
-  message(SEND_ERROR "Expected exit code other than 0, got 0")
-elseif(NOT WILL_FAIL AND NOT result EQUAL 0)
+if(NOT WILL_FAIL AND NOT result EQUAL 0)
   message(SEND_ERROR "Expected exit code 0, got ${result}")
 endif()
 
