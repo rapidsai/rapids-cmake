@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -24,9 +24,9 @@ add_cmake_build_test(export-verify-no-namespace)
 add_cmake_config_test(export-verify-bad-code-block-var.cmake SHOULD_FAIL
                       "FINAL_CODE_BLOCK variable `var_doesn't_exist` doesn't exist")
 add_cmake_config_test(export-verify-missing-components.cmake SHOULD_FAIL
-                      "is missing COMPONENTS as COMPONENTS_EXPORT_SET was provided")
+                      "is missing COMPONENTS as\n  COMPONENTS_EXPORT_SET was provided")
 add_cmake_config_test(export-verify-missing-components-export.cmake SHOULD_FAIL
-                      "is missing COMPONENTS_EXPOR22T_SET as COMPONENTS was provided")
+                      "is missing COMPONENTS_EXPORT_SET as\n  COMPONENTS was provided")
 add_cmake_config_test(export-verify-bad-doc-var.cmake SHOULD_FAIL
                       "DOCUMENTATION variable `var_doesn't_exist` doesn't exist")
 add_cmake_config_test(export-verify-calendar-version-matching.cmake)
