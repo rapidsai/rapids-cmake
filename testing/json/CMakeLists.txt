@@ -5,4 +5,8 @@
 # cmake-format: on
 # =============================================================================
 
+add_cmake_config_test(array_append.cmake)
+
+add_cmake_config_test(array_extend.cmake)
+
 add_cmake_config_test(compute_matrix_product)
