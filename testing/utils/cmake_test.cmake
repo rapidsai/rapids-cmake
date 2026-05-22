@@ -126,7 +126,7 @@ function(add_cmake_test mode source_or_dir)
                        "-DTEST_COMMAND=${CMAKE_COMMAND};-S;${src_dir};-B;${build_dir};-G;${generator};${extra_configure_flags};-Drapids-cmake-testing-dir=${PROJECT_SOURCE_DIR};-Drapids-cmake-dir=${PROJECT_SOURCE_DIR}/../rapids-cmake"
                        "-DWILL_FAIL=${will_fail}"
                        "-DEXPECTED_REGULAR_EXPRESSION=${expected_regular_expression}" -P
-                       "${CMAKE_CURRENT_LIST_DIR}/execute_cmake_test.cmake")
+                       "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/execute_cmake_test.cmake")
 
     elseif(mode STREQUAL "build")
       add_test(NAME ${test_name}_configure
@@ -139,7 +139,7 @@ function(add_cmake_test mode source_or_dir)
                        "-DTEST_COMMAND=${CMAKE_COMMAND};--build;${build_dir};-j3000"
                        "-DWILL_FAIL=${will_fail}"
                        "-DEXPECTED_REGULAR_EXPRESSION=${expected_regular_expression}" -P
-                       "${CMAKE_CURRENT_LIST_DIR}/execute_cmake_test.cmake")
+                       "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/execute_cmake_test.cmake")
 
       set_tests_properties(${test_name}_configure PROPERTIES FIXTURES_SETUP ${test_name})
       set_tests_properties(${test_name} PROPERTIES FIXTURES_REQUIRED ${test_name})
@@ -156,7 +156,7 @@ function(add_cmake_test mode source_or_dir)
                COMMAND ${CMAKE_COMMAND} "-DTEST_COMMAND=${CMAKE_CTEST_COMMAND};-C;Debug;-j400;-VV"
                        "-DWILL_FAIL=${will_fail}"
                        "-DEXPECTED_REGULAR_EXPRESSION=${expected_regular_expression}" -P
-                       "${CMAKE_CURRENT_LIST_DIR}/execute_cmake_test.cmake"
+                       "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/execute_cmake_test.cmake"
                WORKING_DIRECTORY ${build_dir})
 
       set_tests_properties(${test_name}_configure PROPERTIES FIXTURES_SETUP ${test_name})
