@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -25,7 +25,7 @@ add_cmake_config_test(find_package-version-explicit-failed.cmake)
 add_cmake_config_test(find_package-version-explicit.cmake)
 add_cmake_config_test(find_package-version-none.cmake)
 add_cmake_config_test(find_package-version-required-explicit-failed.cmake SHOULD_FAIL
-                      "but required is exact version \"99999999999\"")
+                      "but required is\n  exact version \"99999999999\"")
 
 add_cmake_config_test(find_generate_module-build)
 add_cmake_config_test(find_generate_module-install)

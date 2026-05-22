@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2022-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2022-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -9,8 +9,9 @@ add_cmake_config_test(rapids-test.cmake)
 add_cmake_build_test(generate_resource_spec-no-gpus)
 add_cmake_config_test(generate_resource_spec-simple.cmake)
 
-set(percent_error_message "rapids_test_gpu_requirements requires a numeric PERCENT value [1-100].")
-set(gpu_error_message "rapids_test_gpu_requirements GPUS requires a numeric value")
+set(percent_error_message
+    "rapids_test_gpu_requirements requires a numeric PERCENT value \\[1-100\\].")
+set(gpu_error_message "rapids_test_gpu_requirements requires a numeric GPUS value")
 set(gpu_missing_message "rapids_test_gpu_requirements requires the GPUS option to be provided")
 add_cmake_config_test(gpu_requirements-char-percent.cmake SHOULD_FAIL "${percent_error_message}")
 add_cmake_config_test(gpu_requirements-char-gpu.cmake SHOULD_FAIL "${gpu_error_message}")
@@ -31,7 +32,7 @@ add_cmake_config_test(gpu_requirements-zero-percent.cmake SHOULD_FAIL "${percent
 add_cmake_config_test(init-existing-specfile.cmake)
 add_cmake_config_test(init-simple.cmake)
 
-set(wrong_component_message "No install component set [wrong_component] can be found")
+set(wrong_component_message "No install component set \\[wrong_component\\] can be found")
 add_cmake_build_test(install_relocatable-include-in-all.cmake)
 add_cmake_build_test(install_relocatable-labels.cmake)
 add_cmake_build_test(install_relocatable-complex)
