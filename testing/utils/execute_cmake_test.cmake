@@ -1,0 +1,24 @@
+# =============================================================================
+# cmake-format: off
+# SPDX-FileCopyrightText: Copyright (c) 2026, NVIDIA CORPORATION.
+# SPDX-License-Identifier: Apache-2.0
+# cmake-format: on
+# =============================================================================
+
+execute_process(COMMAND ${TEST_COMMAND} RESULT_VARIABLE result OUTPUT_VARIABLE stdout
+                ERROR_VARIABLE stderr)
+
+if(WILL_FAIL AND result EQUAL 0)
+  message(SEND_ERROR "Expected exit code other than 0, got 0")
+elseif(NOT WILL_FAIL AND NOT result EQUAL 0)
+  message(SEND_ERROR "Expected exit code 0, got ${result}")
+endif()
+
+if(EXPECTED_REGULAR_EXPRESSION AND NOT stdout MATCHES "${EXPECTED_REGULAR_EXPRESSION}"
+   AND NOT stderr MATCHES "${EXPECTED_REGULAR_EXPRESSION}")
+  message(SEND_ERROR "stdout and stderr did not match expected regular expression")
+endif()
+
+if(NOT WILL_FAIL AND (stdout MATCHES "Syntax Warning" OR stderr MATCHES "Syntax Warning"))
+  message(SEND_ERROR "Got a syntax warning")
+endif()
