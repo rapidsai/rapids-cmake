@@ -14,7 +14,11 @@ endif()
 
 if(EXPECTED_REGULAR_EXPRESSION AND NOT stdout MATCHES "${EXPECTED_REGULAR_EXPRESSION}"
    AND NOT stderr MATCHES "${EXPECTED_REGULAR_EXPRESSION}")
-  message(SEND_ERROR "stdout and stderr did not match expected regular expression")
+  string(REPLACE "\n" "\n  " formatted_expected_regular_expression "${EXPECTED_REGULAR_EXPRESSION}")
+  string(REPLACE "\n" "\n  " formatted_stdout "${stdout}")
+  string(REPLACE "\n" "\n  " formatted_stderr "${stderr}")
+  message(SEND_ERROR "Expected regular expression:\n  ${formatted_expected_regular_expression}\nActual stdout:\n  ${formatted_stdout}\nActual stderr:\n  ${formatted_stderr}"
+  )
 endif()
 
 if(NOT WILL_FAIL AND (stdout MATCHES "Syntax Warning" OR stderr MATCHES "Syntax Warning"))
