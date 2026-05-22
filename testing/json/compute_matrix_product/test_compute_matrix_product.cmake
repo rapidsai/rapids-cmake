@@ -5,9 +5,9 @@
 # cmake-format: on
 # =============================================================================
 
-include(${rapids-cmake-dir}/cmake/compute_json_matrix_product.cmake)
+include(${rapids-cmake-dir}/json/compute_matrix_product.cmake)
 
-rapids_cmake_compute_json_matrix_product(actual_product ${ARGS})
+rapids_json_compute_matrix_product(actual_product ${ARGS})
 string(JSON equal EQUAL "${EXPECTED_PRODUCT}" "${actual_product}")
 if(NOT equal)
   string(REPLACE "\n" "\n  " formatted_expected_product "${EXPECTED_PRODUCT}")

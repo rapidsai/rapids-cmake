@@ -34,3 +34,7 @@ if(RAPIDS_CMAKE_ENABLE_DOWNLOAD_TESTS)
   add_subdirectory(examples)
   add_subdirectory(other)
 endif()
+
+if(CMAKE_VERSION VERSION_GREATER_EQUAL 4.3)
+  add_subdirectory(json)
+endif()

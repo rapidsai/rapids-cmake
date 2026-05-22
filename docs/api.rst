@@ -13,7 +13,6 @@ require.
    :titlesonly:
 
    /command/rapids_cmake_build_type
-   /command/rapids_cmake_compute_json_matrix_product
    /command/rapids_cmake_download_with_retry
    /command/rapids_cmake_install_lib_dir
    /command/rapids_cmake_make_global
@@ -86,6 +85,18 @@ tracking of these dependencies for correct export support.
    /command/rapids_find_package
 
 .. _`cuda`:
+
+JSON
+****
+
+The `rapids_json` functions provide common JSON manipulation functions.
+
+.. toctree::
+   :titlesonly:
+
+    rapids_json_array_append </command/rapids_json_array_append>
+    rapids_json_array_extend </command/rapids_json_array_extend>
+    rapids_json_compute_matrix_product </command/rapids_json_compute_matrix_product>
 
 CUDA
 ****

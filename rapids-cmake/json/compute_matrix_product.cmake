@@ -6,30 +6,14 @@
 # =============================================================================
 include_guard(GLOBAL)
 
+include("${rapids-cmake-dir}/json/array_append.cmake")
+include("${rapids-cmake-dir}/json/array_extend.cmake")
+
 # TODO: Remove this version gate once we require 4.3
 cmake_minimum_required(VERSION 4.3)
 
 # rapids-lint: disable=C0111
-function(_rapids_cmake_cjmp_array_append out_var array value)
-  string(JSON len LENGTH "${array}")
-  string(JSON array SET "${array}" "${len}" "${value}")
-  set(${out_var} "${array}" PARENT_SCOPE)
-endfunction()
-
-# rapids-lint: disable=C0111
-function(_rapids_cmake_cjmp_array_extend out_var array values)
-  string(JSON len LENGTH "${values}")
-  set(it 0)
-  while(it LESS len)
-    string(JSON value GET_RAW "${values}" "${it}")
-    _rapids_cmake_cjmp_array_append(array "${array}" "${value}")
-    math(EXPR it "${it} + 1")
-  endwhile()
-  set(${out_var} "${array}" PARENT_SCOPE)
-endfunction()
-
-# rapids-lint: disable=C0111
-function(_rapids_cmake_cjmp_queue_item out_var path key matrix)
+function(_rapids_json_cmp_queue_item out_var path key matrix)
   string(JSON item SET "{}" path "${path}")
   string(JSON item SET "${item}" key "${key}")
   string(JSON item SET "${item}" matrix "${matrix}")
@@ -37,7 +21,7 @@ function(_rapids_cmake_cjmp_queue_item out_var path key matrix)
 endfunction()
 
 # rapids-lint: disable=C0111
-function(_rapids_cmake_cjmp_generator_item out_var entry used)
+function(_rapids_json_cmp_generator_item out_var entry used)
   string(JSON item SET "{}" entry "${entry}")
   if(used)
     string(JSON item SET "${item}" used true)
@@ -48,7 +32,7 @@ function(_rapids_cmake_cjmp_generator_item out_var entry used)
 endfunction()
 
 # rapids-lint: disable=C0111
-function(_rapids_cmake_cjmp_path_repr out_var path)
+function(_rapids_json_cmp_path_repr out_var path)
   string(JSON len LENGTH "${path}")
   set(path_repr "")
   set(it 0)
@@ -61,7 +45,7 @@ function(_rapids_cmake_cjmp_path_repr out_var path)
 endfunction()
 
 # rapids-lint: disable=C0111
-function(_rapids_cmake_cjmp_iterate_next_dimension out_var)
+function(_rapids_json_cmp_iterate_next_dimension out_var)
   set(options)
   set(one_value QUEUE ENTRY WARN_USED WARN_UNUSED)
   set(multi_value)
@@ -70,7 +54,7 @@ function(_rapids_cmake_cjmp_iterate_next_dimension out_var)
 
   string(JSON queue_len LENGTH "${_RAPIDS_QUEUE}")
   if(queue_len EQUAL 0)
-    _rapids_cmake_cjmp_generator_item(item "${_RAPIDS_ENTRY}" false)
+    _rapids_json_cmp_generator_item(item "${_RAPIDS_ENTRY}" false)
     set(${out_var} "[${item}]" PARENT_SCOPE)
     return()
   endif()
@@ -82,9 +66,9 @@ function(_rapids_cmake_cjmp_iterate_next_dimension out_var)
 
   set(used FALSE)
   set(result "[]")
-  _rapids_cmake_cjmp_impl(impl_result PATH "${path}" KEY "${key}" MATRIX "${matrix}" QUEUE
-                          "${tail}" ENTRY "${_RAPIDS_ENTRY}" WARN_USED "${_RAPIDS_WARN_USED}"
-                          WARN_UNUSED "${_RAPIDS_WARN_UNUSED}")
+  _rapids_json_cmp_impl(impl_result PATH "${path}" KEY "${key}" MATRIX "${matrix}" QUEUE "${tail}"
+                        ENTRY "${_RAPIDS_ENTRY}" WARN_USED "${_RAPIDS_WARN_USED}" WARN_UNUSED
+                        "${_RAPIDS_WARN_UNUSED}")
 
   string(JSON impl_len LENGTH "${impl_result}")
   set(it 0)
@@ -94,7 +78,7 @@ function(_rapids_cmake_cjmp_iterate_next_dimension out_var)
     if(u)
       set(used TRUE)
     endif()
-    _rapids_cmake_cjmp_array_append(result "${result}" "${entry}")
+    rapids_json_array_append(result "${result}" "${entry}")
     math(EXPR it "${it} + 1")
   endwhile()
 
@@ -108,7 +92,7 @@ function(_rapids_cmake_cjmp_iterate_next_dimension out_var)
       string(REGEX REPLACE "^_*" "" rest "${last}")
 
       string(JSON path_head REMOVE "${path}" "${last_index}")
-      _rapids_cmake_cjmp_path_repr(path_repr "${path_head}")
+      _rapids_json_cmp_path_repr(path_repr "${path_head}")
 
       string(JSON last_json STRING_ENCODE "${last}")
       string(JSON underscores_json STRING_ENCODE "${underscores}")
@@ -129,7 +113,7 @@ function(_rapids_cmake_cjmp_iterate_next_dimension out_var)
 endfunction()
 
 # rapids-lint: disable=C0111
-function(_rapids_cmake_cjmp_dict out_var)
+function(_rapids_json_cmp_dict out_var)
   set(options)
   set(one_value PATH MATRIX QUEUE ENTRY WARN_USED WARN_UNUSED)
   set(multi_value)
@@ -149,14 +133,14 @@ function(_rapids_cmake_cjmp_dict out_var)
   set(next_queue "[]")
   foreach(member IN LISTS keys)
     string(JSON member_json STRING_ENCODE "${member}")
-    _rapids_cmake_cjmp_array_append(child_path "${_RAPIDS_PATH}" "${member_json}")
+    rapids_json_array_append(child_path "${_RAPIDS_PATH}" "${member_json}")
     string(JSON child_matrix GET_RAW "${_RAPIDS_MATRIX}" "${member}")
-    _rapids_cmake_cjmp_queue_item(item "${child_path}" "${member_json}" "${child_matrix}")
-    _rapids_cmake_cjmp_array_append(next_queue "${next_queue}" "${item}")
+    _rapids_json_cmp_queue_item(item "${child_path}" "${member_json}" "${child_matrix}")
+    rapids_json_array_append(next_queue "${next_queue}" "${item}")
   endforeach()
-  _rapids_cmake_cjmp_array_extend(next_queue "${next_queue}" "${_RAPIDS_QUEUE}")
+  rapids_json_array_extend(next_queue "${next_queue}" "${_RAPIDS_QUEUE}")
 
-  _rapids_cmake_cjmp_iterate_next_dimension(
+  _rapids_json_cmp_iterate_next_dimension(
     nested_result QUEUE "${next_queue}" ENTRY "${_RAPIDS_ENTRY}" WARN_USED "${_RAPIDS_WARN_USED}"
     WARN_UNUSED "${_RAPIDS_WARN_UNUSED}")
 
@@ -165,8 +149,8 @@ function(_rapids_cmake_cjmp_dict out_var)
   set(it 0)
   while(it LESS nested_len)
     string(JSON nested_entry GET_RAW "${nested_result}" "${it}" entry)
-    _rapids_cmake_cjmp_generator_item(item "${nested_entry}" false)
-    _rapids_cmake_cjmp_array_append(result "${result}" "${item}")
+    _rapids_json_cmp_generator_item(item "${nested_entry}" false)
+    rapids_json_array_append(result "${result}" "${item}")
     math(EXPR it "${it} + 1")
   endwhile()
 
@@ -174,7 +158,7 @@ function(_rapids_cmake_cjmp_dict out_var)
 endfunction()
 
 # rapids-lint: disable=C0111
-function(_rapids_cmake_cjmp_array out_var)
+function(_rapids_json_cmp_array out_var)
   set(options)
   set(one_value PATH KEY MATRIX QUEUE ENTRY WARN_USED WARN_UNUSED)
   set(multi_value)
@@ -185,22 +169,22 @@ function(_rapids_cmake_cjmp_array out_var)
   string(JSON len LENGTH "${_RAPIDS_MATRIX}")
   set(it 0)
   while(it LESS len)
-    _rapids_cmake_cjmp_array_append(child_path "${_RAPIDS_PATH}" "${it}")
+    rapids_json_array_append(child_path "${_RAPIDS_PATH}" "${it}")
     string(JSON child_matrix GET_RAW "${_RAPIDS_MATRIX}" "${it}")
-    _rapids_cmake_cjmp_queue_item(item "${child_path}" "${_RAPIDS_KEY}" "${child_matrix}")
+    _rapids_json_cmp_queue_item(item "${child_path}" "${_RAPIDS_KEY}" "${child_matrix}")
 
     set(next_queue "[]")
-    _rapids_cmake_cjmp_array_append(next_queue "${next_queue}" "${item}")
-    _rapids_cmake_cjmp_array_extend(next_queue "${next_queue}" "${_RAPIDS_QUEUE}")
+    rapids_json_array_append(next_queue "${next_queue}" "${item}")
+    rapids_json_array_extend(next_queue "${next_queue}" "${_RAPIDS_QUEUE}")
 
-    _rapids_cmake_cjmp_iterate_next_dimension(
+    _rapids_json_cmp_iterate_next_dimension(
       nested_result QUEUE "${next_queue}" ENTRY "${_RAPIDS_ENTRY}" WARN_USED "${_RAPIDS_WARN_USED}"
       WARN_UNUSED "${_RAPIDS_WARN_UNUSED}")
     string(JSON nested_len LENGTH "${nested_result}")
     set(it2 0)
     while(it2 LESS nested_len)
       string(JSON nested_item GET_RAW "${nested_result}" "${it2}")
-      _rapids_cmake_cjmp_array_append(result "${result}" "${nested_item}")
+      rapids_json_array_append(result "${result}" "${nested_item}")
       math(EXPR it2 "${it2} + 1")
     endwhile()
 
@@ -211,7 +195,7 @@ function(_rapids_cmake_cjmp_array out_var)
 endfunction()
 
 # rapids-lint: disable=C0111
-function(_rapids_cmake_cjmp_leaf out_var)
+function(_rapids_json_cmp_leaf out_var)
   set(options)
   set(one_value PATH KEY MATRIX QUEUE ENTRY WARN_USED WARN_UNUSED)
   set(multi_value)
@@ -220,13 +204,13 @@ function(_rapids_cmake_cjmp_leaf out_var)
 
   string(JSON key_type TYPE "${_RAPIDS_KEY}")
   if(key_type STREQUAL "NULL")
-    _rapids_cmake_cjmp_path_repr(path_repr "${_RAPIDS_PATH}")
+    _rapids_json_cmp_path_repr(path_repr "${_RAPIDS_PATH}")
     message(FATAL_ERROR "Leaf node at root${path_repr} does not have a dictionary as an ancestor.")
   endif()
 
   string(JSON key_value GET "${_RAPIDS_KEY}")
   string(JSON entry SET "${_RAPIDS_ENTRY}" "${key_value}" "${_RAPIDS_MATRIX}")
-  _rapids_cmake_cjmp_iterate_next_dimension(
+  _rapids_json_cmp_iterate_next_dimension(
     nested_result QUEUE "${_RAPIDS_QUEUE}" ENTRY "${entry}" WARN_USED "${_RAPIDS_WARN_USED}"
     WARN_UNUSED "${_RAPIDS_WARN_UNUSED}")
 
@@ -235,8 +219,8 @@ function(_rapids_cmake_cjmp_leaf out_var)
   set(it 0)
   while(it LESS nested_len)
     string(JSON nested_entry GET_RAW "${nested_result}" "${it}" entry)
-    _rapids_cmake_cjmp_generator_item(item "${nested_entry}" true)
-    _rapids_cmake_cjmp_array_append(result "${result}" "${item}")
+    _rapids_json_cmp_generator_item(item "${nested_entry}" true)
+    rapids_json_array_append(result "${result}" "${item}")
     math(EXPR it "${it} + 1")
   endwhile()
 
@@ -244,7 +228,7 @@ function(_rapids_cmake_cjmp_leaf out_var)
 endfunction()
 
 # rapids-lint: disable=C0111
-function(_rapids_cmake_cjmp_impl out_var)
+function(_rapids_json_cmp_impl out_var)
   set(options)
   set(one_value PATH KEY MATRIX QUEUE ENTRY WARN_USED WARN_UNUSED)
   set(multi_value)
@@ -254,25 +238,25 @@ function(_rapids_cmake_cjmp_impl out_var)
   string(JSON matrix_type TYPE "${_RAPIDS_MATRIX}")
 
   if(matrix_type STREQUAL "OBJECT")
-    _rapids_cmake_cjmp_dict(result PATH "${_RAPIDS_PATH}" MATRIX "${_RAPIDS_MATRIX}" QUEUE
-                            "${_RAPIDS_QUEUE}" ENTRY "${_RAPIDS_ENTRY}" WARN_USED
-                            "${_RAPIDS_WARN_USED}" WARN_UNUSED "${_RAPIDS_WARN_UNUSED}")
+    _rapids_json_cmp_dict(result PATH "${_RAPIDS_PATH}" MATRIX "${_RAPIDS_MATRIX}" QUEUE
+                          "${_RAPIDS_QUEUE}" ENTRY "${_RAPIDS_ENTRY}" WARN_USED
+                          "${_RAPIDS_WARN_USED}" WARN_UNUSED "${_RAPIDS_WARN_UNUSED}")
   elseif(matrix_type STREQUAL "ARRAY")
-    _rapids_cmake_cjmp_array(result PATH "${_RAPIDS_PATH}" KEY "${_RAPIDS_KEY}" MATRIX
-                             "${_RAPIDS_MATRIX}" QUEUE "${_RAPIDS_QUEUE}" ENTRY "${_RAPIDS_ENTRY}"
-                             WARN_USED "${_RAPIDS_WARN_USED}" WARN_UNUSED "${_RAPIDS_WARN_UNUSED}")
+    _rapids_json_cmp_array(result PATH "${_RAPIDS_PATH}" KEY "${_RAPIDS_KEY}" MATRIX
+                           "${_RAPIDS_MATRIX}" QUEUE "${_RAPIDS_QUEUE}" ENTRY "${_RAPIDS_ENTRY}"
+                           WARN_USED "${_RAPIDS_WARN_USED}" WARN_UNUSED "${_RAPIDS_WARN_UNUSED}")
   else()
-    _rapids_cmake_cjmp_leaf(result PATH "${_RAPIDS_PATH}" KEY "${_RAPIDS_KEY}" MATRIX
-                            "${_RAPIDS_MATRIX}" QUEUE "${_RAPIDS_QUEUE}" ENTRY "${_RAPIDS_ENTRY}"
-                            WARN_USED "${_RAPIDS_WARN_USED}" WARN_UNUSED "${_RAPIDS_WARN_UNUSED}")
+    _rapids_json_cmp_leaf(result PATH "${_RAPIDS_PATH}" KEY "${_RAPIDS_KEY}" MATRIX
+                          "${_RAPIDS_MATRIX}" QUEUE "${_RAPIDS_QUEUE}" ENTRY "${_RAPIDS_ENTRY}"
+                          WARN_USED "${_RAPIDS_WARN_USED}" WARN_UNUSED "${_RAPIDS_WARN_UNUSED}")
   endif()
 
   set(${out_var} "${result}" PARENT_SCOPE)
 endfunction()
 
 #[=======================================================================[.rst:
-rapids_cmake_compute_json_matrix_product
-----------------------------------------
+rapids_json_compute_matrix_product
+----------------------------------
 
 .. versionadded:: v25.08.00
 
@@ -280,7 +264,7 @@ Compute a matrix product from a JSON document.
 
   .. code-block:: cmake
 
-    rapids_cmake_compute_matrix_product(
+    rapids_json_compute_matrix_product(
       out_var
       [MATRIX_STRING <json_string>]
       [MATRIX_FILE <json_file>]
@@ -397,7 +381,7 @@ This function requires CMake 4.3 or newer.
   underscore does not appear in the output.
 
 #]=======================================================================]
-function(rapids_cmake_compute_json_matrix_product out_var)
+function(rapids_json_compute_matrix_product out_var)
   set(options NO_WARN_USED NO_WARN_UNUSED)
   set(one_value MATRIX_STRING MATRIX_FILE)
   set(multi_value)
@@ -422,16 +406,15 @@ function(rapids_cmake_compute_json_matrix_product out_var)
     set(warn_unused FALSE)
   endif()
 
-  _rapids_cmake_cjmp_impl(generator_result PATH "[]" KEY null MATRIX "${_RAPIDS_MATRIX_STRING}"
-                          QUEUE "[]" ENTRY "{}" WARN_USED "${warn_used}" WARN_UNUSED
-                          "${warn_unused}")
+  _rapids_json_cmp_impl(generator_result PATH "[]" KEY null MATRIX "${_RAPIDS_MATRIX_STRING}" QUEUE
+                        "[]" ENTRY "{}" WARN_USED "${warn_used}" WARN_UNUSED "${warn_unused}")
 
   set(result "[]")
   string(JSON len LENGTH "${generator_result}")
   set(it 0)
   while(it LESS len)
     string(JSON entry GET_RAW "${generator_result}" "${it}" entry)
-    _rapids_cmake_cjmp_array_append(result "${result}" "${entry}")
+    rapids_json_array_append(result "${result}" "${entry}")
     math(EXPR it "${it} + 1")
   endwhile()
 
