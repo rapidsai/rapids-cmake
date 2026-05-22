@@ -35,6 +35,7 @@ if(RAPIDS_CMAKE_ENABLE_DOWNLOAD_TESTS)
   add_subdirectory(other)
 endif()
 
+# TODO: Remove this version gate once we require 4.3
 if(CMAKE_VERSION VERSION_GREATER_EQUAL 4.3)
   add_subdirectory(json)
 endif()
