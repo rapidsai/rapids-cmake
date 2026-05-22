@@ -45,16 +45,16 @@ endfunction()
 test_compute_matrix_product(ARGS
                             MATRIX_STRING
                             [==[{
-    "a": [1, 2],
-    "b": [3, 4]
-  }]==]
+                              "a": [1, 2],
+                              "b": [3, 4]
+                            }]==]
                             EXPECTED_PRODUCT
                             [==[[
-    {"a": 1, "b": 3},
-    {"a": 1, "b": 4},
-    {"a": 2, "b": 3},
-    {"a": 2, "b": 4}
-  ]]==])
+                              {"a": 1, "b": 3},
+                              {"a": 1, "b": 4},
+                              {"a": 2, "b": 3},
+                              {"a": 2, "b": 4}
+                            ]]==])
 
 # Test that file reading works
 test_compute_matrix_product(ARGS
@@ -62,11 +62,11 @@ test_compute_matrix_product(ARGS
                             "${CMAKE_CURRENT_SOURCE_DIR}/file_test.json"
                             EXPECTED_PRODUCT
                             [==[[
-    {"a": 1, "b": 3},
-    {"a": 1, "b": 4},
-    {"a": 2, "b": 3},
-    {"a": 2, "b": 4}
-  ]]==])
+                              {"a": 1, "b": 3},
+                              {"a": 1, "b": 4},
+                              {"a": 2, "b": 3},
+                              {"a": 2, "b": 4}
+                            ]]==])
 
 # Test that at least one of string or file is required
 test_compute_matrix_product(EXPECTED_EXIT_CODE
