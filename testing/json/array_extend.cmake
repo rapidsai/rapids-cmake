@@ -22,6 +22,5 @@ test_array_extend("[0, 1]" "[0]" "[1]")
 test_array_extend("[0, 1, 2]" "[0, 1]" "[2]")
 test_array_extend("[0, 1]" "[0, 1]" "[]")
 test_array_extend("[0, 1, 2, 3, 5]" "[0, 1]" "[2, 3, 5]")
-test_array_extend([==[[0, "str"]]==] "[0]" [==[["str"]]==])
-test_array_extend("[0, true]" "[0]" "[true]")
-test_array_extend("[0, null]" "[0]" "[null]")
+test_array_extend([==[[0, "", false, null, 1, "str", true, null]]==] [==[[0, "", false, null]]==]
+                  [==[[1, "str", true, null]]==])
