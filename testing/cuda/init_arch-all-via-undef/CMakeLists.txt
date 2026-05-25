@@ -11,7 +11,7 @@ cmake_minimum_required(VERSION 4.0)
 unset(CMAKE_CUDA_ARCHITECTURES)
 unset(ENV{CUDAARCHS})
 
-rapids_cuda_init_architectures(rapids-project)
+rapids_cuda_init_architectures()
 project(rapids-project LANGUAGES CUDA)
 
 if(NOT DEFINED CMAKE_CUDA_ARCHITECTURES)
