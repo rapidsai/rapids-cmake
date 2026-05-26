@@ -38,7 +38,6 @@ function(rapids_cpm_load_preset_versions)
   if(DEFINED RAPIDS_CMAKE_CPM_DEFAULT_VERSION_FILE)
     set(_rapids_preset_version_file "${RAPIDS_CMAKE_CPM_DEFAULT_VERSION_FILE}")
   endif()
-  cmake_path(ABSOLUTE_PATH _rapids_preset_version_file NORMALIZE)
 
   if(NOT EXISTS "${_rapids_preset_version_file}")
     message(FATAL_ERROR "rapids_cpm can't load '${_rapids_preset_version_file}' to find package version information, verify it exists"
@@ -46,6 +45,7 @@ function(rapids_cpm_load_preset_versions)
   endif()
 
   # Add json file as a configure dependency
+  cmake_path(ABSOLUTE_PATH _rapids_preset_version_file NORMALIZE)
   set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${_rapids_preset_version_file}")
 
   # Check if we have been loaded before, if so early terminate
