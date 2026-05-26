@@ -5,6 +5,7 @@
 # cmake-format: on
 # =============================================================================
 
+# rapids-pre-commit-hooks: disable[verify-hardcoded-version]
 #[=======================================================================[.rst:
 rapids_cmake_default_install_component_hook
 ---------------------------------------

@@ -6,6 +6,7 @@
 # =============================================================================
 include_guard(GLOBAL)
 
+# rapids-pre-commit-hooks: disable[verify-hardcoded-version]
 #[=======================================================================[.rst:
 rapids_cmake_default_install_component
 ---------------------------------------
@@ -43,7 +44,7 @@ function(rapids_cmake_default_install_component)
   get_property(already_hooked GLOBAL PROPERTY rapids_cmake_default_install_component_hook)
   if(NOT already_hooked)
     list(APPEND CMAKE_PROJECT_INCLUDE
-         "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/default_install_component_hook.cmake")
+         "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/default_install_component_hook.cmake")
     set(CMAKE_PROJECT_INCLUDE "${CMAKE_PROJECT_INCLUDE}" PARENT_SCOPE)
 
     set_property(GLOBAL PROPERTY rapids_cmake_default_install_component_hook ON)
