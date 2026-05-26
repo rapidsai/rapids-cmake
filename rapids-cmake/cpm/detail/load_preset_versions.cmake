@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -43,6 +43,10 @@ function(rapids_cpm_load_preset_versions)
     message(FATAL_ERROR "rapids_cpm can't load '${_rapids_preset_version_file}' to find package version information, verify it exists"
     )
   endif()
+
+  # Add json file as a configure dependency
+  cmake_path(ABSOLUTE_PATH _rapids_preset_version_file NORMALIZE)
+  set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${_rapids_preset_version_file}")
 
   # Check if we have been loaded before, if so early terminate
   get_property(already_loaded GLOBAL PROPERTY rapids_cpm_load_presets_${_rapids_preset_version_file}

@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -74,4 +74,15 @@ foreach(proj IN ITEMS rmm nvbench GTest)
     )
   endif()
   unset(CPM_DOWNLOAD_ALL)
+endforeach()
+
+get_property(configure_depends DIRECTORY PROPERTY CMAKE_CONFIGURE_DEPENDS)
+foreach(path IN
+        ITEMS "${CMAKE_CURRENT_BINARY_DIR}/defaultsA.json"
+              "${CMAKE_CURRENT_BINARY_DIR}/defaultsB.json"
+              "${CMAKE_CURRENT_BINARY_DIR}/defaultsC.json")
+  # Verify that each default file is registered as a configure dependency
+  if(NOT "${path}" IN_LIST configure_depends)
+    message(FATAL_ERROR "${path} was not registered as a configure dependency")
+  endif()
 endforeach()
