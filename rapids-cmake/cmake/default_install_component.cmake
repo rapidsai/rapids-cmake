@@ -33,6 +33,7 @@ one may set a custom install component name `component_name` for a given project
   The install component name to set for a given project.
 
 #]=======================================================================]
+# rapids-pre-commit-hooks: enable[verify-hardcoded-version]
 function(rapids_cmake_default_install_component)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cmake.default_install_component")
   set(options DEFAULT_USE_PROJECT_NAME)

@@ -5,16 +5,6 @@
 # cmake-format: on
 # =============================================================================
 
-# rapids-pre-commit-hooks: disable[verify-hardcoded-version]
-#[=======================================================================[.rst:
-rapids_cmake_default_install_component_hook
----------------------------------------
-
-.. versionadded:: v26.08.00
-
-Hook used by :cmake:command:`rapids_cmake_default_install_component` to set the default install component name for a project.
-
-#]=======================================================================]
 string(TOLOWER ${PROJECT_NAME} project)
 
 get_property(_rapids_install_default_name GLOBAL

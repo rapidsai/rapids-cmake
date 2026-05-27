@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
-cmake_minimum_required(VERSION 3.30.4)
+cmake_minimum_required(VERSION 4.0)
 project(default_install_component LANGUAGES NONE)
 
 include(${rapids-cmake-dir}/cmake/default_install_component.cmake)
