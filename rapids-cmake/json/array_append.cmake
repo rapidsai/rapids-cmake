@@ -29,6 +29,11 @@ Append an element to a JSON array.
 
 #]=======================================================================]
 function(rapids_json_array_append out_var array value)
+  string(JSON type TYPE "${array}")
+  if(NOT type STREQUAL "ARRAY")
+    message(FATAL_ERROR "array argument must be an array")
+  endif()
+
   string(JSON len LENGTH "${array}")
   string(JSON array SET "${array}" "${len}" "${value}")
   set(${out_var} "${array}" PARENT_SCOPE)

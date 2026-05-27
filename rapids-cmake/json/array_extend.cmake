@@ -34,6 +34,10 @@ function(rapids_json_array_extend out_var array values)
   # TODO: Remove this version gate once we require 4.3
   cmake_minimum_required(VERSION 4.3)
 
+  string(JSON type TYPE "${array}")
+  if(NOT type STREQUAL "ARRAY")
+    message(FATAL_ERROR "array argument must be an array")
+  endif()
   string(JSON type TYPE "${values}")
   if(NOT type STREQUAL "ARRAY")
     message(FATAL_ERROR "values argument must be an array")
