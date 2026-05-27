@@ -137,7 +137,7 @@ function(rapids_json_compute_matrix_product out_var)
   # TODO: Remove this version gate once we require 4.3
   cmake_minimum_required(VERSION 4.3)
 
-  include("${CMAKE_CURRENT_LIST_DIR}/detail/compute_matrix_product_impl.cmake")
+  include("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/compute_matrix_product_impl.cmake")
 
   set(options NO_WARN_USED NO_WARN_UNUSED)
   set(one_value MATRIX_STRING MATRIX_FILE)

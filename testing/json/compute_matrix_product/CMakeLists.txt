@@ -185,11 +185,13 @@ test_compute_matrix_product(ARGS
                             1
                             EXPECTED_STDERR
                             [==[^CMake Error at [^
-]*/rapids-cmake/json/compute_matrix_product\.cmake:[0-9]+ \(message\):
+]*/rapids-cmake/json/detail/compute_matrix_product_impl\.cmake:[0-9]+ \(message\):
   Leaf node at root does not have a dictionary as an ancestor\.
 Call Stack \(most recent call first\):(
   [^
-]*/rapids-cmake/json/compute_matrix_product\.cmake:[0-9]+ \([a-zA-Z0-9_]+\))+
+]*/rapids-cmake/json/detail/compute_matrix_product_impl\.cmake:[0-9]+ \([a-zA-Z0-9_]+\))+
+  [^
+]*/rapids-cmake/json/compute_matrix_product\.cmake:[0-9]+ \([a-zA-Z0-9_]+\)
   [^
 ]*/testing/json/compute_matrix_product/test_compute_matrix_product\.cmake:[0-9]+ \(rapids_json_compute_matrix_product\)$]==]
 )
@@ -202,11 +204,13 @@ test_compute_matrix_product(ARGS
                             1
                             EXPECTED_STDERR
                             [==[^CMake Error at [^
-]*/rapids-cmake/json/compute_matrix_product\.cmake:[0-9]+ \(message\):
+]*/rapids-cmake/json/detail/compute_matrix_product_impl\.cmake:[0-9]+ \(message\):
   Leaf node at root\[0\] does not have a dictionary as an ancestor\.
 Call Stack \(most recent call first\):(
   [^
-]*/rapids-cmake/json/compute_matrix_product\.cmake:[0-9]+ \([a-zA-Z0-9_]+\))+
+]*/rapids-cmake/json/detail/compute_matrix_product_impl\.cmake:[0-9]+ \([a-zA-Z0-9_]+\))+
+  [^
+]*/rapids-cmake/json/compute_matrix_product\.cmake:[0-9]+ \([a-zA-Z0-9_]+\)
   [^
 ]*/testing/json/compute_matrix_product/test_compute_matrix_product\.cmake:[0-9]+ \(rapids_json_compute_matrix_product\)$]==]
 )
@@ -219,11 +223,13 @@ test_compute_matrix_product(ARGS
                             1
                             EXPECTED_STDERR
                             [==[^CMake Error at [^
-]*/rapids-cmake/json/compute_matrix_product\.cmake:[0-9]+ \(message\):
+]*/rapids-cmake/json/detail/compute_matrix_product_impl\.cmake:[0-9]+ \(message\):
   Leaf node at root\[0\]\[0\] does not have a dictionary as an ancestor\.
 Call Stack \(most recent call first\):(
   [^
-]*/rapids-cmake/json/compute_matrix_product\.cmake:[0-9]+ \([a-zA-Z0-9_]+\))+
+]*/rapids-cmake/json/detail/compute_matrix_product_impl\.cmake:[0-9]+ \([a-zA-Z0-9_]+\))+
+  [^
+]*/rapids-cmake/json/compute_matrix_product\.cmake:[0-9]+ \([a-zA-Z0-9_]+\)
   [^
 ]*/testing/json/compute_matrix_product/test_compute_matrix_product\.cmake:[0-9]+ \(rapids_json_compute_matrix_product\)$]==]
 )
@@ -245,23 +251,27 @@ test_compute_matrix_product(ARGS
                             ]]==]
                             EXPECTED_STDERR
                             [==[^CMake Warning \(dev\) at [^
-]*/rapids-cmake/json/compute_matrix_product\.cmake:[0-9]+ \(message\):
+]*/rapids-cmake/json/detail/compute_matrix_product_impl\.cmake:[0-9]+ \(message\):
   Key "b" at root\["a"\]\[0\] is never used in a matrix product entry and is used
   only for grouping\.  Consider renaming it to "_b" to indicate this\.
 Call Stack \(most recent call first\):(
   [^
-]*/rapids-cmake/json/compute_matrix_product\.cmake:[0-9]+ \([a-zA-Z0-9_]+\))+
+]*/rapids-cmake/json/detail/compute_matrix_product_impl\.cmake:[0-9]+ \([a-zA-Z0-9_]+\))+
+  [^
+]*/rapids-cmake/json/compute_matrix_product\.cmake:[0-9]+ \([a-zA-Z0-9_]+\)
   [^
 ]*/testing/json/compute_matrix_product/test_compute_matrix_product\.cmake:[0-9]+ \(rapids_json_compute_matrix_product\)
 This warning is for project developers\.  Use -Wno-dev to suppress it\.
 
 CMake Warning \(dev\) at [^
-]*/rapids-cmake/json/compute_matrix_product\.cmake:[0-9]+ \(message\):
+]*/rapids-cmake/json/detail/compute_matrix_product_impl\.cmake:[0-9]+ \(message\):
   Key "a" at root is never used in a matrix product entry and is used only
   for grouping\.  Consider renaming it to "_a" to indicate this\.
 Call Stack \(most recent call first\):(
   [^
-]*/rapids-cmake/json/compute_matrix_product\.cmake:[0-9]+ \([a-zA-Z0-9_]+\))+
+]*/rapids-cmake/json/detail/compute_matrix_product_impl\.cmake:[0-9]+ \([a-zA-Z0-9_]+\))+
+  [^
+]*/rapids-cmake/json/compute_matrix_product\.cmake:[0-9]+ \([a-zA-Z0-9_]+\)
   [^
 ]*/testing/json/compute_matrix_product/test_compute_matrix_product\.cmake:[0-9]+ \(rapids_json_compute_matrix_product\)
 This warning is for project developers\.  Use -Wno-dev to suppress it\.$]==])
@@ -300,23 +310,27 @@ test_compute_matrix_product(ARGS
                             ]]==]
                             EXPECTED_STDERR
                             [==[^CMake Warning \(dev\) at [^
-]*/rapids-cmake/json/compute_matrix_product\.cmake:[0-9]+ \(message\):
+]*/rapids-cmake/json/detail/compute_matrix_product_impl\.cmake:[0-9]+ \(message\):
   Key "_c" at root\["_a"\]\[0\]\["_b"\] is used in a matrix product entry even
   though it begins with "_"\.  Consider renaming it to "c" to indicate this\.
 Call Stack \(most recent call first\):(
   [^
-]*/rapids-cmake/json/compute_matrix_product\.cmake:[0-9]+ \([a-zA-Z0-9_]+\))+
+]*/rapids-cmake/json/detail/compute_matrix_product_impl\.cmake:[0-9]+ \([a-zA-Z0-9_]+\))+
+  [^
+]*/rapids-cmake/json/compute_matrix_product\.cmake:[0-9]+ \([a-zA-Z0-9_]+\)
   [^
 ]*/testing/json/compute_matrix_product/test_compute_matrix_product\.cmake:[0-9]+ \(rapids_json_compute_matrix_product\)
 This warning is for project developers\.  Use -Wno-dev to suppress it\.
 
 CMake Warning \(dev\) at [^
-]*/rapids-cmake/json/compute_matrix_product\.cmake:[0-9]+ \(message\):
+]*/rapids-cmake/json/detail/compute_matrix_product_impl\.cmake:[0-9]+ \(message\):
   Key "__b" at root is used in a matrix product entry even though it begins
   with "__"\.  Consider renaming it to "b" to indicate this\.
 Call Stack \(most recent call first\):(
   [^
-]*/rapids-cmake/json/compute_matrix_product\.cmake:[0-9]+ \([a-zA-Z0-9_]+\))+
+]*/rapids-cmake/json/detail/compute_matrix_product_impl\.cmake:[0-9]+ \([a-zA-Z0-9_]+\))+
+  [^
+]*/rapids-cmake/json/compute_matrix_product\.cmake:[0-9]+ \([a-zA-Z0-9_]+\)
   [^
 ]*/testing/json/compute_matrix_product/test_compute_matrix_product\.cmake:[0-9]+ \(rapids_json_compute_matrix_product\)
 This warning is for project developers\.  Use -Wno-dev to suppress it\.$]==])
