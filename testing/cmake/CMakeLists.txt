@@ -21,7 +21,9 @@ add_cmake_config_test(conda_env-invalid.cmake)
 add_cmake_config_test(conda_env-prefix.cmake)
 add_cmake_config_test(conda_env-prefix-envvar.cmake)
 
-add_cmake_build_test(default_install_component)
+add_cmake_build_test(default_install_component-simple)
+add_cmake_build_test(default_install_component-sibling-default)
+add_cmake_build_test(default_install_component-sibling-mixed)
 
 add_cmake_config_test(download_with_retry-basic.cmake)
 add_cmake_config_test(download_with_retry-overwrite.cmake)

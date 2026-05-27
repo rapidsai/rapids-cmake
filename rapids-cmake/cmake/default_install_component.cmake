@@ -42,13 +42,11 @@ function(rapids_cmake_default_install_component)
   cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
   # Need to make sure we only install our project hook once
-  get_property(already_hooked GLOBAL PROPERTY rapids_cmake_default_install_component_hook)
-  if(NOT already_hooked)
+  if(NOT "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/default_install_component_hook.cmake" IN_LIST
+     CMAKE_PROJECT_INCLUDE)
     list(APPEND CMAKE_PROJECT_INCLUDE
          "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/default_install_component_hook.cmake")
     set(CMAKE_PROJECT_INCLUDE "${CMAKE_PROJECT_INCLUDE}" PARENT_SCOPE)
-
-    set_property(GLOBAL PROPERTY rapids_cmake_default_install_component_hook ON)
   endif()
 
   if(_RAPIDS_DEFAULT_USE_PROJECT_NAME)
