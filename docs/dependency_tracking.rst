@@ -68,7 +68,7 @@ It is common for projects to have dependencies for which CMake doesn't have a ``
 :cmake:command:`rapids_find_generate_module` and :cmake:command:`rapids_export_package`.
 
 The :cmake:command:`rapids_find_generate_module` allows projects to automatically generate a ``Find<Package>`` and encode via the ``BUILD_EXPORT_SET``
-and ```INSTALL_EXPORT_SET``` parameters when the generated module should also be installed and added to ``CMAKE_MODULE_PATH`` so that consumers can use it.
+and ``INSTALL_EXPORT_SET`` parameters when the generated module should also be installed and added to ``CMAKE_MODULE_PATH`` so that consumers can use it.
 
 If you already have an existing ``Find<Package>`` written, :cmake:command:`rapids_export_package` simplifies the process of installing the module and
 making sure it is part of ``CMAKE_MODULE_PATH`` for consumers.
