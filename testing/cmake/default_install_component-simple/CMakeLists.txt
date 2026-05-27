@@ -18,7 +18,7 @@ add_subdirectory(testing_dependency)
 add_custom_target(check ALL
                   COMMAND ${CMAKE_COMMAND} -E rm -rf "${CMAKE_BINARY_DIR}/install"
                   COMMAND ${CMAKE_COMMAND} --install "${CMAKE_BINARY_DIR}" --component
-                          DefaultDependency --prefix
+                          defaultdependency --prefix
                           "${CMAKE_BINARY_DIR}/install/default_dependency"
                   COMMAND ${CMAKE_COMMAND} --install "${CMAKE_BINARY_DIR}" --component testing
                           --prefix "${CMAKE_BINARY_DIR}/install/testing"

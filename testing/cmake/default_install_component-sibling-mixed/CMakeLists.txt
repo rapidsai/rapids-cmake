@@ -13,12 +13,12 @@ add_subdirectory(mixed_dependency)
 add_custom_target(check ALL
                   COMMAND ${CMAKE_COMMAND} -E rm -rf "${CMAKE_BINARY_DIR}/install"
                   COMMAND ${CMAKE_COMMAND} --install "${CMAKE_BINARY_DIR}" --component
-                          DefaultDependency --prefix
+                          defaultdependency --prefix
                           "${CMAKE_BINARY_DIR}/install/default_dependency"
                   COMMAND ${CMAKE_COMMAND} --install "${CMAKE_BINARY_DIR}" --component testing
                           --prefix "${CMAKE_BINARY_DIR}/install/testing"
                   COMMAND ${CMAKE_COMMAND} --install "${CMAKE_BINARY_DIR}" --component
-                          UnconfiguredDependency --prefix
+                          unconfigureddependency --prefix
                           "${CMAKE_BINARY_DIR}/install/unconfigured_dependency"
                   COMMAND ${CMAKE_COMMAND} -Dinstall_dir="${CMAKE_BINARY_DIR}/install" -P
                           "${CMAKE_CURRENT_SOURCE_DIR}/check_installed_components.cmake")
