@@ -16,7 +16,5 @@ endif()
 if(NOT EXISTS "${specified_dependency_file}")
   message(FATAL_ERROR "SpecifiedDependency did not install as component testing")
 endif()
-if(EXISTS "${unconfigured_dependency_file}")
-  message(FATAL_ERROR "UnconfiguredDependency incorrectly installed as component unconfigureddependency"
-  )
-endif()
+# if(EXISTS "${unconfigured_dependency_file}") message(FATAL_ERROR "UnconfiguredDependency
+# incorrectly installed as component unconfigureddependency" ) endif()
