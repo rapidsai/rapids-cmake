@@ -353,7 +353,7 @@
           "BUILD_EXPORT_SET": 1,
           "INSTALL_EXPORT_SET": 1,
           "INITIAL_CODE_BLOCK": 1,
-          "PRE_FPHSA_CODE_BLOCK": 1,
+          "PRE_PACKAGE_VALIDATED_CODE_BOCK": 1,
           "FINAL_CODE_BLOCK": 1,
           "HEADER_NAMES": "+",
           "LIBRARY_NAMES": "+",

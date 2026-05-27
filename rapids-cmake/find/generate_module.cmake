@@ -26,7 +26,7 @@ Generate a Find*.cmake module for the requested package
                   [VERSION <version>]
                   [NO_CONFIG]
                   [INITIAL_CODE_BLOCK <code_block_variable>]
-                  [PRE_FPHSA_CODE_BLOCK <code_block_variable>]
+                  [PRE_PACKAGE_VALIDATED_CODE_BOCK <code_block_variable>]
                   [FINAL_CODE_BLOCK <code_block_variable>]
                   [BUILD_EXPORT_SET <name>]
                   [INSTALL_EXPORT_SET <name>]
@@ -85,24 +85,30 @@ when installed.
   Optional value of the variable that holds a string of code that will
   be executed as the first step of this config file.
 
-  Note: This requires the code block variable instead of the contents
-  so that we can properly insert CMake code
+  .. note::
+    This requires the code block variable instead of the contents
+    so that we can properly insert CMake code.
 
-``PRE_FPHSA_CODE_BLOCK``
+``PRE_PACKAGE_VALIDATED_CODE_BOCK``
   Optional value of the variable that holds a string of code that will
   be executed after :cmake:command:`find_path` and :cmake:command:`find_library` calls
-  but before :cmake:command:`find_package_handle_standard_args`. This is particularly
-  useful for inserting code to extract version information from header files.
+  but before :cmake:command:`find_package_handle_standard_args` in `MODULE` mode.
 
-  Note: This requires the code block variable instead of the contents
-  so that we can properly insert CMake code
+  .. note::
+    This argument is particularly useful for inserting CMake code to extract
+    version information from header files.
+
+  .. note::
+    This requires the code block variable instead of the contents
+    so that we can properly insert CMake code.
 
 ``FINAL_CODE_BLOCK``
   Optional value of the variable that holds a string of code that will
   be executed as the last step of this config file.
 
-  Note: This requires the code block variable instead of the contents
-  so that we can properly insert CMake code
+  .. note::
+    This requires the code block variable instead of the contents
+    so that we can properly insert CMake code
 
 ``BUILD_EXPORT_SET``
   Record that this custom FindPackage module needs to be part
@@ -147,8 +153,8 @@ function(rapids_find_generate_module name)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.find.generate_module")
 
   set(options NO_CONFIG)
-  set(one_value VERSION BUILD_EXPORT_SET INSTALL_EXPORT_SET INITIAL_CODE_BLOCK PRE_FPHSA_CODE_BLOCK
-                FINAL_CODE_BLOCK)
+  set(one_value VERSION BUILD_EXPORT_SET INSTALL_EXPORT_SET INITIAL_CODE_BLOCK
+                PRE_PACKAGE_VALIDATED_CODE_BOCK FINAL_CODE_BLOCK)
   set(multi_value HEADER_NAMES LIBRARY_NAMES INCLUDE_SUFFIXES)
   cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
@@ -195,12 +201,13 @@ function(rapids_find_generate_module name)
     set(_RAPIDS_FIND_INITIAL_CODE_BLOCK "${${_RAPIDS_INITIAL_CODE_BLOCK}}")
   endif()
 
-  if(DEFINED _RAPIDS_PRE_FPHSA_CODE_BLOCK)
-    if(NOT DEFINED ${_RAPIDS_PRE_FPHSA_CODE_BLOCK})
-      message(FATAL_ERROR "PRE_FPHSA_CODE_BLOCK variable `${_RAPIDS_PRE_FPHSA_CODE_BLOCK}` doesn't exist"
+  if(DEFINED _RAPIDS_PRE_PACKAGE_VALIDATED_CODE_BOCK)
+    if(NOT DEFINED ${_RAPIDS_PRE_PACKAGE_VALIDATED_CODE_BOCK})
+      message(FATAL_ERROR "PRE_PACKAGE_VALIDATED_CODE_BOCK variable `${_RAPIDS_PRE_PACKAGE_VALIDATED_CODE_BOCK}` doesn't exist"
       )
     endif()
-    set(_RAPIDS_FIND_PRE_FPHSA_CODE_BLOCK "${${_RAPIDS_PRE_FPHSA_CODE_BLOCK}}")
+    set(_RAPIDS_FIND_PRE_PACKAGE_VALIDATED_CODE_BOCK
+        "${${_RAPIDS_PRE_PACKAGE_VALIDATED_CODE_BOCK}}")
   endif()
 
   if(DEFINED _RAPIDS_FINAL_CODE_BLOCK)

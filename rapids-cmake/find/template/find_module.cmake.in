@@ -58,7 +58,7 @@ if(NOT @_RAPIDS_PKG_NAME@_LIBRARY AND NOT @_RAPIDS_PKG_NAME@_IS_HEADER_ONLY)
   unset(@_RAPIDS_PKG_NAME@_FOUND) #incorrectly set by select_library_configurations
 endif()
 
-@_RAPIDS_FIND_PRE_FPHSA_CODE_BLOCK@
+@_RAPIDS_FIND_PRE_PACKAGE_VALIDATED_CODE_BOCK@
 
 include(${CMAKE_ROOT}/Modules/FindPackageHandleStandardArgs.cmake)
 
