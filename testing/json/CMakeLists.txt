@@ -8,5 +8,7 @@
 add_cmake_config_test(array_append.cmake)
 
 add_cmake_config_test(array_extend.cmake)
+add_cmake_config_test(array_extend-with-dict.cmake SHOULD_FAIL "values argument must be an array")
+add_cmake_config_test(array_extend-with-leaf.cmake SHOULD_FAIL "values argument must be an array")
 
 add_cmake_config_test(compute_matrix_product)

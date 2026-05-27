@@ -8,9 +8,6 @@ include_guard(GLOBAL)
 
 include("${rapids-cmake-dir}/json/array_append.cmake")
 
-# TODO: Remove this version gate once we require 4.3
-cmake_minimum_required(VERSION 4.3)
-
 #[=======================================================================[.rst:
 rapids_json_array_extend
 ------------------------
@@ -34,6 +31,14 @@ Extend a JSON array with another JSON array.
 
 #]=======================================================================]
 function(rapids_json_array_extend out_var array values)
+  # TODO: Remove this version gate once we require 4.3
+  cmake_minimum_required(VERSION 4.3)
+
+  string(JSON type TYPE "${values}")
+  if(NOT type STREQUAL "ARRAY")
+    message(FATAL_ERROR "values argument must be an array")
+  endif()
+
   string(JSON len LENGTH "${values}")
   set(it 0)
   while(it LESS len)
