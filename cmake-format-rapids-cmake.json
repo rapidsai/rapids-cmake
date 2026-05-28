@@ -350,6 +350,7 @@
         },
         "kwargs": {
           "VERSION": 1,
+          "TARGET_NAME": 1,
           "BUILD_EXPORT_SET": 1,
           "INSTALL_EXPORT_SET": 1,
           "INITIAL_CODE_BLOCK": 1,
