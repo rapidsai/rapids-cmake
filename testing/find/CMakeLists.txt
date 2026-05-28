@@ -34,6 +34,8 @@ add_cmake_config_test(find_generate_module-header-only)
 add_cmake_config_test(find_generate_module-code-blocks)
 add_cmake_config_test(find_generate_module-back-initial-code-block-var.cmake SHOULD_FAIL
                       "INITIAL_CODE_BLOCK variable `var_doesn't_exist` doesn't exist")
+add_cmake_config_test(find_generate_module-back-pre-fphsa-code-block-var.cmake SHOULD_FAIL
+                      "PRE_PACKAGE_VALIDATED_CODE_BOCK variable `var_doesn't_exist` doesn't exist")
 add_cmake_config_test(find_generate_module-back-final-code-block-var.cmake SHOULD_FAIL
                       "FINAL_CODE_BLOCK variable `var_doesn't_exist` doesn't exist")
 
