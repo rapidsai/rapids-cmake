@@ -41,7 +41,6 @@ function(rapids_cmake_default_install_component)
   set(multi_value)
   cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
-  # Need to make sure we only install our project hook once
   if(_RAPIDS_DEFAULT_USE_PROJECT_NAME)
     set(hook_file
         "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/default_install_component_default_hook.cmake")
@@ -54,6 +53,7 @@ function(rapids_cmake_default_install_component)
                                  ${_RAPIDS_INSTALL_COMPONENT_NAME})
   endif()
 
+  # Need to make sure we only install our project hook once
   if(hook_file AND NOT "${hook_file}" IN_LIST CMAKE_PROJECT_INCLUDE)
     list(APPEND CMAKE_PROJECT_INCLUDE "${hook_file}")
     set(CMAKE_PROJECT_INCLUDE "${CMAKE_PROJECT_INCLUDE}" PARENT_SCOPE)
