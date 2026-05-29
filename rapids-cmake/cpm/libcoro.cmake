@@ -32,8 +32,6 @@ across all RAPIDS projects.
 .. |PKG_NAME| replace:: libcoro
 .. include:: common_package_args.txt
 
-.. versionadded:: v26.08.00
-
 ``BUILD_STATIC``
   Will build `libcoro` statically. No local searching for a previously
   built version will occur.
