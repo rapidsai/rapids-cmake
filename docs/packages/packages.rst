@@ -6,6 +6,7 @@
    /packages/rapids_cpm_cuco
    /packages/rapids_cpm_gbench
    /packages/rapids_cpm_gtest
+   /packages/rapids_cpm_libcoro
    /packages/rapids_cpm_rapids_logger
    /packages/rapids_cpm_nvbench
    /packages/rapids_cpm_nvtx3

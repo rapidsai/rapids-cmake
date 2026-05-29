@@ -118,6 +118,7 @@ add_cmake_config_test(cpm_gtest-export.cmake)
 add_cmake_config_test(cpm_gtest-simple.cmake)
 add_cmake_config_test(cpm_gtest-static.cmake)
 add_cmake_config_test(cpm_gtest-explicit-static.cmake)
+add_cmake_config_test(cpm_libcoro-simple.cmake)
 
 add_cmake_config_test(cpm_logger-simple.cmake)
 
