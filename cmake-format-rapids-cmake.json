@@ -6,6 +6,18 @@
           "nargs": 1
         }
       },
+      "rapids_cmake_default_install_component": {
+        "pargs": {
+          "nargs": "*",
+          "flags": [
+            "DEFAULT_USE_PROJECT_NAME"
+          ]
+        },
+        "kwargs": {
+          "PROJECT": 1,
+          "INSTALL_COMPONENT_NAME": 1
+        }
+      },
       "rapids_cmake_download_with_retry": {
         "pargs": {
           "nargs": 3

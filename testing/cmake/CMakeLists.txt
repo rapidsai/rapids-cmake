@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -20,6 +20,10 @@ add_cmake_config_test(conda_env-cross-build-x86-envvar.cmake)
 add_cmake_config_test(conda_env-invalid.cmake)
 add_cmake_config_test(conda_env-prefix.cmake)
 add_cmake_config_test(conda_env-prefix-envvar.cmake)
+
+add_cmake_build_test(default_install_component-simple)
+add_cmake_build_test(default_install_component-sibling-default)
+add_cmake_build_test(default_install_component-sibling-mixed)
 
 add_cmake_config_test(download_with_retry-basic.cmake)
 add_cmake_config_test(download_with_retry-overwrite.cmake)
