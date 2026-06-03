@@ -102,4 +102,4 @@ for FILE in .github/workflows/*.yaml; do
   sed_runner "s|:[0-9]*\\.[0-9]*-|:${NEXT_SHORT_TAG}-|g" "${FILE}"
 done
 
-sed_runner "s|project(integration VERSION [0-9]*\\.[0-9]*|project(integration VERSION ${NEXT_SHORT_TAG}|g" example/CMakeLists.txt
+sed_runner "s|project(integration VERSION [0-9]*\\.[0-9]*|project(integration VERSION ${NEXT_SHORT_TAG}|g" ./CMakeLists.txt
