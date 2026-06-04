@@ -5,6 +5,7 @@
 # cmake-format: on
 # =============================================================================
 include(${rapids-cmake-dir}/export/cpm.cmake)
+include(${rapids-cmake-dir}/export/write_dependencies.cmake)
 
 rapids_export_cpm(BUILD FakeBuildCpm template_set GLOBAL_TARGETS
                   CPM_ARGS NAME FakeBuildCpm VERSION 1.0)
@@ -21,9 +22,11 @@ if(install_global_targets)
   message(FATAL_ERROR "rapids_export_cpm recorded explicit GLOBAL_TARGETS for zero-value input")
 endif()
 
-foreach(path
-        "${CMAKE_BINARY_DIR}/rapids-cmake/template_set/build/cpm_FakeBuildCpm.cmake"
-        "${CMAKE_BINARY_DIR}/rapids-cmake/template_set/install/cpm_FakeInstallCpm.cmake")
+rapids_export_write_dependencies(BUILD template_set "${CMAKE_CURRENT_BINARY_DIR}/build_set.cmake")
+rapids_export_write_dependencies(INSTALL template_set "${CMAKE_CURRENT_BINARY_DIR}/install_set.cmake")
+
+foreach(path "${CMAKE_CURRENT_BINARY_DIR}/build_set.cmake"
+             "${CMAKE_CURRENT_BINARY_DIR}/install_set.cmake")
   file(READ "${path}" contents)
   string(FIND "${contents}" "CMAKE_FIND_PACKAGE_TARGETS_GLOBAL" found)
   if(found EQUAL -1)

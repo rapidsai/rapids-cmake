@@ -18,7 +18,7 @@ Generate a projects -Config.cmake module and all related information
 
   rapids_export( (BUILD|INSTALL) <project_name>
       EXPORT_SET <export_set>
-      [ GLOBAL_TARGETS <targets...> ]
+      [ GLOBAL_TARGETS [<targets...>] ]
       [ COMPONENTS <components...> ]
       [ COMPONENTS_EXPORT_SET <component 1 export set, component 2 export set...> ]
       [ VERSION <X.Y.Z> ]
@@ -40,8 +40,9 @@ calls to :cmake:command:`find_dependency`, or :cmake:command:`CPMFindPackage`.
   Name of the project, to be used by consumers when using `find_package`
 
 ``GLOBAL_TARGETS``
-  Explicitly list what targets should be made globally visible to
-  the consuming project.
+  Which targets should be made globally visible to the consuming project. If no
+  targets are listed, all targets imported by the generated target files will be
+  made global.
 
 ``COMPONENTS``
 .. versionadded:: v23.04.00
@@ -195,6 +196,11 @@ function(rapids_export type project_name)
   set(one_value EXPORT_SET VERSION NAMESPACE DOCUMENTATION FINAL_CODE_BLOCK)
   set(multi_value GLOBAL_TARGETS COMPONENTS COMPONENTS_EXPORT_SET LANGUAGES)
   cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
+
+  set(_RAPIDS_GLOBAL_TARGETS_ALL FALSE)
+  if((NOT _RAPIDS_GLOBAL_TARGETS) AND "GLOBAL_TARGETS" IN_LIST _RAPIDS_KEYWORDS_MISSING_VALUES)
+    set(_RAPIDS_GLOBAL_TARGETS_ALL TRUE)
+  endif()
 
   set(rapids_version_set ON)
   if(DEFINED _RAPIDS_VERSION AND NOT _RAPIDS_VERSION)

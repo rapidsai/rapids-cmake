@@ -21,7 +21,7 @@ given export set
                       <PackageName>
                       <ExportSet>
                       CPM_ARGS <standard cpm args>
-                      [GLOBAL_TARGETS <targets...>]
+                      [GLOBAL_TARGETS [<targets...>]]
                       )
 
 
@@ -29,6 +29,8 @@ Records a given <PackageName> found by `CPMFindPackage` is required for a
 given export set. When the associated :cmake:command:`rapids_export(BUILD|INSTALL)` or
 :cmake:command:`rapids_export_write_dependencies(BUILD|INSTALL)` command is invoked the
 generated information will include a :cmake:command:`CPMFindPackage` call for <PackageName>.
+When `GLOBAL_TARGETS` is provided with no targets, all targets created by the
+generated :cmake:command:`CPMFindPackage` call will be made global.
 
 
 ``BUILD``
@@ -55,6 +57,11 @@ function(rapids_export_cpm type name export_set)
   set(one_value EXPORT_SET)
   set(multi_value GLOBAL_TARGETS CPM_ARGS)
   cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
+
+  set(targets_global FALSE)
+  if(_RAPIDS_GLOBAL_TARGETS OR "GLOBAL_TARGETS" IN_LIST _RAPIDS_KEYWORDS_MISSING_VALUES)
+    set(targets_global TRUE)
+  endif()
 
   if(type STREQUAL build)
 
@@ -110,7 +117,12 @@ function(rapids_export_cpm type name export_set)
   # Need to record the <PackageName> to `rapids_export_${type}_${export_set}`
   set_property(TARGET rapids_export_${type}_${export_set} APPEND PROPERTY "PACKAGE_NAMES" "${name}")
 
-  if(_RAPIDS_GLOBAL_TARGETS)
+  if(targets_global)
+    set_property(TARGET rapids_export_${type}_${export_set} APPEND
+                 PROPERTY "FIND_PACKAGE_TARGETS_GLOBAL" "${name}")
+  endif()
+
+  if(targets_global AND _RAPIDS_GLOBAL_TARGETS)
     # record our targets that need to be marked as global when imported
     set_property(TARGET rapids_export_${type}_${export_set} APPEND
                  PROPERTY "GLOBAL_TARGETS" "${_RAPIDS_GLOBAL_TARGETS}")

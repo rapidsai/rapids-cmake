@@ -34,7 +34,9 @@ if(is_global)
 endif()
 
 rapids_export_package(INSTALL FakeInstallGlobal install_set GLOBAL_TARGETS)
-set(path "${CMAKE_BINARY_DIR}/rapids-cmake/install_set/install/package_FakeInstallGlobal.cmake")
+rapids_export_write_dependencies(INSTALL install_set "${CMAKE_CURRENT_BINARY_DIR}/install_set.cmake")
+
+set(path "${CMAKE_CURRENT_BINARY_DIR}/install_set.cmake")
 file(READ "${path}" contents)
 string(FIND "${contents}" "CMAKE_FIND_PACKAGE_TARGETS_GLOBAL" found)
 if(found EQUAL -1)

@@ -19,7 +19,7 @@ tracking of these dependencies for correct export support.
 
   rapids_cpm_find(<PackageName> <version>
                   [COMPONENTS <components...>]
-                  [GLOBAL_TARGETS <targets...>]
+                  [GLOBAL_TARGETS [<targets...>]]
                   [BUILD_EXPORT_SET <export-name>]
                   [INSTALL_EXPORT_SET <export-name>]
                   <CPM_ARGS>
@@ -31,7 +31,8 @@ build and install export set for correct export generation.
 
 Since the visibility of CMake's targets differ between targets built locally and those
 imported, :cmake:command:`rapids_cpm_find` promotes imported targets to be global so users have
-consistency. List all targets used by your project in `GLOBAL_TARGET`.
+consistency. Provide `GLOBAL_TARGETS` to make all targets created by the underlying
+package search global, or list explicit targets to support older CMake package behavior.
 
 .. note::
   Requires :cmake:command:`rapids_cpm_init` to be called before usage
@@ -49,8 +50,9 @@ consistency. List all targets used by your project in `GLOBAL_TARGET`.
   package to be considered valid when doing a local search.
 
 ``GLOBAL_TARGETS``
-  Which targets from this package should be made global. This information
-  will be propagated to any associated export set.
+  Which targets from this package should be made global. If no targets are
+  listed, all targets created by the underlying package search will be made
+  global. This information will be propagated to any associated export set.
 
   .. versionchanged:: v21.10.00
     If any targets listed in `GLOBAL_TARGET` exist when :cmake:command:`rapids_cpm_find` is called
@@ -147,6 +149,11 @@ function(rapids_cpm_find name version)
   set(multi_value COMPONENTS GLOBAL_TARGETS)
   cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
+  set(_RAPIDS_GLOBAL_TARGETS_PROVIDED FALSE)
+  if(_RAPIDS_GLOBAL_TARGETS OR "GLOBAL_TARGETS" IN_LIST _RAPIDS_KEYWORDS_MISSING_VALUES)
+    set(_RAPIDS_GLOBAL_TARGETS_PROVIDED TRUE)
+  endif()
+
   if(NOT DEFINED _RAPIDS_CPM_ARGS)
     message(FATAL_ERROR "rapids_cpm_find requires you to specify CPM_ARGS before any CPM arguments")
   endif()
@@ -186,6 +193,10 @@ function(rapids_cpm_find name version)
     set_property(GLOBAL PROPERTY rapids_cmake_${name}_SOURCE_SUBDIR "${_RAPIDS_SOURCE_SUBDIR}")
   endif()
 
+  if(_RAPIDS_GLOBAL_TARGETS_PROVIDED)
+    set(CMAKE_FIND_PACKAGE_TARGETS_GLOBAL TRUE)
+  endif()
+
   if(package_needs_to_be_added)
     # Any non-build patch command triggers CPMAddPackage.
     if(CPM_${name}_SOURCE OR has_non_build_patch)
@@ -208,9 +219,11 @@ function(rapids_cpm_find name version)
   endif()
 
   set(_rapids_extra_info)
-  if(_RAPIDS_GLOBAL_TARGETS)
-    include("${rapids-cmake-dir}/cmake/make_global.cmake")
-    rapids_cmake_make_global(_RAPIDS_GLOBAL_TARGETS)
+  if(_RAPIDS_GLOBAL_TARGETS_PROVIDED)
+    if(_RAPIDS_GLOBAL_TARGETS)
+      include("${rapids-cmake-dir}/cmake/make_global.cmake")
+      rapids_cmake_make_global(_RAPIDS_GLOBAL_TARGETS)
+    endif()
 
     list(APPEND _rapids_extra_info "GLOBAL_TARGETS" ${_RAPIDS_GLOBAL_TARGETS})
   endif()
