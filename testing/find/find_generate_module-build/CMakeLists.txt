@@ -54,8 +54,7 @@ endif()
 rapids_find_generate_module(RapidsTestCustomTarget
                             HEADER_NAMES rapids-cmake-test-header.h
                             LIBRARY_NAMES rapids-cmake-test
-                            VERSION 42
-                            TARGET_NAME RapidsTest::rapids_test_custom_target
+                            VERSION 42 TARGET_NAME RapidsTest::rapids_test_custom_target
                             INCLUDE_SUFFIXES rapids-cmake
                             BUILD_EXPORT_SET test_set)
 
