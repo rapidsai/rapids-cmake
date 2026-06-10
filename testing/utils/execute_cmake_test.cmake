@@ -9,7 +9,10 @@ execute_process(COMMAND ${TEST_COMMAND} RESULT_VARIABLE result OUTPUT_VARIABLE s
                 ERROR_VARIABLE stderr)
 
 if(NOT WILL_FAIL AND NOT result EQUAL 0)
-  message(SEND_ERROR "Expected exit code 0, got ${result}")
+  string(REPLACE "\n" "\n  " formatted_stdout "${stdout}")
+  string(REPLACE "\n" "\n  " formatted_stderr "${stderr}")
+  message(SEND_ERROR "Expected exit code 0, got ${result}\nActual stdout:\n  ${formatted_stdout}\nActual stderr:\n  ${formatted_stderr}"
+  )
 endif()
 
 if(EXPECTED_REGULAR_EXPRESSION AND NOT stdout MATCHES "${EXPECTED_REGULAR_EXPRESSION}"

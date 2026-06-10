@@ -87,6 +87,18 @@ tracking of these dependencies for correct export support.
 
 .. _`cuda`:
 
+JSON
+****
+
+The `rapids_json` functions provide common JSON manipulation functions.
+
+.. toctree::
+   :titlesonly:
+
+    rapids_json_array_append </command/rapids_json_array_append>
+    rapids_json_array_extend </command/rapids_json_array_extend>
+    rapids_json_compute_matrix_product </command/rapids_json_compute_matrix_product>
+
 CUDA
 ****
 

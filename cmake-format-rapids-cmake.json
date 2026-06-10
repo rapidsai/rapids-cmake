@@ -387,6 +387,29 @@
           "FIND_ARGS": "+"
         }
       },
+      "rapids_json_array_append": {
+        "pargs": {
+          "nargs": 3
+        }
+      },
+      "rapids_json_array_extend": {
+        "pargs": {
+          "nargs": 3
+        }
+      },
+      "rapids_json_compute_matrix_product": {
+        "pargs": {
+          "nargs": 1,
+          "flags": [
+            "NO_WARN_USED",
+            "NO_WARN_UNUSED"
+          ]
+        },
+        "kwargs": {
+          "MATRIX_STRING": 1,
+          "MATRIX_FILE": 1
+        }
+      },
       "rapids_cython_init": {
         "pargs": {
           "nargs": "0"
