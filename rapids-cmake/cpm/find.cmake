@@ -31,7 +31,7 @@ build and install export set for correct export generation.
 
 Since the visibility of CMake's targets differ between targets built locally and those
 imported, :cmake:command:`rapids_cpm_find` promotes imported targets to be global so users have
-consistency. Provide `GLOBAL_TARGETS` to make all targets created by the underlying
+consistency. Provide ``GLOBAL_TARGETS`` with no target arguments to make all targets created by the underlying
 package search global, or list explicit targets to support older CMake package behavior.
 
 .. note::
