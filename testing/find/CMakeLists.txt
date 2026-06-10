@@ -13,6 +13,7 @@ add_cmake_config_test(find_package-components-failed.cmake)
 
 add_cmake_config_test(find_package-build.cmake)
 add_cmake_config_test(find_package-global-targets-no-values.cmake)
+add_cmake_config_test(find_package-global-targets-no-values-keep-on.cmake)
 add_cmake_config_test(find_package-install.cmake)
 
 add_cmake_config_test(find_package-cudatoolkit-patching.cmake)
