@@ -135,6 +135,7 @@ This function requires CMake 4.3 or newer.
 #]=======================================================================]
 function(rapids_json_compute_matrix_product out_var)
   # TODO: Remove this version gate once we require 4.3
+  cmake_policy(PUSH)
   cmake_minimum_required(VERSION 4.3)
 
   include("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/compute_matrix_product_impl.cmake")
@@ -176,4 +177,5 @@ function(rapids_json_compute_matrix_product out_var)
   endwhile()
 
   set(${out_var} "${result}" PARENT_SCOPE)
+  cmake_policy(POP)
 endfunction()
