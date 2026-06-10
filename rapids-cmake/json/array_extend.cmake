@@ -32,7 +32,7 @@ Extend a JSON array with another JSON array.
 #]=======================================================================]
 function(rapids_json_array_extend out_var array values)
   # TODO: Remove this version gate once we require 4.3
-  cmake_policy(PUSH)
+  block(SCOPE_FOR POLICIES)
   cmake_minimum_required(VERSION 4.3)
 
   string(JSON type TYPE "${array}")
@@ -52,5 +52,5 @@ function(rapids_json_array_extend out_var array values)
     math(EXPR it "${it} + 1")
   endwhile()
   set(${out_var} "${array}" PARENT_SCOPE)
-  cmake_policy(POP)
+  endblock()
 endfunction()
