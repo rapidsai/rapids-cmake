@@ -9,7 +9,7 @@ include_guard(GLOBAL)
 include("${rapids-cmake-dir}/json/array_append.cmake")
 include("${rapids-cmake-dir}/json/array_extend.cmake")
 
-# rapids-lint: disable=C0111
+# Product a JSON object with a queue entry
 function(_rapids_json_cmp_queue_item out_var path key matrix)
   string(JSON item SET "{}" path "${path}")
   string(JSON item SET "${item}" key "${key}")
@@ -17,7 +17,8 @@ function(_rapids_json_cmp_queue_item out_var path key matrix)
   set(${out_var} "${item}" PARENT_SCOPE)
 endfunction()
 
-# rapids-lint: disable=C0111
+# Produce a JSON object with a matrix entry, telling whether or not the most direct ancestor key was
+# used in the entry
 function(_rapids_json_cmp_generator_item out_var entry used)
   string(JSON item SET "{}" entry "${entry}")
   if(used)
@@ -28,7 +29,7 @@ function(_rapids_json_cmp_generator_item out_var entry used)
   set(${out_var} "${item}" PARENT_SCOPE)
 endfunction()
 
-# rapids-lint: disable=C0111
+# Turn a JSON array of strings and numbers into a path representation
 function(_rapids_json_cmp_path_repr out_var path)
   string(JSON len LENGTH "${path}")
   set(path_repr "")
@@ -41,7 +42,7 @@ function(_rapids_json_cmp_path_repr out_var path)
   set(${out_var} "${path_repr}" PARENT_SCOPE)
 endfunction()
 
-# rapids-lint: disable=C0111
+# Iterate the next queued dimension
 function(_rapids_json_cmp_iterate_next_dimension out_var)
   set(options)
   set(one_value QUEUE ENTRY WARN_USED WARN_UNUSED)
@@ -109,7 +110,7 @@ function(_rapids_json_cmp_iterate_next_dimension out_var)
   set(${out_var} "${result}" PARENT_SCOPE)
 endfunction()
 
-# rapids-lint: disable=C0111
+# Handle object nodes
 function(_rapids_json_cmp_dict out_var)
   set(options)
   set(one_value PATH MATRIX QUEUE ENTRY WARN_USED WARN_UNUSED)
@@ -154,7 +155,7 @@ function(_rapids_json_cmp_dict out_var)
   set(${out_var} "${result}" PARENT_SCOPE)
 endfunction()
 
-# rapids-lint: disable=C0111
+# Handle array nodes
 function(_rapids_json_cmp_array out_var)
   set(options)
   set(one_value PATH KEY MATRIX QUEUE ENTRY WARN_USED WARN_UNUSED)
@@ -191,7 +192,7 @@ function(_rapids_json_cmp_array out_var)
   set(${out_var} "${result}" PARENT_SCOPE)
 endfunction()
 
-# rapids-lint: disable=C0111
+# Handle leaf nodes
 function(_rapids_json_cmp_leaf out_var)
   set(options)
   set(one_value PATH KEY MATRIX QUEUE ENTRY WARN_USED WARN_UNUSED)
@@ -224,7 +225,7 @@ function(_rapids_json_cmp_leaf out_var)
   set(${out_var} "${result}" PARENT_SCOPE)
 endfunction()
 
-# rapids-lint: disable=C0111
+# Internal implementation of rapids_json_compute_matrix_product()
 function(_rapids_json_cmp_impl out_var)
   set(options)
   set(one_value PATH KEY MATRIX QUEUE ENTRY WARN_USED WARN_UNUSED)
