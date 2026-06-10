@@ -34,7 +34,7 @@ generation. Will propagate all variables set by
 
 Since the visibility of CMake's targets differ between targets built locally and
 those imported, :cmake:command:`rapids_find_package` promotes imported targets
-to be global so users have consistency. Provide `GLOBAL_TARGETS` to make all
+to be global so users have consistency. Provide ``GLOBAL_TARGETS`` with no target arguments to make all
 targets created by :cmake:command:`find_package <cmake:command:find_package>`
 global, or list explicit targets to support older CMake package behavior.
 
