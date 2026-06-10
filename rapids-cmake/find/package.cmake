@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -113,8 +113,7 @@ macro(rapids_find_package name)
                         "${_rapids_multi_value}" ${ARGN})
 
   set(_RAPIDS_FIND_GLOBAL_TARGETS_PROVIDED FALSE)
-  if(_RAPIDS_FIND_GLOBAL_TARGETS
-     OR "GLOBAL_TARGETS" IN_LIST _RAPIDS_FIND_KEYWORDS_MISSING_VALUES)
+  if(_RAPIDS_FIND_GLOBAL_TARGETS OR "GLOBAL_TARGETS" IN_LIST _RAPIDS_FIND_KEYWORDS_MISSING_VALUES)
     set(_RAPIDS_FIND_GLOBAL_TARGETS_PROVIDED TRUE)
   endif()
 
@@ -125,8 +124,7 @@ macro(rapids_find_package name)
   if(_RAPIDS_FIND_GLOBAL_TARGETS_PROVIDED)
     if(DEFINED CMAKE_FIND_PACKAGE_TARGETS_GLOBAL)
       set(_RAPIDS_FIND_CMAKE_FIND_PACKAGE_TARGETS_GLOBAL_DEFINED TRUE)
-      set(_RAPIDS_FIND_CMAKE_FIND_PACKAGE_TARGETS_GLOBAL
-          "${CMAKE_FIND_PACKAGE_TARGETS_GLOBAL}")
+      set(_RAPIDS_FIND_CMAKE_FIND_PACKAGE_TARGETS_GLOBAL "${CMAKE_FIND_PACKAGE_TARGETS_GLOBAL}")
     else()
       set(_RAPIDS_FIND_CMAKE_FIND_PACKAGE_TARGETS_GLOBAL_DEFINED FALSE)
     endif()
@@ -137,8 +135,7 @@ macro(rapids_find_package name)
 
   if(_RAPIDS_FIND_GLOBAL_TARGETS_PROVIDED)
     if(_RAPIDS_FIND_CMAKE_FIND_PACKAGE_TARGETS_GLOBAL_DEFINED)
-      set(CMAKE_FIND_PACKAGE_TARGETS_GLOBAL
-          "${_RAPIDS_FIND_CMAKE_FIND_PACKAGE_TARGETS_GLOBAL}")
+      set(CMAKE_FIND_PACKAGE_TARGETS_GLOBAL "${_RAPIDS_FIND_CMAKE_FIND_PACKAGE_TARGETS_GLOBAL}")
     else()
       unset(CMAKE_FIND_PACKAGE_TARGETS_GLOBAL)
     endif()

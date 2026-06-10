@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -119,7 +119,8 @@ endif()\n")
     endif()
     if(dep IN_LIST targets_global_packages)
       # Scope CMAKE_FIND_PACKAGE_TARGETS_GLOBAL to this dependency's find call
-      string(PREPEND dep_content
+      string(PREPEND
+             dep_content
              [=[if(DEFINED CMAKE_FIND_PACKAGE_TARGETS_GLOBAL)
   set(rapids_cmake_find_package_targets_global "${CMAKE_FIND_PACKAGE_TARGETS_GLOBAL}")
   set(rapids_cmake_find_package_targets_global_defined TRUE)
@@ -128,7 +129,8 @@ else()
 endif()
 set(CMAKE_FIND_PACKAGE_TARGETS_GLOBAL TRUE)
 ]=])
-      string(APPEND dep_content
+      string(APPEND
+             dep_content
              [=[if(rapids_cmake_find_package_targets_global_defined)
   set(CMAKE_FIND_PACKAGE_TARGETS_GLOBAL "${rapids_cmake_find_package_targets_global}")
 else()

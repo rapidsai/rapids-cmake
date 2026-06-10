@@ -7,10 +7,10 @@
 include(${rapids-cmake-dir}/export/cpm.cmake)
 include(${rapids-cmake-dir}/export/write_dependencies.cmake)
 
-rapids_export_cpm(BUILD FakeBuildCpm template_set GLOBAL_TARGETS
-                  CPM_ARGS NAME FakeBuildCpm VERSION 1.0)
-rapids_export_cpm(INSTALL FakeInstallCpm template_set GLOBAL_TARGETS
-                  CPM_ARGS NAME FakeInstallCpm VERSION 1.0)
+rapids_export_cpm(BUILD FakeBuildCpm template_set GLOBAL_TARGETS CPM_ARGS NAME FakeBuildCpm VERSION
+                                                                          1.0)
+rapids_export_cpm(INSTALL FakeInstallCpm template_set GLOBAL_TARGETS CPM_ARGS NAME FakeInstallCpm
+                                                                              VERSION 1.0)
 
 get_target_property(build_global_targets rapids_export_build_template_set GLOBAL_TARGETS)
 if(build_global_targets)
@@ -23,7 +23,8 @@ if(install_global_targets)
 endif()
 
 rapids_export_write_dependencies(BUILD template_set "${CMAKE_CURRENT_BINARY_DIR}/build_set.cmake")
-rapids_export_write_dependencies(INSTALL template_set "${CMAKE_CURRENT_BINARY_DIR}/install_set.cmake")
+rapids_export_write_dependencies(INSTALL template_set
+                                 "${CMAKE_CURRENT_BINARY_DIR}/install_set.cmake")
 
 foreach(path "${CMAKE_CURRENT_BINARY_DIR}/build_set.cmake"
              "${CMAKE_CURRENT_BINARY_DIR}/install_set.cmake")
