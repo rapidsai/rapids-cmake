@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -62,6 +62,10 @@ function(rapids_export_write_dependencies type export_set file_path)
   get_property(deps TARGET rapids_export_${type}_${export_set} PROPERTY "PACKAGE_NAMES")
   list(REMOVE_DUPLICATES deps)
 
+  get_property(targets_global_packages TARGET rapids_export_${type}_${export_set}
+               PROPERTY "FIND_PACKAGE_TARGETS_GLOBAL")
+  list(REMOVE_DUPLICATES targets_global_packages)
+
   # Do we need a Template header?
   set(_RAPIDS_EXPORT_CONTENTS)
   if(uses_cpm)
@@ -112,6 +116,29 @@ endif()\n")
       file(READ "${dep_dir}/cpm_${dep}.cmake" dep_content)
     elseif(EXISTS "${dep_dir}/package_${dep}.cmake")
       file(READ "${dep_dir}/package_${dep}.cmake" dep_content)
+    endif()
+    if(dep IN_LIST targets_global_packages)
+      # Scope CMAKE_FIND_PACKAGE_TARGETS_GLOBAL to this dependency's find call
+      string(PREPEND
+             dep_content
+             [=[if(DEFINED CMAKE_FIND_PACKAGE_TARGETS_GLOBAL)
+  set(rapids_cmake_find_package_targets_global "${CMAKE_FIND_PACKAGE_TARGETS_GLOBAL}")
+  set(rapids_cmake_find_package_targets_global_defined TRUE)
+else()
+  set(rapids_cmake_find_package_targets_global_defined FALSE)
+endif()
+set(CMAKE_FIND_PACKAGE_TARGETS_GLOBAL TRUE)
+]=])
+      string(APPEND
+             dep_content
+             [=[if(rapids_cmake_find_package_targets_global_defined)
+  set(CMAKE_FIND_PACKAGE_TARGETS_GLOBAL "${rapids_cmake_find_package_targets_global}")
+else()
+  unset(CMAKE_FIND_PACKAGE_TARGETS_GLOBAL)
+endif()
+unset(rapids_cmake_find_package_targets_global)
+unset(rapids_cmake_find_package_targets_global_defined)
+]=])
     endif()
     string(APPEND _RAPIDS_EXPORT_CONTENTS "${dep_content}\n")
 

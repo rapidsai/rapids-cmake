@@ -21,7 +21,7 @@ is required for a given export set
                          <PackageName>
                          <ExportSet>
                          [VERSION] major.minor
-                         [GLOBAL_TARGETS <targets...>]
+                         [GLOBAL_TARGETS [<targets...>]]
                         )
 
 Records a given <PackageName> found by :cmake:command:`find_package <cmake:command:find_package>`
@@ -47,7 +47,9 @@ generated information will include a :cmake:command:`find_dependency` call for <
 
 ``GLOBAL_TARGETS``
   Which targets from this package should be made global when the
-  package is imported in.
+  package is imported in. If no targets are listed, all targets created by the
+  generated :cmake:command:`find_dependency <cmake:command:find_dependency>` call
+  will be made global.
 
 
 #]=======================================================================]
@@ -60,6 +62,11 @@ function(rapids_export_package type name export_set)
   set(one_value EXPORT_SET VERSION)
   set(multi_value GLOBAL_TARGETS COMPONENTS)
   cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
+
+  set(targets_global FALSE)
+  if(_RAPIDS_GLOBAL_TARGETS OR "GLOBAL_TARGETS" IN_LIST _RAPIDS_KEYWORDS_MISSING_VALUES)
+    set(targets_global TRUE)
+  endif()
 
   if(type STREQUAL build)
     if(DEFINED ${name}_DIR AND ${name}_DIR)
@@ -100,7 +107,12 @@ function(rapids_export_package type name export_set)
   # Need to record the <PackageName> to `rapids_export_${type}_${export_set}`
   set_property(TARGET rapids_export_${type}_${export_set} APPEND PROPERTY "PACKAGE_NAMES" "${name}")
 
-  if(_RAPIDS_GLOBAL_TARGETS)
+  if(targets_global)
+    set_property(TARGET rapids_export_${type}_${export_set} APPEND
+                 PROPERTY "FIND_PACKAGE_TARGETS_GLOBAL" "${name}")
+  endif()
+
+  if(targets_global AND _RAPIDS_GLOBAL_TARGETS)
     # record our targets that need to be marked as global when imported
     set_property(TARGET rapids_export_${type}_${export_set} APPEND
                  PROPERTY "GLOBAL_TARGETS" "${_RAPIDS_GLOBAL_TARGETS}")
