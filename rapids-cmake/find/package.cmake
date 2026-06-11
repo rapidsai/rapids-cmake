@@ -106,6 +106,26 @@ macro(rapids_find_package name)
   # same. If it doesn't it would make drop in replacements impossible
   #
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.find.package")
+  _rapids_find_package_parse_args(${ARGN})
+
+  if(_RAPIDS_FIND_GLOBAL_TARGETS_PROVIDED)
+    _rapids_find_enable_global_targets()
+  endif()
+
+  find_package(${name} ${_RAPIDS_FIND_UNPARSED_ARGUMENTS})
+
+  if(_RAPIDS_FIND_GLOBAL_TARGETS_PROVIDED)
+    _rapids_find_restore_global_targets()
+  endif()
+
+  _rapids_find_make_global_targets()
+  _rapids_find_record_export_requirements(${name} "${ARGV1}")
+  _rapids_find_package_cleanup()
+  list(POP_BACK CMAKE_MESSAGE_CONTEXT)
+endmacro()
+
+# cmake-lint: disable=C0111
+macro(_rapids_find_package_parse_args)
   set(_rapids_options FIND_ARGS)
   set(_rapids_one_value BUILD_EXPORT_SET INSTALL_EXPORT_SET)
   set(_rapids_multi_value COMPONENTS GLOBAL_TARGETS)
@@ -120,36 +140,41 @@ macro(rapids_find_package name)
   if(_RAPIDS_FIND_COMPONENTS)
     list(APPEND _RAPIDS_FIND_UNPARSED_ARGUMENTS COMPONENTS ${_RAPIDS_FIND_COMPONENTS})
   endif()
+endmacro()
 
-  if(_RAPIDS_FIND_GLOBAL_TARGETS_PROVIDED)
-    if(DEFINED CMAKE_FIND_PACKAGE_TARGETS_GLOBAL)
-      set(_RAPIDS_FIND_CMAKE_FIND_PACKAGE_TARGETS_GLOBAL_DEFINED TRUE)
-      set(_RAPIDS_FIND_CMAKE_FIND_PACKAGE_TARGETS_GLOBAL "${CMAKE_FIND_PACKAGE_TARGETS_GLOBAL}")
-    else()
-      set(_RAPIDS_FIND_CMAKE_FIND_PACKAGE_TARGETS_GLOBAL_DEFINED FALSE)
-    endif()
-    set(CMAKE_FIND_PACKAGE_TARGETS_GLOBAL TRUE)
+# cmake-lint: disable=C0111
+macro(_rapids_find_enable_global_targets)
+  if(DEFINED CMAKE_FIND_PACKAGE_TARGETS_GLOBAL)
+    set(_RAPIDS_FIND_CMAKE_FIND_PACKAGE_TARGETS_GLOBAL_DEFINED TRUE)
+    set(_RAPIDS_FIND_CMAKE_FIND_PACKAGE_TARGETS_GLOBAL "${CMAKE_FIND_PACKAGE_TARGETS_GLOBAL}")
+  else()
+    set(_RAPIDS_FIND_CMAKE_FIND_PACKAGE_TARGETS_GLOBAL_DEFINED FALSE)
   endif()
+  set(CMAKE_FIND_PACKAGE_TARGETS_GLOBAL TRUE)
+endmacro()
 
-  find_package(${name} ${_RAPIDS_FIND_UNPARSED_ARGUMENTS})
-
-  if(_RAPIDS_FIND_GLOBAL_TARGETS_PROVIDED)
-    if(_RAPIDS_FIND_CMAKE_FIND_PACKAGE_TARGETS_GLOBAL_DEFINED)
-      set(CMAKE_FIND_PACKAGE_TARGETS_GLOBAL "${_RAPIDS_FIND_CMAKE_FIND_PACKAGE_TARGETS_GLOBAL}")
-    else()
-      unset(CMAKE_FIND_PACKAGE_TARGETS_GLOBAL)
-    endif()
+# cmake-lint: disable=C0111
+macro(_rapids_find_restore_global_targets)
+  if(_RAPIDS_FIND_CMAKE_FIND_PACKAGE_TARGETS_GLOBAL_DEFINED)
+    set(CMAKE_FIND_PACKAGE_TARGETS_GLOBAL "${_RAPIDS_FIND_CMAKE_FIND_PACKAGE_TARGETS_GLOBAL}")
+  else()
+    unset(CMAKE_FIND_PACKAGE_TARGETS_GLOBAL)
   endif()
+endmacro()
 
+# cmake-lint: disable=C0111
+macro(_rapids_find_make_global_targets)
   if(_RAPIDS_FIND_GLOBAL_TARGETS)
     include("${rapids-cmake-dir}/cmake/make_global.cmake")
     rapids_cmake_make_global(_RAPIDS_FIND_GLOBAL_TARGETS)
   endif()
+endmacro()
 
-  # Only record the export requirements if the package was found This allows us to handle implicit
-  # OPTIONAL find packages
+# cmake-lint: disable=C0111
+macro(_rapids_find_record_export_requirements name possible_version)
+  # Only record the export requirements if the package was found. This allows us to handle implicit
+  # OPTIONAL find packages.
   if(${${name}_FOUND})
-
     set(_rapids_extra_info)
     if(_RAPIDS_FIND_GLOBAL_TARGETS_PROVIDED)
       list(APPEND _rapids_extra_info "GLOBAL_TARGETS" ${_RAPIDS_FIND_GLOBAL_TARGETS})
@@ -159,9 +184,9 @@ macro(rapids_find_package name)
     endif()
 
     # Record the version we found to be what consumers need to find as well
-    set(possible_version ${ARGV1})
-    if(possible_version MATCHES "^[0-9]+")
-      list(APPEND _rapids_extra_info "VERSION" ${possible_version})
+    set(_rapids_find_possible_version "${possible_version}")
+    if(_rapids_find_possible_version MATCHES "^[0-9]+")
+      list(APPEND _rapids_extra_info "VERSION" ${_rapids_find_possible_version})
     endif()
 
     if(_RAPIDS_FIND_BUILD_EXPORT_SET)
@@ -176,9 +201,12 @@ macro(rapids_find_package name)
     endif()
 
     unset(_rapids_extra_info)
+    unset(_rapids_find_possible_version)
   endif()
+endmacro()
 
-  # Cleanup all our local variables
+# cmake-lint: disable=C0111
+macro(_rapids_find_package_cleanup)
   foreach(_rapids_local_var IN LISTS _rapids_options _rapids_one_value _rapids_multi_value)
     if(DEFINED _RAPIDS_FIND_${_rapids_local_var})
       unset(_RAPIDS_FIND_${_rapids_local_var})
@@ -192,5 +220,4 @@ macro(rapids_find_package name)
   unset(_RAPIDS_FIND_KEYWORDS_MISSING_VALUES)
   unset(_RAPIDS_FIND_CMAKE_FIND_PACKAGE_TARGETS_GLOBAL_DEFINED)
   unset(_RAPIDS_FIND_CMAKE_FIND_PACKAGE_TARGETS_GLOBAL)
-  list(POP_BACK CMAKE_MESSAGE_CONTEXT)
 endmacro()

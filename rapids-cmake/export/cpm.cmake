@@ -64,43 +64,7 @@ function(rapids_export_cpm type name export_set)
   endif()
 
   if(type STREQUAL build)
-
-    # Check if we have any of the support build directory config files first
-    FetchContent_GetProperties(${name} BINARY_DIR possible_build_dirs)
-    list(APPEND possible_build_dirs "${${name}_BINARY_DIR}")
-
-    set(possible_build_config_files "${lowercase_name}-config.cmake" "${name}Config.cmake")
-    set(build_dir_config_found FALSE)
-    foreach(bdir IN LISTS possible_build_dirs)
-      foreach(config_file IN LISTS possible_build_config_files)
-        if(EXISTS "${bdir}/${config_file}")
-          set(build_dir_config_found TRUE)
-          set(build_dir_config "${bdir}")
-          break()
-        endif()
-      endforeach()
-      if(build_dir_config_found)
-        break()
-      endif()
-    endforeach()
-
-    if(NOT build_dir_config_found)
-      # Only when we `<package>_DIR` do we want to see if we can use the FetchContent info. This
-      # maintains compatibility with projects where we need to fall-back to the build directory
-      set(possible_src_dir "${${name}_DIR}")
-      if(${name}_DIR)
-        set(possible_dir "${${name}_DIR}")
-        if(possible_dir STREQUAL CMAKE_FIND_PACKAGE_REDIRECTS_DIR)
-          FetchContent_GetProperties(${name} SOURCE_DIR possible_dir)
-        endif()
-      else()
-        # Currently required to keep the DIR hints consistent when no src or build dir exists
-        # (export_cpm-build-possible-dir)
-        set(possible_dir "${${name}_BINARY_DIR}")
-      endif()
-    else()
-      set(possible_dir "${build_dir_config}")
-    endif()
+    _rapids_export_cpm_build_dir(${name} ${lowercase_name} possible_dir)
   endif()
 
   string(TIMESTAMP current_year "%Y" UTC)
@@ -128,4 +92,45 @@ function(rapids_export_cpm type name export_set)
                  PROPERTY "GLOBAL_TARGETS" "${_RAPIDS_GLOBAL_TARGETS}")
   endif()
 
+endfunction()
+
+# cmake-lint: disable=C0111
+function(_rapids_export_cpm_build_dir name lowercase_name possible_dir_var)
+  # Check if we have any of the support build directory config files first
+  FetchContent_GetProperties(${name} BINARY_DIR possible_build_dirs)
+  list(APPEND possible_build_dirs "${${name}_BINARY_DIR}")
+
+  set(possible_build_config_files "${lowercase_name}-config.cmake" "${name}Config.cmake")
+  set(build_dir_config_found FALSE)
+  foreach(bdir IN LISTS possible_build_dirs)
+    foreach(config_file IN LISTS possible_build_config_files)
+      if(EXISTS "${bdir}/${config_file}")
+        set(build_dir_config_found TRUE)
+        set(build_dir_config "${bdir}")
+        break()
+      endif()
+    endforeach()
+    if(build_dir_config_found)
+      break()
+    endif()
+  endforeach()
+
+  if(NOT build_dir_config_found)
+    # Only when we `<package>_DIR` do we want to see if we can use the FetchContent info. This
+    # maintains compatibility with projects where we need to fall-back to the build directory
+    if(${name}_DIR)
+      set(possible_dir "${${name}_DIR}")
+      if(possible_dir STREQUAL CMAKE_FIND_PACKAGE_REDIRECTS_DIR)
+        FetchContent_GetProperties(${name} SOURCE_DIR possible_dir)
+      endif()
+    else()
+      # Currently required to keep the DIR hints consistent when no src or build dir exists
+      # (export_cpm-build-possible-dir)
+      set(possible_dir "${${name}_BINARY_DIR}")
+    endif()
+  else()
+    set(possible_dir "${build_dir_config}")
+  endif()
+
+  set(${possible_dir_var} "${possible_dir}" PARENT_SCOPE)
 endfunction()
