@@ -13,6 +13,7 @@ require.
    :titlesonly:
 
    /command/rapids_cmake_build_type
+   /command/rapids_cmake_check_conda_env
    /command/rapids_cmake_default_install_component
    /command/rapids_cmake_download_with_retry
    /command/rapids_cmake_install_lib_dir
