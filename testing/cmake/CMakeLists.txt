@@ -11,6 +11,12 @@ add_cmake_config_test(build_type-debug.cmake)
 add_cmake_config_test(build_type-multiple.cmake)
 add_cmake_config_test(build_type-user-specified.cmake)
 
+add_cmake_config_test(check_conda_env.cmake)
+add_cmake_config_test(check_conda_env-mismatch.cmake
+                      SHOULD_FAIL
+                      "Conda environment changed since this build directory was configured\\.\n\n    Configured with: /opt/conda/prefix-a\n    Current env:     /opt/conda/prefix-b\n\n  Delete the build directory and reconfigure:\n\n    foo"
+)
+
 add_cmake_config_test(conda_env-build.cmake)
 add_cmake_config_test(conda_env-build-envvar.cmake)
 add_cmake_config_test(conda_env-cross-build-arm.cmake)
