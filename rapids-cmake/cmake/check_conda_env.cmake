@@ -17,15 +17,16 @@ Detect when the active Conda environment has changed since the build directory w
 
   .. code-block:: cmake
 
-    rapids_cmake_check_conda_env(rebuild_instruction)
+    rapids_cmake_check_conda_env([REBUILD_INSTRUCTION <instruction>])
 
 When called from within a Conda environment, records the current ``CONDA_PREFIX`` in the
 internal cache variable ``rapids_conda_prefix``. On subsequent configures, if ``CONDA_PREFIX``
 differs from the recorded value, configure terminates with a fatal error that includes
-``rebuild_instruction`` for the user.
+``REBUILD_INSTRUCTION`` for the user.
 
-``rebuild_instruction``
-  Instructions shown to the user on how to delete the build directory and reconfigure.
+``REBUILD_INSTRUCTION``
+  Instructions shown to the user on how to delete the build directory and reconfigure. If not provided, a
+  default instruction ``rm -rf <build directory>`` is used.
 
 Result Variables
 ^^^^^^^^^^^^^^^^
@@ -34,8 +35,17 @@ Result Variables
 
 #]=======================================================================]
 # rapids-pre-commit-hooks: enable[verify-hardcoded-version]
-function(rapids_cmake_check_conda_env rebuild_instruction)
+function(rapids_cmake_check_conda_env)
   list(APPEND CMAKE_MESSAGE_CONTEXT "rapids.cmake.check_conda_env")
+
+  set(options)
+  set(one_value REBUILD_INSTRUCTION)
+  set(multi_value)
+  cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
+
+  if(NOT DEFINED _RAPIDS_REBUILD_INSTRUCTION)
+    set(_RAPIDS_REBUILD_INSTRUCTION "rm -rf ${CMAKE_BINARY_DIR}")
+  endif()
 
   if(DEFINED ENV{CONDA_PREFIX})
     set(_current_conda "$ENV{CONDA_PREFIX}")
@@ -44,7 +54,7 @@ function(rapids_cmake_check_conda_env rebuild_instruction)
                           "  Configured with: ${rapids_conda_prefix}\n"
                           "  Current env:     ${_current_conda}\n"
                           "Delete the build directory and reconfigure:\n"
-                          "  ${rebuild_instruction}")
+                          "  ${_RAPIDS_REBUILD_INSTRUCTION}")
     endif()
     set(rapids_conda_prefix "${_current_conda}"
         CACHE INTERNAL
