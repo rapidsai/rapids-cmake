@@ -8,6 +8,6 @@ include(${rapids-cmake-dir}/cmake/check_conda_env.cmake)
 
 # Fails configure when CONDA_PREFIX changes
 set(ENV{CONDA_PREFIX} "/opt/conda/prefix-a")
-rapids_cmake_check_conda_env()
+rapids_cmake_check_conda_env(REBUILD_INSTRUCTION foo)
 set(ENV{CONDA_PREFIX} "/opt/conda/prefix-b")
-rapids_cmake_check_conda_env()
+rapids_cmake_check_conda_env(REBUILD_INSTRUCTION foo)
