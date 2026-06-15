@@ -8,7 +8,10 @@
       },
       "rapids_cmake_check_conda_env": {
         "pargs": {
-          "nargs": 1
+          "nargs": "0"
+        },
+        "kwargs": {
+          "REBUILD_INSTRUCTION": 1
         }
       },
       "rapids_cmake_default_install_component": {
