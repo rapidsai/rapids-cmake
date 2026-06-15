@@ -28,11 +28,6 @@ differs from the recorded value, configure terminates with a fatal error that in
   Instructions shown to the user on how to delete the build directory and reconfigure. If not provided, a
   default instruction ``rm -rf <build directory>`` is used.
 
-Result Variables
-^^^^^^^^^^^^^^^^
-  :cmake:variable:`rapids_conda_prefix` will be set to ``CONDA_PREFIX`` when
-  initially configured.
-
 #]=======================================================================]
 # rapids-pre-commit-hooks: enable[verify-hardcoded-version]
 function(rapids_cmake_check_conda_env)
