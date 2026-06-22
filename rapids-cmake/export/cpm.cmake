@@ -21,7 +21,7 @@ given export set
                       <PackageName>
                       <ExportSet>
                       CPM_ARGS <standard cpm args>
-                      [GLOBAL_TARGETS <targets...>]
+                      [GLOBAL_TARGETS [<targets...>]]
                       )
 
 
@@ -29,6 +29,8 @@ Records a given <PackageName> found by `CPMFindPackage` is required for a
 given export set. When the associated :cmake:command:`rapids_export(BUILD|INSTALL)` or
 :cmake:command:`rapids_export_write_dependencies(BUILD|INSTALL)` command is invoked the
 generated information will include a :cmake:command:`CPMFindPackage` call for <PackageName>.
+When `GLOBAL_TARGETS` is provided with no targets, all targets created by the
+generated :cmake:command:`CPMFindPackage` call will be made global.
 
 
 ``BUILD``
@@ -56,44 +58,13 @@ function(rapids_export_cpm type name export_set)
   set(multi_value GLOBAL_TARGETS CPM_ARGS)
   cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
+  set(targets_global FALSE)
+  if(_RAPIDS_GLOBAL_TARGETS OR "GLOBAL_TARGETS" IN_LIST _RAPIDS_KEYWORDS_MISSING_VALUES)
+    set(targets_global TRUE)
+  endif()
+
   if(type STREQUAL build)
-
-    # Check if we have any of the support build directory config files first
-    FetchContent_GetProperties(${name} BINARY_DIR possible_build_dirs)
-    list(APPEND possible_build_dirs "${${name}_BINARY_DIR}")
-
-    set(possible_build_config_files "${lowercase_name}-config.cmake" "${name}Config.cmake")
-    set(build_dir_config_found FALSE)
-    foreach(bdir IN LISTS possible_build_dirs)
-      foreach(config_file IN LISTS possible_build_config_files)
-        if(EXISTS "${bdir}/${config_file}")
-          set(build_dir_config_found TRUE)
-          set(build_dir_config "${bdir}")
-          break()
-        endif()
-      endforeach()
-      if(build_dir_config_found)
-        break()
-      endif()
-    endforeach()
-
-    if(NOT build_dir_config_found)
-      # Only when we `<package>_DIR` do we want to see if we can use the FetchContent info. This
-      # maintains compatibility with projects where we need to fall-back to the build directory
-      set(possible_src_dir "${${name}_DIR}")
-      if(${name}_DIR)
-        set(possible_dir "${${name}_DIR}")
-        if(possible_dir STREQUAL CMAKE_FIND_PACKAGE_REDIRECTS_DIR)
-          FetchContent_GetProperties(${name} SOURCE_DIR possible_dir)
-        endif()
-      else()
-        # Currently required to keep the DIR hints consistent when no src or build dir exists
-        # (export_cpm-build-possible-dir)
-        set(possible_dir "${${name}_BINARY_DIR}")
-      endif()
-    else()
-      set(possible_dir "${build_dir_config}")
-    endif()
+    _rapids_export_cpm_build_dir(${name} ${lowercase_name} possible_dir)
   endif()
 
   string(TIMESTAMP current_year "%Y" UTC)
@@ -110,10 +81,56 @@ function(rapids_export_cpm type name export_set)
   # Need to record the <PackageName> to `rapids_export_${type}_${export_set}`
   set_property(TARGET rapids_export_${type}_${export_set} APPEND PROPERTY "PACKAGE_NAMES" "${name}")
 
-  if(_RAPIDS_GLOBAL_TARGETS)
+  if(targets_global)
+    set_property(TARGET rapids_export_${type}_${export_set} APPEND
+                 PROPERTY "FIND_PACKAGE_TARGETS_GLOBAL" "${name}")
+  endif()
+
+  if(targets_global AND _RAPIDS_GLOBAL_TARGETS)
     # record our targets that need to be marked as global when imported
     set_property(TARGET rapids_export_${type}_${export_set} APPEND
                  PROPERTY "GLOBAL_TARGETS" "${_RAPIDS_GLOBAL_TARGETS}")
   endif()
 
+endfunction()
+
+# cmake-lint: disable=C0111
+function(_rapids_export_cpm_build_dir name lowercase_name possible_dir_var)
+  # Check if we have any of the support build directory config files first
+  FetchContent_GetProperties(${name} BINARY_DIR possible_build_dirs)
+  list(APPEND possible_build_dirs "${${name}_BINARY_DIR}")
+
+  set(possible_build_config_files "${lowercase_name}-config.cmake" "${name}Config.cmake")
+  set(build_dir_config_found FALSE)
+  foreach(bdir IN LISTS possible_build_dirs)
+    foreach(config_file IN LISTS possible_build_config_files)
+      if(EXISTS "${bdir}/${config_file}")
+        set(build_dir_config_found TRUE)
+        set(build_dir_config "${bdir}")
+        break()
+      endif()
+    endforeach()
+    if(build_dir_config_found)
+      break()
+    endif()
+  endforeach()
+
+  if(NOT build_dir_config_found)
+    # Only when we `<package>_DIR` do we want to see if we can use the FetchContent info. This
+    # maintains compatibility with projects where we need to fall-back to the build directory
+    if(${name}_DIR)
+      set(possible_dir "${${name}_DIR}")
+      if(possible_dir STREQUAL CMAKE_FIND_PACKAGE_REDIRECTS_DIR)
+        FetchContent_GetProperties(${name} SOURCE_DIR possible_dir)
+      endif()
+    else()
+      # Currently required to keep the DIR hints consistent when no src or build dir exists
+      # (export_cpm-build-possible-dir)
+      set(possible_dir "${${name}_BINARY_DIR}")
+    endif()
+  else()
+    set(possible_dir "${build_dir_config}")
+  endif()
+
+  set(${possible_dir_var} "${possible_dir}" PARENT_SCOPE)
 endfunction()
