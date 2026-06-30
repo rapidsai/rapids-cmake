@@ -18,8 +18,8 @@
     "cuco": {
       "version": "0.0.1",
       "always_download": true,
-      "url": "https://github.com/NVIDIA/cuCollections/archive/f517bbb1277753b1852dfd388993383e401eaa38.tar.gz",
-      "url_hash": "SHA256=d17e2f6d58cfb2cd473efcbd741c633e7607717102cedc08173a4a69bb2a8ba9"
+      "url": "https://github.com/NVIDIA/cuCollections/archive/9715bc5f38a6e0b41cce456a86b4c6d12fb3f2a1.tar.gz",
+      "url_hash": "SHA256=2538c8f5c04fb7e79e44e154ea395e4cb5b9567dad044602b7cc02ba1ad76803"
     },
     "rapids_logger": {
       "version": "0.2.3",
