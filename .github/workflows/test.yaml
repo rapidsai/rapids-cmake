@@ -24,7 +24,7 @@ permissions: {}
 jobs:
   cpp-tests:
     secrets: inherit # zizmor: ignore[secrets-inherit]
-    uses: rapidsai/shared-workflows/.github/workflows/conda-cpp-tests.yaml@main
+    uses: rapidsai/shared-workflows/.github/workflows/conda-cpp-tests.yaml@test-gh200
     with:
       build_type: ${{ inputs.build_type }}
       branch: ${{ inputs.branch }}
