@@ -19,7 +19,7 @@ import packaging.version
 
 # -- Project information -----------------------------------------------------
 
-project = "rapids-cmake"
+project = "NVIDIA rapids-cmake"
 copyright = f"2021-{datetime.datetime.today().year}, NVIDIA Corporation"
 author = "NVIDIA Corporation"
 
