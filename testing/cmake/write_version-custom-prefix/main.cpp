@@ -5,7 +5,15 @@
 
 #include <demo_version.hpp>
 #include <nested_version.hpp>
-#include <type_traits>
+
+constexpr bool string_equal(char const* lhs, char const* rhs)
+{
+  while (*lhs && *lhs == *rhs) {
+    ++lhs;
+    ++rhs;
+  }
+  return *lhs == *rhs;
+}
 
 constexpr int dmajor = DEMO_VERSION_MAJOR;
 constexpr int dminor = DEMO_VERSION_MINOR;
@@ -20,6 +28,10 @@ int main()
   static_assert(dmajor == 3);
   static_assert(dminor == 2);
   static_assert(dpatch == 0);
+  static_assert(string_equal(DEMO_VERSION, "3.2.0"));
+  static_assert(DEMO_VERSION_GT(3, 1, 99));
+  static_assert(DEMO_VERSION_LT(3, 2, 1));
+  static_assert(DEMO_VERSION_EQ(3, 2, 0));
 
   static_assert(nmajor == 3);
   static_assert(nminor == 2);
