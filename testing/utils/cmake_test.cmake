@@ -8,6 +8,7 @@ include_guard(GLOBAL)
 
 include(utils/cmake_detect_generators.cmake)
 
+# rapids-pre-commit-hooks: disable[verify-hardcoded-version]
 #[=======================================================================[.rst:
 add_cmake_build_test
 --------------------
@@ -31,6 +32,7 @@ adds a test for each generator:
                          [NO_RAPIDS_CMAKE_HOOKS]
                          [SOURCE_DIR <absolute_path>]
                          [SHOULD_FAIL <expected error message string>]
+                         [EXPECT_MATCH <expected output regular expression>]
                       )
 
 ``config``
@@ -55,10 +57,17 @@ adds a test for each generator:
   Absolute path to the source directory to test. When provided, this overrides
   the default behavior of computing the source directory from <SourceOrDir>.
 
+``EXPECT_MATCH``
+  .. versionadded:: v26.08.00
+
+  Regular expression that must match the test command output when the test is
+  expected to succeed.
+
 #]=======================================================================]
+# rapids-pre-commit-hooks: enable[verify-hardcoded-version]
 function(add_cmake_test mode source_or_dir)
   set(options SERIAL NO_DEV_ERRORS NO_CPM_CACHE NO_RAPIDS_CMAKE_HOOKS)
-  set(one_value SHOULD_FAIL SOURCE_DIR)
+  set(one_value SHOULD_FAIL SOURCE_DIR EXPECT_MATCH)
   set(multi_value)
   cmake_parse_arguments(RAPIDS_TEST "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
@@ -112,7 +121,9 @@ function(add_cmake_test mode source_or_dir)
     set(expected_regular_expression "${RAPIDS_TEST_SHOULD_FAIL}")
   else()
     set(will_fail FALSE)
-    set(expected_regular_expression)
+    if(RAPIDS_TEST_EXPECT_MATCH)
+      set(expected_regular_expression "${RAPIDS_TEST_EXPECT_MATCH}")
+    endif()
   endif()
 
   foreach(generator gen_name IN ZIP_LISTS supported_generators nice_gen_names)
