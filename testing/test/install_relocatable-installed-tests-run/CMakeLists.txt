@@ -22,6 +22,7 @@ rapids_test_add(NAME verify
 add_library(callback SHARED callback.cpp)
 rapids_test_record_install(TARGET callback COMPONENT testing)
 add_executable(verify_args main_args.cpp)
+target_link_libraries(verify_args PRIVATE ${CMAKE_DL_LIBS})
 rapids_test_add(NAME verify_args
                 COMMAND verify_args arg $<TARGET_FILE:callback>
                 GPUS 1
