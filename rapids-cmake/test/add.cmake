@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2022-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2022-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -107,8 +107,8 @@ function(rapids_test_add)
   endif()
 
   add_test(NAME ${_RAPIDS_TEST_NAME}
-           COMMAND ${CMAKE_COMMAND} "-Dcommand_to_run=${command}" "-Dcommand_args=${args}"
-                   "-P=${_rapids_run_gpu_test_script_dir}${_rapids_run_gpu_test_script}"
+           COMMAND ${CMAKE_COMMAND} "-Dcommand_to_run=${command}" "-Dcommand_args=${args}" "-P"
+                   "${_rapids_run_gpu_test_script_dir}${_rapids_run_gpu_test_script}"
            WORKING_DIRECTORY "${_RAPIDS_TEST_WORKING_DIRECTORY}")
 
   include(${CMAKE_CURRENT_FUNCTION_LIST_DIR}/gpu_requirements.cmake)

@@ -34,23 +34,50 @@ in the `CTestTestfile` when we include it.
 #
 # cmake-lint: disable=W0106
 function(convert_paths_to_install_dir prop_var)
-  set(possible_build_path "${${prop_var}}")
-  cmake_path(GET possible_build_path FILENAME name)
+  set(build_value "${${prop_var}}")
+  set(install_value "")
+  get_property(installed_files GLOBAL PROPERTY installed_files)
 
-  get_property(install_loc GLOBAL PROPERTY ${name}_install)
-  if(install_loc)
-    get_property(build_locs GLOBAL PROPERTY ${name}_build)
-    foreach(build_loc IN LISTS build_locs)
-      if(build_loc STREQUAL possible_build_path)
-        string(REPLACE "${build_loc}" "${install_loc}/${name}" install_value
-                       "${possible_build_path}")
-        break()
-      endif()
+  while(NOT build_value STREQUAL "")
+    set(earliest_index)
+    set(earliest_build_value)
+    set(earliest_install_value)
+
+    foreach(file IN LISTS installed_files)
+      get_property(file_build_values GLOBAL PROPERTY "${file}_build")
+      get_property(file_install_value GLOBAL PROPERTY "${file}_install")
+
+      foreach(file_build_value IN LISTS file_build_values)
+        string(FIND "${build_value}" "${file_build_value}" index)
+        if(index GREATER_EQUAL 0 AND (NOT DEFINED earliest_index OR index LESS earliest_index))
+          message(STATUS "Found ${file_build_value} -> ${file_install_value}/${file}")
+          set(earliest_index "${index}")
+          set(earliest_build_value "${file_build_value}")
+          set(earliest_install_value "${file_install_value}/${file}")
+        endif()
+      endforeach()
     endforeach()
-  else()
-    string(REPLACE "${_RAPIDS_BUILD_DIR}" "\${CMAKE_INSTALL_PREFIX}" install_value
-                   "${possible_build_path}")
-  endif()
+
+    string(FIND "${build_value}" "${_RAPIDS_BUILD_DIR}" index)
+    if(index GREATER_EQUAL 0 AND (NOT DEFINED earliest_index OR index LESS earliest_index))
+      set(earliest_index "${index}")
+      set(earliest_build_value "${_RAPIDS_BUILD_DIR}")
+      set(earliest_install_value "\${CMAKE_INSTALL_PREFIX}")
+    endif()
+
+    if(DEFINED earliest_index)
+      string(SUBSTRING "${build_value}" 0 "${earliest_index}" to_append)
+      string(SUBSTRING "${build_value}" "${earliest_index}" -1 build_value)
+      string(LENGTH "${earliest_build_value}" len)
+      string(SUBSTRING "${build_value}" "${len}" -1 build_value)
+      string(APPEND install_value "${to_append}")
+      string(APPEND install_value "${earliest_install_value}")
+    else()
+      string(APPEND install_value "${build_value}")
+      set(build_value "")
+    endif()
+  endwhile()
+
   set(${prop_var} "${install_value}" PARENT_SCOPE)
 endfunction()
 
@@ -81,6 +108,7 @@ endfunction()
 # =============================================================================
 
 # Provide an `add_test` function signature since the built-in version doesn't exist in script mode
+# cmake-lint: disable=E1120
 function(add_test name command)
   if(NOT name IN_LIST _RAPIDS_TESTS_TO_RUN)
     return()
@@ -107,8 +135,13 @@ function(add_test name command)
   endif()
 
   # convert paths from args to be re-rooted in the install tree
-  set(args "${ARGN}")
-  find_and_convert_paths_from_var_list(args)
+  set(args)
+  math(EXPR last_arg "${ARGC} - 1")
+  foreach(arg_index RANGE 2 "${last_arg}")
+    set(arg "${ARGV${arg_index}}")
+    convert_paths_to_install_dir(arg)
+    list(APPEND args "${arg}")
+  endforeach()
 
   # convert args from a list to a single string that is space separated
   string(JOIN " " args ${args})
@@ -208,6 +241,7 @@ function(extract_install_info)
 
       # For multi-config generators we will have multiple locations
       set_property(GLOBAL APPEND PROPERTY ${name}_build ${build_loc})
+      set_property(GLOBAL APPEND PROPERTY installed_files ${name})
     endforeach()
   endif()
 endfunction()
@@ -252,6 +286,7 @@ determine_install_location_of_all_targets()
 set_property(GLOBAL PROPERTY run_gpu_test.cmake_install ".")
 set_property(GLOBAL PROPERTY run_gpu_test.cmake_build
                              "${_RAPIDS_PROJECT_DIR}/rapids-cmake/./run_gpu_test.cmake")
+set_property(GLOBAL APPEND PROPERTY installed_files run_gpu_test.cmake)
 
 include(${CMAKE_CURRENT_LIST_DIR}/default_names.cmake)
 set(test_file_content

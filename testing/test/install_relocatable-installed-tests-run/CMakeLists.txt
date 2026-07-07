@@ -19,6 +19,14 @@ rapids_test_add(NAME verify
                 GPUS 1
                 PERCENT 100
                 INSTALL_COMPONENT_SET testing)
+add_library(callback SHARED callback.cu)
+rapids_test_record_install(TARGET callback COMPONENT testing)
+add_executable(verify_args main_args.cu)
+rapids_test_add(NAME verify_args
+                COMMAND verify_args $<TARGET_FILE:callback>
+                GPUS 1
+                PERCENT 100
+                INSTALL_COMPONENT_SET testing)
 rapids_test_install_relocatable(INSTALL_COMPONENT_SET testing DESTINATION bin/tests/to_verify/)
 
 add_custom_target(install_testing_component ALL
@@ -26,4 +34,4 @@ add_custom_target(install_testing_component ALL
                           testing --prefix install/
                   COMMAND ${CMAKE_CTEST_COMMAND} --test-dir install/bin/tests/to_verify/
                           --output-on-failure --no-tests=error)
-add_dependencies(install_testing_component verify_ generate_ctest_json)
+add_dependencies(install_testing_component callback verify_ verify_args generate_ctest_json)
