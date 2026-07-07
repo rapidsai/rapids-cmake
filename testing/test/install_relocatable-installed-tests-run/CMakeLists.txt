@@ -6,22 +6,22 @@
 # =============================================================================
 cmake_minimum_required(VERSION 4.0)
 set(CMAKE_CONFIGURATION_TYPES Debug)
-project(rapids-test-project LANGUAGES CUDA)
+project(rapids-test-project LANGUAGES CXX)
 
 include(${rapids-cmake-dir}/rapids-test.cmake)
 
 enable_testing()
 rapids_test_init()
 
-add_executable(verify_ main.cu)
+add_executable(verify_ main.cpp)
 rapids_test_add(NAME verify
                 COMMAND verify_
                 GPUS 1
                 PERCENT 100
                 INSTALL_COMPONENT_SET testing)
-add_library(callback SHARED callback.cu)
+add_library(callback SHARED callback.cpp)
 rapids_test_record_install(TARGET callback COMPONENT testing)
-add_executable(verify_args main_args.cu)
+add_executable(verify_args main_args.cpp)
 rapids_test_add(NAME verify_args
                 COMMAND verify_args arg $<TARGET_FILE:callback>
                 GPUS 1
