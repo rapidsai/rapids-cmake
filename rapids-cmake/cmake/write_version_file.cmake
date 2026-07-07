@@ -36,6 +36,11 @@ The generated file will contain the following unconditional defines:
 - #define <PREFIX>_VERSION_LT(maj, min, pat) # True when X.Y.Z is less than maj.min.pat
 - #define <PREFIX>_VERSION_EQ(maj, min, pat) # True when X.Y.Z is equal to maj.min.pat
 
+.. rapids-pre-commit-hooks: disable-next-line[verify-hardcoded-version]
+.. versionadded:: v26.08.00
+   The ``<PREFIX>_VERSION``, ``<PREFIX>_VERSION_GT``, ``<PREFIX>_VERSION_LT``, and
+   ``<PREFIX>_VERSION_EQ`` defines.
+
 Each of the components and the ``<PREFIX>_VERSION`` string will have all leading zeroes removed as
 we presume all components of the version can be represented as decimal values.
 
