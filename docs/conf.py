@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2023-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 #
 # Configuration file for the Sphinx documentation builder.
@@ -16,11 +16,10 @@
 import datetime
 import os.path
 import packaging.version
-import sphinx_rtd_theme
 
 # -- Project information -----------------------------------------------------
 
-project = "rapids-cmake"
+project = "NVIDIA rapids-cmake"
 copyright = f"2021-{datetime.datetime.today().year}, NVIDIA Corporation"
 author = "NVIDIA Corporation"
 
@@ -93,7 +92,17 @@ todo_include_todos = False
 # a list of builtin themes.
 #
 
-html_theme = "sphinx_rtd_theme"
+html_theme = "nvidia_sphinx_theme"
+html_theme_options = {
+    "icon_links": [
+        {
+            "name": "GitHub",
+            "url": "https://github.com/rapidsai/rapids-cmake",
+            "icon": "fa-brands fa-github",
+            "type": "fontawesome",
+        },
+    ],
+}
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -128,5 +137,3 @@ autoclass_content = "init"
 
 def setup(app):
     app.add_js_file("copybutton_pydocs.js")
-    app.add_css_file("https://docs.rapids.ai/assets/css/custom.css")
-    app.add_js_file("https://docs.rapids.ai/assets/js/custom.js", loading_method="defer")

@@ -1,9 +1,9 @@
 .. rapids-cmake documentation file
 
-Welcome to rapids-cmake's documentation!
-========================================
+NVIDIA rapids-cmake Documentation
+=================================
 
-This is a collection of CMake modules that are useful for all RAPIDS
+NVIDIA rapids-cmake is a collection of CMake modules that are useful for all RAPIDS
 projects. By sharing the code in a single place it makes rolling out CMake
 fixes easier.
 
