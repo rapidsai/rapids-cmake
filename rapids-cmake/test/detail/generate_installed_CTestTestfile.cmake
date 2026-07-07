@@ -133,19 +133,18 @@ function(add_test name command)
     endif()
   endif()
 
+  string(APPEND test_file_content " \"${command}\"")
+
   # convert paths from args to be re-rooted in the install tree
   set(args)
   math(EXPR last_arg "${ARGC} - 1")
   foreach(arg_index RANGE 2 "${last_arg}")
     set(arg "${ARGV${arg_index}}")
     convert_paths_to_install_dir(arg)
-    list(APPEND args "${arg}")
+    string(APPEND test_file_content " \"${arg}\"")
   endforeach()
 
-  # convert args from a list to a single string that is space separated
-  string(JOIN " " args ${args})
-
-  string(APPEND test_file_content " \"${command}\" ${args})\n")
+  string(APPEND test_file_content ")\n")
   set(test_file_content "${test_file_content}" PARENT_SCOPE)
 endfunction()
 

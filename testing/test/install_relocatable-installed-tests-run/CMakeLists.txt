@@ -23,7 +23,7 @@ add_library(callback SHARED callback.cu)
 rapids_test_record_install(TARGET callback COMPONENT testing)
 add_executable(verify_args main_args.cu)
 rapids_test_add(NAME verify_args
-                COMMAND verify_args $<TARGET_FILE:callback>
+                COMMAND verify_args arg $<TARGET_FILE:callback>
                 GPUS 1
                 PERCENT 100
                 INSTALL_COMPONENT_SET testing)
