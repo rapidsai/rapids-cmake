@@ -68,7 +68,7 @@ repos:
             ^testing/.*$
           )
   - repo: https://github.com/rapidsai/pre-commit-hooks
-    rev: v1.3.3
+    rev: v1.6.0
     hooks:
       - id: verify-copyright
         args: [--fix, --spdx]
