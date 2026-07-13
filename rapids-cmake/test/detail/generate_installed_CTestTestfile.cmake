@@ -106,7 +106,7 @@ endfunction()
 # ============== Parse CTest Output Functions             =====================
 # =============================================================================
 
-# Take `ctest --show-only=json-v1` output for RESOURCE_GROUPS and turn it back into the raw string
+# Take `ctest --show-only=json-v1` output for `RESOURCE_GROUPS` and turn it back into the raw string
 function(convert_ctest_prop_to_string_resource_groups prop_var)
   set(prop_value_new)
 
