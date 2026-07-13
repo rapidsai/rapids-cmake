@@ -103,7 +103,7 @@ function(find_and_convert_paths_from_var_list prop_var)
 endfunction()
 
 # =============================================================================
-# ============== Parse CTest Output Functions         =========================
+# ============== Parse CTest Output Functions             =====================
 # =============================================================================
 
 # Take `ctest --show-only=json-v1` output for RESOURCE_GROUPS and turn it back into the raw string
@@ -317,7 +317,7 @@ function(determine_install_location_of_all_targets)
 endfunction()
 
 # =============================================================================
-# ============== Generate Install CTestTestfile            ====================
+# ============== Generate Install CTestTestfile           =====================
 # =============================================================================
 determine_install_location_of_all_targets()
 # Setup the install location of `run_gpu_test`
