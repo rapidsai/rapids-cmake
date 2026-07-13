@@ -26,7 +26,7 @@ in the `CTestTestfile` when we include it.
 ]=]
 
 # =============================================================================
-# ============== Helper Function                          ====================
+# ============== Helper Function                          =====================
 # =============================================================================
 
 # Convert values from CMake properties so that any path build directory paths become re-rooted in
@@ -101,6 +101,10 @@ function(find_and_convert_paths_from_var_list prop_var)
   endforeach()
   set(${prop_var} "${transformed_vars_and_values}" PARENT_SCOPE)
 endfunction()
+
+# =============================================================================
+# ============== Parse CTest Output Functions         =========================
+# =============================================================================
 
 # Take `ctest --show-only=json-v1` output for RESOURCE_GROUPS and turn it back into the raw string
 function(convert_ctest_prop_to_string_resource_groups prop_var)
@@ -251,7 +255,7 @@ function(parse_test_json test_json)
 endfunction()
 
 # =============================================================================
-# ============== Parse Install Location Functions         ====================
+# ============== Parse Install Location Functions         =====================
 # =============================================================================
 function(extract_install_info)
   # remove the trailing `)` so that it doesn't get parsed as part of the file name
