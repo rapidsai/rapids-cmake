@@ -102,7 +102,7 @@ function(find_and_convert_paths_from_var_list prop_var)
   set(${prop_var} "${transformed_vars_and_values}" PARENT_SCOPE)
 endfunction()
 
-# Take ctest --show-only=json-v1 output for RESOURCE_GROUPS and turn it back into the raw string
+# Take `ctest --show-only=json-v1` output for RESOURCE_GROUPS and turn it back into the raw string
 function(convert_ctest_prop_to_string_resource_groups prop_var)
   set(prop_value_new)
 
@@ -133,7 +133,7 @@ function(convert_ctest_prop_to_string_resource_groups prop_var)
   set(${prop_var} "${prop_value_new}" PARENT_SCOPE)
 endfunction()
 
-# Take ctest --show-only=json-v1 output and turn it back into the raw string
+# Take `ctest --show-only=json-v1` output and turn it back into the raw string
 function(convert_ctest_prop_to_string prop prop_var)
   set(array_props
       DEPENDS #
@@ -186,8 +186,6 @@ function(convert_ctest_prop_to_string prop prop_var)
 endfunction()
 
 # Parse the output of `ctest --show-only=json-v1`
-#
-# cmake-lint: disable=E1120
 function(parse_test_json test_json)
   string(JSON name GET "${test_json}" name)
   if(NOT name IN_LIST _RAPIDS_TESTS_TO_RUN)
