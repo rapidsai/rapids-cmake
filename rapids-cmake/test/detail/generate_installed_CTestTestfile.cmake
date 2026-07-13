@@ -136,9 +136,19 @@ endfunction()
 # Take ctest --show-only=json-v1 output and turn it back into the raw string
 function(convert_ctest_prop_to_string prop prop_var)
   set(array_props
-      DEPENDS ENVIRONMENT ENVIRONMENT_MODIFICATION FAIL_REGULAR_EXPRESSION SKIP_REGULAR_EXPRESSION
-      FIXTURES_CLEANUP FIXTURES_REQUIRED FIXTURES_SETUP LABELS PASS_REGULAR_EXPRESSION
-      REQUIRED_FILES RESOURCE_LOCK)
+      DEPENDS #
+      ENVIRONMENT #
+      ENVIRONMENT_MODIFICATION #
+      FAIL_REGULAR_EXPRESSION #
+      SKIP_REGULAR_EXPRESSION #
+      FIXTURES_CLEANUP #
+      FIXTURES_REQUIRED #
+      FIXTURES_SETUP #
+      LABELS #
+      PASS_REGULAR_EXPRESSION #
+      REQUIRED_FILES #
+      RESOURCE_LOCK #
+  )
   if(prop IN_LIST array_props)
     set(prop_value_new)
 
