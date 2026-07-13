@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2023-2026, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -102,13 +102,84 @@ function(find_and_convert_paths_from_var_list prop_var)
   set(${prop_var} "${transformed_vars_and_values}" PARENT_SCOPE)
 endfunction()
 
-# =============================================================================
-# ============== Function Overrides                       ====================
-# =============================================================================
+# Take ctest --show-only=json-v1 output for RESOURCE_GROUPS and turn it back into the raw string
+function(convert_ctest_prop_to_string_resource_groups prop_var)
+  set(prop_value_new)
 
-# Provide an `add_test` function signature since the built-in version doesn't exist in script mode
+  string(JSON num_groups LENGTH "${${prop_var}}")
+  set(group_index 0)
+  while(group_index LESS num_groups)
+    set(group_str "")
+
+    string(JSON requirements GET "${${prop_var}}" "${group_index}" requirements)
+    string(JSON num_requirements LENGTH "${requirements}")
+    set(requirement_index 0)
+    while(requirement_index LESS num_requirements)
+      string(JSON requirement GET "${requirements}" "${requirement_index}")
+      string(JSON type GET "${requirement}" ".type")
+      string(JSON slots GET "${requirement}" "slots")
+      if(NOT group_str STREQUAL "")
+        string(APPEND group_str ",")
+      endif()
+
+      string(APPEND group_str "${type}:${slots}")
+      math(EXPR requirement_index "${requirement_index} + 1")
+    endwhile()
+
+    list(APPEND prop_value_new "${group_str}")
+    math(EXPR group_index "${group_index} + 1")
+  endwhile()
+
+  set(${prop_var} "${prop_value_new}" PARENT_SCOPE)
+endfunction()
+
+# Take ctest --show-only=json-v1 output and turn it back into the raw string
+function(convert_ctest_prop_to_string prop prop_var)
+  set(array_props
+      ATTACHED_FILES_ON_FAIL ATTACHED_FILES DEPENDS ENVIRONMENT ENVIRONMENT_MODIFICATION
+      FAIL_REGULAR_EXPRESSION SKIP_REGULAR_EXPRESSION FIXTURES_CLEANUP FIXTURES_REQUIRED
+      FIXTURES_SETUP LABELS PASS_REGULAR_EXPRESSION REQUIRED_FILES RESOURCE_LOCK)
+  if(prop IN_LIST array_props)
+    set(prop_value_new)
+
+    string(JSON len LENGTH "${${prop_var}}")
+    set(index 0)
+    while(index LESS len)
+      string(JSON item GET "${${prop_var}}" "${index}")
+      list(APPEND prop_value_new "${item}")
+      math(EXPR index "${index} + 1")
+    endwhile()
+
+    set(${prop_var} "${prop_value_new}")
+  elseif(prop STREQUAL "RESOURCE_GROUPS")
+    convert_ctest_prop_to_string_resource_groups(${prop_var})
+  elseif(prop STREQUAL "MEASUREMENT")
+    string(JSON measurement GET "${${prop_var}}" 0 measurement)
+    string(JSON value GET "${${prop_var}}" 0 value)
+    set(${prop_var} "${measurement}=${value}")
+  elseif(prop STREQUAL "TIMEOUT_AFTER_MATCH")
+    string(JSON prop_value_new GET "${${prop_var}}" timeout)
+    string(JSON regexes GET "${${prop_var}}" regex)
+
+    string(JSON num_regexes LENGTH "${regexes}")
+    set(index 0)
+    while(index LESS num_regexes)
+      string(JSON regex GET "${regexes}" "${index}")
+      list(APPEND prop_value_new "${regex}")
+      math(EXPR index "${index} + 1")
+    endwhile()
+
+    set(${prop_var} "${prop_value_new}")
+  endif()
+
+  set(${prop_var} ${${prop_var}} PARENT_SCOPE)
+endfunction()
+
+# Parse the output of `ctest --show-only=json-v1`
+#
 # cmake-lint: disable=E1120
-function(add_test name command)
+function(parse_test_json test_json)
+  string(JSON name GET "${test_json}" name)
   if(NOT name IN_LIST _RAPIDS_TESTS_TO_RUN)
     return()
   endif()
@@ -116,6 +187,8 @@ function(add_test name command)
   string(APPEND test_file_content "add_test([=[${name}]=]")
 
   # Transform absolute path to relative install path
+  string(JSON test_command GET "${test_json}" command)
+  string(JSON command GET "${test_command}" 0)
   cmake_path(GET command FILENAME cname)
   if(cname STREQUAL cmake)
     # rewrite the abs path to cmake to a relative version so that we don't care where cmake is
@@ -136,81 +209,36 @@ function(add_test name command)
   string(APPEND test_file_content " \"${command}\"")
 
   # convert paths from args to be re-rooted in the install tree
-  set(args)
-  math(EXPR last_arg "${ARGC} - 1")
-  foreach(arg_index RANGE 2 "${last_arg}")
-    set(arg "${ARGV${arg_index}}")
+  string(JSON args REMOVE "${test_command}" 0)
+  string(JSON num_args LENGTH "${args}")
+  set(arg_index 0)
+  while(arg_index LESS num_args)
+    string(JSON arg GET "${args}" "${arg_index}")
     convert_paths_to_install_dir(arg)
     string(APPEND test_file_content " \"${arg}\"")
-  endforeach()
+    math(EXPR arg_index "${arg_index} + 1")
+  endwhile()
 
   string(APPEND test_file_content ")\n")
-  set(test_file_content "${test_file_content}" PARENT_SCOPE)
-endfunction()
 
-# Provide a `set_tests_properties` function signature since the built-in version doesn't exist in
-# script mode
-function(set_tests_properties name)
-  if(NOT name IN_LIST _RAPIDS_TESTS_TO_RUN)
-    return()
-  endif()
-
-  set(options PROPERTIES)
-  set(env_props ENVIRONMENT #
-                ENVIRONMENT_MODIFICATION)
-  set(one_value
-      FIXTURES_CLEANUP #
-      FIXTURES_REQUIRED #
-      FIXTURES_SETUP #
-      LABELS #
-      MEASUREMENT #
-      PASS_REGULAR_EXPRESSION #
-      PROCESSOR_AFFINITY #
-      PROCESSORS #
-      REQUIRED_FILES #
-      RESOURCE_GROUPS #
-      RESOURCE_LOCK #
-      RUN_SERIAL #
-      SKIP_REGULAR_EXPRESSION #
-      SKIP_RETURN_CODE #
-      TIMEOUT #
-      TIMEOUT_AFTER_MATCH #
-      WILL_FAIL)
-  set(multi_value_no_propagate
-      _BACKTRACE_TRIPLES #
-      ATTACHED_FILES #
-      ATTACHED_FILES_ON_FAIL #
-      WORKING_DIRECTORY)
-  cmake_parse_arguments(_RAPIDS_TEST "${options}" "${one_value}"
-                        "${env_props};${multi_value_no_propagate}" ${ARGN})
-  foreach(prop IN LISTS env_props)
-    if(_RAPIDS_TEST_${prop})
-      set(prop_value "${_RAPIDS_TEST_${prop}}")
-      find_and_convert_paths_from_var_list(prop_value)
+  string(JSON test_props GET "${test_json}" properties)
+  string(JSON num_props LENGTH "${test_props}")
+  set(prop_index 0)
+  while(prop_index LESS num_props)
+    string(JSON prop_json GET "${test_props}" "${prop_index}")
+    string(JSON prop GET "${prop_json}" name)
+    string(JSON prop_value GET "${prop_json}" value)
+    set(no_propagate ATTACHED_FILES_ON_FAIL ATTACHED_FILES WORKING_DIRECTORY)
+    if(NOT prop IN_LIST no_propagate)
+      convert_ctest_prop_to_string(${prop} prop_value)
+      convert_paths_to_install_dir(prop_value)
       string(APPEND test_prop_content
              "set_tests_properties([=[${name}]=] PROPERTIES ${prop} \"${prop_value}\")\n")
     endif()
-  endforeach()
-
-  foreach(prop IN LISTS one_value)
-    if(_RAPIDS_TEST_${prop})
-      set(prop_value "${_RAPIDS_TEST_${prop}}")
-      convert_paths_to_install_dir(prop_value)
-      string(APPEND test_prop_content
-             "set_tests_properties([=[${name}]=] PROPERTIES ${prop} ${prop_value})\n")
-    endif()
-  endforeach()
+    math(EXPR prop_index "${prop_index} + 1")
+  endwhile()
 
   string(APPEND test_file_content "${test_prop_content}\n")
-  set(test_file_content "${test_file_content}" PARENT_SCOPE)
-endfunction()
-
-# Provide a `subdirs` function signature since the built-in version doesn't exist in script mode
-function(subdirs name)
-  string(APPEND test_file_content "\n")
-  if(EXISTS "${name}/CTestTestfile.cmake")
-    include("${name}/CTestTestfile.cmake")
-  endif()
   set(test_file_content "${test_file_content}" PARENT_SCOPE)
 endfunction()
 
@@ -304,15 +332,17 @@ set_tests_properties(generate_resource_spec PROPERTIES
 # `test_file_content`
 if(EXISTS "${_RAPIDS_BUILD_DIR}/CTestTestfile.cmake")
   # Support multi-generators by setting the CTest config mode to be equal to the install mode
-  set(CTEST_CONFIGURATION_TYPE "${CMAKE_INSTALL_CONFIG_NAME}")
-
-  # Too support tests added via gtest_discover_tests we need to tell GoogleTest we aren't in script
-  # mode. This stops GoogleTestAddTests from thinking it is being used in a POST_BUILD manner and
-  # should try and look for an undefined executable
-  include(GoogleTest)
-  set(CMAKE_SCRIPT_MODE_FILE OFF)
-
-  include("${_RAPIDS_BUILD_DIR}/CTestTestfile.cmake")
+  execute_process(COMMAND ${CMAKE_CTEST_COMMAND} -C "${CMAKE_INSTALL_CONFIG_NAME}"
+                          --show-only=json-v1 "${_RAPIDS_BUILD_DIR}"
+                  OUTPUT_VARIABLE ctest_json_output COMMAND_ERROR_IS_FATAL ANY)
+  string(JSON test_array GET "${ctest_json_output}" tests)
+  string(JSON num_tests LENGTH "${test_array}")
+  set(test_index 0)
+  while(test_index LESS "${num_tests}")
+    string(JSON test_json GET "${test_array}" "${test_index}")
+    parse_test_json("${test_json}")
+    math(EXPR test_index "${test_index} + 1")
+  endwhile()
 endif()
 
 file(WRITE "${test_launcher_file}" "${test_file_content}")
