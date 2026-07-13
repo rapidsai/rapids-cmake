@@ -345,7 +345,7 @@ set_tests_properties(generate_resource_spec PROPERTIES
 if(EXISTS "${_RAPIDS_BUILD_DIR}/CTestTestfile.cmake")
   # Support multi-generators by setting the CTest config mode to be equal to the install mode
   execute_process(COMMAND ${CMAKE_CTEST_COMMAND} -C "${CMAKE_INSTALL_CONFIG_NAME}"
-                          --show-only=json-v1 "${_RAPIDS_BUILD_DIR}"
+                          --show-only=json-v1 --test-dir "${_RAPIDS_BUILD_DIR}"
                   OUTPUT_VARIABLE ctest_json_output COMMAND_ERROR_IS_FATAL ANY)
   string(JSON test_array GET "${ctest_json_output}" tests)
   string(JSON num_tests LENGTH "${test_array}")
