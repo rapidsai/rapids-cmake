@@ -14,7 +14,7 @@ jobs:
       - conda-cpp-tests
       - docs-build
       - telemetry-setup
-    uses: rapidsai/shared-workflows/.github/workflows/pr-builder.yaml@main
+    uses: rapidsai/shared-workflows/.github/workflows/pr-builder.yaml@release/26.08
     permissions:
       contents: read
   telemetry-setup:
@@ -30,14 +30,14 @@ jobs:
         uses: rapidsai/shared-actions/telemetry-dispatch-stash-base-env-vars@main
   checks:
     needs: telemetry-setup
-    uses: rapidsai/shared-workflows/.github/workflows/checks.yaml@main
+    uses: rapidsai/shared-workflows/.github/workflows/checks.yaml@release/26.08
     with:
       ignored_pr_jobs: telemetry-summarize
     permissions:
       contents: read
   conda-cpp-tests:
     secrets: inherit # zizmor: ignore[secrets-inherit]
-    uses: rapidsai/shared-workflows/.github/workflows/conda-cpp-tests.yaml@main
+    uses: rapidsai/shared-workflows/.github/workflows/conda-cpp-tests.yaml@release/26.08
     with:
       build_type: pull-request
       script: ci/test_cpp.sh
@@ -49,7 +49,7 @@ jobs:
       pull-requests: read
   docs-build:
     secrets: inherit # zizmor: ignore[secrets-inherit]
-    uses: rapidsai/shared-workflows/.github/workflows/custom-job.yaml@main
+    uses: rapidsai/shared-workflows/.github/workflows/custom-job.yaml@release/26.08
     with:
       build_type: pull-request
       node_type: "cpu4"
