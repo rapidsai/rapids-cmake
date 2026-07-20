@@ -12,14 +12,14 @@
     },
     "CCCL": {
       "version": "3.4.0",
-      "url": "https://github.com/NVIDIA/cccl/archive/207502e57019cefacf6f21d3bb6045aeebef2a3e.tar.gz",
-      "url_hash": "SHA256=a71a14671bd7e72a45783f6c6e51ba3ea81d39e937e756f322f1be77d10555ee"
+      "url": "https://github.com/NVIDIA/cccl/archive/a5630ac57111e1aaef8cfe0069ede566c3d15f60.tar.gz",
+      "url_hash": "SHA256=cbd4051441fe2fa19fe0da2987e8dea90bc51fe9d2111e55b75b0ec1301f33ae"
     },
     "cuco": {
       "version": "0.0.1",
       "always_download": true,
-      "url": "https://github.com/NVIDIA/cuCollections/archive/f517bbb1277753b1852dfd388993383e401eaa38.tar.gz",
-      "url_hash": "SHA256=d17e2f6d58cfb2cd473efcbd741c633e7607717102cedc08173a4a69bb2a8ba9"
+      "url": "https://github.com/NVIDIA/cuCollections/archive/0883368d39296f3bef3a058033141bcc642c5c54.tar.gz",
+      "url_hash": "SHA256=4ec8320a0372839b991f0b431c7f8bf0e770006cb3c8631c6e373c434471fd45"
     },
     "rapids_logger": {
       "version": "0.2.3",

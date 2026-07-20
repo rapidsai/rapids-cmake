@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2024-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2024-2026, NVIDIA CORPORATION.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -54,7 +54,7 @@ string(FIND "${contents}" ${add_test_match_string} is_found)
 if(is_found EQUAL -1)
   message(FATAL_ERROR "Failed to generate an installed `add_test` for generate_resource_spec")
 endif()
-set(add_test_match_string [===[add_test([=[main]=] "cmake" -Dcommand_to_run=${CMAKE_INSTALL_PREFIX}/bin/testing/main -Dcommand_args= -P=./run_gpu_test.cmake)]===])
+set(add_test_match_string [===[add_test([=[main]=] "cmake" "-Dcommand_to_run=${CMAKE_INSTALL_PREFIX}/bin/testing/main" "-Dcommand_args=" "-P=./run_gpu_test.cmake")]===])
 string(FIND "${contents}" ${add_test_match_string} is_found)
 if(is_found EQUAL -1)
   message(FATAL_ERROR "Failed to generate an installed `add_test` for main")

@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2022-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2022-2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -68,6 +68,8 @@ function(rapids_test_install_relocatable)
   string(REGEX REPLACE "/" ";" from_install_prefix "${_RAPIDS_TEST_DESTINATION}")
   list(TRANSFORM from_install_prefix REPLACE ".+" "../")
   list(JOIN from_install_prefix "" from_install_prefix)
+
+  cmake_file_api(QUERY API_VERSION 1 CODEMODEL 2)
 
   # cmake-lint: disable=W0106
   install(CODE "

@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2026, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -250,7 +250,7 @@ test_compute_matrix_product(ARGS
                               {"c": 1}
                             ]]==]
                             EXPECTED_STDERR
-                            [==[^CMake Warning \(dev\) at [^
+                            [==[^CMake Warning \((dev|author)\) at [^
 ]*/rapids-cmake/json/detail/compute_matrix_product_impl\.cmake:[0-9]+ \(message\):
   Key "b" at root\["a"\]\[0\] is never used in a matrix product entry and is used
   only for grouping\.  Consider renaming it to "_b" to indicate this\.
@@ -261,9 +261,9 @@ Call Stack \(most recent call first\):(
 ]*/rapids-cmake/json/compute_matrix_product\.cmake:[0-9]+ \([a-zA-Z0-9_]+\)
   [^
 ]*/testing/json/compute_matrix_product/test_compute_matrix_product\.cmake:[0-9]+ \(rapids_json_compute_matrix_product\)
-This warning is for project developers\.  Use -Wno-dev to suppress it\.
+This warning is for project developers\.  Use -Wno-(dev|author) to suppress it\.
 
-CMake Warning \(dev\) at [^
+CMake Warning \((dev|author)\) at [^
 ]*/rapids-cmake/json/detail/compute_matrix_product_impl\.cmake:[0-9]+ \(message\):
   Key "a" at root is never used in a matrix product entry and is used only
   for grouping\.  Consider renaming it to "_a" to indicate this\.
@@ -274,7 +274,7 @@ Call Stack \(most recent call first\):(
 ]*/rapids-cmake/json/compute_matrix_product\.cmake:[0-9]+ \([a-zA-Z0-9_]+\)
   [^
 ]*/testing/json/compute_matrix_product/test_compute_matrix_product\.cmake:[0-9]+ \(rapids_json_compute_matrix_product\)
-This warning is for project developers\.  Use -Wno-dev to suppress it\.$]==])
+This warning is for project developers\.  Use -Wno-(dev|author) to suppress it\.$]==])
 
 # Test an improperly named group key with warning disabled
 test_compute_matrix_product(ARGS
@@ -309,7 +309,7 @@ test_compute_matrix_product(ARGS
                               {"__b": 1, "_c": 1},
                             ]]==]
                             EXPECTED_STDERR
-                            [==[^CMake Warning \(dev\) at [^
+                            [==[^CMake Warning \((dev|author)\) at [^
 ]*/rapids-cmake/json/detail/compute_matrix_product_impl\.cmake:[0-9]+ \(message\):
   Key "_c" at root\["_a"\]\[0\]\["_b"\] is used in a matrix product entry even
   though it begins with "_"\.  Consider renaming it to "c" to indicate this\.
@@ -320,9 +320,9 @@ Call Stack \(most recent call first\):(
 ]*/rapids-cmake/json/compute_matrix_product\.cmake:[0-9]+ \([a-zA-Z0-9_]+\)
   [^
 ]*/testing/json/compute_matrix_product/test_compute_matrix_product\.cmake:[0-9]+ \(rapids_json_compute_matrix_product\)
-This warning is for project developers\.  Use -Wno-dev to suppress it\.
+This warning is for project developers\.  Use -Wno-(dev|author) to suppress it\.
 
-CMake Warning \(dev\) at [^
+CMake Warning \((dev|author)\) at [^
 ]*/rapids-cmake/json/detail/compute_matrix_product_impl\.cmake:[0-9]+ \(message\):
   Key "__b" at root is used in a matrix product entry even though it begins
   with "__"\.  Consider renaming it to "b" to indicate this\.
@@ -333,7 +333,7 @@ Call Stack \(most recent call first\):(
 ]*/rapids-cmake/json/compute_matrix_product\.cmake:[0-9]+ \([a-zA-Z0-9_]+\)
   [^
 ]*/testing/json/compute_matrix_product/test_compute_matrix_product\.cmake:[0-9]+ \(rapids_json_compute_matrix_product\)
-This warning is for project developers\.  Use -Wno-dev to suppress it\.$]==])
+This warning is for project developers\.  Use -Wno-(dev|author) to suppress it\.$]==])
 
 # Test an improperly named leaf key with warning disabled
 test_compute_matrix_product(ARGS
