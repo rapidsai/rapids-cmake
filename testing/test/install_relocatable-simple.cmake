@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2022-2026, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2022-2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -58,7 +58,7 @@ string(FIND "${contents}" ${add_test_match_string} is_found)
 if(is_found EQUAL -1)
   message(FATAL_ERROR "Failed to generate an installed `add_test` for verify_")
 endif()
-set(properties_match_string [===[PROPERTIES RESOURCE_GROUPS 1,gpus:100]===])
+set(properties_match_string [===[PROPERTIES RESOURCE_GROUPS "gpus:100"]===])
 string(FIND "${contents}" ${properties_match_string} is_found)
 if(is_found EQUAL -1)
   message(FATAL_ERROR "${contents}\nFailed to generate an installed `GPU` requirements for verify_")

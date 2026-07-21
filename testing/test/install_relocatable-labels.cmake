@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2022-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2022-2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -24,7 +24,7 @@ file(APPEND "${CMAKE_CURRENT_BINARY_DIR}/verify_installed_CTestTestfile.cmake"
      [==[
 
 file(READ "${installed_test_file}" contents)
-set(labels_match_string [===[PROPERTIES LABELS has_label]===])
+set(labels_match_string [===[PROPERTIES LABELS "has_label"]===])
 string(FIND "${contents}" "${labels_match_string}" is_found)
 if(is_found EQUAL -1)
   message(FATAL_ERROR "Failed to record the LABELS property")
