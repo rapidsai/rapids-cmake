@@ -1,3 +1,6 @@
+# fallback (overridden by matches later in the file)
+* @rapidsai/rapids-cmake-codeowners
+
 #cmake code owners
 CMakeLists.txt        @rapidsai/rapids-cmake-codeowners
 *.cmake               @rapidsai/rapids-cmake-codeowners
