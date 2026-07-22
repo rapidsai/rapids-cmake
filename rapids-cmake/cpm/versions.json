@@ -38,8 +38,8 @@
     },
     "nvbench": {
       "version": "0.0",
-      "url": "https://github.com/NVIDIA/nvbench/archive/b88a45f4170af4e907e69af22a55af67859d3b49.tar.gz",
-      "url_hash": "SHA256=9e51887fed9f5b09b2690e7f7ba20a810c3af1478fef3115652644a592fdcb7e"
+      "url": "https://github.com/NVIDIA/nvbench/archive/5061a4f4285f84ed43d9c92937926af55ab28885.tar.gz",
+      "url_hash": "SHA256=e62c34b971913d7e24dc8c6831cd9a5a4f69203ecb51c727491aaceef12ad4e7"
     },
     "nvtx3": {
       "version": "3.2.0",
