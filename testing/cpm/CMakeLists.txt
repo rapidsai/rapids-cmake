@@ -125,6 +125,7 @@ add_cmake_config_test(cpm_logger-simple.cmake)
 
 add_cmake_config_test(cpm_nvbench-export.cmake SERIAL)
 add_cmake_config_test(cpm_nvbench-simple.cmake SERIAL)
+add_cmake_build_test(cpm_nvbench-conda.cmake SERIAL)
 add_cmake_config_test(cpm_nvbench-explicit-static.cmake SERIAL)
 
 add_cmake_build_test(cpm_nvtx-build-config-works.cmake)
