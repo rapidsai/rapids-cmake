@@ -27,13 +27,11 @@ the separate components, and comparison helpers for the `X.Y.Z` version string s
     to the projects name ( CMake variable :cmake:variable:`PROJECT_NAME <cmake:variable:PROJECT_NAME>` ).
 
 ``NO_COMBINED_VERSION_MACRO``
+    .. versionadded:: v26.10.00
+
     Don't generate the ``<PREFIX>_VERSION`` define. Useful for projects that already
     define ``<PREFIX>_VERSION`` themselves with a different meaning, as the two definitions
     would otherwise conflict. All other defines are still generated.
-
-.. rapids-pre-commit-hooks: disable-next-line[verify-hardcoded-version]
-.. versionadded:: v26.10.00
-   The ``NO_COMBINED_VERSION_MACRO`` option.
 
 The generated file will contain the following defines:
 
