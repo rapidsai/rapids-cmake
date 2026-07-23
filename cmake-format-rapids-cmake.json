@@ -81,7 +81,10 @@
       },
       "rapids_cmake_write_version_file": {
         "pargs": {
-          "nargs": 1
+          "nargs": 1,
+          "flags": [
+            "NO_COMBINED_VERSION_MACRO"
+          ]
         },
         "kwargs": {
           "PREFIX": 1
