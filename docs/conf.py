@@ -133,7 +133,3 @@ numpydoc_show_inherited_class_members = True
 numpydoc_class_members_toctree = False
 
 autoclass_content = "init"
-
-
-def setup(app):
-    app.add_js_file("copybutton_pydocs.js")
