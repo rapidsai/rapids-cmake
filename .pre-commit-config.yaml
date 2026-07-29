@@ -37,8 +37,8 @@ repos:
   - repo: https://github.com/rapidsai/dependency-file-generator
     rev: v1.20.0
     hooks:
-        - id: rapids-dependency-file-generator
-          args: ["--clean", "--warn-all", "--strict"]
+      - id: rapids-dependency-file-generator
+        args: ["--clean", "--warn-all", "--strict"]
   - repo: local
     hooks:
       - id: cmake-format
@@ -93,6 +93,15 @@ repos:
     rev: v0.10.0.1
     hooks:
       - id: shellcheck
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.38.0
+    hooks:
+      - id: yamllint
+        additional_dependencies: [pyyaml]
+        exclude: |
+          (?x)^(
+            [.]clang-format$
+          )
   - repo: https://github.com/zizmorcore/zizmor-pre-commit
     rev: v1.24.1
     hooks:
