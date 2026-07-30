@@ -110,6 +110,7 @@ dependencies:
       - output_types: conda
         packages:
           - cuda-cupti-dev
+          - cuda-profiler-api
   docs:
     common:
       - output_types: [conda]
