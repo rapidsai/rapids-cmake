@@ -257,63 +257,78 @@ endfunction()
 # =============================================================================
 # ============== Parse Install Location Functions         =====================
 # =============================================================================
-function(extract_install_info)
-  # remove the trailing `)` so that it doesn't get parsed as part of the file name
-  string(REGEX REPLACE "\\)$" "" line "${ARGN}")
 
-  # Leverate separate_arguments to parse a space-separated string into a list of items We use
-  # `UNIX_COMMAND` as that means args are separated by unquoted whitespace ( single, and double
-  # supported).
-  separate_arguments(install_contents UNIX_COMMAND "${line}")
+# Parse a target reply file
+function(parse_target_file filename)
+  file(READ "${filename}" target_json)
 
-  set(options "file(INSTALL")
-  set(one_value DESTINATION TYPE)
-  set(multi_value FILES)
-  cmake_parse_arguments(_RAPIDS_TEST "${options}" "${one_value}" "${multi_value}"
-                        ${install_contents})
-  if(_RAPIDS_TEST_TYPE STREQUAL "EXECUTABLE" OR _RAPIDS_TEST_TYPE STREQUAL "SHARED_LIBRARY"
-     OR _RAPIDS_TEST_TYPE STREQUAL "STATIC_LIBRARY" OR _RAPIDS_TEST_TYPE STREQUAL "OBJECT_LIBRARY")
-    foreach(build_loc IN LISTS _RAPIDS_TEST_FILES)
-      cmake_path(GET build_loc FILENAME name)
-      set_property(GLOBAL PROPERTY ${name}_install ${_RAPIDS_TEST_DESTINATION})
+  string(JSON destinations_json ERROR_VARIABLE destinations_error GET "${target_json}" install
+         destinations)
+  if(NOT destinations_error)
+    string(JSON num_destinations LENGTH "${destinations_json}")
 
-      # For multi-config generators we will have multiple locations
-      set_property(GLOBAL APPEND PROPERTY ${name}_build ${build_loc})
-      set_property(GLOBAL APPEND PROPERTY installed_files ${name})
-    endforeach()
+    string(JSON artifacts_json GET "${target_json}" artifacts)
+    string(JSON num_artifacts LENGTH "${artifacts_json}")
+    set(artifact_index 0)
+    while(artifact_index LESS num_artifacts)
+      string(JSON artifact_path GET "${artifacts_json}" "${artifact_index}" path)
+      if(NOT IS_ABSOLUTE "${artifact_path}")
+        set(artifact_path "${_RAPIDS_PROJECT_DIR}/${artifact_path}")
+      endif()
+      get_filename_component(name "${artifact_path}" NAME)
+      message(STATUS "Adding ${artifact_path} to ${name}_build")
+      set_property(GLOBAL APPEND PROPERTY ${name}_build "${artifact_path}")
+      set_property(GLOBAL APPEND PROPERTY installed_files "${name}")
+
+      set(destination_index 0)
+      while(destination_index LESS num_destinations)
+        string(JSON destination GET "${destinations_json}" "${destination_index}" path)
+        set_property(GLOBAL PROPERTY ${name}_install "\${CMAKE_INSTALL_PREFIX}/${destination}")
+        math(EXPR destination_index "${destination_index} + 1")
+      endwhile()
+
+      math(EXPR artifact_index "${artifact_index} + 1")
+    endwhile()
   endif()
 endfunction()
 
-#
-# Find all the cmake_install.cmake files in the install directory and parse them for install rules
+# Parse the CMake File API reply for target install rules
 function(determine_install_location_of_all_targets)
-  file(GLOB_RECURSE install_rule_files "${_RAPIDS_PROJECT_DIR}/cmake_install.cmake")
-  foreach(file IN LISTS install_rule_files)
-    file(STRINGS "${file}" contents)
+  set(reply_dir "${_RAPIDS_PROJECT_DIR}/.cmake/api/v1/reply")
+  file(GLOB index_file "${reply_dir}/index-*.json")
+  file(READ "${index_file}" index_json)
 
-    set(parsing_file_command FALSE)
-    set(file_command_contents)
-    foreach(line IN LISTS contents)
-      if(line MATCHES "INSTALL DESTINATION")
-        # We found the first line of `file(INSTALL`
-        set(parsing_file_command TRUE)
-      endif()
+  string(JSON objects_json GET "${index_json}" objects)
+  string(JSON num_objects LENGTH "${objects_json}")
+  set(object_index 0)
+  while(object_index LESS num_objects)
+    string(JSON kind GET "${objects_json}" "${object_index}" kind)
+    if(kind STREQUAL "codemodel")
+      string(JSON codemodel_file GET "${objects_json}" "${object_index}" jsonFile)
+      file(READ "${reply_dir}/${codemodel_file}" codemodel_json)
 
-      if(parsing_file_command)
-        # Continue to add the lines of `file(INSTALL` till we hit the closing `)` That allows us to
-        # support multiple line file commands
-        string(APPEND command_contents "${line}")
-        if(line MATCHES "\\)$")
-          # We have all the lines for this file command, now parse it
-          extract_install_info(${command_contents})
+      string(JSON configurations_json GET "${codemodel_json}" configurations)
+      string(JSON num_configurations LENGTH "${configurations_json}")
+      set(configuration_index 0)
+      while(configuration_index LESS num_configurations)
+        string(JSON targets_json GET "${configurations_json}" "${configuration_index}" targets)
 
-          # Reset to empty state for next `file(INSTALL)` command
-          set(parsing_file_command FALSE)
-          unset(command_contents)
-        endif()
-      endif()
-    endforeach()
-  endforeach()
+        string(JSON num_targets LENGTH "${targets_json}")
+        set(target_index 0)
+        while(target_index LESS num_targets)
+          string(JSON target_file GET "${targets_json}" "${target_index}" jsonFile)
+          parse_target_file("${reply_dir}/${target_file}")
+
+          math(EXPR target_index "${target_index} + 1")
+        endwhile()
+
+        math(EXPR configuration_index "${configuration_index} + 1")
+      endwhile()
+      break()
+    endif()
+
+    math(EXPR object_index "${object_index} + 1")
+  endwhile()
 endfunction()
 
 # =============================================================================

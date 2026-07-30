@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2023-2026, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
 # Configuration file for the Sphinx documentation builder.
@@ -133,7 +133,3 @@ numpydoc_show_inherited_class_members = True
 numpydoc_class_members_toctree = False
 
 autoclass_content = "init"
-
-
-def setup(app):
-    app.add_js_file("copybutton_pydocs.js")

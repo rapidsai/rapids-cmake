@@ -1,3 +1,6 @@
+# fallback (overridden by matches later in the file)
+* @rapidsai/rapids-cmake-codeowners
+
 #cmake code owners
 CMakeLists.txt        @rapidsai/rapids-cmake-codeowners
 *.cmake               @rapidsai/rapids-cmake-codeowners
@@ -11,6 +14,7 @@ CMakeLists.txt        @rapidsai/rapids-cmake-codeowners
 /.github/                @rapidsai/ci-codeowners
 /ci/                     @rapidsai/ci-codeowners
 /.shellcheckrc           @rapidsai/ci-codeowners
+/.yamllint.yaml          @rapidsai/ci-codeowners
 
 #packaging code owners
 /.pre-commit-config.yaml @rapidsai/packaging-codeowners

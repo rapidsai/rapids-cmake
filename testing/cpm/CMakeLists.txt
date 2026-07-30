@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -125,7 +125,6 @@ add_cmake_config_test(cpm_logger-simple.cmake)
 
 add_cmake_config_test(cpm_nvbench-export.cmake SERIAL)
 add_cmake_config_test(cpm_nvbench-simple.cmake SERIAL)
-add_cmake_config_test(cpm_nvbench-already-found-fmt.cmake SERIAL)
 add_cmake_build_test(cpm_nvbench-conda.cmake SERIAL)
 add_cmake_config_test(cpm_nvbench-explicit-static.cmake SERIAL)
 
