@@ -39,7 +39,7 @@
     "nvbench": {
       "version": "0.0",
       "url": "https://github.com/NVIDIA/nvbench/archive/e4b087805b002af49d357622cb37a8cc82894628.tar.gz",
-      "url_hash": "SHA256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      "url_hash": "SHA256=0253e356ecd0d30a68c367c3d1e2f20a0321fd9e2b1c969d0a208f2a7f3aaad8"
     },
     "nvtx3": {
       "version": "3.2.0",
