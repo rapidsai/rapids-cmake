@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2026, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -15,8 +15,12 @@ add_cmake_build_test(find-generate-module SOURCE_DIR
                      ${CMAKE_CURRENT_SOURCE_DIR}/../../examples/find-generate-module)
 add_cmake_build_test(offline-build SOURCE_DIR
                      ${CMAKE_CURRENT_SOURCE_DIR}/../../examples/offline_build NO_CPM_CACHE)
-add_cmake_build_test(pin-dependencies SOURCE_DIR
-                     ${CMAKE_CURRENT_SOURCE_DIR}/../../examples/pin-dependencies NO_CPM_CACHE)
+enable_language(CXX)
+if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL
+                                               13.3)
+  add_cmake_build_test(pin-dependencies SOURCE_DIR
+                       ${CMAKE_CURRENT_SOURCE_DIR}/../../examples/pin-dependencies NO_CPM_CACHE)
+endif()
 add_cmake_build_test(project-bootstrap SOURCE_DIR
                      ${CMAKE_CURRENT_SOURCE_DIR}/../../examples/project-bootstrap)
 add_cmake_build_test(project-override SOURCE_DIR
