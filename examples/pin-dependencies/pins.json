@@ -18,9 +18,9 @@
     "rapids_logger": {
       "always_download": true,
       "git_shallow": false,
-      "git_tag": "4c72b598f99c8aa06af49468b3fc82f3931c6bf6",
+      "git_tag": "1124de618517654cce3636d69d022ee76e9df4b0",
       "git_url": "https://github.com/rapidsai/rapids-logger.git",
-      "version": "0.2.3"
+      "version": "0.3.0"
     },
     "rmm": {
       "always_download": true,
