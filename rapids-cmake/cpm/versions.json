@@ -22,9 +22,9 @@
       "url_hash": "SHA256=4ec8320a0372839b991f0b431c7f8bf0e770006cb3c8631c6e373c434471fd45"
     },
     "rapids_logger": {
-      "version": "0.2.3",
-      "url": "https://github.com/rapidsai/rapids-logger/archive/4c72b598f99c8aa06af49468b3fc82f3931c6bf6.tar.gz",
-      "url_hash": "SHA256=4e7cbbde62ba8517dabd1a327b45955d50db2dfa1240d0124662071ce8f1afc9"
+      "version": "0.3.0",
+      "url": "https://github.com/rapidsai/rapids-logger/archive/1124de618517654cce3636d69d022ee76e9df4b0.tar.gz",
+      "url_hash": "SHA256=96a2f4ef04ad06d55546dbeee355cfe6e4fc94a33dee156d40f4f55dddc31686"
     },
     "GTest": {
       "version": "1.16.0",
