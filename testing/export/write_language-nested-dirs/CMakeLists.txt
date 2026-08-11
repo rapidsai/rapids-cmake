@@ -8,6 +8,10 @@ include(${rapids-cmake-dir}/export/write_language.cmake)
 
 cmake_minimum_required(VERSION 4.0 FATAL_ERROR)
 
+if(POLICY CMP0220)
+  cmake_policy(SET CMP0220 OLD)
+endif()
+
 project(write_language-nested-dirs LANGUAGES NONE)
 
 # verify that enabling langues CUDA in A/B allows us to build targets that use CUDA
