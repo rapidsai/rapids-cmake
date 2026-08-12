@@ -35,6 +35,9 @@ for packages included via `CPM` to enable extra languages.
   and up the entire :cmake:command:`enable_language <cmake:command:add_subdirectory>` stack so
   the language is enabled globally.
 
+  In CMake 4.5 and later this is not needed as `enable_language` supports being called from
+  within functions and in subdirectories to enable languages globally. This function will act as
+  a no-op in these versions when the policy `CMP0220` is set to `NEW`.
 
 #]=======================================================================]
 function(rapids_export_write_language type lang file_path)
