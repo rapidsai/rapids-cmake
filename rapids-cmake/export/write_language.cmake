@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -47,6 +47,15 @@ function(rapids_export_write_language type lang file_path)
 # We have to presume all directories use a language
 # since linking to a target with language standards
 # means `using`
+
+# When CMP0220 is set to NEW, `enable_language` will make the language available globally
+if(POLICY CMP0220)
+    cmake_policy(GET CMP0220 rapids_cmp0220_value)
+    if(rapids_cmp0220_value STREQUAL "NEW")
+      message(DEBUG "CMP0220 is set to NEW, skipping custom language hook propagation logic for @lang@.")
+      return()
+    endif()
+endif()
 
 if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
   if(NOT DEFINED CMAKE_CURRENT_FUNCTION)
