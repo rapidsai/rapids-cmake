@@ -6,14 +6,17 @@
 # =============================================================================
 cmake_minimum_required(VERSION 4.0 FATAL_ERROR)
 
-project(write_language-CMP0220 LANGUAGES NONE)
-
-include(${rapids-cmake-dir}/export/write_language.cmake)
+project(write_language-CMP0220 LANGUAGES CXX)
 
 cmake_policy(SET CMP0220 NEW)
 
-set(path "${CMAKE_CURRENT_BINARY_DIR}/enable_cuda.cmake")
-rapids_export_write_language(BUILD CUDA "${path}")
+add_subdirectory(A)
 
-add_custom_target(check_write_language_CMP0220 ALL COMMAND ${CMAKE_COMMAND} --log-level=DEBUG -P
-                                                           "${path}")
+add_executable(write_language-CMP0220 main.cpp)
+target_link_libraries(write_language-CMP0220 PRIVATE A)
+
+cmake_language(DEFER GET_CALL_IDS all_ids)
+list(LENGTH all_ids list_len)
+if(NOT list_len EQUAL 1)
+  message(FATAL_ERROR "Language hooks detected when CMP0220 is set to NEW: ${all_ids}")
+endif()

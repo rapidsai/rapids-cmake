@@ -69,10 +69,7 @@ add_cmake_config_test(write_dependencies-multiple-directories)
 add_cmake_config_test(write_dependencies-root-dirs.cmake)
 
 if(POLICY CMP0220)
-  add_cmake_build_test(write_language-CMP0220
-                       EXPECT_MATCH
-                       "CMP0220 is set to NEW, skipping custom language hook propagation logic for CUDA\\."
-  )
+  add_cmake_build_test(write_language-CMP0220)
 endif()
 add_cmake_build_test(write_language-multiple-nested-enables)
 add_cmake_build_test(write_language-nested-dirs)
