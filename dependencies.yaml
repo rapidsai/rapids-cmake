@@ -35,11 +35,11 @@ dependencies:
           - ninja
       - output_types: conda
         packages:
-          - c-compiler
-          - cxx-compiler
-          - cuda-nvcc
-          - make
           - binutils
+          - c-compiler
+          - cuda-nvcc
+          - cxx-compiler
+          - make
     specific:
       - output_types: conda
         matrices:
