@@ -35,9 +35,10 @@ dependencies:
           - ninja
       - output_types: conda
         packages:
+          - binutils
           - c-compiler
-          - cxx-compiler
           - cuda-nvcc
+          - cxx-compiler
           - make
     specific:
       - output_types: conda
