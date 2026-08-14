@@ -39,6 +39,7 @@ dependencies:
           - cxx-compiler
           - cuda-nvcc
           - make
+          - binutils
     specific:
       - output_types: conda
         matrices:
