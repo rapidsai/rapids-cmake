@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -35,6 +35,10 @@ for packages included via `CPM` to enable extra languages.
   and up the entire :cmake:command:`enable_language <cmake:command:add_subdirectory>` stack so
   the language is enabled globally.
 
+  In CMake 4.5 and later this is not needed as `enable_language` supports being called from
+  within functions and in subdirectories to enable languages globally. This function will just
+  call `enable_language` in these versions when the policy `CMP0220` is set to `NEW` where the
+  `<file_path>` is included.
 
 #]=======================================================================]
 function(rapids_export_write_language type lang file_path)
@@ -77,6 +81,14 @@ endif()
 
 # Expose the language at the current scope
 enable_language(@lang@)
+
+# When CMP0220 is set to NEW, `enable_language` will make the language available globally
+if(POLICY CMP0220)
+    cmake_policy(GET CMP0220 rapids_cmp0220_value)
+    if(rapids_cmp0220_value STREQUAL "NEW")
+      return()
+    endif()
+endif()
 
 if(NOT EXISTS "${CMAKE_BINARY_DIR}/cmake/PropagateCMake@lang@Compiler.cmake")
   # 1.
