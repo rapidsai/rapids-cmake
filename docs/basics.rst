@@ -29,13 +29,13 @@ Usage
 ``rapids-cmake`` is designed for projects to use only the subset of features that they need. To enable
 this ``rapids-cmake`` comprises the following primary components:
 
-- :ref:`cmake <common>`
-- :ref:`cpm <cpm>`
-- :ref:`cython <cython>`
-- :ref:`cuda <cuda>`
+- :ref:`cmake <common-functions>`
+- :ref:`cpm <cpm-functions>`
+- :ref:`cython <cython-functions>`
+- :ref:`cuda <cuda-functions>`
 - :ref:`export <export>`
-- :ref:`find <find>`
-- :ref:`testing <testing>`
+- :ref:`find <find-functions>`
+- :ref:`testing <testing-functions>`
 
 There are two ways projects can use ``rapids-cmake`` functions.
 

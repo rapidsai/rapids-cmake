@@ -89,6 +89,18 @@ repos:
           ^[.]github/workflows/|
           (^|/)RAPIDS_BRANCH$|
           [.](md|rst)$
+  - repo: https://github.com/rstcheck/rstcheck
+    rev: v6.3.0
+    hooks:
+      - id: rstcheck
+        # 'sphinx-source-dir' setting is needed to resolve 'include::' directives that
+        # reference absolute paths.
+        #
+        # TODO: move that into pyproject.toml when https://github.com/rstcheck/rstcheck-core/issues/123 is resolved
+        #
+        args: ["--config", "pyproject.toml", "--sphinx-source-dir", "docs"]
+        additional_dependencies:
+          - rstcheck[sphinx,toml]
   - repo: https://github.com/shellcheck-py/shellcheck-py
     rev: v0.10.0.1
     hooks:
