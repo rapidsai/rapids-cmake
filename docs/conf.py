@@ -102,6 +102,11 @@ html_theme_options = {
             "type": "fontawesome",
         },
     ],
+    "navbar_center": "navbar-nav, version-switcher, navbar-external-links",
+    "switcher": {
+        "json_url": "https://docs.nvidia.com/rapids-cmake/versions.json",
+        "version_match": version,
+    },
 }
 
 # Theme options are theme-specific and customize the look and feel of a theme
