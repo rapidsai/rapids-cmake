@@ -87,6 +87,7 @@ repos:
         exclude: |
           (?x)
           ^[.]github/workflows/|
+          ^examples/pin-dependencies/pins.json|
           (^|/)RAPIDS_BRANCH$|
           [.](md|rst)$
   - repo: https://github.com/shellcheck-py/shellcheck-py
