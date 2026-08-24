@@ -1,7 +1,7 @@
 API Reference
 #############
 
-.. _`common`:
+.. _`common-functions`:
 
 Common
 ******
@@ -23,7 +23,7 @@ require.
    /command/rapids_cmake_write_git_revision_file
    /command/rapids_cmake_write_version_file
 
-.. _`cpm`:
+.. _`cpm-functions`:
 
 CPM
 ***
@@ -53,7 +53,7 @@ package uses :ref:`can be found here <cpm_versions>`.
 
 .. include:: /packages/packages.rst
 
-.. _`cython`:
+.. _`cython-functions`:
 
 Cython
 ******
@@ -72,7 +72,7 @@ The ``rapids-cython-core`` module allows projects to easily build cython modules
    /command/rapids_cython_core_create_modules
    /command/rapids_cython_core_add_rpath_entries
 
-.. _`find`:
+.. _`find-functions`:
 
 Find
 ****
@@ -86,8 +86,6 @@ tracking of these dependencies for correct export support.
    /command/rapids_find_generate_module
    /command/rapids_find_package
 
-.. _`cuda`:
-
 JSON
 ****
 
@@ -99,6 +97,8 @@ The `rapids_json` functions provide common JSON manipulation functions.
     rapids_json_array_append </command/rapids_json_array_append>
     rapids_json_array_extend </command/rapids_json_array_extend>
     rapids_json_compute_matrix_product </command/rapids_json_compute_matrix_product>
+
+.. _`cuda-functions`:
 
 CUDA
 ****
@@ -150,7 +150,7 @@ correct export generation. These should only be used when :cmake:command:`rapids
    rapids_export_find_package_root [Advanced] </command/rapids_export_find_package_root>
    rapids_export_package [Advanced] </command/rapids_export_package>
 
-.. _`testing`:
+.. _`testing-functions`:
 
 Testing
 *******

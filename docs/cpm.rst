@@ -71,16 +71,16 @@ used instead of ALL overrides specified in that project. This would allow you to
 specify custom internal urls for all dependencies without modifying the project source code.
 
 
-```
-cmake -DRAPIDS_CMAKE_CPM_OVERRIDE_VERSION_FILE=<abs/path/to/custom/override_versions.json> ....
-```
+.. code-block:: bash
+
+    cmake -DRAPIDS_CMAKE_CPM_OVERRIDE_VERSION_FILE=<abs/path/to/custom/override_versions.json> ....
 
 To request the generation of a pinned package override file without having to modify
 the project use the :cmake:variable:`RAPIDS_CMAKE_CPM_PINNED_VERSIONS_FILE` variable:
 
-```
-cmake -DRAPIDS_CMAKE_CPM_PINNED_VERSIONS_FILE
-```
+.. code-block:: bash
+
+    cmake -DRAPIDS_CMAKE_CPM_PINNED_VERSIONS_FILE
 
 Additional CPM command line controls
 ************************************
@@ -93,17 +93,16 @@ we document some of the most important ones below.
 If you need to explicitly state a package must be downloaded and not searched
 for locally you enable the variable :cmake:variable:`CPM_DOWNLOAD_<package_name>`.
 
-```
-cmake -DCPM_DOWNLOAD_<package_name>=ON ....
-```
+.. code-block:: bash
+
+    cmake -DCPM_DOWNLOAD_<package_name>=ON ....
 
 If you need to explicitly state all packages must be downloaded and not searched
 for locally you enable the variable :cmake:variable:`CPM_DOWNLOAD_ALL`.
 
-```
-cmake -DCPM_DOWNLOAD_ALL=ON ....
-```
+.. code-block:: bash
 
+    cmake -DCPM_DOWNLOAD_ALL=ON ....
 
 Offline and Airgapped Usage
 ****************************

@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -67,7 +67,7 @@ adds a test for each generator:
 # rapids-pre-commit-hooks: enable[verify-hardcoded-version]
 function(add_cmake_test mode source_or_dir)
   set(options SERIAL NO_DEV_ERRORS NO_CPM_CACHE NO_RAPIDS_CMAKE_HOOKS)
-  set(one_value SHOULD_FAIL SOURCE_DIR EXPECT_MATCH)
+  set(one_value SHOULD_FAIL SOURCE_DIR EXPECT_MATCH WITH_PRESET)
   set(multi_value)
   cmake_parse_arguments(RAPIDS_TEST "${options}" "${one_value}" "${multi_value}" ${ARGN})
 
@@ -102,6 +102,9 @@ function(add_cmake_test mode source_or_dir)
   endif()
   if(NOT (RAPIDS_TEST_NO_DEV_ERRORS OR RAPIDS_TEST_DISABLE_DEV_ERRORS))
     list(APPEND extra_configure_flags "-Werror=dev")
+  endif()
+  if(DEFINED RAPIDS_TEST_WITH_PRESET)
+    list(APPEND extra_configure_flags "--preset=${RAPIDS_TEST_WITH_PRESET}")
   endif()
   if(DEFINED CPM_SOURCE_CACHE AND NOT RAPIDS_TEST_NO_CPM_CACHE)
     list(APPEND extra_configure_flags "-DCPM_SOURCE_CACHE=${CPM_SOURCE_CACHE}")

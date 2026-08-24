@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2024-2026, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2024-2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
 [tool.codespell]
@@ -10,3 +10,41 @@ ignore-regex = "\\b(.{1,4}|[A-Z]\\w*T)\\b"
 ignore-words-list = "thirdparty"
 builtin = "clear"
 quiet-level = 3
+
+[tool.rstcheck]
+report_level = "INFO"
+
+# rstcheck only knows about directives coming from 'docutils', not
+# those supplied by extensions. This list of ignores suppresses errors
+# like "no directive entry".
+ignore_directives = [
+    # rstcheck does not understand 'sphinxcontrib.moderncmakedomain' directives
+    "cmake-module",
+    # rstcheck does not understand 'sphinx.ext.auto*' directives
+    "autoclass",
+    "autofunction",
+    "automodule",
+    "autosummary",
+    # rstcheck does not understand 'sphinx-design' directives
+    "dropdown",
+    # rstcheck does not understand 'doxygen' directives
+    "doxygenenum",
+    "doxygenfunction",
+    "doxygengroup",
+    "doxygennamespace",
+    "doxygenstruct",
+    "doxygentypedef"
+]
+
+ignore_messages = '''(?x)(
+    # ignore links that look "unused" because they're there to provide stable anchors in hyperlinks
+    Hyperlink\ target\ .*\ is\ not\ referenced
+)
+'''
+
+ignore_roles = [
+    # rstcheck does not understand 'sphinxcontrib.moderncmakedomain roles
+    "cmake:command",
+    "cmake:module",
+    "cmake:variable"
+]

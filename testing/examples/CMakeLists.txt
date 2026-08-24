@@ -19,7 +19,8 @@ enable_language(CXX)
 if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL
                                                13.3)
   add_cmake_build_test(pin-dependencies SOURCE_DIR
-                       ${CMAKE_CURRENT_SOURCE_DIR}/../../examples/pin-dependencies NO_CPM_CACHE)
+                       ${CMAKE_CURRENT_SOURCE_DIR}/../../examples/pin-dependencies NO_CPM_CACHE
+                       WITH_PRESET with-pins)
 endif()
 add_cmake_build_test(project-bootstrap SOURCE_DIR
                      ${CMAKE_CURRENT_SOURCE_DIR}/../../examples/project-bootstrap)
