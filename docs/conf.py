@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2023-2026, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
 # Configuration file for the Sphinx documentation builder.
@@ -102,6 +102,11 @@ html_theme_options = {
             "type": "fontawesome",
         },
     ],
+    "navbar_center": "navbar-nav, version-switcher, navbar-external-links",
+    "switcher": {
+        "json_url": "https://docs.nvidia.com/rapids-cmake/versions.json",
+        "version_match": version,
+    },
 }
 
 # Theme options are theme-specific and customize the look and feel of a theme
