@@ -13,6 +13,7 @@ jobs:
       - checks
       - conda-cpp-tests
       - docs-build
+      - docs-build-matrix
       - publish-api-docs
       - telemetry-setup
     uses: rapidsai/shared-workflows/.github/workflows/pr-builder.yaml@release/26.10
@@ -48,14 +49,24 @@ jobs:
       id-token: write
       packages: read
       pull-requests: read
+  docs-build-matrix:
+    permissions:
+      contents: read
+    uses: rapidsai/shared-workflows/.github/workflows/compute-matrix.yaml@release/26.10
+    with:
+      build_type: ${{ inputs.build_type || 'branch' }}
+      matrix_name: docs-build
   docs-build:
     secrets: inherit # zizmor: ignore[secrets-inherit]
     uses: rapidsai/shared-workflows/.github/workflows/custom-job.yaml@release/26.10
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.docs-build-matrix.outputs.matrix) }}
     with:
       build_type: pull-request
       node_type: "cpu4"
-      arch: "amd64"
-      container_image: "rapidsai/ci-conda:26.10-latest"
+      arch: "${{ matrix.arch }}"
+      container_image: "rapidsai/ci-conda:26.10-cuda${{ matrix.CUDA_VER }}-${{ matrix.LINUX_VER }}-py${{ matrix.PY_VER }}"
       script: "ci/build_docs.sh"
     permissions:
       actions: read
