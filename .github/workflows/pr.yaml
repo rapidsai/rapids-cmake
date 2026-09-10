@@ -54,9 +54,10 @@ jobs:
       contents: read
     uses: rapidsai/shared-workflows/.github/workflows/compute-matrix.yaml@release/26.10
     with:
-      build_type: ${{ inputs.build_type || 'branch' }}
+      build_type: pull-request
       matrix_name: docs-build
   docs-build:
+    needs: [docs-build-matrix]
     secrets: inherit # zizmor: ignore[secrets-inherit]
     uses: rapidsai/shared-workflows/.github/workflows/custom-job.yaml@release/26.10
     strategy:
