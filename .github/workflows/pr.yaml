@@ -82,7 +82,6 @@ jobs:
     with:
       docs-projects: rapids-cmake
       dry-run: true
-      version-map: ${{ vars.VERSION_MAP }}
   telemetry-summarize:
     # This job must use a self-hosted runner to record telemetry traces.
     runs-on: linux-amd64-cpu4
