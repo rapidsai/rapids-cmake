@@ -70,4 +70,3 @@ jobs:
     with:
       docs-projects: rapids-cmake
       dry-run: false
-      version-map: ${{ vars.VERSION_MAP }}
