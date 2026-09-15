@@ -178,6 +178,14 @@ function(rapids_cpm_find name version)
     endforeach()
   endif()
 
+  # Translate `DOWNLOAD_ONLY` into `SOURCE_SUBDIR` with a non-existent directory
+  # (https://github.com/rapidsai/rapids-cmake/issues/1088)
+  cmake_parse_arguments(_rapids_do "" "DOWNLOAD_ONLY" "" ${_RAPIDS_UNPARSED_ARGUMENTS})
+  if(_rapids_do_DOWNLOAD_ONLY AND NOT _RAPIDS_SOURCE_SUBDIR)
+    set(_RAPIDS_UNPARSED_ARGUMENTS ${_rapids_do_UNPARSED_ARGUMENTS})
+    set(_RAPIDS_SOURCE_SUBDIR ".rapids-cmake-download-only/${name}")
+  endif()
+
   if(_RAPIDS_COMPONENTS)
     # We need to pass the set of components as a space separated string and not a list
     string(REPLACE ";" " " _RAPIDS_COMPONENTS "${_RAPIDS_COMPONENTS}")
