@@ -342,7 +342,7 @@ as needed. Each project must define ``version`` and one of the following:
 
     If no such field exists the default is ``true``.
 
-``src_dir``
+``source_subdir``
 
     An optional string value that represents the source directory under the root
     of the project that contains the `CMakeLists.txt` to use

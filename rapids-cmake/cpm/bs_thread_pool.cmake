@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2024-2026, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2024-2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -50,7 +50,8 @@ function(rapids_cpm_bs_thread_pool)
 
   include("${rapids-cmake-dir}/cpm/find.cmake")
   rapids_cpm_find(bs_thread_pool ${version} ${find_args} GLOBAL_TARGETS rapids_bs_thread_pool
-                  CPM_ARGS ${cpm_find_info} DOWNLOAD_ONLY ON)
+                  CPM_ARGS ${cpm_find_info} SOURCE_SUBDIR
+                           .rapids-cmake-download-only/bs_thread_pool)
 
   include("${rapids-cmake-dir}/cpm/detail/display_patch_status.cmake")
   rapids_cpm_display_patch_status(bs_thread_pool)
