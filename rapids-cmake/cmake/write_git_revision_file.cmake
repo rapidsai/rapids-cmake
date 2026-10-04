@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2021-2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2021-2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -88,13 +88,13 @@ function(rapids_cmake_write_git_revision_file target file_path)
   find_package(Git QUIET)
 
   add_custom_target(${target}_compute_git_info ALL
-                    BYPRODUCTS "${file_path}"
+                    BYPRODUCTS "${output_path}"
                     COMMENT "Generate git revision file for ${target}"
                     COMMAND ${CMAKE_COMMAND} -DWORKING_DIRECTORY=${CMAKE_CURRENT_SOURCE_DIR}
                             -DGIT_EXECUTABLE=${GIT_EXECUTABLE}
                             -D_RAPIDS_GIT_PREFIX=${_RAPIDS_PREFIX}
                             -DTEMPLATE_FILE=${CMAKE_CURRENT_FUNCTION_LIST_DIR}/template/git_revision.h.in
-                            -DFILE_TO_WRITE=${file_path} -P
+                            -DFILE_TO_WRITE=${output_path} -P
                             ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/detail/compute_git_info.cmake
                     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
@@ -103,7 +103,7 @@ function(rapids_cmake_write_git_revision_file target file_path)
   add_library(${target} INTERFACE)
   add_dependencies(${target} ${target}_compute_git_info)
 
-  cmake_path(GET file_path PARENT_PATH file_path_dir)
+  cmake_path(GET output_path PARENT_PATH file_path_dir)
   target_include_directories(${target} INTERFACE "$<BUILD_INTERFACE:${file_path_dir}>")
 
 endfunction()

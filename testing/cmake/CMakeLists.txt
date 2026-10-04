@@ -65,6 +65,7 @@ add_cmake_build_test(write_git_revision-custom-prefix)
 add_cmake_build_test(write_git_revision-dirty)
 add_cmake_build_test(write_git_revision-embed)
 add_cmake_build_test(write_git_revision-no-git)
+add_cmake_build_test(write_git_revision-relative)
 add_cmake_build_test(write_git_revision-simple)
 
 add_cmake_build_test(write_version-absolute)
