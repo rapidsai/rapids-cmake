@@ -1,3 +1,38 @@
+# rapids-cmake 26.10.00 (7 Oct 2026)
+
+### 🐛 Bug Fixes
+* Update NVBench to e4b0878 by @igorpeshansky in https://github.com/rapidsai/rapids-cmake/pull/1070
+* Add `NO_COMBINED_VERSION_MACRO` option to `rapids_cmake_write_version… by @ishanpragada in https://github.com/rapidsai/rapids-cmake/pull/1064
+* Correct CI failures building examples  by @robertmaynard in https://github.com/rapidsai/rapids-cmake/pull/1080
+* Map download only to source subdir by @robertmaynard in https://github.com/rapidsai/rapids-cmake/pull/1089
+### 📖 Documentation
+* Remove missing copybutton docs asset by @bdice in https://github.com/rapidsai/rapids-cmake/pull/1065
+* enforce 'rstcheck' checks by @jameslamb in https://github.com/rapidsai/rapids-cmake/pull/1076
+* Enable public docs features in CI by @bdice in https://github.com/rapidsai/rapids-cmake/pull/1082
+### 🚀 New Features
+* update RAPIDS.cmake to log source of rapids-cmake by @arhag23 in https://github.com/rapidsai/rapids-cmake/pull/1048
+* Add generated version string and comparison macros by @ishanpragada in https://github.com/rapidsai/rapids-cmake/pull/1047
+* write_language: Disables hook when CMP0220 is set to NEW by @arhag23 in https://github.com/rapidsai/rapids-cmake/pull/1072
+### 🛠️ Improvements
+* Parse File API when generating installed `CTestTestfile.cmake` by @KyleFromNVIDIA in https://github.com/rapidsai/rapids-cmake/pull/1058
+* add default CODEOWNERS by @jameslamb in https://github.com/rapidsai/rapids-cmake/pull/1055
+* enforce 'yamllint' checks by @jameslamb in https://github.com/rapidsai/rapids-cmake/pull/1066
+* Update NVBench to 5061a4f by @PointKernel in https://github.com/rapidsai/rapids-cmake/pull/1062
+* Update to rapids-logger 0.3 by @bdice in https://github.com/rapidsai/rapids-cmake/pull/1069
+* Add binutils as an explicit dependency by @arhag23 in https://github.com/rapidsai/rapids-cmake/pull/1074
+* X-ORG-1078: Publish API docs to docs.nvidia.com by @josephine-wolf-oberholtzer in https://github.com/rapidsai/rapids-cmake/pull/1079
+* ci: avoid triggered-by-schedule and triggered-by-merge builds cancelling each other by @jameslamb in https://github.com/rapidsai/rapids-cmake/pull/1077
+* Bump the cuco version to fetch Bloom filter improvements by @PointKernel in https://github.com/rapidsai/rapids-cmake/pull/1075
+* Update CCCL to 3.5.0-rc0 by @bdice in https://github.com/rapidsai/rapids-cmake/pull/1084
+* Update CCCL to 3.5.0-rc1 by @bdice in https://github.com/rapidsai/rapids-cmake/pull/1087
+* Update cuco for RoaringBitmap use in cuVS by @divyegala in https://github.com/rapidsai/rapids-cmake/pull/1095
+
+## New Contributors
+* @igorpeshansky made their first contribution in https://github.com/rapidsai/rapids-cmake/pull/1070
+* @divyegala made their first contribution in https://github.com/rapidsai/rapids-cmake/pull/1095
+
+**Full Changelog**: https://github.com/rapidsai/rapids-cmake/compare/v26.10.00a...release/26.10
+
 # rapids-cmake 26.08.00 (5 Aug 2026)
 
 ### 🐛 Bug Fixes
