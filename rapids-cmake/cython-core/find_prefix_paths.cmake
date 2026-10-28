@@ -1,6 +1,6 @@
 # =============================================================================
 # cmake-format: off
-# SPDX-FileCopyrightText: Copyright (c) 2025, NVIDIA CORPORATION.
+# SPDX-FileCopyrightText: Copyright (c) 2025-2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 # cmake-format: on
 # =============================================================================
@@ -47,9 +47,11 @@ for ep in entry_points(group="cmake.prefix"):
 print(";".join(paths))
 ]=])
 
-  # Execute the Python at configure time and capture output
-  execute_process(COMMAND ${python_executable} -c "${_get_entry_points}" OUTPUT_VARIABLE prefix_dirs
-                  OUTPUT_STRIP_TRAILING_WHITESPACE)
+  # Execute the Python at configure time and capture output. Loading the entry points imports the
+  # packages, so -B stops their bytecode from being written into the environment (e.g. a conda build
+  # prefix, where it would be packaged).
+  execute_process(COMMAND ${python_executable} -B -c "${_get_entry_points}"
+                  OUTPUT_VARIABLE prefix_dirs OUTPUT_STRIP_TRAILING_WHITESPACE)
 
   set(${paths_var} ${prefix_dirs} PARENT_SCOPE)
 
