@@ -31,6 +31,7 @@ jobs:
     with:
       build_type: pull-request
       script: ci/test_cpp.sh
+      matrix_type: cuda-13-4-pr,pull-request
     permissions:
       actions: read
       contents: read
