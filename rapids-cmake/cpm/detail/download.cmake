@@ -22,6 +22,10 @@ The CPM module will be downloaded based on the following.
 
 .. versionadded:: v24.10.00
 
+If the :cmake:variable:`FETCHCONTENT_SOURCE_DIR_CPM` is defined and
+`FETCHCONTENT_SOURCE_DIR_CPM/cmake/CPM.cmake` exists it will be used as
+:cmake:variable:`CPM_DOWNLOAD_LOCATION`.
+
 If :cmake:variable:`CPM_DOWNLOAD_LOCATION` is defined that location will be used
 as the download location. If a file already exists at that location no download will occur
 
@@ -45,6 +49,10 @@ function(rapids_cpm_download)
   # When changing version verify no new variables needs to be propagated
   set(CPM_DOWNLOAD_VERSION 0.42.0)
   set(CPM_DOWNLOAD_SHA256_HASH 2020b4fc42dba44817983e06342e682ecfc3d2f484a581f11cc5731fbe4dce8a)
+
+  if(DEFINED FETCHCONTENT_SOURCE_DIR_CPM AND EXISTS ${FETCHCONTENT_SOURCE_DIR_CPM}/cmake/CPM.cmake)
+    set(CPM_DOWNLOAD_LOCATION ${FETCHCONTENT_SOURCE_DIR_CPM}/cmake/CPM.cmake)
+  endif()
 
   if(NOT DEFINED CPM_DOWNLOAD_LOCATION)
     if(CPM_SOURCE_CACHE)
