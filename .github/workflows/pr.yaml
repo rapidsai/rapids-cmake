@@ -27,7 +27,7 @@ jobs:
       contents: read
   conda-cpp-tests:
     secrets: inherit # zizmor: ignore[secrets-inherit]
-    uses: rapidsai/shared-workflows/.github/workflows/conda-cpp-tests.yaml@wsl-matrices
+    uses: rapidsai/shared-workflows/.github/workflows/conda-cpp-tests.yaml@main
     with:
       build_type: pull-request
       script: ci/test_cpp.sh
