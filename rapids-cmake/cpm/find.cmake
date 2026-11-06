@@ -184,6 +184,8 @@ function(rapids_cpm_find name version)
   if(_rapids_do_DOWNLOAD_ONLY AND NOT _RAPIDS_SOURCE_SUBDIR)
     set(_RAPIDS_UNPARSED_ARGUMENTS ${_rapids_do_UNPARSED_ARGUMENTS})
     set(_RAPIDS_SOURCE_SUBDIR ".rapids-cmake-download-only/${name}")
+    # CPM only skips its find_package redirect for `DOWNLOAD_ONLY`, so suppress it explicitly
+    set(CPM_DONT_UPDATE_MODULE_PATH ON)
   endif()
 
   if(_RAPIDS_COMPONENTS)
