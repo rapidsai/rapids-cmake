@@ -61,6 +61,10 @@ add_cmake_config_test(parse_version-patch-invalid.cmake)
 add_cmake_config_test(parse_version-major_minor-invalid.cmake)
 add_cmake_config_test(parse_version-major_minor-valid.cmake)
 
+add_cmake_config_test(target_sources-valid)
+add_cmake_config_test(target_sources-missing-json.cmake SHOULD_FAIL "requires the JSON argument")
+add_cmake_config_test(target_sources-missing-srcs.cmake SHOULD_FAIL "requires 'srcs' to exist")
+
 add_cmake_build_test(write_git_revision-custom-prefix)
 add_cmake_build_test(write_git_revision-dirty)
 add_cmake_build_test(write_git_revision-embed)

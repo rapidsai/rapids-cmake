@@ -1,0 +1,7 @@
+{
+  "srcs": [
+    "srcs/a.cpp",
+    "srcs/b.cpp",
+    "srcs/c.cpp"
+  ]
+}
