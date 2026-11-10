@@ -10,6 +10,7 @@ permissions: {}
 jobs:
   pr-builder:
     needs:
+      - burndown-pr
       - checks
       - conda-cpp-tests
       - docs-build
@@ -17,6 +18,13 @@ jobs:
     uses: rapidsai/shared-workflows/.github/workflows/pr-builder.yaml@main
     permissions:
       contents: read
+  burndown-pr:
+    permissions:
+      actions: read
+      contents: read
+      pull-requests: read
+    uses: rapidsai/shared-workflows/.github/workflows/burndown-pr.yaml@main
+
   checks:
     uses: rapidsai/shared-workflows/.github/workflows/checks.yaml@main
     with:
@@ -26,6 +34,9 @@ jobs:
     permissions:
       contents: read
   conda-cpp-tests:
+    if: >-
+      needs.burndown-pr.result == 'success' && needs.burndown-pr.outputs.skip-product-ci != 'true'
+    needs: [burndown-pr]
     secrets: inherit # zizmor: ignore[secrets-inherit]
     uses: rapidsai/shared-workflows/.github/workflows/conda-cpp-tests.yaml@main
     with:
@@ -39,6 +50,9 @@ jobs:
       packages: read
       pull-requests: read
   docs-build:
+    if: >-
+      needs.burndown-pr.result == 'success' && needs.burndown-pr.outputs.skip-product-ci != 'true'
+    needs: [burndown-pr]
     secrets: inherit # zizmor: ignore[secrets-inherit]
     uses: rapidsai/shared-workflows/.github/workflows/custom-job.yaml@main
     with:
@@ -54,7 +68,9 @@ jobs:
       packages: read
       pull-requests: read
   publish-api-docs:
-    needs: [docs-build]
+    if: >-
+      needs.burndown-pr.result == 'success' && needs.burndown-pr.outputs.skip-product-ci != 'true'
+    needs: [burndown-pr, docs-build]
     permissions:
       contents: read
       id-token: write
