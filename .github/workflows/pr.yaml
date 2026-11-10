@@ -14,11 +14,11 @@ jobs:
       - conda-cpp-tests
       - docs-build
       - publish-api-docs
-    uses: rapidsai/shared-workflows/.github/workflows/pr-builder.yaml@release/26.12
+    uses: rapidsai/shared-workflows/.github/workflows/pr-builder.yaml@main
     permissions:
       contents: read
   checks:
-    uses: rapidsai/shared-workflows/.github/workflows/checks.yaml@release/26.12
+    uses: rapidsai/shared-workflows/.github/workflows/checks.yaml@main
     with:
       # Main builds seed this cache. PR merge refs can restore it but should not create
       # duplicate archives that are inaccessible to other PRs.
@@ -27,7 +27,7 @@ jobs:
       contents: read
   conda-cpp-tests:
     secrets: inherit # zizmor: ignore[secrets-inherit]
-    uses: rapidsai/shared-workflows/.github/workflows/conda-cpp-tests.yaml@release/26.12
+    uses: rapidsai/shared-workflows/.github/workflows/conda-cpp-tests.yaml@main
     with:
       build_type: pull-request
       script: ci/test_cpp.sh
@@ -40,7 +40,7 @@ jobs:
       pull-requests: read
   docs-build:
     secrets: inherit # zizmor: ignore[secrets-inherit]
-    uses: rapidsai/shared-workflows/.github/workflows/custom-job.yaml@release/26.12
+    uses: rapidsai/shared-workflows/.github/workflows/custom-job.yaml@main
     with:
       build_type: pull-request
       node_type: "cpu4"
@@ -69,7 +69,7 @@ jobs:
       target-aws-secret-access-key: ${{ secrets.NVIDIA_DOCS_AWS_SECRET_ACCESS_KEY }}
       target-archive-s3-bucket: ${{ secrets.NVIDIA_DOCS_ARCHIVE_S3_BUCKET }}
       target-s3-bucket: ${{ secrets.NVIDIA_DOCS_S3_BUCKET }}
-    uses: rapidsai/shared-workflows/.github/workflows/publish-api-docs.yaml@release/26.12
+    uses: rapidsai/shared-workflows/.github/workflows/publish-api-docs.yaml@main
     with:
       docs-projects: rapids-cmake
       dry-run: true
