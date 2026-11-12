@@ -96,7 +96,6 @@ The `rapids_json` functions provide common JSON manipulation functions.
 
     rapids_json_array_append </command/rapids_json_array_append>
     rapids_json_array_extend </command/rapids_json_array_extend>
-    rapids_json_array_items </command/rapids_json_array_items>
     rapids_json_compute_matrix_product </command/rapids_json_compute_matrix_product>
     rapids_json_parse </command/rapids_json_parse>
 

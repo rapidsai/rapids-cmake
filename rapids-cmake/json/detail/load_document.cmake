@@ -22,7 +22,8 @@ function(rapids_json_load_document command caller_dir)
   set(options)
   set(one_value FILE STRING JSON_VARIABLE DIR_VARIABLE)
   set(multi_value)
-  cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
+  # PARSE_ARGV keeps a `;` in the JSON `STRING` intact, ARGN would split it
+  cmake_parse_arguments(PARSE_ARGV 2 _RAPIDS "${options}" "${one_value}" "${multi_value}")
 
   if(DEFINED _RAPIDS_FILE)
     cmake_path(ABSOLUTE_PATH _RAPIDS_FILE BASE_DIRECTORY "${caller_dir}" NORMALIZE OUTPUT_VARIABLE

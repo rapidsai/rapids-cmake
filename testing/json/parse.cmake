@@ -61,17 +61,25 @@ check_equal(k_v "deep")
 rapids_json_parse(k STRING [=[[ { "v" : "first" }, { "v" : "second" } ]]=] KEY 1 VALUES v)
 check_equal(k_v "second")
 
-# Records from rapids_json_array_items can be parsed
-include(${rapids-cmake-dir}/json/array_items.cmake)
-set(records_file ${CMAKE_CURRENT_BINARY_DIR}/records.json)
-file(WRITE ${records_file} [=[{ "r" : [ { "n" : "one", "l" : [ "a" ] }, { "n" : "two" } ] }]=])
-rapids_json_array_items(records FILE ${records_file} KEY r)
+# Each record of an array can be parsed by passing it as STRING
+set(records [=[{ "r" : [ { "n" : "one", "l" : [ "a" ] }, { "n" : "two" } ] }]=])
+string(JSON record_count LENGTH "${records}" r)
 set(names)
-foreach(record IN LISTS records)
+foreach(index RANGE 0 ${record_count})
+  if(index EQUAL record_count)
+    break()
+  endif()
+  string(JSON record GET_RAW "${records}" r ${index})
   rapids_json_parse(rec STRING "${record}" VALUES n LISTS l)
   list(APPEND names "${rec_n}:${rec_l}")
 endforeach()
 check_equal(names "one:a;two:")
+
+# A `;` in the document and in a value is preserved
+set(records [=[{ "r" : [ { "n" : "se;mi" }, { "n" : "two" } ] }]=])
+string(JSON record GET_RAW "${records}" r 0)
+rapids_json_parse(semi STRING "${record}" VALUES n)
+check_equal(semi_n "se;mi")
 
 # Values with characters that are special to CMake are returned untouched
 rapids_json_parse(s STRING [=[{ "v" : "a \"quoted\" ${not_a_var} @x@ \\ done" }]=] VALUES v)

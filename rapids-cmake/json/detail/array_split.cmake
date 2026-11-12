@@ -23,9 +23,13 @@ function(rapids_json_array_split out_var json)
     set(_rapids_it 0)
     while(_rapids_it LESS _rapids_len)
       string(JSON _rapids_item GET_RAW "${json}" ${ARGN} ${_rapids_it})
+      # GET_RAW decodes `;`, and a `;` would split the element when it is added to the list. Use the
+      # escape sequence to work around these issues
+      string(REPLACE ";" "\\u003b" _rapids_item "${_rapids_item}")
       list(APPEND _rapids_items "${_rapids_item}")
       math(EXPR _rapids_it "${_rapids_it} + 1")
     endwhile()
   endif()
+
   set(${out_var} "${_rapids_items}" PARENT_SCOPE)
 endfunction()

@@ -30,9 +30,9 @@ Reads a JSON object and stores the members that the caller has asked for in
 variables named ``<prefix>_<key>``. The layout of the JSON document is
 described by the keywords given to the call, in the same way
 :cmake:command:`cmake_parse_arguments <cmake:command:cmake_parse_arguments>`
-describes the layout of command line arguments. The members of a document
-that is an array of records can be parsed by combining this function with
-:cmake:command:`rapids_json_array_items`.
+describes the layout of command line arguments. The members of each record of
+an array can be parsed by giving the record to this function as ``STRING``,
+after extracting it with :cmake:command:`string(JSON ... GET_RAW) <cmake:command:string>`.
 
 ``<prefix>``
   Prefix of the variables that are set in the calling scope. All variables
@@ -117,7 +117,9 @@ Result Variables
 
 Limitations
 ^^^^^^^^^^^
-  JSON strings that contain a ``;`` are not supported.
+  A ``;`` is supported in the ``STRING`` document and in ``VALUES`` and ``OBJECTS``
+  members. It is not supported in the elements of ``LISTS`` and ``PATHS`` members, since
+  they are returned as CMake lists.
 
   This function requires CMake 4.3 or newer.
 
@@ -137,7 +139,8 @@ function(rapids_json_parse _rapids_prefix)
   set(options)
   set(one_value FILE STRING BASE_DIR)
   set(multi_value KEY ${_rapids_kinds})
-  cmake_parse_arguments(_RAPIDS "${options}" "${one_value}" "${multi_value}" ${ARGN})
+  # PARSE_ARGV keeps a `;` in the JSON `STRING` intact, ARGN would split it
+  cmake_parse_arguments(PARSE_ARGV 1 _RAPIDS "${options}" "${one_value}" "${multi_value}")
 
   # Collect the declared keys, and make sure each is declared once
   set(_rapids_declared ${_RAPIDS_VALUES} ${_RAPIDS_LISTS} ${_RAPIDS_PATHS} ${_RAPIDS_OBJECTS})
@@ -154,19 +157,20 @@ function(rapids_json_parse _rapids_prefix)
     unset(${_rapids_prefix}_${_rapids_key} PARENT_SCOPE)
   endforeach()
 
-  set(_rapids_source)
+  include("${rapids-cmake-dir}/json/detail/load_document.cmake")
   if(_RAPIDS_FILE AND _RAPIDS_STRING)
     message(FATAL_ERROR "rapids_json_parse can't be given both FILE and STRING")
   elseif(_RAPIDS_FILE)
-    list(APPEND _rapids_source FILE "${_RAPIDS_FILE}")
+    rapids_json_load_document("rapids_json_parse" "${CMAKE_CURRENT_LIST_DIR}" FILE
+                              "${_RAPIDS_FILE}" JSON_VARIABLE _rapids_json DIR_VARIABLE
+                              _rapids_base)
   elseif(_RAPIDS_STRING)
-    list(APPEND _rapids_source STRING "${_RAPIDS_STRING}")
+    rapids_json_load_document("rapids_json_parse" "${CMAKE_CURRENT_LIST_DIR}" STRING
+                              "${_RAPIDS_STRING}" JSON_VARIABLE _rapids_json DIR_VARIABLE
+                              _rapids_base)
   else()
     message(FATAL_ERROR "rapids_json_parse requires one of FILE or STRING")
   endif()
-  include("${rapids-cmake-dir}/json/detail/load_document.cmake")
-  rapids_json_load_document("rapids_json_parse" "${CMAKE_CURRENT_LIST_DIR}" ${_rapids_source}
-                            JSON_VARIABLE _rapids_json DIR_VARIABLE _rapids_base)
 
   # Get the payload for the key
   if(_RAPIDS_KEY)

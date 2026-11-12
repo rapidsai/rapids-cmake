@@ -17,12 +17,6 @@ add_cmake_config_test(array_extend-with-leaf.cmake SHOULD_FAIL "values argument 
 
 add_cmake_config_test(compute_matrix_product)
 
-add_cmake_config_test(array_items.cmake)
-add_cmake_config_test(array_items-invalid-json.cmake SHOULD_FAIL "is not valid JSON")
-add_cmake_config_test(array_items-invalid-value.cmake SHOULD_FAIL "to be an array")
-add_cmake_config_test(array_items-missing-file.cmake SHOULD_FAIL "does not exist")
-add_cmake_config_test(array_items-missing-key.cmake SHOULD_FAIL "to be an array")
-
 add_cmake_config_test(parse.cmake)
 add_cmake_config_test(parse-paths.cmake)
 add_cmake_config_test(parse-duplicate-key.cmake SHOULD_FAIL "keys can only be declared once")
