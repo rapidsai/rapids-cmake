@@ -26,11 +26,8 @@ if(DEFINED ENV{CTEST_RESOURCE_GROUP_COUNT})
   # Each resource group holds one GPU allocation, so a test that requested multiple GPUs needs all
   # of them to be visible. Multiple allocations can land on the same GPU, so list each id once.
   list(REMOVE_DUPLICATES device_ids)
-  list(LENGTH device_ids device_count)
-  if(device_count GREATER 0)
-    list(JOIN device_ids "," device_ids)
-    set(ENV{CUDA_VISIBLE_DEVICES} "${device_ids}")
-  endif()
+  list(JOIN device_ids "," device_ids)
+  set(ENV{CUDA_VISIBLE_DEVICES} "${device_ids}")
 endif()
 execute_process(COMMAND ${command_to_run} ${command_args} COMMAND_ECHO STDOUT
                         COMMAND_ERROR_IS_FATAL ANY)
