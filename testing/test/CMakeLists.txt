@@ -52,6 +52,8 @@ add_cmake_config_test(add-with-install-target-missing.cmake SHOULD_FAIL
 add_cmake_config_test(add-with-no-gpus.cmake)
 
 add_cmake_ctest_test(add-no-cuda-toolkit)
+add_cmake_ctest_test(add-multi-gpu-visible-devices)
+add_cmake_ctest_test(add-multi-gpu-visible-devices-same-gpu)
 if(RAPIDS_CMAKE_TESTING_GPU_COUNT GREATER 0)
   add_cmake_ctest_test(add-allocation-simple)
   add_cmake_ctest_test(add-allocation-throws-runtime-error)
