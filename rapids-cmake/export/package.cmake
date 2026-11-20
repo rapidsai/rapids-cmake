@@ -38,7 +38,8 @@ generated information will include a :cmake:command:`find_dependency` call for <
 ``VERSION``
   .. versionadded:: v22.04.00
 
-  Record which `major.minor` version of the package is required for consumers.
+  Prefer this `major.minor` version of the package for consumers, falling back to
+  an unversioned search if the versioned search fails.
 
 ``COMPONENTS``
   .. versionadded:: v22.10.00
