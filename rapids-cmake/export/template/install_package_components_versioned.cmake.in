@@ -1,2 +1,5 @@
 find_package(@name@ @version@ QUIET COMPONENTS @components@)
-find_dependency(@name@ COMPONENTS @components@)
+# Packages without version metadata still need an unversioned fallback.
+if(NOT @name@_FOUND)
+  find_dependency(@name@ COMPONENTS @components@)
+endif()

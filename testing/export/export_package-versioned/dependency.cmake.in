@@ -1,0 +1,27 @@
+# =============================================================================
+# cmake-format: off
+# SPDX-FileCopyrightText: Copyright (c) 2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+# cmake-format: on
+# =============================================================================
+file(APPEND "${CMAKE_CURRENT_BINARY_DIR}/calls.txt" "called\n")
+if("@scenario@" MATCHES "^(unversioned|incompatible)$")
+  if(@required@ AND NOT Dependency_FIND_REQUIRED)
+    message(FATAL_ERROR "REQUIRED was not propagated to the fallback")
+  endif()
+  if(@quiet@ AND NOT Dependency_FIND_QUIETLY)
+    message(FATAL_ERROR "QUIET was not propagated to the fallback")
+  endif()
+endif()
+if(NOT Dependency_FIND_QUIETLY)
+  message(STATUS "dependency status message")
+endif()
+if(@with_components@ AND NOT "${Dependency_FIND_COMPONENTS}" STREQUAL "first;second")
+  message(FATAL_ERROR "Missing requested components")
+endif()
+if("@scenario@" STREQUAL "missing-component")
+  set(Dependency_FOUND FALSE)
+  set(Dependency_NOT_FOUND_MESSAGE "Missing component second")
+else()
+  set(Dependency_FOUND TRUE)
+endif()
