@@ -8,7 +8,10 @@ if(possible_package_dir AND NOT DEFINED @name@_DIR)
 endif()
 
 find_package(@name@ @version@ QUIET)
-find_dependency(@name@)
+# Packages without version metadata still need an unversioned fallback.
+if(NOT @name@_FOUND)
+  find_dependency(@name@)
+endif()
 
 if(possible_package_dir)
   unset(possible_package_dir)
