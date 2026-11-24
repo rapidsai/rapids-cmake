@@ -20,6 +20,7 @@ require.
    /command/rapids_cmake_make_global
    /command/rapids_cmake_parse_version
    /command/rapids_cmake_support_conda_env
+   /command/rapids_cmake_target_sources
    /command/rapids_cmake_write_git_revision_file
    /command/rapids_cmake_write_version_file
 
@@ -97,6 +98,7 @@ The `rapids_json` functions provide common JSON manipulation functions.
     rapids_json_array_append </command/rapids_json_array_append>
     rapids_json_array_extend </command/rapids_json_array_extend>
     rapids_json_compute_matrix_product </command/rapids_json_compute_matrix_product>
+    rapids_json_parse </command/rapids_json_parse>
 
 .. _`cuda-functions`:
 
